@@ -29,4 +29,6 @@
     <string name="fill_your_address">Fill your address</string>
     <string name="your_input_is_being_uploaded_please_wait_while_we_approve_your_request">Your input is being uploaded. \nPlease wait while we approve your request</string>
     <string name="continue_as_guest">continue as guest</string>
+    <string name="forget_password">Forget password</string>
+    <string name="please_enter_the_mail_address">Please enter the mail address\nor phone number you used\nwhen you joined</string>
 </resources>

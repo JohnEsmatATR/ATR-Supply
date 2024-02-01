@@ -17,6 +17,9 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
         <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".WaitingActivity"
             android:exported="false" />
         <activity
