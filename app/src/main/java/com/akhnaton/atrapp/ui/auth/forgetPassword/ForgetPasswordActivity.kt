@@ -1,8 +1,10 @@
-package com.akhnaton.atrapp
+package com.akhnaton.atrapp.ui.auth.forgetPassword
 
+import android.content.Intent
 import android.os.Bundle
 import com.akhnaton.atrapp.databinding.ActivityForgetPasswordBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.ui.auth.otp.OTPActivity
 
 class ForgetPasswordActivity : BaseActivity() {
     lateinit var binding: ActivityForgetPasswordBinding
@@ -21,6 +23,12 @@ class ForgetPasswordActivity : BaseActivity() {
     }
 
     private fun onClick() {
-
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+        binding.btnNext.setOnClickListener {
+            val intent = Intent(baseContext, OTPActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

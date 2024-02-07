@@ -17,31 +17,46 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
         <activity
-            android:name=".ForgetPasswordActivity"
+            android:name=".ui.nav.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".WaitingActivity"
+            android:name=".ui.nav.home.product.ProductsActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpMapsActivity"
+            android:name=".ui.auth.PasswordResetSuccessfullyActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpPdfActivity"
+            android:name=".ui.auth.forgetPassword.NewPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpInfoActivity"
+            android:name=".ui.auth.otp.OTPActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.forgetPassword.ForgetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".ui.auth.waiting.WaitingActivity"
             android:exported="false" />
         <activity
-            android:name=".OnBoardingActivity"
+            android:name=".ui.auth.signUp.map.SignUpMapsActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.auth.signUp.pdf.SignUpPdfActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.signUp.info.SignUpInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.login.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.onBoarding.WelcomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.onBoarding.OnBoardingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

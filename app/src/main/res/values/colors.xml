@@ -3,12 +3,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#C1C1C1</color>
-    <color name="dark_gray">#B5B5B5</color>
+    <color name="mid_gray">#706F6F</color>
+    <color name="dark_gray">#272727</color>
 
 
     <color name="orange">#EE7907</color>
 
     <color name="snack_red">#FB5B5B</color>
     <color name="snack_green">#68BF7B</color>
+    <color name="teal">#25C97A</color>
 
 </resources>

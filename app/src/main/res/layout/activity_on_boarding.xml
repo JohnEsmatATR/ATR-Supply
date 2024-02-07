@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".OnBoardingActivity">
+    tools:context=".ui.auth.onBoarding.OnBoardingActivity">
 
     <ImageView
         android:id="@+id/om_on_boarding"
@@ -96,7 +96,7 @@
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_weight="5"
-                    android:background="@color/dark_gray" />
+                    android:background="@color/mid_gray" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_weight="5"
-                    android:background="@color/dark_gray" />
+                    android:background="@color/mid_gray" />
             </LinearLayout>
 
             <LinearLayout

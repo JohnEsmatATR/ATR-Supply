@@ -31,4 +31,22 @@
     <string name="continue_as_guest">continue as guest</string>
     <string name="forget_password">Forget password</string>
     <string name="please_enter_the_mail_address">Please enter the mail address\nor phone number you used\nwhen you joined</string>
+    <string name="verify">Verify</string>
+    <string name="enter_the_verification_code_that_we_sent_you_to_your_phone_number">Enter the verification code that we sent you to\nyour phone number</string>
+    <string name="create_new_password">Create new password</string>
+    <string name="you_have_successfully_reset_your_password_please_use_your_new_password_when_logging_in">You have successfully reset your password.Please use your new password when logging in</string>
+    <string name="password_reset_successful">Password reset\nsuccessful</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="cart">Cart</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="view_all">View All</string>
+    <string name="categories">Categories</string>
+    <string name="best_seller">Best Seller</string>
+    <string name="no_products">No Products</string>
+    <string name="filter">Filter</string>
+    <string name="nothing">" "</string>
+
 </resources>

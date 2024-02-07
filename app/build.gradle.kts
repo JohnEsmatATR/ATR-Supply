@@ -49,6 +49,9 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.0")
 
     // Google maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")
@@ -72,12 +75,16 @@ dependencies {
 
     //ViewModel and livedata
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
     // Lottie
     implementation("com.airbnb.android:lottie:6.2.0")
 
     // Coil image loader
     implementation("io.coil-kt:coil:2.5.0")
+
+    // otpView
+    implementation("com.github.aabhasr1:OtpView:v1.1.2-ktx") // kotlin
+    implementation("com.github.aabhasr1:OtpView:v1.1.2")
 
 }

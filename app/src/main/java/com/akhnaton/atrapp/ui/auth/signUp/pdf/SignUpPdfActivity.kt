@@ -1,16 +1,17 @@
-package com.akhnaton.atrapp
+package com.akhnaton.atrapp.ui.auth.signUp.pdf
 
 import android.content.Intent
 import android.os.Bundle
-import com.akhnaton.atrapp.databinding.ActivitySignUpInfoBinding
+import com.akhnaton.atrapp.databinding.ActivitySignUpPdfBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.ui.auth.signUp.map.SignUpMapsActivity
 
-class SignUpInfoActivity : BaseActivity() {
-    lateinit var binding: ActivitySignUpInfoBinding
+class SignUpPdfActivity : BaseActivity() {
+    lateinit var binding: ActivitySignUpPdfBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySignUpInfoBinding.inflate(layoutInflater)
+        binding = ActivitySignUpPdfBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         init()
@@ -23,7 +24,7 @@ class SignUpInfoActivity : BaseActivity() {
 
     private fun onClick() {
         binding.btnNext.setOnClickListener {
-            val intent = Intent(this@SignUpInfoActivity, SignUpPdfActivity::class.java)
+            val intent = Intent(this@SignUpPdfActivity, SignUpMapsActivity::class.java)
             startActivity(intent)
         }
         binding.btnBack.setOnClickListener {

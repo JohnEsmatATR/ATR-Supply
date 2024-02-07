@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpMapsActivity">
+    tools:context=".ui.auth.signUp.map.SignUpMapsActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -52,7 +52,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="@color/dark_gray"
+            app:boxStrokeColor="@color/mid_gray"
             app:boxStrokeWidth="2dp"
             android:enabled="false"
             >

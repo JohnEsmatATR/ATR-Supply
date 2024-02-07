@@ -7,4 +7,8 @@ object Common {
 //    const val ImgUrl ="https://4unettinghub.com/"
     const val English ="en"
     const val Arabic ="ar"
+
+    const val bestSeller ="bestSeller"
+    const val category ="category"
+    const val subBrand ="subBrand"
 }

@@ -1,9 +1,11 @@
-package com.akhnaton.atrapp
+package com.akhnaton.atrapp.ui.auth.onBoarding
 
 import android.content.Intent
 import android.os.Bundle
 import com.akhnaton.atrapp.databinding.ActivityOnBoardingBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
+import com.akhnaton.atrapp.ui.auth.signUp.info.SignUpInfoActivity
 
 class OnBoardingActivity : BaseActivity() {
     lateinit var binding: ActivityOnBoardingBinding

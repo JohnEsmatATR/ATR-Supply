@@ -1,4 +1,4 @@
-package com.akhnaton.atrapp
+package com.akhnaton.atrapp.ui.auth.onBoarding
 
 import android.content.Intent
 import android.os.Bundle

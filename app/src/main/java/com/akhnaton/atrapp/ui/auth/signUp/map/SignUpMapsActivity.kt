@@ -1,4 +1,4 @@
-package com.akhnaton.atrapp
+package com.akhnaton.atrapp.ui.auth.signUp.map
 
 import android.Manifest
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.ui.auth.waiting.WaitingActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory

@@ -1,9 +1,11 @@
-package com.akhnaton.atrapp
+package com.akhnaton.atrapp.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.ui.auth.onBoarding.WelcomeActivity
 import com.akhnaton.atrapp.databinding.ActivitySplashBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import kotlinx.coroutines.CoroutineScope

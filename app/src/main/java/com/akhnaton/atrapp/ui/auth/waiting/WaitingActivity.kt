@@ -1,4 +1,4 @@
-package com.akhnaton.atrapp
+package com.akhnaton.atrapp.ui.auth.waiting
 
 import android.os.Bundle
 import com.akhnaton.atrapp.databinding.ActivityWaitingBinding
