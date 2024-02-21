@@ -53,6 +53,10 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.7.2")
     implementation("androidx.fragment:fragment-ktx:1.6.0")
 
+    //Sdp & Ssp
+    implementation("com.intuit.sdp:sdp-android:1.0.6")
+    implementation("com.intuit.ssp:ssp-android:1.0.6")
+
     // Google maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -86,5 +90,8 @@ dependencies {
     // otpView
     implementation("com.github.aabhasr1:OtpView:v1.1.2-ktx") // kotlin
     implementation("com.github.aabhasr1:OtpView:v1.1.2")
+
+//    // zoom imageView
+//    implementation("com.github.sheetalkumar105:ZoomImageView-android:1.02")
 
 }

@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:gravity="center"
-                android:textColor="@color/mid_gray"
+                android:textColor="@color/mid_gray_1"
                 android:textSize="10sp"
                 tools:text="44.00 EGP"
                 android:text="@{productModel.old_price + ` LE`}"

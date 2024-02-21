@@ -52,7 +52,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="@color/mid_gray"
+            app:boxStrokeColor="@color/mid_gray_1"
             app:boxStrokeWidth="2dp"
             android:enabled="false"
             >

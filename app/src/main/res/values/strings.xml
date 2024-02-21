@@ -40,13 +40,34 @@
     <string name="favorite">Favorite</string>
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_all">View All</string>
     <string name="categories">Categories</string>
     <string name="best_seller">Best Seller</string>
     <string name="no_products">No Products</string>
     <string name="filter">Filter</string>
     <string name="nothing">" "</string>
+    <string name="size_">Size:</string>
+    <string name="availability_">Availability:</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="select_the_quantity">Select the quantity</string>
+    <string name="description">Description</string>
+    <string name="description_etc">
+        •\t\tEva Hair Clinic is a hair care brand that offers a variety
+        \n\t\tof products for different hair types and
+        \n\t\tneeds.
+        \n•\t\tSome of their products include shampoos,
+        \n\t\tconditioners, hair masks, serums, and styling products.
+    </string>
+    <string name="my_cart">My Cart</string>
+    <string name="your_cart_is_empty">Your cart is empty</string>
+    <string name="checkout">Checkout</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="delivery_free">Delivery Free</string>
+    <string name="discount">Discount</string>
+    <string name="item_total">Item Total</string>
+    <string name="user_reviews">User Reviews</string>
+    <string name="you_might_also_like">You might also like</string>
+    <string name="add_to_cart">Add to cart</string>
 
 </resources>

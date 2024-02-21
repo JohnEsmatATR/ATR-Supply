@@ -13,6 +13,7 @@ import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 
 
 class HomeFragment : BaseFragment() {
@@ -224,7 +225,7 @@ class HomeFragment : BaseFragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         bestSellerAdapter = ProductAdapter(
             onClick = { product, position ->
-                val intent = Intent(requireContext(), ProductsActivity::class.java)
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
                 intent.putExtra("flag", Common.category)
                 intent.putExtra("id", product.id)
                 startActivity(intent)
@@ -271,11 +272,11 @@ class HomeFragment : BaseFragment() {
 //            intent.putExtra("flag", Common.brand)
 //            startActivity(intent)
 //        }
-//        binding.txtSeeAllBestSeller.setOnClickListener {
-//            val intent = Intent(context, ProductsActivity::class.java)
-//            intent.putExtra("flag", Common.bestSeller)
-//            startActivity(intent)
-//        }
+        binding.txtSeeAllBestSeller.setOnClickListener {
+            val intent = Intent(context, ProductsActivity::class.java)
+            intent.putExtra("flag", Common.bestSeller)
+            startActivity(intent)
+        }
 //        binding.btnBrowseAllBlog.setOnClickListener {
 //            val intent = Intent(context, BlogActivity::class.java)
 //            startActivity(intent)

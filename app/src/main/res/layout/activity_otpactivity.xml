@@ -80,7 +80,7 @@
             android:gravity="center"
             android:text="@string/enter_the_verification_code_that_we_sent_you_to_your_phone_number"
             android:textAllCaps="false"
-            android:textColor="@color/mid_gray"
+            android:textColor="@color/mid_gray_1"
             android:textSize="14sp"
             android:textStyle="bold"
             app:backgroundTint="@null"
