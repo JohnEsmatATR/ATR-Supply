@@ -17,6 +17,9 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
         <activity
+            android:name=".ui.nav.cart.checkout.CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.nav.home.product.productDetails.ProductDetailsActivity"
             android:exported="false" />
         <activity

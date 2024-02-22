@@ -69,5 +69,64 @@
     <string name="user_reviews">User Reviews</string>
     <string name="you_might_also_like">You might also like</string>
     <string name="add_to_cart">Add to cart</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="change">Change</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="cash_on_delivery">Cash on delivery</string>
+    <string name="fawry">Fawry</string>
+    <string name="confirm">Confirm</string>
+    <string name="choose_area">Choose area</string>
+    <string name="choose_city">Choose city</string>
+    <string name="add">Add</string>
+    <string name="add_new_address">Add new address</string>
+
+    <string-array name="cities">
+        <item>Cairo</item>
+        <item>Alexandria</item>
+        <item>Giza</item>
+        <item>Shubra El-Kheima</item>
+        <item>Port Said</item>
+        <item>Suez</item>
+        <item>Luxor</item>
+        <item>Asyut</item>
+        <item>Ismailia</item>
+        <item>Fayyum</item>
+        <item>Aswan</item>
+        <item>Damanhur</item>
+        <item>Minya</item>
+        <item>Zagazig</item>
+        <item>Qena</item>
+        <item>Sohag</item>
+        <item>Hurghada</item>
+        <item>Beni Suef</item>
+        <item>Menufiya</item>
+        <item>Desouk</item>
+        <item>Edfu</item>
+        <item>Tanta</item>
+        <item>Marsa Matruh</item>
+        <item>Kafr El Sheikh</item>
+        <item>El Mahalla El Kubra</item>
+        <item>Damietta</item>
+        <item>10th of Ramadan City</item>
+        <item>Sheikh Zayed City</item>
+        <!-- Add more cities as needed -->
+    </string-array>
+
+    <string-array name="cairo_areas">
+        <item>Zamalek</item>
+        <item>Dokki</item>
+        <item>Mohandessin</item>
+        <item>Maadi</item>
+        <item>Nasr City</item>
+        <item>Heliopolis</item>
+        <item>6th of October City</item>
+        <item>Tagamo3 (New Cairo)</item>
+        <item>Abbassiya</item>
+        <item>Shubra</item>
+        <item>Ramses</item>
+        <item>Helwan</item>
+        <item>Madinet Nasr</item>
+        <item>Shobra El-Kheima</item>
+    </string-array>
 
 </resources>

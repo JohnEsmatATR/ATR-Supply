@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.ATRAPP" parent="Base.Theme.ATRAPP" />
+
+
+    <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlActivated">@color/orange</item>
+    </style>
+
 </resources>

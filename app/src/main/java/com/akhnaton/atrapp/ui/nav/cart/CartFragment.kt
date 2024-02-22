@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.FragmentCartBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
@@ -25,7 +26,7 @@ class CartFragment : BaseFragment() {
     lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by viewModels()
 //    private val addToCartViewModel: AddToCartViewModel by viewModels()
-//    lateinit var cartAdapter: CartAdapter
+    lateinit var cartAdapter: CartAdapter
 //    private var products: List<ProductModel> = ArrayList()
 //    private lateinit var cart: CartDataModel
 //    private var productsRemoved: List<ProductModel> = emptyList()
@@ -52,6 +53,16 @@ class CartFragment : BaseFragment() {
     }
 
     private fun init() {
+
+        val list = ArrayList<ProductModel>()
+        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+
+        setupMyCartRecycler(list)
 
 //        if (SharedPreferenceHelper.showWallet!!) {
 //            binding.layoutWallet.visibility = View.VISIBLE
@@ -262,16 +273,16 @@ class CartFragment : BaseFragment() {
 //            )
 //        }
 //    }
-//
-//    private fun setupMyCartRecycler(list: List<ProductModel>) {
-//        val layoutManager =
-//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//        cartAdapter = CartAdapter(
-//            onClick = { product, position ->
-//
-//            },
-//            onPlusClick = { product, position, quantity ->
-//                lifecycleScope.launch {
+
+    private fun setupMyCartRecycler(list: List<ProductModel>) {
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        cartAdapter = CartAdapter(
+            onClick = { product, position ->
+
+            },
+            onPlusClick = { product, position, quantity ->
+                lifecycleScope.launch {
 //                    (products as ArrayList)[position] = product
 //                    addProductToCart(
 //                        product.product_id,
@@ -280,11 +291,11 @@ class CartFragment : BaseFragment() {
 //                        product.flag,
 //                        product.price_after_discount
 //                    )
-//                }
-//            },
-//            onMinusClick = { product, position, quantity ->
+                }
+            },
+            onMinusClick = { product, position, quantity ->
+                lifecycleScope.launch {
 //                (products as ArrayList)[position] = product
-//                lifecycleScope.launch {
 //                    addProductToCart(
 //                        product.product_id,
 //                        quantity,
@@ -292,18 +303,14 @@ class CartFragment : BaseFragment() {
 //                        product.flag,
 //                        product.price_after_discount
 //                    )
-//                }
-//            }, onDeleteClick = { product, position ->
-//                deleteProductFromCart(product.product_id)
-//                productsRemoved = products
-//                (productsRemoved as ArrayList).removeAt(position)
-//            })
-//        cartAdapter.setData(list, true, "cart")
-//        binding.recycler.layoutManager = layoutManager
-//        binding.recycler.adapter = cartAdapter
-//    }
-//
-//
+                }
+            })
+        cartAdapter.setData(list, true, "cart")
+        binding.recycler.layoutManager = layoutManager
+        binding.recycler.adapter = cartAdapter
+    }
+
+
 //    private fun showOkDialog(title: String, message: String) {
 //        val builder = AlertDialog.Builder(requireContext())
 //        builder.setTitle(title)

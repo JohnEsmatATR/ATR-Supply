@@ -29,7 +29,7 @@ data class ProductModel(
     var old_discount: Double,
     var price: Double,
     val price_after_discount: Double,
-    val quantity: Int,
+    val quantity: Int = 0,
     var in_favourite: Boolean,
     val excluder_flag: String,
     val stock_status: String,
@@ -45,4 +45,5 @@ data class ProductModel(
     val created_at: String,
     val updated_at: String,
     val userRedeemGift: Boolean,
-) : Serializable
+    val size: String = "",
+    ) : Serializable
