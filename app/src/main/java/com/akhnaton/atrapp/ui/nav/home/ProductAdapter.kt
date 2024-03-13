@@ -39,7 +39,7 @@ class ProductAdapter(
 
             binding.productModel = item
 
-            binding.imItem.load("${Common.ImgUrl}${item.image}") {
+           binding.imItem.load("${Common.ImgUrl}${item.image}") {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
             }
