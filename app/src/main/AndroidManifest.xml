@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +12,9 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.nav.home.categorys.CategoryActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.nav.cart.checkout.CheckoutActivity"
             android:exported="false" />
@@ -75,5 +74,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

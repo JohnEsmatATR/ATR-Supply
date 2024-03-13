@@ -12,6 +12,7 @@ import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.ui.nav.home.categorys.CategoryActivity
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 
@@ -32,6 +33,10 @@ class HomeFragment : BaseFragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
 
+        binding.txtSeeAllCategory.setOnClickListener{
+            val intent = Intent(requireContext(),CategoryActivity::class.java)
+            startActivity(intent)
+        }
         observeLogin()
         onClick()
 

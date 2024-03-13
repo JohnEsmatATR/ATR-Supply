@@ -79,6 +79,7 @@
     <string name="choose_city">Choose city</string>
     <string name="add">Add</string>
     <string name="add_new_address">Add new address</string>
+    <string name="back">back</string>
 
     <string-array name="cities">
         <item>Cairo</item>
