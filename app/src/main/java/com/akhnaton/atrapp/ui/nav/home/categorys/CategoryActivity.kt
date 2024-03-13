@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.home.categorys
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -8,9 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.ActivityCategoryBinding
+import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 
 
-class CategoryActivity : AppCompatActivity() {
+class CategoryActivity : AppCompatActivity(), AllCategoryAdapter.OnCategoryClickListener {
     private lateinit var binding: ActivityCategoryBinding
     private var mList = mutableListOf<CategoryModel>()
     private var mAdapter: AllCategoryAdapter = AllCategoryAdapter()
@@ -34,9 +37,9 @@ class CategoryActivity : AppCompatActivity() {
 
     private fun fillList(){
         val c1 = CategoryModel(0,"Skin Care","Skin Care","","","","")
-        val c2 = CategoryModel(0,"Skin Care","Skin Care","","","","")
-        val c3 = CategoryModel(0,"Skin Care","Skin Care","","","","")
-        val c4 = CategoryModel(0,"Skin Care","Skin Care","","","","")
+        val c2 = CategoryModel(0,"Hair Care","Hair Care","","","","")
+        val c3 = CategoryModel(0,"Sun Care","Sun Care","","","","")
+        val c4 = CategoryModel(0,"Oral Care","Oral Care","","","","")
         mList.add(c1)
         mList.add(c2)
         mList.add(c3)
@@ -45,6 +48,12 @@ class CategoryActivity : AppCompatActivity() {
     }
 
     private fun setAdapterData(data: List<CategoryModel>) {
-        mAdapter.setCategoriesList(data)
+        mAdapter.setCategoriesList(data,this)
+    }
+
+    override fun onCategoryClick(category: CategoryModel) {
+        val intent = Intent(this, ProductsActivity::class.java)
+        intent.putExtra("flag", Common.category)
+        startActivity(intent)
     }
 }

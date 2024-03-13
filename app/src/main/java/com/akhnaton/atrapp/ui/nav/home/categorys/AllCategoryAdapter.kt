@@ -8,10 +8,13 @@ import com.akhnaton.atrapp.databinding.LayoutAllCategoryBinding
 
 class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategoryViewHolder>() {
 
+    private lateinit var listener: OnCategoryClickListener
     private var mList = mutableListOf<CategoryModel>()
 
-    fun setCategoriesList(category: List<CategoryModel>) {
+
+    fun setCategoriesList(category: List<CategoryModel>, listener: OnCategoryClickListener) {
         this.mList = category.toMutableList()
+        this.listener = listener
         notifyDataSetChanged()
     }
 
@@ -21,7 +24,7 @@ class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategory
             parent,
             false
         )
-        return AllCategoryViewHolder(binding)
+        return AllCategoryViewHolder(binding, listener)
     }
 
     override fun getItemCount(): Int {
@@ -32,10 +35,19 @@ class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategory
         holder.bind(mList[position])
     }
 
-    class AllCategoryViewHolder(val binding: LayoutAllCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    class AllCategoryViewHolder(
+        val binding: LayoutAllCategoryBinding,
+        private val listener: OnCategoryClickListener
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CategoryModel) {
             binding.categoryModel = data
-            binding.executePendingBindings()
+            binding.cardItem.setOnClickListener {
+                listener.onCategoryClick(data)
+                binding.executePendingBindings()
+            }
         }
+    }
+    interface OnCategoryClickListener {
+        fun onCategoryClick(category: CategoryModel)
     }
 }
