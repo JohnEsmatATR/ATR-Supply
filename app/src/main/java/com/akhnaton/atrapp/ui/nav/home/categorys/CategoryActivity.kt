@@ -1,13 +1,14 @@
 package com.akhnaton.atrapp.ui.nav.home.categorys
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.ActivityCategoryBinding
+
 
 class CategoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategoryBinding
@@ -21,12 +22,12 @@ class CategoryActivity : AppCompatActivity() {
     private fun setupBinding(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category)
         binding.recCategory.adapter = mAdapter
-        binding.recCategory.apply {
-            layoutManager = LinearLayoutManager(this@CategoryActivity)
-            val decoration =
-                DividerItemDecoration(this@CategoryActivity, LinearLayoutManager.VERTICAL)
-            addItemDecoration(decoration)
-        }
+        binding.recCategory.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        binding.recCategory.itemAnimator = DefaultItemAnimator()
         fillList()
     }
 
