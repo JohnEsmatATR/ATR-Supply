@@ -43,7 +43,6 @@ class ProductDetailsActivity : BaseActivity() {
 
         val list2 = ArrayList<ReviewModel>()
         list2.add(ReviewModel("Belal", 4.2f, "22/02/2024", "هذا المنتج جميل مقابل سعره"))
-        list2.add(ReviewModel("Belal", 4.2f, "22/02/2024", "هذا المنتج جميل مقابل سعره"))
 
         setupReviewRecycler(list2)
 

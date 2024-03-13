@@ -19,6 +19,7 @@ import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.FragmentCartBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
+import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -74,25 +75,10 @@ class CartFragment : BaseFragment() {
     }
 
     private fun onClick() {
-//        binding.btnCheckout.setOnClickListener {
-//            if (cart.total_products_price <= 50) {
-//                showToastSnack("\nYou cannot make order less than 50 LE", true)
-//            } else if (filterProducts().isEmpty()) {
-//                showToastSnack("\nYou cannot make this order because all products in the cart are out of stock!", true)
-//            } else {
-//                if (filterProducts().size == products.size) {
-//                    val intent = Intent(context, CheckoutActivity::class.java)
-//                    intent.putExtra("products", filterProducts() as Serializable)
-//                    intent.putExtra("wallet_states", wallet_states)
-//                    startActivity(intent)
-//                } else {
-//                    showOkDialog("Warning..!", getString(R.string.warning_out_of_stock))
-//                }
-//            }
-//        }
-//        binding.chWallet.setOnCheckedChangeListener { buttonView, isChecked ->
-//            wallet_states = isChecked
-//        }
+        binding.btnCheckout.setOnClickListener{
+            val intent = Intent(requireContext(),CheckoutActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun checkNoProducts() {

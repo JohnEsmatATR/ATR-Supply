@@ -26,12 +26,10 @@
                 android:layout_width="@dimen/_14sdp"
                 android:layout_height="@dimen/_14sdp"
                 android:layout_marginHorizontal="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:layout_marginBottom="@dimen/_6sdp"
                 android:src="@drawable/ic_back"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/txt_title" />
 
             <TextView
                 android:id="@+id/txt_title"
@@ -41,8 +39,9 @@
                 android:layout_marginHorizontal="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:layout_marginBottom="@dimen/_6sdp"
-                android:text="@string/address"
-                android:textSize="18sp"
+                android:text="@string/shipping_address"
+                android:textSize="@dimen/_14ssp"
+                android:fontFamily="sans-serif-medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,16 +53,17 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_14sdp"
             android:layout_gravity="center"
-            android:paddingHorizontal="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             android:orientation="vertical"
+            android:paddingHorizontal="@dimen/_14sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/btn_add_address"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_bar"
-            app:layout_constraintBottom_toTopOf="@id/btn_add_address"
-            tools:itemCount="10"
+            tools:itemCount="3"
             tools:listitem="@layout/layout_address" />
 
         <com.google.android.material.button.MaterialButton
@@ -73,15 +73,14 @@
             android:layout_marginBottom="30dp"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/btn_orange_style"
-            android:text="@string/add_new_address"
-            android:textSize="@dimen/_12ssp"
+            android:text="Apply"
+            android:textSize="@dimen/_14ssp"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             android:foreground="?android:attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
 
