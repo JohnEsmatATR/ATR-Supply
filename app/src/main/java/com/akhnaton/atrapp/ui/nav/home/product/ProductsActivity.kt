@@ -16,6 +16,7 @@ import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import java.util.Locale
 
 class ProductsActivity : BaseActivity() {
@@ -304,9 +305,10 @@ class ProductsActivity : BaseActivity() {
         val layoutManager = GridLayoutManager(baseContext, 2)
         adapter = ProductAdapter(
             onClick = { product, position ->
-//                val intent = Intent(baseContext, ProductDetailsActivity::class.java)
-//                intent.putExtra("product", product)
-//                startActivity(intent)
+                val intent = Intent(this, ProductDetailsActivity::class.java)
+                intent.putExtra("flag", Common.category)
+                intent.putExtra("id", product.id)
+                startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
                 addProductToFavorite(product.id, isFavorite)
