@@ -22,5 +22,8 @@ class CheckoutActivity : BaseActivity() {
 
     private fun onClick() {
 
+        binding.imAddressChange.setOnClickListener{
+
+        }
     }
 }

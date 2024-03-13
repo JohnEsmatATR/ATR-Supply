@@ -259,6 +259,7 @@
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
+                        android:hint="1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_item_name" />
 
@@ -388,7 +389,7 @@
                     android:layout_gravity="center"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="2"
+                    tools:itemCount="1"
                     tools:listitem="@layout/layout_review" />
 
             </LinearLayout>
