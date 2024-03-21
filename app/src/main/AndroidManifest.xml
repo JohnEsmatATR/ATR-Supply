@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +17,30 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
         <activity
+            android:name=".ui.nav.profile.LanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.profile.order.details.returnOrder.OrderReturnActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.profile.ContactUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.profile.order.details.OrderDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.profile.order.history.OrderHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.profile.PrivacyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.profile.AboutUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.profile.AccountDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.nav.home.categorys.CategoryActivity"
             android:exported="false" />
         <activity
@@ -23,7 +51,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.nav.HomeActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,17 +96,17 @@
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
+        <activity
+            android:name=".ui.nav.cart.addresses.AddressesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.cart.addresses.AddNewAddressActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

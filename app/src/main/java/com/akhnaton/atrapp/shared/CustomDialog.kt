@@ -11,7 +11,7 @@ class CustomDialog(private val context: Context) {
 
     fun showDialog() {
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.custom_dialog, null)
+        val view = inflater.inflate(R.layout.custom_dialog_confirm, null)
         val dialogBuilder = AlertDialog.Builder(context)
             .setView(view)
         val trackButton = view.findViewById<TextView>(R.id.positive_button)

@@ -1,9 +1,12 @@
 package com.akhnaton.atrapp.ui.nav.cart.checkout
 
+import android.content.Intent
 import android.os.Bundle
 import com.akhnaton.atrapp.databinding.ActivityChackoutBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.CustomDialog
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesAdapter
 
 
 class CheckoutActivity : BaseActivity() {
@@ -29,8 +32,13 @@ class CheckoutActivity : BaseActivity() {
 
     private fun onClick() {
 
-        binding.imAddressChange.setOnClickListener{
+        binding.imAddressChange.setOnClickListener {
+            val intent = Intent(this@CheckoutActivity, AddressesActivity::class.java)
+            startActivity(intent)
+        }
 
+        binding.imBack.setOnClickListener {
+            finish()
         }
     }
 }

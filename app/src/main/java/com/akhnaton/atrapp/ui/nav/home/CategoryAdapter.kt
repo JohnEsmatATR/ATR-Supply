@@ -27,10 +27,10 @@ class CategoryAdapter(private val onClick: (category: CategoryModel, position: I
 
             binding.categoryModel = item
 
-            binding.imItem.load("${Common.ImgUrl}${item.image}") {
-                crossfade(true)
-                placeholder(R.drawable.ic_logo)
-            }
+//            binding.imItem.load("${Common.ImgUrl}${item.image}") {
+//                crossfade(true)
+//                placeholder(R.drawable.ic_logo)
+//            }
 
 
             itemView.setOnClickListener {

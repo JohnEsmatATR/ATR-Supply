@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.data.model.AddressModel
+import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.ActivityAddressesBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import kotlinx.coroutines.launch
@@ -43,6 +44,7 @@ class AddressesActivity : BaseActivity() {
             startActivity(Intent(this@AddressesActivity, AddNewAddressActivity::class.java))
             finish()
         }
+
     }
 
     private fun observe() {
@@ -110,6 +112,14 @@ class AddressesActivity : BaseActivity() {
     }
 
     private fun getAddresses() {
+        val list = ArrayList<AddressModel>()
+        val item = AddressModel(id= 0, city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
+            user_id = 0, country_name = "Egypt", city_name = "Cairo", area_name = "Area", floor_number = 0, apartment_number = 0, address = "Pharmacy", landmark = "Landmark", prime = 0 )
+        list.add(item)
+        list.add(item)
+        list.add(item)
+        list.add(item)
+        setupMyCartRecycler(list)
 //        lifecycleScope.launch {
 //            viewModel.addressIntent.send(
 //                AddressIntent.GetMyAddresses(

@@ -81,6 +81,29 @@
     <string name="add_new_address">Add new address</string>
     <string name="back">back</string>
     <string name="add_card">Add card</string>
+    <string name="deals_made_for_you">Deals made for you!</string>
+    <string name="apply">Apply</string>
+    <string name="your_pdf">Your PDF</string>
+    <string name="update">Update</string>
+    <string name="who_we_are">Who we are</string>
+    <string name="aboutUs">"Established in 1975, today, ATR is a full-fledged commercial service provider, offering 360° services and solutions to our clients in the pharmaceutical, cosmetics, medical devices and FB fields in the MENA region.
+With a manpower that exceeds 1000 employees, vast resources, strong distribution networks and in-depth consumer and market knowledge, our clients are able to maximize their presence globally, and become leaders in their industry.
+Our Services build brands and supports our clients in expanding achieving the maximum presentation and awareness through; providing supply chain, sales distribution, marketing intelligence, importation  regulatory and  concept strategy development services.
+In addition to a wide range of other complementary services, that are offered through specialized and dedicated teams, studying the different markets, aware of the best practices, to offer the best tailor-made services to our clients."</string>
+    <string name="return_policy">Return Policy</string>
+    <string name="return_policy_text">At Rideshare, accessible from rideshare.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by rideshare and how we use it. If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</string>
+    <string name="terms_condition"><![CDATA[Terms & Condition]]></string>
+    <string name="terms_condition_text">This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in rideshare. This policy is not applicable to any information collected offline or via channels other than this website. Our Privacy Policy was created with the help of the Free Privacy Policy Generator.</string>
+    <string name="order_history">Order History</string>
+    <string name="view_order">View Order</string>
+    <string name="order_details">Order Details</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="company_address">9 Al Sharikat, Al Fawalah, Abdeen, Cairo Governorate \n 4282013</string>
+    <string name="return_items">Return Items</string>
+    <string name="confirm_your_return">Confirm your return</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
 
     <string-array name="cities">
         <item>Cairo</item>

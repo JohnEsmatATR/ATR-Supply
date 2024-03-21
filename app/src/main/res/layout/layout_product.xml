@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="productModel"
             type="com.akhnaton.atrapp.data.model.ProductModel" />
@@ -13,8 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginVertical="5dp"
-        >
+        android:layout_marginVertical="5dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_image"
@@ -29,8 +29,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                >
+                android:layout_marginTop="5dp">
 
                 <ImageView
                     android:id="@+id/im_item"
@@ -49,8 +48,8 @@
                     android:layout_width="17dp"
                     android:layout_height="17dp"
                     android:layout_margin="10dp"
-                    android:src="@drawable/ic_favorite_fill"
                     android:alpha="0.9"
+                    android:src="@drawable/ic_favorite_fill"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,23 +58,22 @@
                     android:layout_width="30dp"
                     android:layout_height="12dp"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/ic_best_seller"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/ic_best_seller" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_percentage"
                     android:layout_width="30dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="@id/im_discount"
                     app:layout_constraintEnd_toEndOf="@id/im_discount"
                     app:layout_constraintStart_toStartOf="@id/im_discount"
                     app:layout_constraintTop_toTopOf="@id/im_discount"
-                    tools:text="20%"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    />
+                    tools:text="20%" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,16 +83,17 @@
             android:id="@+id/txt_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:gravity="start"
+            android:text="@{productModel.name_en}"
             android:textColor="@color/dark_gray"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_image"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            tools:text="Body deodorant powder"
-            android:text="@{productModel.name_en}" />
+            tools:text="Body deodorant powder" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -103,9 +102,9 @@
             android:layout_marginHorizontal="10dp"
             android:gravity="start"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/rating_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/rating_bar"
             app:layout_constraintTop_toBottomOf="@+id/txt_item_name">
 
             <TextView
@@ -114,12 +113,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:gravity="start"
+                android:text="@{productModel.price + ` LE`}"
                 android:textColor="@color/dark_gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                tools:text="40.00 EGP"
-                android:text="@{productModel.price + ` LE`}"
-                />
+                tools:text="40.00 EGP" />
 
             <TextView
                 android:id="@+id/txt_old_price"
@@ -127,11 +125,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:gravity="center"
+                android:text="@{productModel.old_price + ` LE`}"
                 android:textColor="@color/mid_gray_1"
                 android:textSize="10sp"
-                tools:text="44.00 EGP"
-                android:text="@{productModel.old_price + ` LE`}"
-                />
+                tools:text="44.00 EGP" />
 
         </LinearLayout>
 
@@ -144,13 +141,13 @@
             android:layout_marginHorizontal="10dp"
             android:gravity="start"
             android:numStars="5"
-            android:stepSize="0.1"
-            android:scaleX="1"
-            android:scaleY="1"
-            android:rating="4"
             android:progressBackgroundTint="@color/gray"
             android:progressTint="@color/quantum_yellow"
+            android:rating="4"
+            android:scaleX="1"
+            android:scaleY="1"
             android:secondaryProgressTint="@color/quantum_yellow"
+            android:stepSize="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
