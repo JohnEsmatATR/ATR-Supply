@@ -68,20 +68,14 @@ class OrderHistoryActivity : AppCompatActivity(), OrderHistoryAdapter.OnProductC
 
 
     private fun showDatePicker(id: Int) {
-        // Create a DatePickerDialog
         val datePickerDialog = DatePickerDialog(
             this,
             R.style.CustomDatePickerDialog,
             { _, year: Int, monthOfYear: Int, dayOfMonth: Int ->
-                // Create a new Calendar instance to hold the selected date
                 val selectedDate = Calendar.getInstance()
-                // Set the selected date using the values received from the DatePicker dialog
                 selectedDate.set(year, monthOfYear, dayOfMonth)
-                // Create a SimpleDateFormat to format the date as "dd/MM/yyyy"
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                // Format the selected date into a string
                 val formattedDate = dateFormat.format(selectedDate.time)
-                // Update the TextView to display the selected date with the "Selected Date: " prefix
                 if (binding.fromED.id == id) {
                     binding.fromED.setText(formattedDate.toString())
                 } else {
@@ -94,7 +88,6 @@ class OrderHistoryActivity : AppCompatActivity(), OrderHistoryAdapter.OnProductC
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-        // Show the DatePicker dialog
         datePickerDialog.show()
     }
 }
