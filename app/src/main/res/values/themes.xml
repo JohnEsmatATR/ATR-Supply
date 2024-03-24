@@ -18,4 +18,8 @@
         <item name="colorControlActivated">@color/orange</item>
     </style>
 
+    <style name="CustomDatePickerDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorPrimary">@color/orange</item>
+    </style>
+
 </resources>

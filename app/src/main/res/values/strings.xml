@@ -104,6 +104,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="arabic">Arabic</string>
+    <string name="date">Date:</string>
 
     <string-array name="cities">
         <item>Cairo</item>
