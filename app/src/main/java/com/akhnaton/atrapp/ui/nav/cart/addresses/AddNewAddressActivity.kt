@@ -10,7 +10,7 @@ import com.akhnaton.atrapp.shared.BaseActivity
 
 class AddNewAddressActivity : BaseActivity() {
     lateinit var binding: ActivityAddNewAddressBinding
-    private val addressesViewModel: AddressesViewModel by viewModels()
+//    private val addressesViewModel: AddressesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

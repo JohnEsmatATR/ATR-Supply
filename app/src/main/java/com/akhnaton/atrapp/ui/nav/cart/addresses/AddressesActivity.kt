@@ -4,29 +4,33 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.AddressModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.ActivityAddressesBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import kotlinx.coroutines.launch
 
-class AddressesActivity : BaseActivity() {
-    lateinit var binding: ActivityAddressesBinding
+class   AddressesActivity : BaseActivity() {
+    private lateinit var binding: ActivityAddressesBinding
     private val viewModel: AddressesViewModel by viewModels()
     lateinit var addressesAdapter: AddressesAdapter
     var isChecked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddressesBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this@AddressesActivity, R.layout.activity_addresses)
 
         observe()
         onClick()
     }
 
+    private fun setupBinding() {
+
+    }
     override fun onResume() {
         super.onResume()
         init()

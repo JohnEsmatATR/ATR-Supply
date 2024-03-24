@@ -32,6 +32,8 @@ class OrderDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 )
         }
         binding.productRecycler.adapter = mAdapter
+
+        binding.btnBack.setOnClickListener(this)
     }
 
     private fun fillList() {
@@ -52,8 +54,12 @@ class OrderDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         if (v.id == binding.returnItemsLayout.id) {
-            val intent = Intent(this@OrderDetailsActivity,OrderReturnActivity::class.java)
+            val intent = Intent(this@OrderDetailsActivity, OrderReturnActivity::class.java)
             startActivity(intent)
+        }
+
+        if (v.id == binding.btnBack.id) {
+            finish()
         }
     }
 }

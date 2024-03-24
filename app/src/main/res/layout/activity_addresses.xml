@@ -61,7 +61,6 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="top"
                     android:layout_marginTop="@dimen/_14sdp"
-                    android:paddingHorizontal="@dimen/_14sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

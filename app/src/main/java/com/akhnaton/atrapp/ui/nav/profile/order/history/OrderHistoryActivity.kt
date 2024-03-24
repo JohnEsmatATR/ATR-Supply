@@ -41,6 +41,7 @@ class OrderHistoryActivity : AppCompatActivity(), OrderHistoryAdapter.OnProductC
         binding.fromED.setOnClickListener(this)
         binding.toLayout.setOnClickListener(this)
         binding.toED.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
     }
 
 
@@ -63,7 +64,12 @@ class OrderHistoryActivity : AppCompatActivity(), OrderHistoryAdapter.OnProductC
     }
 
     override fun onClick(v: View) {
-        showDatePicker(v.id)
+        if (v.id == binding.btnBack.id) {
+            finish()
+        } else {
+            showDatePicker(v.id)
+        }
+
     }
 
 
