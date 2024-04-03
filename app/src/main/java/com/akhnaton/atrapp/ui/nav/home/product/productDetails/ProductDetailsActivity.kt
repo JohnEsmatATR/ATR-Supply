@@ -12,6 +12,7 @@ import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
+import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 
 class ProductDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailsBinding
@@ -29,21 +30,232 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun init() {
-        binding.txtOldPrice.paintFlags = binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        binding.txtOldPrice.paintFlags =
+            binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
         val productName = "Eva Hair clinic - Gold Argan - Triple defense"
         val list = ArrayList<ProductModel>()
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+        list.add(
+            ProductModel(
+                0,
+                0,
+                0,
+                0,
+                productName,
+                productName,
+                productName,
+                productName + productName,
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0,
+                false,
+                "",
+                "",
+                0,
+                0,
+                "",
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                "",
+                "",
+                false
+            )
+        )
+        list.add(
+            ProductModel(
+                0,
+                0,
+                0,
+                0,
+                productName,
+                productName,
+                productName,
+                productName + productName,
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0,
+                false,
+                "",
+                "",
+                0,
+                0,
+                "",
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                "",
+                "",
+                false
+            )
+        )
+        list.add(
+            ProductModel(
+                0,
+                0,
+                0,
+                0,
+                productName,
+                productName,
+                productName,
+                productName + productName,
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0,
+                false,
+                "",
+                "",
+                0,
+                0,
+                "",
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                "",
+                "",
+                false
+            )
+        )
+        list.add(
+            ProductModel(
+                0,
+                0,
+                0,
+                0,
+                productName,
+                productName,
+                productName,
+                productName + productName,
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0,
+                false,
+                "",
+                "",
+                0,
+                0,
+                "",
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                "",
+                "",
+                false
+            )
+        )
+        list.add(
+            ProductModel(
+                0,
+                0,
+                0,
+                0,
+                productName,
+                productName,
+                productName,
+                productName + productName,
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0,
+                false,
+                "",
+                "",
+                0,
+                0,
+                "",
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                "",
+                "",
+                false
+            )
+        )
+        list.add(
+            ProductModel(
+                0,
+                0,
+                0,
+                0,
+                productName,
+                productName,
+                productName,
+                productName + productName,
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0,
+                false,
+                "",
+                "",
+                0,
+                0,
+                "",
+                "",
+                "",
+                "",
+                0.2,
+                0.2,
+                "",
+                "",
+                false
+            )
+        )
 
         setupProductSuggestRecycler(list)
 
         val list2 = ArrayList<ReviewModel>()
-        list2.add(ReviewModel("Belal", 4.2f, "22/02/2024", "هذا المنتج جميل مقابل سعره"))
+        list2.add(ReviewModel("Belal", 4.2f, "22/02/2024", "هذا المنتج جميل مقابل سعره",0))
 
         setupReviewRecycler(list2)
 
@@ -52,6 +264,10 @@ class ProductDetailsActivity : BaseActivity() {
     private fun onClick() {
         binding.btnBack.setOnClickListener {
             finish()
+        }
+        binding.layoutViewAllReviews.setOnClickListener {
+            val intent = Intent(this@ProductDetailsActivity, ReviewActivity::class.java)
+            startActivity(intent)
         }
     }
 

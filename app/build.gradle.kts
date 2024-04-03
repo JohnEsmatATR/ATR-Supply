@@ -94,4 +94,6 @@ dependencies {
 //    // zoom imageView
 //    implementation("com.github.sheetalkumar105:ZoomImageView-android:1.02")
 
+    implementation("com.github.ome450901:SimpleRatingBar:1.5.1")
+
 }

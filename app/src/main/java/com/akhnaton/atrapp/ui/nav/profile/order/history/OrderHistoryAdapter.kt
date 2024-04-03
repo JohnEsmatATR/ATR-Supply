@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel
 import com.akhnaton.atrapp.databinding.LayoutOrderBinding
-import com.akhnaton.atrapp.ui.nav.home.categorys.AllCategoryAdapter
 
 class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>() {
 

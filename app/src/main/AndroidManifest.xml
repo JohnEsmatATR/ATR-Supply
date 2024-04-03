@@ -17,6 +17,12 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
         <activity
+            android:name=".ui.nav.home.reviews.AddReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.home.reviews.ReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.nav.profile.LanguageActivity"
             android:exported="false" />
         <activity
@@ -41,7 +47,7 @@
             android:name=".ui.nav.profile.AccountDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.nav.home.categorys.CategoryActivity"
+            android:name=".ui.nav.home.categories.CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.nav.cart.checkout.CheckoutActivity"

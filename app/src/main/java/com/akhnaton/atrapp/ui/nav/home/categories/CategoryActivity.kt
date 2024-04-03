@@ -1,4 +1,4 @@
-package com.akhnaton.atrapp.ui.nav.home.categorys
+package com.akhnaton.atrapp.ui.nav.home.categories
 
 import android.content.Intent
 import android.os.Bundle

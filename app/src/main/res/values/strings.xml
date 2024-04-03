@@ -105,6 +105,13 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="english">English</string>
     <string name="arabic">Arabic</string>
     <string name="date">Date:</string>
+    <string name="reviews">Reviews</string>
+    <string name="give_a_review">Give a review</string>
+    <string name="filters">Filters</string>
+    <string name="like">Like</string>
+    <string name="submit_a_review">Submit a review</string>
+    <string name="write_a_review">Write a Review</string>
+    <string name="tap_a_star_to_rate">Tap a star to rate</string>
 
     <string-array name="cities">
         <item>Cairo</item>

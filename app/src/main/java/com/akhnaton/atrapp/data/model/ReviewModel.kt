@@ -5,4 +5,5 @@ data class ReviewModel(
     val rate: Float,
     val date: String,
     val review: String,
+    val img: Int,
 )
