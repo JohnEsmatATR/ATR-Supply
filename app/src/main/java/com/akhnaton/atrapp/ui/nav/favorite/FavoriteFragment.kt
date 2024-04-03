@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.FragmentFavoriteBinding
 import com.akhnaton.atrapp.shared.BaseFragment
@@ -48,6 +49,7 @@ class FavoriteFragment : BaseFragment() {
         list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
         list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
         list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
 
         setupProductsRecycler(list)
     }
@@ -55,6 +57,7 @@ class FavoriteFragment : BaseFragment() {
 
     private fun setupProductsRecycler(list: List<ProductModel>) {
         val layoutManager = GridLayoutManager(requireContext(), 2)
+//        val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         adapter = ProductAdapter(
             onClick = { product, position ->
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
