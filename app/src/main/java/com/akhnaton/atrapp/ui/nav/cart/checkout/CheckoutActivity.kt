@@ -12,12 +12,12 @@ import com.akhnaton.atrapp.databinding.ActivityChackoutBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.CustomDialog
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
-import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesAdapter
 
 
 class CheckoutActivity : BaseActivity(), OnClickListener {
     lateinit var binding: ActivityChackoutBinding
     lateinit var mDialog: CustomDialog
+    private var paymentCheck = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +40,17 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
 
     override fun onClick(v: View) {
         if (v.id == binding.layoutCash.id) {
+            paymentCheck = 0
             selectPaymentMethod(binding.layoutCash, binding.imCashChecked)
         }
 
         if (v.id == binding.layoutFawry.id) {
+            paymentCheck = 1
             selectPaymentMethod(binding.layoutFawry, binding.imFawryChecked)
         }
 
         if (v.id == binding.layoutVisa.id) {
+            paymentCheck = 2
             selectPaymentMethod(binding.layoutVisa, binding.imVisaChecked)
         }
 
@@ -57,7 +60,16 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
         }
 
         if (v.id == binding.btnCheckout.id) {
-            mDialog.showDialog()
+            if (paymentCheck == 0) {
+                mDialog.showDialog()
+            } else if (paymentCheck == 1) {
+                val intent = Intent(this@CheckoutActivity, FawryActivity::class.java)
+                startActivity(intent)
+            } else if (paymentCheck == 2) {
+                showToastSnack("Add Card", false)
+            } else {
+                showToastSnack("please select payment method first", true)
+            }
         }
 
 

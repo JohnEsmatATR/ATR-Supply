@@ -112,6 +112,9 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="submit_a_review">Submit a review</string>
     <string name="write_a_review">Write a Review</string>
     <string name="tap_a_star_to_rate">Tap a star to rate</string>
+    <string name="notifications">Notifications</string>
+    <string name="you_can_pay_with_an_instant_code_the_code_is_valid_for_payment_within_12_hours">You can pay with an instant code.\nThe code is valid for payment within 12 hours</string>
+    <string name="fawry_code">Fawry code :</string>
 
     <string-array name="cities">
         <item>Cairo</item>
