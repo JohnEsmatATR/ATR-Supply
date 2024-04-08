@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -15,9 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.ATRAPP"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".ui.nav.cart.checkout.FawryActivity"
+            android:name=".ui.nav.cart.checkout.fawry.AddCardActivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_fawry"
+            android:theme="@style/Theme.ATRAPP" />
+        <activity
+            android:name=".ui.nav.cart.checkout.fawry.FawryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.nav.home.notifications.NotificationsActivity"
@@ -63,7 +68,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.nav.HomeActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

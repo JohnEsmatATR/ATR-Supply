@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    tools:context=".ui.nav.cart.checkout.fawry.AddCardActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/add_card"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/_15sdp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:text="@string/card_holder_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/txt_card_holder_name"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:background="@drawable/btn_white_style"
+            android:hint="@string/your_name"
+            android:inputType="textPersonName"
+            android:padding="16dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/mid_gray_2"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:text="@string/card_number"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/txt_card_number"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:background="@drawable/btn_white_style"
+            android:drawableRight="@drawable/ic_card_number"
+            android:hint="@string/xxxx_xxxx_xxxx_xxxx"
+            android:inputType="phone"
+            android:padding="16dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/mid_gray_2"
+            android:textSize="14sp"
+            tools:ignore="LabelFor,NegativeMargin" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:text="@string/expiry_date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/txt_expiry_date"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:background="@drawable/btn_white_style"
+            android:hint="@string/mm_yy"
+            android:inputType="date"
+            android:padding="16dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/mid_gray_2"
+            android:textSize="14sp"
+            tools:ignore="LabelFor,RtlHardcoded" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:text="@string/cvv"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/txt_cvv"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:background="@drawable/btn_white_style"
+            android:hint="@string/cvc"
+            android:inputType="number"
+            android:padding="16dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/mid_gray_2"
+            android:textSize="14sp"
+            tools:ignore="LabelFor,RtlHardcoded" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_checkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_orange_style"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

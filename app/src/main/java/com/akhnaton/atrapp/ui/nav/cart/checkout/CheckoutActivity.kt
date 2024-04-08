@@ -12,6 +12,8 @@ import com.akhnaton.atrapp.databinding.ActivityChackoutBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.CustomDialog
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
+import com.akhnaton.atrapp.ui.nav.cart.checkout.fawry.AddCardActivity
+import com.akhnaton.atrapp.ui.nav.cart.checkout.fawry.FawryActivity
 
 
 class CheckoutActivity : BaseActivity(), OnClickListener {
@@ -50,8 +52,8 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
         }
 
         if (v.id == binding.layoutVisa.id) {
-            paymentCheck = 2
-            selectPaymentMethod(binding.layoutVisa, binding.imVisaChecked)
+            val intent = Intent(this@CheckoutActivity, AddCardActivity::class.java)
+            startActivity(intent)
         }
 
         if (v.id == binding.imAddressChange.id) {
@@ -65,8 +67,6 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
             } else if (paymentCheck == 1) {
                 val intent = Intent(this@CheckoutActivity, FawryActivity::class.java)
                 startActivity(intent)
-            } else if (paymentCheck == 2) {
-                showToastSnack("Add Card", false)
             } else {
                 showToastSnack("please select payment method first", true)
             }
