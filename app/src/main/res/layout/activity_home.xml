@@ -38,7 +38,7 @@
         app:menu="@menu/bottom_nav_menu" />
 
     <ImageView
-        android:id="@+id/btn_proceed_to_checkout"
+        android:id="@+id/btn_tracking"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginBottom="37dp"

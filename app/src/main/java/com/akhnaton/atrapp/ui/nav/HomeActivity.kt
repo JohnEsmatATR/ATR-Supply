@@ -1,11 +1,8 @@
 package com.akhnaton.atrapp.ui.nav
 
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
+import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.akhnaton.atrapp.R
@@ -15,7 +12,7 @@ import com.akhnaton.atrapp.ui.nav.cart.CartFragment
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteFragment
 import com.akhnaton.atrapp.ui.nav.home.HomeFragment
 import com.akhnaton.atrapp.ui.nav.profile.ProfileFragment
-import com.google.android.material.navigation.NavigationView
+import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 
 class HomeActivity : BaseActivity() {
     lateinit var binding: ActivityHomeBinding
@@ -38,9 +35,6 @@ class HomeActivity : BaseActivity() {
 
 
     private fun onClick() {
-//        binding.imNotification.setOnClickListener {
-//            startActivity(Intent(this@HomeActivity, NotificationActivity::class.java))
-//        }
 //        binding.imMenu.setOnClickListener {
 //            binding.drawerLayout.openDrawer(GravityCompat.START, true)
 //        }
@@ -110,6 +104,16 @@ class HomeActivity : BaseActivity() {
         val cartFragment = CartFragment()
         val favoriteFragment = FavoriteFragment()
         val profileFragment = ProfileFragment()
+
+        binding.btnTracking.setOnClickListener {
+            setCurrentFragment(TrackingFragment())
+            binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
+            binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
+            binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
+            binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
+            binding.bottomNavigationView.menu[2].isChecked = true
+
+        }
 
         when (item) {
             R.id.home -> {
