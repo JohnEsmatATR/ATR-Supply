@@ -1,7 +1,6 @@
-package com.akhnaton.atrapp.ui.nav.cart.checkout.fawry
+package com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod
 
 import android.os.Bundle
-import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityFawryBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/white"
-    tools:context=".ui.nav.cart.checkout.fawry.AddCardActivity">
+    tools:context=".ui.nav.cart.checkout.paymentMethod.AddCardActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"

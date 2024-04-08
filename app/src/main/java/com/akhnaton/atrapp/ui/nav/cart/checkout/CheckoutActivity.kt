@@ -12,8 +12,8 @@ import com.akhnaton.atrapp.databinding.ActivityChackoutBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.CustomDialog
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
-import com.akhnaton.atrapp.ui.nav.cart.checkout.fawry.AddCardActivity
-import com.akhnaton.atrapp.ui.nav.cart.checkout.fawry.FawryActivity
+import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.AddCardActivity
+import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.FawryActivity
 
 
 class CheckoutActivity : BaseActivity(), OnClickListener {

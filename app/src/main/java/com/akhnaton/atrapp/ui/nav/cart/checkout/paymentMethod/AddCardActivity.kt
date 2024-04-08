@@ -1,4 +1,4 @@
-package com.akhnaton.atrapp.ui.nav.cart.checkout.fawry
+package com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod
 
 import android.os.Bundle
 import android.text.Editable

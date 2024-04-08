@@ -17,12 +17,15 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31" >
         <activity
-            android:name=".ui.nav.cart.checkout.fawry.AddCardActivity"
+            android:name=".ui.nav.cart.checkout.paymentMethod.YourCardsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.nav.cart.checkout.paymentMethod.AddCardActivity"
             android:exported="false"
             android:label="@string/title_activity_add_fawry"
             android:theme="@style/Theme.ATRAPP" />
         <activity
-            android:name=".ui.nav.cart.checkout.fawry.FawryActivity"
+            android:name=".ui.nav.cart.checkout.paymentMethod.FawryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.nav.home.notifications.NotificationsActivity"

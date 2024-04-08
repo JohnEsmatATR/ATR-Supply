@@ -214,5 +214,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="card_number">Card number</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="cvv">CVV</string>
+    <string name="your_card">Your card</string>
+    <string name="remove">Remove</string>
 
 </resources>
