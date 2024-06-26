@@ -2,26 +2,39 @@ package com.akhnaton.atrapp.ui.nav.home.categories
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoryModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.databinding.ActivityCategoryBinding
+import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
+import kotlinx.coroutines.launch
 
 
-class CategoryActivity : AppCompatActivity(), AllCategoryAdapter.OnCategoryClickListener,
+class CategoryActivity : BaseActivity(), AllCategoryAdapter.OnCategoryClickListener,
     View.OnClickListener {
     private lateinit var binding: ActivityCategoryBinding
-    private var mList = mutableListOf<CategoryModel>()
+    private var listCategory = mutableListOf<CategoryModel>()
+    private val categoryViewModel: CategoryViewModel by viewModels()
     private var mAdapter: AllCategoryAdapter = AllCategoryAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupBinding()
+        categoryObserve()
+        getCategories()
     }
 
     private fun setupBinding() {
@@ -34,20 +47,6 @@ class CategoryActivity : AppCompatActivity(), AllCategoryAdapter.OnCategoryClick
         )
         binding.recCategory.itemAnimator = DefaultItemAnimator()
         binding.btnBack.setOnClickListener(this)
-        fillList()
-    }
-
-
-    private fun fillList() {
-        val c1 = CategoryModel(0, "Skin Care", "Skin Care", "", "", "", "")
-        val c2 = CategoryModel(0, "Hair Care", "Hair Care", "", "", "", "")
-        val c3 = CategoryModel(0, "Sun Care", "Sun Care", "", "", "", "")
-        val c4 = CategoryModel(0, "Oral Care", "Oral Care", "", "", "", "")
-        mList.add(c1)
-        mList.add(c2)
-        mList.add(c3)
-        mList.add(c4)
-        setAdapterData(mList)
     }
 
     private fun setAdapterData(data: List<CategoryModel>) {
@@ -57,12 +56,55 @@ class CategoryActivity : AppCompatActivity(), AllCategoryAdapter.OnCategoryClick
     override fun onCategoryClick(category: CategoryModel) {
         val intent = Intent(this, ProductsActivity::class.java)
         intent.putExtra("flag", Common.category)
+        intent.putExtra("category", category)
         startActivity(intent)
     }
 
     override fun onClick(v: View) {
         if (v.id == binding.btnBack.id) {
             finish()
+        }
+    }
+
+    private fun categoryObserve() {
+        lifecycleScope.launch {
+            categoryViewModel.state.collect {
+                when (it) {
+                    is CategoryStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is CategoryStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is CategoryStatus.GetCategory -> {
+                        if (it.data.status != -1) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetCategories")
+                            listCategory.addAll(it.data.data!!)
+
+                            setAdapterData(listCategory)
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+
+                    is CategoryStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun getCategories() {
+        lifecycleScope.launch {
+            categoryViewModel.homeIntent.send(
+                CategoryIntent.GetCategories
+            )
         }
     }
 }

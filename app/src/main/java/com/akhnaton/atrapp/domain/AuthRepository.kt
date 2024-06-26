@@ -1,10 +1,10 @@
 package com.akhnaton.atrapp.domain
 
-import com.akhnaton.atrapp.data.interfaces.IApis
+import com.akhnaton.atrapp.data.interfaces.IAuth
 import com.akhnaton.atrapp.shared.RetrofitClient
 
 class AuthRepository {
-    private val retrofit = RetrofitClient.getInstance(IApis::class.java)
+    private val retrofit = RetrofitClient.getInstance(IAuth::class.java)
 
     suspend fun login(
         phone: String,

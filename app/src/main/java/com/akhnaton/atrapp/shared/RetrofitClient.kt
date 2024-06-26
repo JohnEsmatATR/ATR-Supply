@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    // ...
+
 
     fun <T> getInstance(service: Class<T>): T {
         val retrofit = Retrofit.Builder()

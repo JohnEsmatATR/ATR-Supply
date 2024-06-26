@@ -1,8 +1,7 @@
 package com.akhnaton.atrapp.data.model.common
 
-data class BaseModel<T,T2>(
+data class BaseModel<T>(
     val message: String = "",
-    val status: String = "",
+    val status: Int = 0,
     var data: T?,
-    var errors: T2?,
 )

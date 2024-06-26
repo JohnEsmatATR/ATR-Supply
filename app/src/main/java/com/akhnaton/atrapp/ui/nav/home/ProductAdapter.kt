@@ -33,24 +33,21 @@ class ProductAdapter(
         RecyclerView.ViewHolder(binding.root) {
         var isFavorite = false
         fun bind(item: ProductModel, position: Int) {
-            isFavorite = item.in_favourite
+            isFavorite = item.IS_LIKED
 
             changeFavoriteButton()
 
             binding.productModel = item
 
-//           binding.imItem.load("${Common.ImgUrl}${item.image}") {
-//                crossfade(true)
-//                placeholder(R.drawable.ic_logo)
-//            }
+            binding.imItem.load(item.IMAGE_URL) {
+                crossfade(true)
+                placeholder(R.drawable.ic_logo)
+            }
 
-            if (item.old_discount == 0.0) {
-                binding.txtPercentage.visibility = View.GONE
-                binding.txtOldPrice.visibility = View.GONE
+            if (item.IS_LIKED) {
+                binding.imFavorite.load(R.drawable.ic_favorite_fill)
             } else {
-                binding.txtPercentage.visibility = View.VISIBLE
-                binding.txtOldPrice.visibility = View.VISIBLE
-
+                binding.imFavorite.load(R.drawable.ic_favorite)
             }
 
             itemView.setOnClickListener {
@@ -62,18 +59,16 @@ class ProductAdapter(
                 onFavoriteClick(item, position, isFavorite)
             }
 
-            if (item.is_best_sale == 0) {
-                binding.imDiscount.visibility = View.GONE
-            } else {
-                binding.imDiscount.visibility = View.VISIBLE
-            }
 
         }
 
-        private fun changeFavoriteButton(){
+        private fun changeFavoriteButton() {
             val imFavorite =
-                if (isFavorite) { R.drawable.ic_favorite_fill }
-                else { R.drawable.ic_favorite }
+                if (isFavorite) {
+                    R.drawable.ic_favorite_fill
+                } else {
+                    R.drawable.ic_favorite
+                }
 
             binding.imFavorite.load(imFavorite) {
                 crossfade(true)
@@ -90,7 +85,8 @@ class ProductAdapter(
             parent,
             false
         )
-        binding.txtOldPrice.paintFlags = binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        binding.txtOldPrice.paintFlags =
+            binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         if (isInHome) {
             binding.root.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,

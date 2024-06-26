@@ -34,7 +34,7 @@ class CartAdapter(
         fun bind(item: ProductModel, position: Int) {
 
             binding.cart = item
-            binding.quantity = item.quantity
+            binding.quantity = item.QUANTITY
 
             if (isVisible) {
                 binding.btnPlus.visibility = View.VISIBLE
@@ -46,7 +46,7 @@ class CartAdapter(
             }
 
 
-            binding.imItem.load("${Common.ImgUrl}${item.image}") {
+            binding.imItem.load("${Common.ImgUrl}${item.IMAGE_URL}") {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
             }
@@ -55,11 +55,10 @@ class CartAdapter(
             binding.btnPlus.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     quantity = binding.txtQuantity.text.toString().toInt()
-                    if (item.flag != 5 || (item.flag == 5)) {
-                        quantity++
-                        binding.quantity = quantity
-                        onPlusClick(item, position, quantity)
-                    }
+                    quantity++
+                    binding.quantity = quantity
+                    onPlusClick(item, position, quantity)
+
                 }
             }
 

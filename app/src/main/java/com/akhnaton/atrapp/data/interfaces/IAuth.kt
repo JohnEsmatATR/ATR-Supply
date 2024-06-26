@@ -9,20 +9,20 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-interface IApis {
+interface IAuth {
 
     @FormUrlEncoded
     @POST(ConstantLinks.LOGIN)
     suspend fun login(
         @Field("phone") phone: String,
-    ): Response<BaseModel<String, ErrorModel>>
+    ): Response<BaseModel<String>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.CHECK_OTP)
     suspend fun otp(
         @Field("otp") otp: String,
         @Field("phone") phone: String,
-    ): Response<BaseModel<UserModel, ErrorModel>>
+    ): Response<BaseModel<UserModel>>
 
 
 }

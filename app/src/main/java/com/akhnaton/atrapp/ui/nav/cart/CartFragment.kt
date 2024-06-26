@@ -56,12 +56,12 @@ class CartFragment : BaseFragment() {
     private fun init() {
 
         val list = ArrayList<ProductModel>()
-        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+//        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+//        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+//        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+//        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+//        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
+//        list.add(ProductModel(0, 0,0,0,"mmmm","mmmm", "mmmm","mmmm mmmm mmmm", "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
 
         setupMyCartRecycler(list)
 

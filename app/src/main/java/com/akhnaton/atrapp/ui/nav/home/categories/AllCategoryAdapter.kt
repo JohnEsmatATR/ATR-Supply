@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.nav.home.categories
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.LayoutAllCategoryBinding
 
@@ -41,6 +42,7 @@ class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategory
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CategoryModel) {
             binding.categoryModel = data
+            binding.imItem.load(data.IMAGE_URL)
             binding.cardItem.setOnClickListener {
                 listener.onCategoryClick(data)
                 binding.executePendingBindings()

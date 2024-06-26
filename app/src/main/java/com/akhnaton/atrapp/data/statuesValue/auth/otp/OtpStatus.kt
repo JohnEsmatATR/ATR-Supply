@@ -8,7 +8,7 @@ sealed class OtpStatus {
 
     object Idle : OtpStatus()
     object Loading : OtpStatus()
-    data class Otp(val data: BaseModel<UserModel, ErrorModel>) : OtpStatus()
+    data class Otp(val data: BaseModel<UserModel>) : OtpStatus()
     data class Error(val error: String?) : OtpStatus()
 
 }

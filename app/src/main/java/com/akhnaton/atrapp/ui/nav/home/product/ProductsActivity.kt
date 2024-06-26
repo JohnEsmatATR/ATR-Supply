@@ -1,29 +1,39 @@
 package com.akhnaton.atrapp.ui.nav.home.product
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.SearchView
 import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsStatus
 import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
+import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class ProductsActivity : BaseActivity() {
     lateinit var binding: ActivityProductsBinding
-//    private val viewModel: ProductsViewModel by viewModels()
+    private val viewModel: ProductsViewModel by viewModels()
+    private val bestSellerViewModel: BestSellerViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
-    private var products: List<ProductModel> = ArrayList()
+    private var products: MutableList<ProductModel> = ArrayList()
+    private var category = CategoryModel()
     lateinit var adapter: ProductAdapter
     private var flag = ""
     private var id = -1
@@ -37,40 +47,24 @@ class ProductsActivity : BaseActivity() {
     }
 
     private fun init() {
-
-        flag = intent.getStringExtra("flag") ?: ""
-        id = intent.getIntExtra("id", -1)
-
-        when (flag) {
-            Common.category -> {
-                getProductsBasedOnCategory(id)
-            }
-
-            Common.subBrand -> {
-                getProductsBasedOnSubBrand(id)
-            }
-
-            Common.bestSeller -> {
-                getProductsBestSeller()
-            }
-        }
-
-        observeLogin()
+        productsObserve()
+        bestSellerObserve()
         favoriteObserve()
         search()
 
+        flag = intent.getStringExtra("flag") ?: ""
+
+        when (flag) {
+            Common.category -> {
+                category = intent.getSerializableExtra("category") as CategoryModel
+                getProductsBasedOnCategory(category.ID)
+            }
+            Common.bestSeller -> {
+                getBestSeller()
+            }
+        }
+
         
-        val productName = "Eva Hair clinic - Gold Argan - Triple defense"
-        val list = ArrayList<ProductModel>()
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-
-
-        setupProductsRecycler(list)
     }
 
 
@@ -90,11 +84,9 @@ class ProductsActivity : BaseActivity() {
             override fun onQueryTextChange(txt: String?): Boolean {
                 val list: List<ProductModel> = ArrayList()
                 for (product in products) {
-                    if (product.name_en.lowercase(Locale.getDefault()).trim()
+                    if (product.TITLE.lowercase(Locale.getDefault()).trim()
                             .contains(txt ?: "".lowercase(Locale.getDefault()).trim())
-                        || product.name_ar.lowercase(Locale.getDefault()).trim()
-                            .contains(txt ?: "".lowercase(Locale.getDefault()).trim())
-                        || product.oracle_short_code.lowercase(Locale.getDefault()).trim()
+                        || product.DESCRIPTION.lowercase(Locale.getDefault()).trim()
                             .contains(txt ?: "".lowercase(Locale.getDefault()).trim())) {
                         (list as ArrayList).add(product)
                     }
@@ -105,115 +97,107 @@ class ProductsActivity : BaseActivity() {
         })
     }
 
-    private fun observeLogin() {
-//        lifecycleScope.launch {
-//            viewModel.state.collect {
-//                when (it) {
-//                    is ProductsStatus.Idle ->  {
-//                        Log.d(Common.KeroDebug, "observeProducts: Idle")
-//                        binding.txtNoProducts.visibility = View.VISIBLE
-//
-//                    }
-//                    is ProductsStatus.Loading -> {
-//                        Log.d(Common.KeroDebug, "observeProducts: Loading")
-//                        showProgressDialog(binding.progressLoading)
-//                    }
-//
-//                    is ProductsStatus.GetProductsBasedOnCategory -> {
-//                        if (it.data.status != -1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            if (it.data.data!!.products.isNotEmpty()){
-//                                Log.d(Common.KeroDebug, "observeLogin: yes")
-//                                binding.txtNoProducts.visibility = View.GONE
-//                            }
-//                            else {
-//                                Log.d(Common.KeroDebug, "observeLogin: no")
-//                                binding.txtNoProducts.visibility = View.VISIBLE
-//                            }
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeProducts: GetProductsBasedOnCategory")
-//
-//                            products = it.data.data!!.products
-//                            setupProductsRecycler(it.data.data!!.products)
-//                        } else if (it.data.status == 401) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            hideProgressDialog(binding.progressLoading)
+    private fun bestSellerObserve() {
+        lifecycleScope.launch {
+            bestSellerViewModel.state.collect {
+                when (it) {
+                    is BestSellerStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is BestSellerStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is BestSellerStatus.GetBestSeller -> {
+                        if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            if (it.data.data!!.isNotEmpty()) {
+                                binding.txtNoProducts.visibility = View.GONE
+                                products.addAll(it.data.data!!)
+                                setupProductsRecycler(products)
+                            } else {
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                            }
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+
+                    is BestSellerStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun getBestSeller() {
+        lifecycleScope.launch {
+            bestSellerViewModel.homeIntent.send(
+                BestSellerIntent.GetBestSeller
+            )
+        }
+    }
+
+
+    private fun productsObserve() {
+        lifecycleScope.launch {
+            viewModel.state.collect {
+                when (it) {
+                    is ProductsStatus.Idle ->  {
+                        Log.d(Common.KeroDebug, "observeProducts: Idle")
+                        binding.txtNoProducts.visibility = View.VISIBLE
+
+                    }
+                    is ProductsStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeProducts: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is ProductsStatus.GetProducts -> {
+                        if (it.data.status != -1) {
+                            hideProgressDialog(binding.progressLoading)
+                            if (it.data.data!!.isNotEmpty()){
+                                Log.d(Common.KeroDebug, "observeLogin: yes")
+                                binding.txtNoProducts.visibility = View.GONE
+                            }
+                            else {
+                                Log.d(Common.KeroDebug, "observeLogin: no")
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                            }
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeProducts: GetProductsBasedOnCategory")
+
+                            products.addAll(it.data.data!!)
+                            setupProductsRecycler(it.data.data!!)
+                        } else if (it.data.status == 401) {
+                            hideProgressDialog(binding.progressLoading)
+                            hideProgressDialog(binding.progressLoading)
 //                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            binding.txtNoProducts.visibility = View.VISIBLE
-//
-//                            showToastSnack(it.data.message, true)
-//                        }
-//                    }
-//
-//                    is ProductsStatus.GetProductsBasedOnSubBrand -> {
-//                        if (it.data.status != -1) {
-//                            if (it.data.data!!.products.isNotEmpty()){
-//                                Log.d(Common.KeroDebug, "observeLogin: yes")
-//                                binding.txtNoProducts.visibility = View.GONE
-//                            }
-//                            else {
-//                                Log.d(Common.KeroDebug, "observeLogin: no")
-//                                binding.txtNoProducts.visibility = View.VISIBLE
-//                            }
-//
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeProducts: GetProductsBasedOnSubBrand")
-//
-//                            products = it.data.data!!.products
-//                            setupProductsRecycler(it.data.data!!.products)
-//                        } else if (it.data.status == 401) {
-//                            binding.txtNoProducts.visibility = View.VISIBLE
-//                            hideProgressDialog(binding.progressLoading)
-//                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            binding.txtNoProducts.visibility = View.VISIBLE
-//                            showToastSnack(it.data.message, true)
-//                        }
-//                    }
-//
-//                    is ProductsStatus.GetProductsBestSeller -> {
-//                        if (it.data.status == 1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            if (it.data.data!!.products.isNotEmpty()){
-//                                Log.d(Common.KeroDebug, "observeLogin: yes")
-//                                binding.txtNoProducts.visibility = View.GONE
-//                            }
-//                            else {
-//                                Log.d(Common.KeroDebug, "observeLogin: no")
-//                                binding.txtNoProducts.visibility = View.VISIBLE
-//                            }
-//
-//                            Log.d(Common.KeroDebug, "observeProducts: GetProductsBestSeller")
-//
-//                            products = it.data.data!!.products
-//                            setupProductsRecycler(it.data.data!!.products)
-//                        } else if (it.data.status == 401) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            binding.txtNoProducts.visibility = View.VISIBLE
-//                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            binding.txtNoProducts.visibility = View.VISIBLE
-//                            showToastSnack(it.data.message, true)
-//                        }
-//                    }
-//
-//                    is ProductsStatus.Error -> {
-//                        Log.d(Common.KeroDebug, "observeProducts Error: ${it.error.toString()}")
-//                        hideProgressDialog(binding.progressLoading)
-//                        binding.txtNoProducts.visibility = View.VISIBLE
-//                        showToastSnack(it.error.toString(), true)
-//                    }
-//
-//                }
-//            }
-//        }
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            binding.txtNoProducts.visibility = View.VISIBLE
+
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+
+
+                    is ProductsStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeProducts Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        binding.txtNoProducts.visibility = View.VISIBLE
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                }
+            }
+        }
     }
 
     private fun favoriteObserve() {
@@ -269,36 +253,13 @@ class ProductsActivity : BaseActivity() {
 
 
     private fun getProductsBasedOnCategory(categoryId: Int) {
-//        lifecycleScope.launch {
-//            viewModel.homeIntent.send(
-//                ProductsIntent.GetProductsBasedOnCategory(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    categoryId,
-//                )
-//            )
-//        }
-    }
-
-    private fun getProductsBasedOnSubBrand(subBrandId: Int) {
-//        lifecycleScope.launch {
-//            viewModel.homeIntent.send(
-//                ProductsIntent.GetProductsBasedOnSubBrand(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    subBrandId,
-//                )
-//            )
-//        }
-    }
-
-    private fun getProductsBestSeller() {
-//        lifecycleScope.launch {
-//            viewModel.homeIntent.send(
-//                ProductsIntent.GetProductsBestSeller(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    0
-//                )
-//            )
-//        }
+        lifecycleScope.launch {
+            viewModel.homeIntent.send(
+                ProductsIntent.GetProducts(
+                    categoryId,
+                )
+            )
+        }
     }
 
 
@@ -308,11 +269,11 @@ class ProductsActivity : BaseActivity() {
             onClick = { product, position ->
                 val intent = Intent(this, ProductDetailsActivity::class.java)
                 intent.putExtra("flag", Common.category)
-                intent.putExtra("id", product.id)
+                intent.putExtra("id", product.ID)
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
-                addProductToFavorite(product.id, isFavorite)
+                addProductToFavorite(product.ID, isFavorite)
             }
         )
         adapter.setData(list, false, flag)

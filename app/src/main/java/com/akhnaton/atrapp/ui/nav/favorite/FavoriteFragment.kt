@@ -2,24 +2,29 @@ package com.akhnaton.atrapp.ui.nav.favorite
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.databinding.FragmentFavoriteBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
+import kotlinx.coroutines.launch
 
 class FavoriteFragment : BaseFragment() {
     lateinit var binding: FragmentFavoriteBinding
     private var products: List<ProductModel> = ArrayList()
     lateinit var adapter: ProductAdapter
     private var flag = ""
-//    private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
 //    private val addToCartViewModel: AddToCartViewModel by viewModels()
 //    lateinit var favoriteAdapter: FavoriteAdapter
 //    lateinit var products: List<ProductModel>
@@ -33,52 +38,27 @@ class FavoriteFragment : BaseFragment() {
 
         favoriteObserve()
         addToCartObserve()
-        fillList()
 
         return binding.root
     }
 
-
-
-    private fun fillList(){
-        val productName = "Eva Hair clinic - Gold Argan - Triple defense"
-        val list = ArrayList<ProductModel>()
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-        list.add(ProductModel(0, 0,0,0,productName,productName, productName,productName + productName, "", "","",0.2,0.2,0.2,0.2,0.2,0.2,0,false,"", "", 0, 0,"","","","",0.2,0.2,"","",false))
-
-        setupProductsRecycler(list)
-    }
-
-
     private fun setupProductsRecycler(list: List<ProductModel>) {
         val layoutManager = GridLayoutManager(requireContext(), 2)
-//        val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         adapter = ProductAdapter(
             onClick = { product, position ->
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
                 intent.putExtra("flag", Common.category)
-                intent.putExtra("id", product.id)
+                intent.putExtra("id", product.ID)
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
-                addProductToFavorite(product.id, isFavorite)
+                addProductToFavorite(product.ID, isFavorite)
             }
         )
         adapter.setData(list, false, flag)
         binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
     }
-
-
-
-
-
-
 
     override fun onResume() {
         super.onResume()
@@ -93,59 +73,42 @@ class FavoriteFragment : BaseFragment() {
 
 
     private fun favoriteObserve() {
-//        lifecycleScope.launch {
-//            favoriteViewModel.state.collect {
-//                when (it) {
-//                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
-//                    is FavoriteStatus.Loading -> {
-//                        Log.d(Common.KeroDebug, "observeHome: Loading")
-//                        showProgressDialog(binding.progressLoading)
-//                    }
-//
-//                    is FavoriteStatus.AddProductToFavourites -> {
-//                        if (it.data.status == 1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
-//                            showToastSnack(it.data.message, false)
-//                            setupFavoriteRecycler(productsUnFavorite)
-//
-//                        } else if (it.data.status == 401) {
-//                            hideProgressDialog(binding.progressLoading)
+        lifecycleScope.launch {
+            favoriteViewModel.state.collect {
+                when (it) {
+                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is FavoriteStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is FavoriteStatus.GetFavorite -> {
+                        if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            setupProductsRecycler(it.data.data!!)
+
+                        } else if (it.data.status == 401) {
+                            hideProgressDialog(binding.progressLoading)
 //                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            showToastSnack(it.data.message, true)
-//                        }
-//
-//                    }
-//
-//                    is FavoriteStatus.GetMyFavourites -> {
-//                        if (it.data.status == 1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
-//                            products = it.data.data!!
-//                            setupFavoriteRecycler(it.data.data!!)
-//                        } else if (it.data.status == 401) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            showToastSnack(it.data.message, true)
-//                        }
-//                    }
-//
-//
-//                    is FavoriteStatus.Error -> {
-//                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-//                        hideProgressDialog(binding.progressLoading)
-//                        showToastSnack(it.error.toString(), true)
-//                    }
-//
-//                }
-//            }
-//        }
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+
+                    }
+
+
+                    is FavoriteStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                }
+            }
+        }
     }
 
     private fun addToCartObserve() {
@@ -190,13 +153,11 @@ class FavoriteFragment : BaseFragment() {
 
 
     private fun getMyFavorite() {
-//        lifecycleScope.launch {
-//            favoriteViewModel.favoriteIntent.send(
-//                FavoriteIntent.GetMyFavourites(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                )
-//            )
-//        }
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.GetFavorite
+            )
+        }
     }
 
     private fun addProductToFavorite(
