@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.data.statuesValue.auth.login
 sealed class LoginIntent {
 
     data class Login(
-        val phone: String,
+        val email: String,
+        val password: String,
     ) : LoginIntent()
 }

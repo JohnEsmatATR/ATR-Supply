@@ -26,6 +26,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.akhnaton.atrapp.databinding.ActivitySignUpMapsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.ui.auth.signUp.pdf.SignUpPdfActivity
 import java.io.IOException
 import java.util.Locale
 
@@ -34,6 +35,11 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private lateinit var placesClient: PlacesClient
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var firstName = ""
+    var lastName = ""
+    var email = ""
+    var password = ""
+    var phone = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +51,13 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun init() {
+        firstName = intent.getStringExtra("firstName")?:""
+        lastName = intent.getStringExtra("lastName")?:""
+        email = intent.getStringExtra("email")?:""
+        password = intent.getStringExtra("password")?:""
+        phone = intent.getStringExtra("phone")?:""
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Initialize Places API
@@ -105,8 +118,17 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun showMarkerLocation() {
         val markerPosition = googleMap.cameraPosition.target
-        val message = "Latitude: ${markerPosition.latitude}, Longitude: ${markerPosition.longitude}"
-        val intent = Intent(this@SignUpMapsActivity, WaitingActivity::class.java)
+        val intent = Intent(this@SignUpMapsActivity, SignUpPdfActivity::class.java)
+        intent.putExtra("firstName", firstName)
+        intent.putExtra("lastName", lastName)
+        intent.putExtra("email", email)
+        intent.putExtra("password", password)
+        intent.putExtra("phone", phone)
+        intent.putExtra("latitude", markerPosition.latitude)
+        intent.putExtra("longitude", markerPosition.longitude)
+        intent.putExtra("title", getArea(markerPosition))
+        intent.putExtra("address", getAddress(markerPosition))
+
         startActivity(intent)
     }
 
@@ -120,8 +142,6 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
                         val currentLatLng = LatLng(location.latitude, location.longitude)
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
 
-                        // Get the address from the location
-                        binding.txtAddress.setText(getAddressFromLocation(currentLatLng))
                     } else {
                         // Handle the case where the location is not available
                         Toast.makeText(this, "Unable to retrieve current location", Toast.LENGTH_SHORT).show()
@@ -137,24 +157,43 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
-    // Function to get address from location
-    private fun getAddressFromLocation(latLng: LatLng): String {
+    private fun getAddress(location: LatLng): String {
         val geocoder = Geocoder(this, Locale.getDefault())
 
-        try {
-            val addresses: List<Address> = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)!!
+        return try {
+            val addresses: List<Address> = geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
 
             if (addresses.isNotEmpty()) {
                 val address: String = addresses[0].getAddressLine(0)
                 // 'address' now contains the human-readable address of the current location
-                return address
+                address
             } else {
-                return "Address not found"
+                "Address not found"
             }
         } catch (e: IOException) {
-            return "Error to get your current address"
+            "Error to get your current address"
         }
     }
+
+    private fun getArea(location: LatLng): String {
+        val geocoder = Geocoder(this, Locale.getDefault())
+
+        return try {
+            val addresses: List<Address> = geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+
+            if (addresses.isNotEmpty()) {
+                val address: String = addresses[0].locality ?: "City not found"
+
+                // 'address' now contains the human-readable address of the current location
+                address
+            } else {
+                "City not found"
+            }
+        } catch (e: IOException) {
+            "Error to get your current City"
+        }
+    }
+
 
     // Request location permission
     private fun requestLocationPermission() {
