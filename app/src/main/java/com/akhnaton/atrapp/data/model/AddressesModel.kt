@@ -9,7 +9,10 @@ data class AddNewAddressModel(
 )
 
 data class AddressModel(
-    val id: Int = 0,
+    val ID: Int = 0,
+    val LONGITUDE: Int = 0,
+    val LATITUDE: Int = 0,
+    val TITLE: String = "",
     val city_id: Int = 0,
     val area_id: Int = 0,
     val receiver_name: String = "",
@@ -20,7 +23,7 @@ data class AddressModel(
     val area_name: String = "",
     val floor_number: Int = 0,
     val apartment_number: Int = 0,
-    val address: String = "",
+    val ADDRESS: String = "",
     val landmark: String = "",
     var prime: Int = 0,
 )

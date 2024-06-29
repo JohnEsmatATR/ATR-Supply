@@ -2,17 +2,13 @@ package com.akhnaton.atrapp.ui.nav.cart.addresses
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.AddressModel
-import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.ActivityAddressesBinding
 import com.akhnaton.atrapp.shared.BaseActivity
-import kotlinx.coroutines.launch
 
 class   AddressesActivity : BaseActivity() {
     private lateinit var binding: ActivityAddressesBinding
@@ -117,8 +113,8 @@ class   AddressesActivity : BaseActivity() {
 
     private fun getAddresses() {
         val list = ArrayList<AddressModel>()
-        val item = AddressModel(id= 0, city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
-            user_id = 0, country_name = "Egypt", city_name = "Cairo", area_name = "Area", floor_number = 0, apartment_number = 0, address = "Pharmacy", landmark = "Landmark", prime = 0 )
+        val item = AddressModel(ID= 0, city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
+            user_id = 0, country_name = "Egypt", city_name = "Cairo", area_name = "Area", floor_number = 0, apartment_number = 0, ADDRESS = "Pharmacy", landmark = "Landmark", prime = 0 )
         list.add(item)
         list.add(item)
         list.add(item)
@@ -149,7 +145,7 @@ class   AddressesActivity : BaseActivity() {
     private fun setupMyCartRecycler(list: List<AddressModel>) {
         val layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         addressesAdapter =  AddressesAdapter(onClick = { address, position ->
-            makeAddressPrime(address.id)
+            makeAddressPrime(address.ID)
             isChecked = true
         })
         addressesAdapter.setData(list)

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -26,6 +27,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.akhnaton.atrapp.databinding.ActivitySignUpMapsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.auth.signUp.pdf.SignUpPdfActivity
 import java.io.IOException
 import java.util.Locale
@@ -124,8 +126,8 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         intent.putExtra("email", email)
         intent.putExtra("password", password)
         intent.putExtra("phone", phone)
-        intent.putExtra("latitude", markerPosition.latitude)
-        intent.putExtra("longitude", markerPosition.longitude)
+        intent.putExtra("latitude", markerPosition.latitude.toString())
+        intent.putExtra("longitude", markerPosition.longitude.toString())
         intent.putExtra("title", getArea(markerPosition))
         intent.putExtra("address", getAddress(markerPosition))
 

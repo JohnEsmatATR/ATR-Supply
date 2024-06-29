@@ -98,4 +98,7 @@ dependencies {
 
     implementation("com.github.ome450901:SimpleRatingBar:1.5.1")
 
+    //Pick Image From Camera And Gallery
+    implementation("com.github.dhaval2404:imagepicker:2.1")
+
 }

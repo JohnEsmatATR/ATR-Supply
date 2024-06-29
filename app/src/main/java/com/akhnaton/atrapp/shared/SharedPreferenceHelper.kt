@@ -2,6 +2,8 @@ package com.akhnaton.atrapp.shared
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.akhnaton.atrapp.data.model.auth.LoginModel
+import com.google.gson.Gson
 
 object SharedPreferenceHelper {
 
@@ -48,17 +50,17 @@ object SharedPreferenceHelper {
         }
 
 
-//    var userObj: UserDataModel?
-//        get() {
-//            val gson = Gson()
-//            val user = sharedPreferences.getString(mySharedPreference_userObj, "")
-//            return gson.fromJson(user, UserDataModel::class.java)
-//        }
-//        set(value) {
-//            val gson = Gson()
-//            val json = gson.toJson(value)
-//            val editor = sharedPreferences.edit()
-//            editor.putString(mySharedPreference_userObj, json).apply()
-//
-//        }
+    var userObj: LoginModel?
+        get() {
+            val gson = Gson()
+            val user = sharedPreferences.getString(mySharedPreference_userObj, "")
+            return gson.fromJson(user, LoginModel::class.java)
+        }
+        set(value) {
+            val gson = Gson()
+            val json = gson.toJson(value)
+            val editor = sharedPreferences.edit()
+            editor.putString(mySharedPreference_userObj, json).apply()
+
+        }
 }

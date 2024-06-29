@@ -51,7 +51,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_16sdp"
             android:gravity="start"
-            android:text="@{address.address}"
+            android:text="@{address.ADDRESS}"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

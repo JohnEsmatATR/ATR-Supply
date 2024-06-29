@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:gravity="start"
-                android:text="@{address.address}"
+                android:text="@{address.ADDRESS}"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"

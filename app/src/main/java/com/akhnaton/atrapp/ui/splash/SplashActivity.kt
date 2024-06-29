@@ -8,6 +8,7 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.ui.auth.onBoarding.WelcomeActivity
 import com.akhnaton.atrapp.databinding.ActivitySplashBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -26,6 +27,8 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun init() {
+        SharedPreferenceHelper.init(this@SplashActivity)
+
         logoAnim = AnimationUtils.loadAnimation(baseContext, R.anim.logo_anim)
         binding.imLogo.animation = logoAnim
 

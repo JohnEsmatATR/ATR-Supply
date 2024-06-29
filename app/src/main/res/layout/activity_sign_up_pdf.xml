@@ -106,150 +106,220 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_welcome" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_upload_national_id"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/mid_gray_1"
-                app:boxStrokeWidth="2dp"
-                app:endIconDrawable="@drawable/ic_upload"
-                app:endIconMode="custom"
+                android:background="@drawable/style_upload_pdf"
+                android:clickable="true"
+                android:focusable="true"
                 android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <ImageView
+                    android:id="@+id/ic_upload_national_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_upload"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
+
+                <TextView
                     android:id="@+id/txt_upload_national_id"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="12dp"
-                    android:enabled="false"
-                    android:hint="@string/upload_national_id"
-                    android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/upload_national_id"
+                    android:textSize="14sp"
+                    android:textColor="@color/mid_gray_1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_national_id"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_upload_license"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/mid_gray_1"
-                app:boxStrokeWidth="2dp"
-                app:endIconDrawable="@drawable/ic_upload"
-                app:endIconMode="custom"
+                android:background="@drawable/style_upload_pdf"
+                android:clickable="true"
+                android:focusable="true"
                 android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <ImageView
+                    android:id="@+id/ic_upload_license"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_upload"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
+
+                <TextView
                     android:id="@+id/txt_upload_license"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="12dp"
-                    android:enabled="false"
-                    android:hint="@string/upload_license"
-                    android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/upload_national_id"
+                    android:textSize="14sp"
+                    android:textColor="@color/mid_gray_1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_license"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_upload_commercial_register"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/mid_gray_1"
-                app:boxStrokeWidth="2dp"
-                app:endIconDrawable="@drawable/ic_upload"
-                app:endIconMode="custom"
+                android:background="@drawable/style_upload_pdf"
+                android:clickable="true"
+                android:focusable="true"
                 android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <ImageView
+                    android:id="@+id/ic_upload_commercial_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_upload"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
+
+                <TextView
                     android:id="@+id/txt_upload_commercial_register"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="12dp"
-                    android:enabled="false"
-                    android:hint="@string/upload_commercial_register"
-                    android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/upload_national_id"
+                    android:textSize="14sp"
+                    android:textColor="@color/mid_gray_1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_commercial_register"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_upload_lease_or_ownership_contract"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/mid_gray_1"
-                app:boxStrokeWidth="2dp"
-                app:endIconDrawable="@drawable/ic_upload"
-                app:endIconMode="custom"
+                android:background="@drawable/style_upload_pdf"
+                android:clickable="true"
+                android:focusable="true"
                 android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <ImageView
+                    android:id="@+id/ic_upload_lease_or_ownership_contract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_upload"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
+
+                <TextView
                     android:id="@+id/txt_upload_lease_or_ownership_contract"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="12dp"
-                    android:enabled="false"
-                    android:hint="@string/upload_lease_or_ownership_contract"
-                    android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/upload_national_id"
+                    android:textSize="14sp"
+                    android:textColor="@color/mid_gray_1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_lease_or_ownership_contract"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_upload_tax_card"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/mid_gray_1"
-                app:boxStrokeWidth="2dp"
-                app:endIconDrawable="@drawable/ic_upload"
-                app:endIconMode="custom"
+                android:background="@drawable/style_upload_pdf"
+                android:clickable="true"
+                android:focusable="true"
                 android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_upload_tax_card"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/ic_upload_tax_card"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="12dp"
-                    android:enabled="false"
-                    android:hint="@string/upload_tax_card"
-                    android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_upload"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/txt_upload_tax_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/upload_national_id"
+                    android:textSize="14sp"
+                    android:textColor="@color/mid_gray_1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_tax_card"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_next"
@@ -262,7 +332,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="0dp"
-                android:text="@string/next"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
