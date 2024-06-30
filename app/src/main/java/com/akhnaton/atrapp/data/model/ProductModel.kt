@@ -12,7 +12,7 @@ data class ProductModel(
     var ID: Int,
     val TITLE: String,
     val DESCRIPTION: String,
-    val IMAGE_URL: String,
+    var IMAGE_URL: String,
     val WEIGHT: String,
     val QUANTITY: Int,
     val QOUTA: Int,
@@ -26,4 +26,18 @@ data class ProductModel(
     val PRICE_WITH_TAX: Double,
     val RATE: Double,
     val IN_STOCK: Boolean,
-) : Serializable
+) : Serializable {
+    init {
+        IMAGE_URL = convertToHttps(IMAGE_URL)
+    }
+
+    private fun convertToHttps(url: String): String {
+        return if (url.startsWith("http://")) {
+            url.replaceFirst("http://", "https://")
+        } else if (url.startsWith("http:\\/\\/")) {
+            url.replaceFirst("http:\\/\\/", "https:\\/\\/")
+        } else {
+            url
+        }
+    }
+}

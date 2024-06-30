@@ -46,9 +46,10 @@ class CartAdapter(
             }
 
 
-            binding.imItem.load("${Common.ImgUrl}${item.IMAGE_URL}") {
+            binding.imItem.load(item.IMAGE_URL) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
+                error(R.drawable.ic_logo)
             }
 
 

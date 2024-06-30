@@ -3,19 +3,32 @@ package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.ReviewModel
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
+import kotlinx.coroutines.launch
 
 class ProductDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailsBinding
+    private val addCartViewModel: AddToCartViewModel by viewModels()
     lateinit var productSuggestAdapter: ProductAdapter
     lateinit var reviewAdapter: ReviewAdapter
+    lateinit var product: ProductModel
+    var quantity: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,233 +43,24 @@ class ProductDetailsActivity : BaseActivity() {
     private fun init() {
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        binding.layoutViewAllReviews.visibility = View.GONE
+        binding.layoutReviews.visibility = View.GONE
+        binding.txtYouMightAlsoLike.visibility = View.GONE
 
-        val productName = "Eva Hair clinic - Gold Argan - Triple defense"
-        val list = ArrayList<ProductModel>()
-//        list.add(
-//            ProductModel(
-//                0,
-//                0,
-//                0,
-//                0,
-//                productName,
-//                productName,
-//                productName,
-//                productName + productName,
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0,
-//                false,
-//                "",
-//                "",
-//                0,
-//                0,
-//                "",
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                "",
-//                "",
-//                false
-//            )
-//        )
-//        list.add(
-//            ProductModel(
-//                0,
-//                0,
-//                0,
-//                0,
-//                productName,
-//                productName,
-//                productName,
-//                productName + productName,
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0,
-//                false,
-//                "",
-//                "",
-//                0,
-//                0,
-//                "",
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                "",
-//                "",
-//                false
-//            )
-//        )
-//        list.add(
-//            ProductModel(
-//                0,
-//                0,
-//                0,
-//                0,
-//                productName,
-//                productName,
-//                productName,
-//                productName + productName,
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0,
-//                false,
-//                "",
-//                "",
-//                0,
-//                0,
-//                "",
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                "",
-//                "",
-//                false
-//            )
-//        )
-//        list.add(
-//            ProductModel(
-//                0,
-//                0,
-//                0,
-//                0,
-//                productName,
-//                productName,
-//                productName,
-//                productName + productName,
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0,
-//                false,
-//                "",
-//                "",
-//                0,
-//                0,
-//                "",
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                "",
-//                "",
-//                false
-//            )
-//        )
-//        list.add(
-//            ProductModel(
-//                0,
-//                0,
-//                0,
-//                0,
-//                productName,
-//                productName,
-//                productName,
-//                productName + productName,
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0,
-//                false,
-//                "",
-//                "",
-//                0,
-//                0,
-//                "",
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                "",
-//                "",
-//                false
-//            )
-//        )
-//        list.add(
-//            ProductModel(
-//                0,
-//                0,
-//                0,
-//                0,
-//                productName,
-//                productName,
-//                productName,
-//                productName + productName,
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0.2,
-//                0,
-//                false,
-//                "",
-//                "",
-//                0,
-//                0,
-//                "",
-//                "",
-//                "",
-//                "",
-//                0.2,
-//                0.2,
-//                "",
-//                "",
-//                false
-//            )
-//        )
+        product = intent.getSerializableExtra("product") as ProductModel
 
-        setupProductSuggestRecycler(list)
+        binding.imProduce.load(product.IMAGE_URL) {
+            crossfade(true)
+            placeholder(R.drawable.ic_logo)
+            error(R.drawable.ic_logo)
+        }
+        binding.txtItemName.text = product.TITLE
+        binding.txtPrice.text = "${product.PRICE_AFTER_DISCOUNT} LE"
+        binding.txtOldPrice.text = "${product.PRICE_WITH_TAX} LE"
+        binding.txtAvailability.text = "${product.WEIGHT}"
+        binding.txtDescription.text = "${product.DESCRIPTION}"
 
-        val list2 = ArrayList<ReviewModel>()
-        list2.add(ReviewModel("Belal", 4.2f, "22/02/2024", "هذا المنتج جميل مقابل سعره",0))
-
-        setupReviewRecycler(list2)
-
+        addToCartObserve()
     }
 
     private fun onClick() {
@@ -267,6 +71,66 @@ class ProductDetailsActivity : BaseActivity() {
             val intent = Intent(this@ProductDetailsActivity, ReviewActivity::class.java)
             startActivity(intent)
         }
+        binding.btnAddToCart.setOnClickListener {
+            addProductToCart()
+        }
+        binding.btnPlus.setOnClickListener {
+//            if (validateIncreaseQuantity(quantity, product.QUANTITY)) {
+                quantity++
+                binding.txtQuantity.setText(quantity.toString())
+
+//            }
+        }
+        binding.btnMinus.setOnClickListener {
+            if (validateDecreaseQuantity(quantity)) {
+                quantity--
+                binding.txtQuantity.setText(quantity.toString())
+            }
+        }
+
+    }
+
+    private fun addToCartObserve() {
+        lifecycleScope.launch {
+            addCartViewModel.state.collect {
+                when (it) {
+                    is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is AddToCartStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is AddToCartStatus.AddToCart -> {
+                        if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            showToastSnack(it.data.message, false)
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+
+                    }
+
+                    is AddToCartStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addProductToCart() {
+        lifecycleScope.launch {
+            addCartViewModel.addToCartIntent.send(
+                AddToCartIntent.AddProductToCart(
+                    product.ID,
+                    quantity,
+                )
+            )
+        }
     }
 
     private fun setupProductSuggestRecycler(list: List<ProductModel>) {
@@ -276,7 +140,7 @@ class ProductDetailsActivity : BaseActivity() {
             onClick = { product, position ->
                 val intent = Intent(baseContext, ProductDetailsActivity::class.java)
                 intent.putExtra("flag", Common.category)
-                intent.putExtra("id", product.ID)
+                intent.putExtra("product", product)
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->

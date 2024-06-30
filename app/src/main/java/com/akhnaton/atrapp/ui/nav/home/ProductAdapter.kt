@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.home
 
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,10 +39,10 @@ class ProductAdapter(
             changeFavoriteButton()
 
             binding.productModel = item
-
             binding.imItem.load(item.IMAGE_URL) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
+                error(R.drawable.ic_logo)
             }
 
             if (item.IS_LIKED) {

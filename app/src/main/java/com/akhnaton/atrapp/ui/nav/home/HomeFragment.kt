@@ -164,7 +164,7 @@ class HomeFragment : BaseFragment() {
             onClick = { product, position ->
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
                 intent.putExtra("flag", Common.category)
-                intent.putExtra("category", product)
+                intent.putExtra("product", product)
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->

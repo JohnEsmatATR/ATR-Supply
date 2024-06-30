@@ -30,6 +30,7 @@ class CategoryAdapter(private val onClick: (category: CategoryModel, position: I
             binding.imItem.load(item.IMAGE_URL) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
+                error(R.drawable.ic_logo)
             }
 
 

@@ -90,7 +90,7 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:gravity="end|center_vertical"
-                android:text="500.00 EGP"
+                tools:text="500.00 EGP"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -10,5 +10,19 @@ data class ListCategoryModel(
 data class CategoryModel(
     val ID: Int = 0,
     val TITLE: String = "",
-    val IMAGE_URL: String = "",
-) : Serializable
+    var IMAGE_URL: String = "",
+) : Serializable {
+    init {
+        IMAGE_URL = convertToHttps(IMAGE_URL)
+    }
+
+    private fun convertToHttps(url: String): String {
+        return if (url.startsWith("http://")) {
+            url.replaceFirst("http://", "https://")
+        } else if (url.startsWith("http:\\/\\/")) {
+            url.replaceFirst("http:\\/\\/", "https:\\/\\/")
+        } else {
+            url
+        }
+    }
+}

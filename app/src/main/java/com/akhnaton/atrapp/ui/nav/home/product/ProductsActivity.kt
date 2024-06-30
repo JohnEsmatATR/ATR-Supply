@@ -269,7 +269,7 @@ class ProductsActivity : BaseActivity() {
             onClick = { product, position ->
                 val intent = Intent(this, ProductDetailsActivity::class.java)
                 intent.putExtra("flag", Common.category)
-                intent.putExtra("id", product.ID)
+                intent.putExtra("product", product)
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
