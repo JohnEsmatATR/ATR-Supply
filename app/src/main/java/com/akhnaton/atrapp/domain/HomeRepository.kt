@@ -11,30 +11,30 @@ import retrofit2.Response
 class HomeRepository {
     private val retrofit = RetrofitClient.getInstance(IProducts::class.java)
 
-    suspend fun getCategory() = retrofit.getCategories("token")
+    suspend fun getCategory() = retrofit.getCategories("Bearer ${SharedPreferenceHelper.userToken}")
 
     suspend fun getBestSeller(
     ) = retrofit.getBestSeller(
-        "Bearer",
+        "Bearer ${SharedPreferenceHelper.userToken}",
         1,
     )
 
     suspend fun getProduct(
         categoryId: Int,
     ) = retrofit.getProducts(
-        "Bearer ",
+        "Bearer ${SharedPreferenceHelper.userToken}",
         categoryId,
     )
 
     suspend fun getFavorite() = retrofit.getFavorite(
-        "Bearer ",
+        "Bearer ${SharedPreferenceHelper.userToken}",
         1,
     )
 
     suspend fun getProductDetails(
         productId: Int,
     ) = retrofit.getProductDetails(
-        "Bearer ",
+        "Bearer ${SharedPreferenceHelper.userToken}",
         productId,
     )
 

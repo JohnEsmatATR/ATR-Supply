@@ -9,7 +9,5 @@ class CartRepository {
     private val retrofit = RetrofitClient.getInstance(ICart::class.java)
 
     suspend fun getMyCart(
-    ) = retrofit.getMyCart(
-        SharedPreferenceHelper.userToken,
-    )
+    ) = retrofit.getMyCart()
 }

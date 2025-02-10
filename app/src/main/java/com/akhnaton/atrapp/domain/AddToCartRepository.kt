@@ -12,7 +12,6 @@ class AddToCartRepository {
         productId: Int?,
         quantity: Int?,
     ) = retrofit.addToCart(
-        SharedPreferenceHelper.userToken,
         productId,
         quantity,
     )

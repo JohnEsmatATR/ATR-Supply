@@ -161,7 +161,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="@{cart.QUANTITY + ``}"
+                    android:text="@{cart.MY_QUANTITY + ``}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_item_name" />
 

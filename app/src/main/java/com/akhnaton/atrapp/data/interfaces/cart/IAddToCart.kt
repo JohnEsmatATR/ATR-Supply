@@ -14,9 +14,8 @@ interface IAddToCart {
     @FormUrlEncoded
     @POST(ConstantLinks.ADD_TO_CART)
     suspend fun addToCart(
-        @Header("token") token: String?,
         @Field("item_id") productId: Int?,
         @Field("quantity") quantity: Int?,
-    ): Response<BaseModel<ProductModel>>
+    ): Response<BaseModel<ArrayList<String>>>
 
 }

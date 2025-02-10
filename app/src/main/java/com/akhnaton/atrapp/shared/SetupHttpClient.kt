@@ -13,7 +13,7 @@ class SetupHttpClient {
 
     fun setupOkHttpClient(): OkHttpClient {
 
-        val REQUEST_TIMEOUT = 10 // 1 minute
+        val REQUEST_TIMEOUT = 100 // 10 minute
 
         val builder = OkHttpClient.Builder()
             .readTimeout(REQUEST_TIMEOUT.toLong(), TimeUnit.SECONDS)
@@ -71,6 +71,8 @@ class SetupHttpClient {
                             .addHeader(
                                 "Accept", "application/json"
                             )
+                            .addHeader("token", SharedPreferenceHelper.userToken?:"")
+
                         val response = chain.proceed(builder.build())
 
                         return@Interceptor response

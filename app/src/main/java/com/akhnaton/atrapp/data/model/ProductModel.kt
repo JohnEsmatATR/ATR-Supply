@@ -15,6 +15,7 @@ data class ProductModel(
     var IMAGE_URL: String,
     val WEIGHT: String,
     val QUANTITY: Int,
+    val MY_QUANTITY: Int,
     val QOUTA: Int,
     val TAX: Double,
     val IS_BEST_SELLER: Boolean,

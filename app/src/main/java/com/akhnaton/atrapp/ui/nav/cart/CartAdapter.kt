@@ -34,7 +34,7 @@ class CartAdapter(
         fun bind(item: ProductModel, position: Int) {
 
             binding.cart = item
-            binding.quantity = item.QUANTITY
+            binding.quantity = item.MY_QUANTITY
 
             if (isVisible) {
                 binding.btnPlus.visibility = View.VISIBLE
