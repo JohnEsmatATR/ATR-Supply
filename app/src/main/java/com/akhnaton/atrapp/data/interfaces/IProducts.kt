@@ -15,36 +15,37 @@ import retrofit2.http.POST
 
 interface IProducts {
 
+    @FormUrlEncoded
     @POST(ConstantLinks.GET_CATEGORIES)
     suspend fun getCategories(
-        @Header("Authorization") token: String?,
+        @Header("version") version: String,
     ): Response<BaseModel<List<CategoryModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun getBestSeller(
-        @Header("Authorization") token: String?,
+        @Header("version") version: String,
         @Field("best_seller") bestSeller: Int?,
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun getProducts(
-        @Header("Authorization") token: String?,
+        @Header("version") version: String,
         @Field("category_id") categoryId: Int?,
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun getFavorite(
-        @Header("Authorization") token: String?,
+        @Header("version") version: String,
         @Field("liked") liked: Int?,
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun getProductDetails(
-        @Header("Authorization") token: String?,
+        @Header("version") version: String,
         @Field("product_id") productId: Int?,
     ): Response<BaseModel<List<ProductModel>>>
 

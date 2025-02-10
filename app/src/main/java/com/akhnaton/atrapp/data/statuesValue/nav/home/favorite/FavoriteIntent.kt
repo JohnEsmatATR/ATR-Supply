@@ -2,5 +2,5 @@ package com.akhnaton.atrapp.data.statuesValue.nav.home.favorite
 
 sealed class FavoriteIntent {
 
-    data object GetFavorite : FavoriteIntent()
+    data class GetFavorite(val version: String) : FavoriteIntent()
 }

@@ -33,17 +33,17 @@ class CategoryViewModel : ViewModel() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is CategoryIntent.GetCategories -> getCategoriesRepo()
+                    is CategoryIntent.GetCategories -> getCategoriesRepo(it.version)
                 }
             }
         }
     }
 
-    private fun getCategoriesRepo() {
+    private fun getCategoriesRepo(version: String) {
         viewModelScope.launch {
             _state.value = CategoryStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getCategory()
+                val response = HomeRepository().getCategory(version)
                 if (response.code() == 200) {
                     CategoryStatus.GetCategory(response.body()!!)
                 } else {

@@ -32,18 +32,20 @@ class BestSellerViewModel : ViewModel() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo()
+                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo(
+                        it.version
+                    )
 
                 }
             }
         }
     }
 
-    private fun getBestsellerRepo() {
+    private fun getBestsellerRepo(version: String) {
         viewModelScope.launch {
             _state.value = BestSellerStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getBestSeller()
+                val response = HomeRepository().getBestSeller(version)
                 if (response.code() == 200) {
                     BestSellerStatus.GetBestSeller(response.body()!!)
                 } else {

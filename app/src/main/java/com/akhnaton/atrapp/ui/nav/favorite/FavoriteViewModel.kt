@@ -30,18 +30,20 @@ class FavoriteViewModel : ViewModel() {
         viewModelScope.launch {
             favoriteIntent.consumeAsFlow().collect {
                 when (it) {
-                    is FavoriteIntent.GetFavorite -> addProductToFavourites()
+                    is FavoriteIntent.GetFavorite -> addProductToFavourites(it.version)
                 }
             }
         }
     }
 
 
-    private fun addProductToFavourites() {
+    private fun addProductToFavourites(
+        version:String,
+    ) {
         viewModelScope.launch {
             _state.value = FavoriteStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getFavorite()
+                val response = HomeRepository().getFavorite(version)
                 if (response.code() == 200) {
                     FavoriteStatus.GetFavorite(response.body()!!)
                 } else {

@@ -113,7 +113,7 @@ class   AddressesActivity : BaseActivity() {
 
     private fun getAddresses() {
         val list = ArrayList<AddressModel>()
-        val item = AddressModel(ID= 0, city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
+        val item = AddressModel(ID= "", city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
             user_id = 0, country_name = "Egypt", city_name = "Cairo", area_name = "Area", floor_number = 0, apartment_number = 0, ADDRESS = "Pharmacy", landmark = "Landmark", prime = 0 )
         list.add(item)
         list.add(item)
@@ -130,7 +130,7 @@ class   AddressesActivity : BaseActivity() {
     }
 
 
-    private fun makeAddressPrime(addressId: Int) {
+    private fun makeAddressPrime(addressId: String) {
 //        lifecycleScope.launch {
 //            viewModel.addressIntent.send(
 //                AddressIntent.MakeAddressPrime(

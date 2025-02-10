@@ -93,6 +93,8 @@
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/gray"
             app:boxStrokeWidth="1dp"
+            app:hintTextColor="@color/orange"
+            app:counterTextColor="@color/orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -118,6 +120,7 @@
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/gray"
             app:boxStrokeWidth="1dp"
+            app:hintTextColor="@color/orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_email"
@@ -129,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="12dp"
                 android:hint="@string/password"
+                android:textColorHint="@color/orange"
                 android:inputType="textPassword"
                 android:textSize="14sp" />
 

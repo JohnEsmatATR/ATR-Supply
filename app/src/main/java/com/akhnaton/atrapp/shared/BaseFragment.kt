@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.shared
 
+import android.content.pm.PackageInfo
 import android.graphics.Color
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -123,6 +124,12 @@ open class BaseFragment : Fragment() {
     fun hideProgressDialog(view: View) {
         view.visibility = View.GONE
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    fun getVersion(): String {
+        val pInfo: PackageInfo =
+            requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+        return pInfo.versionName
     }
 
 }

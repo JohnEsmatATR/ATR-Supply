@@ -5,6 +5,7 @@ import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.model.common.UserModel
 import com.akhnaton.atrapp.data.model.auth.ErrorModel
 import com.akhnaton.atrapp.data.model.auth.LoginModel
+import com.akhnaton.atrapp.data.model.auth.forgetPassword.SendOtpModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -22,13 +23,6 @@ interface IAuth {
         @Field("email") email: String,
         @Field("password") password: String,
     ): Response<BaseModel<LoginModel>>
-
-    @FormUrlEncoded
-    @POST(ConstantLinks.CHECK_OTP)
-    suspend fun otp(
-        @Field("otp") otp: String,
-        @Field("phone") phone: String,
-    ): Response<BaseModel<UserModel>>
 
 
     @Multipart
@@ -50,5 +44,26 @@ interface IAuth {
         @Part attach_tax: MultipartBody.Part,
         @Part attach_license: MultipartBody.Part,
     ) : Response<BaseModel<LoginModel>>
+
+    @FormUrlEncoded
+    @POST(ConstantLinks.SEND_OTP)
+    suspend fun sendOtp(
+        @Field("email") email: String,
+    ): Response<BaseModel<SendOtpModel>>
+
+    @FormUrlEncoded
+    @POST(ConstantLinks.CHECK_OTP)
+    suspend fun otp(
+        @Field("email") email: String,
+        @Field("otp") otp: String,
+    ): Response<BaseModel<List<String>>>
+
+    @FormUrlEncoded
+    @POST(ConstantLinks.CHANGE_PASSWORD)
+    suspend fun changePassword(
+        @Field("email") email: String,
+        @Field("otp") otp: String,
+        @Field("password") password: String,
+    ): Response<BaseModel<List<String>>>
 
 }

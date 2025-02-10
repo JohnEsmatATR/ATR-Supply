@@ -116,6 +116,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -142,6 +143,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -167,6 +169,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -192,6 +195,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -217,6 +221,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_email"
@@ -243,6 +248,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_email"

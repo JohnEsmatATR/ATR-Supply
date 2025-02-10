@@ -37,7 +37,7 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         val phone = "${SharedPreferenceHelper.userObj!!.phone}"
         val email = "${SharedPreferenceHelper!!.userObj!!.email}"
         try {
-            val address = "${SharedPreferenceHelper!!.userObj!!.address[0].ADDRESS}"
+            val address = "${SharedPreferenceHelper!!.userObj!!.address.ADDRESS}"
             binding.addressED.setText(address)
         } catch (e: Exception) {
         }

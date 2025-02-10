@@ -9,9 +9,9 @@ data class AddNewAddressModel(
 )
 
 data class AddressModel(
-    val ID: Int = 0,
-    val LONGITUDE: Int = 0,
-    val LATITUDE: Int = 0,
+    val ID: String = "",
+    val LONGITUDE: String = "",
+    val LATITUDE: String = "",
     val TITLE: String = "",
     val city_id: Int = 0,
     val area_id: Int = 0,

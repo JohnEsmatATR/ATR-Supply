@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.shared
 
+import android.content.pm.PackageInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -151,6 +152,12 @@ open class BaseActivity : AppCompatActivity() {
         SharedPreferenceHelper.language = lang
 
         resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
+    fun getVersion(): String {
+        val pInfo: PackageInfo =
+            baseContext.packageManager.getPackageInfo(baseContext.packageName, 0)
+        return pInfo.versionName
     }
 
 }

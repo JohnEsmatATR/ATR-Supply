@@ -1,8 +1,6 @@
 package com.akhnaton.atrapp.ui.auth.login
 
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.SigningInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -13,7 +11,7 @@ import com.akhnaton.atrapp.databinding.ActivityLoginBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
-import com.akhnaton.atrapp.ui.auth.forgetPassword.ForgetPasswordActivity
+import com.akhnaton.atrapp.ui.auth.forgetPassword.sendOtp.ForgetPasswordActivity
 import com.akhnaton.atrapp.ui.auth.signUp.info.SignUpInfoActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import kotlinx.coroutines.launch

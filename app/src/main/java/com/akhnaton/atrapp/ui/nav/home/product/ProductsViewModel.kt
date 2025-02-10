@@ -30,7 +30,8 @@ class ProductsViewModel : ViewModel() {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
                     is ProductsIntent.GetProducts -> getProductsBasedOnCategoryRepo(
-                        it.categoryId!!
+                        it.version,
+                        it.categoryId,
                     )
                 }
             }
@@ -38,12 +39,13 @@ class ProductsViewModel : ViewModel() {
     }
 
     private fun getProductsBasedOnCategoryRepo(
+        version: String,
         categoryId: Int,
     ) {
         viewModelScope.launch {
             _state.value = ProductsStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getProduct(categoryId)
+                val response = HomeRepository().getProduct(version, categoryId)
                 if (response.code() == 200) {
                     ProductsStatus.GetProducts(response.body()!!)
                 } else {

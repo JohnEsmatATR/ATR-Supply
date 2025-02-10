@@ -50,12 +50,28 @@ class AuthRepository {
         attach_license,
     )
 
-    suspend fun otp(
+    suspend fun sendOtp(
+        email: String,
+    ) = retrofit.sendOtp(
+        email,
+    )
+
+    suspend fun checkOtp(
+        email: String,
         otp: String,
-        phone: String,
     ) = retrofit.otp(
+        email,
         otp,
-        phone,
+    )
+
+    suspend fun changePassword(
+        email: String,
+        otp: String,
+        password: String,
+    ) = retrofit.changePassword(
+        email,
+        otp,
+        password,
     )
 
 }

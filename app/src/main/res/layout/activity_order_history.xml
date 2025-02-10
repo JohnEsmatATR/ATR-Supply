@@ -75,6 +75,7 @@
             app:boxCornerRadiusTopStart="@dimen/_8sdp"
             app:boxStrokeColor="@color/gray"
             app:boxStrokeWidth="1dp"
+            app:hintTextColor="@color/orange"
             app:layout_constraintEnd_toStartOf="@+id/toLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateTxt">
@@ -105,6 +106,7 @@
             app:boxCornerRadiusTopStart="@dimen/_8sdp"
             app:boxStrokeColor="@color/gray"
             app:boxStrokeWidth="1dp"
+            app:hintTextColor="@color/orange"
             app:layout_constraintBottom_toBottomOf="@+id/fromLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fromLayout"
