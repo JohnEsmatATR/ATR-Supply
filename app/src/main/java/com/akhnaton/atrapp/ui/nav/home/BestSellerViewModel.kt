@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.ui.nav.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.model.ListProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus

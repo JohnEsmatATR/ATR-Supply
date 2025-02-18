@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.data.interfaces
 
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ListCategoryModel
-import com.akhnaton.atrapp.data.model.ListProductModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.shared.ConstantLinks
@@ -15,7 +14,6 @@ import retrofit2.http.POST
 
 interface IProducts {
 
-    @FormUrlEncoded
     @POST(ConstantLinks.GET_CATEGORIES)
     suspend fun getCategories(
         @Header("version") version: String,

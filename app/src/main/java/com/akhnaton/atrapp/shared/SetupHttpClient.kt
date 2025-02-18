@@ -1,6 +1,5 @@
 package com.akhnaton.atrapp.shared
 
-import android.content.pm.PackageManager
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -72,8 +71,12 @@ class SetupHttpClient {
                             .addHeader(
                                 "Accept", "application/json"
                             )
-                            .addHeader("token", SharedPreferenceHelper.userToken?:"")
-                            .addHeader("device_type", "Android") // Add version here
+                            .addHeader(
+                                "token", "${SharedPreferenceHelper.userToken}"
+                            )
+                            .addHeader(
+                                "device_type", "Android"
+                            )
 
                         val response = chain.proceed(builder.build())
 

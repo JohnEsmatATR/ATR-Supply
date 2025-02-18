@@ -64,14 +64,14 @@
         app:srb_clearRatingEnabled="true"
         app:srb_clickable="true"
         app:srb_isIndicator="false"
-        app:srb_minimumStars="0"
+        app:srb_minimumStars="1"
         app:srb_numStars="5"
         app:srb_rating="3"
         app:srb_scrollable="true"
         app:srb_starHeight="25dp"
         app:srb_starPadding="0dp"
         app:srb_starWidth="25dp"
-        app:srb_stepSize="0.1" />
+        app:srb_stepSize="1" />
 
     <TextView
         android:id="@+id/txt_tap_a_star_to_rate"
@@ -130,7 +130,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_continue_shopping"
+        android:id="@+id/btn_submit_review"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
@@ -145,5 +145,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/progressLoading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.5"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

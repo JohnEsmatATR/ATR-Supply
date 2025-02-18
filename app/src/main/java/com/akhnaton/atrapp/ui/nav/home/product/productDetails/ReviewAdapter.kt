@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.model.ReviewModel
+import com.akhnaton.atrapp.data.model.review.ReviewModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
 import com.akhnaton.atrapp.databinding.LayoutReviewBinding
 import com.akhnaton.atrapp.shared.Common
@@ -28,10 +28,10 @@ class ReviewAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ReviewModel, position: Int) {
-            binding.txtName.text = item.name
-            binding.txtDate.text = item.date
-            binding.txtReview.text = item.review
-            binding.ratingBar.rating = item.rate
+//            binding.txtName.text = item.name
+//            binding.txtDate.text = item.date
+//            binding.txtReview.text = item.review
+//            binding.ratingBar.rating = item.rate
 
             itemView.setOnClickListener {
                 onClick(item, position)

@@ -406,7 +406,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_16sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:text="View all 12 reviews"
+                    android:text="View all reviews"
                     android:textColor="@color/orange"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"

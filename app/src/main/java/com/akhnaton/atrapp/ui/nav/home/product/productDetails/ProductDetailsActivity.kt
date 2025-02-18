@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.model.ReviewModel
+import com.akhnaton.atrapp.data.model.review.ReviewModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
@@ -43,7 +43,6 @@ class ProductDetailsActivity : BaseActivity() {
     private fun init() {
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        binding.layoutViewAllReviews.visibility = View.GONE
         binding.layoutReviews.visibility = View.GONE
         binding.txtYouMightAlsoLike.visibility = View.GONE
 
@@ -69,6 +68,7 @@ class ProductDetailsActivity : BaseActivity() {
         }
         binding.layoutViewAllReviews.setOnClickListener {
             val intent = Intent(this@ProductDetailsActivity, ReviewActivity::class.java)
+            intent.putExtra("product", product)
             startActivity(intent)
         }
         binding.btnAddToCart.setOnClickListener {

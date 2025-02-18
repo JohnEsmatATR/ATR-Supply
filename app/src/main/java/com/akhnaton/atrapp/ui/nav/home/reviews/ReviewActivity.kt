@@ -2,16 +2,31 @@ package com.akhnaton.atrapp.ui.nav.home.reviews
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.model.ReviewModel
+import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.model.review.ReviewModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsStatus
 import com.akhnaton.atrapp.databinding.ActivityReviewBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ReviewAdapter
+import kotlinx.coroutines.launch
 
 class ReviewActivity : BaseActivity() {
     lateinit var binding: ActivityReviewBinding
     lateinit var reviewAdapter: ReviewDetailsAdapter
+    private val reviewsViewModel: ReviewsViewModel by viewModels()
+    val listReviews = ArrayList<ReviewModel>()
+    var product = ProductModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +37,14 @@ class ReviewActivity : BaseActivity() {
         onClick()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getReviews()
+    }
+
     private fun init() {
-
-        val list = ArrayList<ReviewModel>()
-        list.add(ReviewModel("Belal", 4.2f, "22/02/2024", "I bought it 3 weeks ago and now come back just to say “Awesome Product”. I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.",R.drawable.test_profile))
-        list.add(ReviewModel("Belal", 4.2f, "22/02/2024", "I bought it 3 weeks ago and now come back just to say “Awesome Product”. I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.",R.drawable.test_profile))
-        list.add(ReviewModel("Belal", 4.2f, "22/02/2024", "I bought it 3 weeks ago and now come back just to say “Awesome Product”. I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.",R.drawable.test_profile))
-        list.add(ReviewModel("Belal", 4.2f, "22/02/2024", "I bought it 3 weeks ago and now come back just to say “Awesome Product”. I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.",R.drawable.test_profile))
-        list.add(ReviewModel("Belal", 4.2f, "22/02/2024", "I bought it 3 weeks ago and now come back just to say “Awesome Product”. I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.",R.drawable.test_profile))
-
-        setupReviewRecycler(list)
-
+        product = intent.getSerializableExtra("product") as ProductModel
+        reviewsObserve()
     }
 
     private fun onClick() {
@@ -41,6 +53,7 @@ class ReviewActivity : BaseActivity() {
         }
         binding.btnGiveAReview.setOnClickListener {
             val intent = Intent(this@ReviewActivity, AddReviewActivity::class.java)
+            intent.putExtra("product", product)
             startActivity(intent)
         }
     }
@@ -56,5 +69,63 @@ class ReviewActivity : BaseActivity() {
         binding.recyclerReviews.adapter = reviewAdapter
     }
 
+    private fun reviewsObserve() {
+        lifecycleScope.launch {
+            reviewsViewModel.state.collect {
+                when (it) {
+                    is ReviewsStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is ReviewsStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
 
+                    is ReviewsStatus.GetReviews -> {
+                        if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            if (it.data.data!!.isNotEmpty()) {
+                                binding.txtNoReviews.visibility = View.GONE
+                                listReviews.clear()
+                                listReviews.addAll(it.data.data!!)
+                                setupReviewRecycler(listReviews)
+                                binding.simpleRatingBar.rating = getTotalReviews(it.data.data!!)
+                                binding.txtRating.text = getTotalReviews(it.data.data!!).toString()
+                            } else {
+                                binding.txtNoReviews.visibility = View.VISIBLE
+                            }
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+
+                    is ReviewsStatus.AddReview -> {}
+
+                    is ReviewsStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun getReviews() {
+        lifecycleScope.launch {
+            reviewsViewModel.reviewIntent.send(
+                ReviewsIntent.GetReviews(getVersion(), product.ID.toString())
+            )
+        }
+    }
+
+    private fun getTotalReviews(list: List<ReviewModel>): Float {
+        var total = 0.0f
+        for (review in list) {
+            total += review.RATE.toFloat()
+        }
+        val average = total / list.size.toFloat()
+        return average
+    }
 }

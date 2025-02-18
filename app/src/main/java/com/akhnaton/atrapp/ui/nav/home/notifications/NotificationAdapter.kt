@@ -8,7 +8,6 @@ import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.NotificationModel
 import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.model.ReviewModel
 import com.akhnaton.atrapp.databinding.LayoutNotificationsBinding
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
 import com.akhnaton.atrapp.databinding.LayoutReviewBinding
