@@ -22,6 +22,7 @@ import com.akhnaton.atrapp.ui.nav.home.categories.CategoryActivity
 import com.akhnaton.atrapp.ui.nav.home.notifications.NotificationsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
+import com.akhnaton.atrapp.ui.nav.home.search.SearchActivity
 import kotlinx.coroutines.launch
 
 
@@ -41,14 +42,7 @@ class HomeFragment : BaseFragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
 
-        binding.txtSeeAllCategory.setOnClickListener {
-            val intent = Intent(requireContext(), CategoryActivity::class.java)
-            startActivity(intent)
-        }
-        categoryObserve()
-        bestSellerObserve()
         onClick()
-
 
         return binding.root
     }
@@ -180,6 +174,8 @@ class HomeFragment : BaseFragment() {
     private fun init() {
         binding.progressLoading.isEnabled = false
 
+        categoryObserve()
+        bestSellerObserve()
         getCategories()
         getBestSeller()
     }
@@ -212,6 +208,14 @@ class HomeFragment : BaseFragment() {
 //        }
         binding.imNotification.setOnClickListener {
             val intent = Intent(context, NotificationsActivity::class.java)
+            startActivity(intent)
+        }
+        binding.txtSeeAllCategory.setOnClickListener {
+            val intent = Intent(requireContext(), CategoryActivity::class.java)
+            startActivity(intent)
+        }
+        binding.cardSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
 

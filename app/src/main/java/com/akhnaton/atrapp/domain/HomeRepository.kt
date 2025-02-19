@@ -31,6 +31,11 @@ class HomeRepository {
         1,
     )
 
+    suspend fun searchProduct(version: String, word: String,) = retrofit.searchProduct(
+        version,
+        word,
+    )
+
     suspend fun getProductDetails(
         version: String,
         productId: Int,

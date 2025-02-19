@@ -42,6 +42,13 @@ interface IProducts {
 
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
+    suspend fun searchProduct(
+        @Header("version") version: String,
+        @Field("search") search: String,
+    ): Response<BaseModel<List<ProductModel>>>
+
+    @FormUrlEncoded
+    @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun getProductDetails(
         @Header("version") version: String,
         @Field("product_id") productId: Int?,

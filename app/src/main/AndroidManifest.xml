@@ -17,6 +17,9 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
         <activity
+            android:name=".ui.nav.home.search.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.nav.tracking.TrackingActivity"
             android:exported="false" />
         <activity
@@ -35,12 +38,12 @@
             android:exported="false" />
         <activity
             android:name=".ui.nav.home.reviews.AddReviewActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.home.reviews.ReviewActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.profile.LanguageActivity"
             android:exported="false" />
@@ -70,54 +73,53 @@
             android:exported="false" />
         <activity
             android:name=".ui.nav.cart.checkout.CheckoutActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.home.product.productDetails.ProductDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.nav.HomeActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".ui.nav.home.product.ProductsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.PasswordResetSuccessfullyActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.forgetPassword.changePassword.NewPasswordActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.forgetPassword.checkOtp.OTPActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.forgetPassword.sendOtp.ForgetPasswordActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.waiting.WaitingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.signUp.map.SignUpMapsActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.signUp.pdf.SignUpPdfActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.signUp.info.SignUpInfoActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.login.LoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.onBoarding.WelcomeActivity"
             android:exported="false" />
@@ -126,13 +128,12 @@
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.nav.cart.addresses.AddressesActivity"

@@ -85,7 +85,7 @@
             app:layout_constraintStart_toEndOf="@+id/txt_rating"
             app:layout_constraintTop_toTopOf="parent"
             app:srb_clearRatingEnabled="true"
-            app:srb_clickable="true"
+            app:srb_clickable="false"
             app:srb_isIndicator="false"
             app:srb_minimumStars="0"
             app:srb_numStars="5"
