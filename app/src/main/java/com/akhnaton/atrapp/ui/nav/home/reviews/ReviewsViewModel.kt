@@ -34,12 +34,10 @@ class ReviewsViewModel : ViewModel() {
             reviewIntent.consumeAsFlow().collect {
                 when (it) {
                     is ReviewsIntent.GetReviews -> getReviews(
-                        it.version,
                         it.productId,
                     )
 
                     is ReviewsIntent.AddReview -> addReviews(
-                        it.version,
                         it.itemId,
                         it.reviewComment,
                         it.reviewValue,
@@ -51,13 +49,12 @@ class ReviewsViewModel : ViewModel() {
 
 
     private fun getReviews(
-        version: String,
         productId: String,
     ) {
         viewModelScope.launch {
             _state.value = ReviewsStatus.Loading
             _state.value = try {
-                val response = ReviewsRepository().getReviews(version, productId)
+                val response = ReviewsRepository().getReviews(productId)
                 if (response.code() == 200) {
                     ReviewsStatus.GetReviews(response.body()!!)
                 } else {
@@ -72,7 +69,6 @@ class ReviewsViewModel : ViewModel() {
     }
 
     private fun addReviews(
-        version: String,
         itemId: String,
         reviewComment: String,
         reviewValue: String,
@@ -81,7 +77,6 @@ class ReviewsViewModel : ViewModel() {
             _state.value = ReviewsStatus.Loading
             _state.value = try {
                 val response = ReviewsRepository().addReview(
-                    version,
                     itemId,
                     reviewComment,
                     reviewValue,

@@ -124,7 +124,7 @@ class HomeFragment : BaseFragment() {
     private fun getCategories() {
         lifecycleScope.launch {
             categoryViewModel.homeIntent.send(
-                CategoryIntent.GetCategories(getVersion())
+                CategoryIntent.GetCategories
             )
         }
     }
@@ -132,7 +132,7 @@ class HomeFragment : BaseFragment() {
     private fun getBestSeller() {
         lifecycleScope.launch {
             bestSellerViewModel.homeIntent.send(
-                BestSellerIntent.GetBestSeller(getVersion())
+                BestSellerIntent.GetBestSeller
             )
         }
     }

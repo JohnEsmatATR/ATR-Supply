@@ -118,7 +118,7 @@ class SearchActivity : BaseActivity() {
     private fun searchProduct(word: String) {
         lifecycleScope.launch {
             searchViewModel.searchIntent.send(
-                SearchIntent.SearchProduct(getVersion(), word)
+                SearchIntent.SearchProduct(word)
             )
         }
     }
@@ -224,7 +224,7 @@ class SearchActivity : BaseActivity() {
     private fun getMyFavorite() {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.GetFavorite(getVersion())
+                FavoriteIntent.GetFavorite
             )
         }
     }

@@ -155,7 +155,7 @@ class FavoriteFragment : BaseFragment() {
     private fun getMyFavorite() {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.GetFavorite(getVersion())
+                FavoriteIntent.GetFavorite
             )
         }
     }

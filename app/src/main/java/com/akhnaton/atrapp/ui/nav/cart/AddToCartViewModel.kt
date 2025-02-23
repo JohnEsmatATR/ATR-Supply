@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
-import com.akhnaton.atrapp.domain.AddToCartRepository
+import com.akhnaton.atrapp.domain.CartRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,7 +44,7 @@ class AddToCartViewModel : ViewModel() {
         viewModelScope.launch {
             _state.value = AddToCartStatus.Loading
             _state.value = try {
-                val response = AddToCartRepository().addProductToCart(
+                val response = CartRepository().addProductToCart(
                     productId,
                     quantity,
                 )

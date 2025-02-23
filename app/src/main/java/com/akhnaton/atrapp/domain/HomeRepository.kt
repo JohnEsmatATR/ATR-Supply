@@ -7,40 +7,30 @@ import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 class HomeRepository {
     private val retrofit = RetrofitClient.getInstance(IProducts::class.java)
 
-    suspend fun getCategory(version: String) = retrofit.getCategories(
-        version,
-    )
+    suspend fun getCategory() = retrofit.getCategories()
 
     suspend fun getBestSeller(
-        version: String,
     ) = retrofit.getBestSeller(
-        version,
         1,
     )
 
     suspend fun getProduct(
-        version: String,
         categoryId: Int,
     ) = retrofit.getProducts(
-        version,
         categoryId,
     )
 
-    suspend fun getFavorite(version: String,) = retrofit.getFavorite(
-        version,
+    suspend fun getFavorite() = retrofit.getFavorite(
         1,
     )
 
-    suspend fun searchProduct(version: String, word: String,) = retrofit.searchProduct(
-        version,
+    suspend fun searchProduct(word: String,) = retrofit.searchProduct(
         word,
     )
 
     suspend fun getProductDetails(
-        version: String,
         productId: Int,
     ) = retrofit.getProductDetails(
-        version,
         productId,
     )
 

@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.ui.splash
 
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.Animation
@@ -30,6 +31,11 @@ class SplashActivity : BaseActivity() {
 
     private fun init() {
         SharedPreferenceHelper.init(this@SplashActivity)
+
+        val pInfo: PackageInfo =
+            baseContext.packageManager.getPackageInfo(baseContext.packageName, 0)
+
+        SharedPreferenceHelper.version = pInfo.versionName
 
         logoAnim = AnimationUtils.loadAnimation(baseContext, R.anim.logo_anim)
         binding.imLogo.animation = logoAnim

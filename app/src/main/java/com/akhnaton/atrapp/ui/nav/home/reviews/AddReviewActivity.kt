@@ -88,7 +88,6 @@ class AddReviewActivity : BaseActivity() {
         lifecycleScope.launch {
             reviewsViewModel.reviewIntent.send(
                 ReviewsIntent.AddReview(
-                    getVersion(),
                     product.ID.toString(),
                     reviewComment,
                     reviewValue,

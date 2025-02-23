@@ -16,14 +16,12 @@ interface IReviews {
     @FormUrlEncoded
     @POST(ConstantLinks.GET_REVIEWS)
     suspend fun getReviews(
-        @Header("version") version: String,
         @Field("product_id") productId: String,
     ): Response<BaseModel<List<ReviewModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.ADD_REVIEW)
     suspend fun addReview(
-        @Header("version") version: String,
         @Field("item_id") itemId: String,
         @Field("review_comment") reviewComment: String,
         @Field("review_value") reviewValue: String,

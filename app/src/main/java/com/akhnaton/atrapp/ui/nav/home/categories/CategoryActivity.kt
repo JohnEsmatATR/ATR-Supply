@@ -103,7 +103,7 @@ class CategoryActivity : BaseActivity(), AllCategoryAdapter.OnCategoryClickListe
     private fun getCategories() {
         lifecycleScope.launch {
             categoryViewModel.homeIntent.send(
-                CategoryIntent.GetCategories(getVersion())
+                CategoryIntent.GetCategories
             )
         }
     }

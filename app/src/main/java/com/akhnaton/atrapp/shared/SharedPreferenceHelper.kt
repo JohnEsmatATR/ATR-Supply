@@ -14,6 +14,7 @@ object SharedPreferenceHelper {
     private const val mySharedPreference_userObj = "user"
     private const val mySharedPreference_logged = "isLogged"
     private const val mySharedPreference_language = "language"
+    private const val mySharedPreference_version = "context"
 
     fun init(appContext: Context?) {
         mAppContext = appContext
@@ -41,6 +42,12 @@ object SharedPreferenceHelper {
         set(language) {
             val editor = sharedPreferences.edit()
             editor.putString(mySharedPreference_language, language).apply()
+        }
+    var version: String?
+        get() = sharedPreferences.getString(mySharedPreference_version, "0.0")
+        set(language) {
+            val editor = sharedPreferences.edit()
+            editor.putString(mySharedPreference_version, language).apply()
         }
     var isLogged: Boolean?
         get() = sharedPreferences.getBoolean(mySharedPreference_logged, false)

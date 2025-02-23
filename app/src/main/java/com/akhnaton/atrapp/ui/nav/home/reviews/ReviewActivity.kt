@@ -115,7 +115,7 @@ class ReviewActivity : BaseActivity() {
     private fun getReviews() {
         lifecycleScope.launch {
             reviewsViewModel.reviewIntent.send(
-                ReviewsIntent.GetReviews(getVersion(), product.ID.toString())
+                ReviewsIntent.GetReviews(product.ID.toString())
             )
         }
     }

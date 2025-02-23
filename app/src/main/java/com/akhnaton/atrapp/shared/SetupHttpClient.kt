@@ -77,6 +77,9 @@ class SetupHttpClient {
                             .addHeader(
                                 "device_type", "Android"
                             )
+                            .addHeader(
+                                "version", "${SharedPreferenceHelper.version}"
+                            )
 
                         val response = chain.proceed(builder.build())
 

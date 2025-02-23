@@ -2,28 +2,41 @@ package com.akhnaton.atrapp.ui.nav.cart.checkout
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.checkout.CheckoutIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.checkout.CheckoutStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.databinding.ActivityChackoutBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.CustomDialog
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.AddCardActivity
 import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.FawryActivity
+import kotlinx.coroutines.launch
 
 
 class CheckoutActivity : BaseActivity(), OnClickListener {
     lateinit var binding: ActivityChackoutBinding
     lateinit var mDialog: CustomDialog
+    val checkoutViewModel: CheckoutViewModel by viewModels()
     private var paymentCheck = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupBinding()
+        cartObserve()
     }
 
     private fun setupBinding() {
@@ -62,14 +75,7 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
         }
 
         if (v.id == binding.btnCheckout.id) {
-            if (paymentCheck == 0) {
-                mDialog.showDialog()
-            } else if (paymentCheck == 1) {
-                val intent = Intent(this@CheckoutActivity, FawryActivity::class.java)
-                startActivity(intent)
-            } else {
-                showToastSnack("please select payment method first", true)
-            }
+            getMyCart()
         }
 
 
@@ -96,4 +102,46 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
     }
 
 
+    private fun cartObserve() {
+        lifecycleScope.launch {
+            checkoutViewModel.state.collect {
+                when (it) {
+                    is CheckoutStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is CheckoutStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is CheckoutStatus.Checkout -> {
+                        if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+
+                            val intent = Intent(this@CheckoutActivity, FawryActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+
+
+                    is CheckoutStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun getMyCart() {
+        lifecycleScope.launch {
+            checkoutViewModel.checkoutIntent.send(
+                CheckoutIntent.Checkout
+            )
+        }
+    }
 }
