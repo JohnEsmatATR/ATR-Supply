@@ -1,29 +1,36 @@
 package com.akhnaton.atrapp.ui.nav.profile.order.details
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
+import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDetails.MyOrderDetailsIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDetails.MyOrderDetailsStatus
 import com.akhnaton.atrapp.databinding.ActivityOrderDetailsBinding
-import com.akhnaton.atrapp.ui.nav.profile.order.details.returnOrder.OrderReturnActivity
+import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.Common
+import kotlinx.coroutines.launch
 
-class OrderDetailsActivity : AppCompatActivity(), View.OnClickListener {
+class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderDetailsBinding
+    private val orderDetailsViewModel: MyOrderDetailsViewModel by viewModels()
     private var mAdapter = OrderDetailsAdapter()
     private var mList = mutableListOf<OrderDetailsModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupBinding()
-        fillList()
+
+        init()
     }
 
-    private fun setupBinding() {
+    private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_details)
-        binding.returnItemsLayout.setOnClickListener(this)
+//        binding.returnItemsLayout.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
         binding.productRecycler.apply {
             layoutManager =
                 LinearLayoutManager(
@@ -33,33 +40,68 @@ class OrderDetailsActivity : AppCompatActivity(), View.OnClickListener {
         }
         binding.productRecycler.adapter = mAdapter
 
-        binding.btnBack.setOnClickListener(this)
+        val orgSysId = intent.getStringExtra("orgSysId")?:""
+
+        binding.orderNumber.text = "Order Number ${orgSysId}"
+
+        observe()
+        getOrderDetails(orgSysId)
     }
 
-    private fun fillList() {
-        val p1 =
-            OrderDetailsModel(0, "Eva Hand soap royal Deep Lines Filler 50 ML", 10, 70.0, 200.0)
-        val p2 =
-            OrderDetailsModel(1, "Eva Hand soap royal Deep Lines Filler 30 ML", 10, 120.0, 300.0)
-        val p3 =
-            OrderDetailsModel(2, "Eva Hand soap royal Deep Lines Filler 40 ML", 10, 20.0, 60.0)
-        val p4 =
-            OrderDetailsModel(3, "Eva Hand soap royal Deep Lines Filler 60 ML", 10, 10.0, 80.0)
-        mList.add(p1)
-        mList.add(p2)
-        mList.add(p3)
-        mList.add(p4)
-        mAdapter.setData(mList)
-    }
 
     override fun onClick(v: View) {
-        if (v.id == binding.returnItemsLayout.id) {
-            val intent = Intent(this@OrderDetailsActivity, OrderReturnActivity::class.java)
-            startActivity(intent)
-        }
+//        if (v.id == binding.returnItemsLayout.id) {
+//            val intent = Intent(this@OrderDetailsActivity, OrderReturnActivity::class.java)
+//            startActivity(intent)
+//        }
 
         if (v.id == binding.btnBack.id) {
             finish()
         }
     }
+
+    private fun observe() {
+        lifecycleScope.launch {
+            orderDetailsViewModel.state.collect {
+                when (it) {
+                    is MyOrderDetailsStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is MyOrderDetailsStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is MyOrderDetailsStatus.GetMyOrderDetails -> {
+                        if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+
+                            mList.addAll(it.data.data!!)
+                            mAdapter.setData(mList)
+
+                            binding.total.text = "${it.data.total} EGP"
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+
+                    }
+
+                    is MyOrderDetailsStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getOrderDetails(orgSysId: String) {
+        lifecycleScope.launch {
+            orderDetailsViewModel.orderDetailsIntent.send(
+                MyOrderDetailsIntent.GetMyOrderDetails(orgSysId)
+            )
+        }
+    }
+
 }

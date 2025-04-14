@@ -3,6 +3,8 @@ package com.akhnaton.atrapp.ui.nav.profile.order.details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
 import com.akhnaton.atrapp.databinding.LayoutOrderItemBinding
 
@@ -19,6 +21,12 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OrderDetailsModel) {
             binding.data = item
+            binding.imgProduct.load(item.img) {
+                crossfade(true)
+                placeholder(R.drawable.ic_logo)
+                error(R.drawable.ic_logo)
+            }
+
         }
     }
 

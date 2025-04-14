@@ -30,10 +30,6 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
         fun bind(item: OrderHistoryModel) {
             binding.data = item
 
-            val colorResId = if (item.orderStatusCode == 0) R.color.orange else R.color.snack_green
-            val color = binding.root.context.resources.getColor(colorResId, null)
-            binding.orderStatus.setTextColor(color)
-
             binding.viewOrderBtn.setOnClickListener { listener.onProductClick(item) }
         }
     }

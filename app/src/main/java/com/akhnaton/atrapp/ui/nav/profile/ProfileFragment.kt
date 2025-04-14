@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderHistoryActivity
 
@@ -25,7 +26,6 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.privacyLayout.setOnClickListener(this)
         binding.aboutLayout.setOnClickListener(this)
         binding.contactLayout.setOnClickListener(this)
-        binding.btnLogin.setOnClickListener(this)
         return binding.root
     }
 
@@ -40,8 +40,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             startActivity(intent)
         }
 
-        if(v.id == binding.languagesLayout.id) {
-            val intent = Intent(requireContext(),LanguageActivity::class.java)
+        if (v.id == binding.languagesLayout.id) {
+            val intent = Intent(requireContext(), LanguageActivity::class.java)
             startActivity(intent)
         }
 
@@ -60,7 +60,13 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             startActivity(intent)
         }
 
-        if (v.id == binding.btnLogin.id) {
+        if (v.id == binding.logoutLayout.id) {
+            SharedPreferenceHelper.let {
+                it.isLogged = false
+                it.userObj = null
+                it.userToken = null
+                it.language = "en"
+            }
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }

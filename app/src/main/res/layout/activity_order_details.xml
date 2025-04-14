@@ -58,141 +58,139 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:text="Order Number 53453"
+            tools:text="Order Number 53453"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_bar" />
 
-        <TextView
-            android:id="@+id/orderDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:text="Date: 13 Jan"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_bar" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productRecycler"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_320sdp"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDate"
+            app:layout_constraintTop_toBottomOf="@+id/orderNumber"
+            tools:itemCount="4"
             tools:listitem="@layout/layout_order_item" />
 
-        <View
-            android:id="@+id/v1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="@dimen/_12sdp"
-            android:background="@color/mid_gray_2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productRecycler" />
-
-        <TextView
-            android:id="@+id/orderStatusTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="Status:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/v1" />
-
-        <TextView
-            android:id="@+id/orderStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:text="Delivered"
-            android:textColor="@color/snack_green"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/v1" />
-
-
-        <TextView
-            android:id="@+id/paymentTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="Payment:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderStatusTxt" />
-
-        <TextView
-            android:id="@+id/payment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:text="Fawry"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderStatus" />
-
-
-        <TextView
-            android:id="@+id/totalTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="Total:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/paymentTxt" />
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:text="745 EGP"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/payment" />
-
-        <View
-            android:id="@+id/v2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="@dimen/_12sdp"
-            android:background="@color/mid_gray_2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/totalTxt" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/returnItemsLayout"
+            android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_14sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/v2">
+            android:layout_marginVertical="@dimen/_20sdp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/returnItems"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Return Items"
-                android:textColor="@color/orange"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <View
+                android:id="@+id/v1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/_12sdp"
+                android:background="@color/mid_gray_2"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <!--        <TextView-->
+            <!--            android:id="@+id/orderStatusTxt"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginStart="@dimen/_12sdp"-->
+            <!--            android:layout_marginTop="@dimen/_12sdp"-->
+            <!--            android:text="Status:"-->
+            <!--            app:layout_constraintStart_toStartOf="parent"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/v1" />-->
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/orderStatus"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginTop="@dimen/_12sdp"-->
+            <!--            android:layout_marginEnd="@dimen/_12sdp"-->
+            <!--            android:text="Delivered"-->
+            <!--            android:textColor="@color/snack_green"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/v1" />-->
+
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/paymentTxt"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginStart="@dimen/_12sdp"-->
+            <!--            android:layout_marginTop="@dimen/_12sdp"-->
+            <!--            android:text="Payment:"-->
+            <!--            app:layout_constraintStart_toStartOf="parent"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/orderStatusTxt" />-->
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/payment"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginTop="@dimen/_12sdp"-->
+            <!--            android:layout_marginEnd="@dimen/_12sdp"-->
+            <!--            android:text="Fawry"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/orderStatus" />-->
+
+
+            <TextView
+                android:id="@+id/totalTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="Total:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v1" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                tools:text="745 EGP"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/returnItems" />
+                app:layout_constraintTop_toBottomOf="@+id/v1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressLoading"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0.5"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

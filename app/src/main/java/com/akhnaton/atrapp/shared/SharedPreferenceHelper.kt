@@ -14,7 +14,7 @@ object SharedPreferenceHelper {
     private const val mySharedPreference_userObj = "user"
     private const val mySharedPreference_logged = "isLogged"
     private const val mySharedPreference_language = "language"
-    private const val mySharedPreference_version = "context"
+    private const val mySharedPreference_version = "version"
 
     fun init(appContext: Context?) {
         mAppContext = appContext

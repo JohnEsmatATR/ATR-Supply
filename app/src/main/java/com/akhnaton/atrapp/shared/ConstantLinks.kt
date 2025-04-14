@@ -21,6 +21,8 @@ object ConstantLinks {
     const val ADD_TO_CART = "cart/add"
     const val GET_MY_CART = "cart/my_cart"
     const val CHECKOUT = "cart/check_out"
+    const val MY_ORDERS = "cart/my_orders"
+    const val MY_ORDERS_DETAILS = "cart/my_order_details"
 
     // review
     const val GET_REVIEWS = "product/product_reviews"

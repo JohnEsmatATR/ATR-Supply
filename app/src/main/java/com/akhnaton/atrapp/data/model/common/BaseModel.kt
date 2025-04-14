@@ -7,4 +7,5 @@ data class BaseModel<T>(
     val status: Int = 0,
     var data: T?,
     var pagination: PaginationModel,
+    var total: String,
 )

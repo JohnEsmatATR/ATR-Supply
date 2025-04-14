@@ -51,180 +51,133 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/dateTxt"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="@string/date"
-            android:textSize="@dimen/_16ssp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_bar" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fromLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            app:boxBackgroundColor="@color/white"
-            app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_8sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_8sdp"
-            app:boxCornerRadiusTopStart="@dimen/_8sdp"
-            app:boxStrokeColor="@color/gray"
-            app:boxStrokeWidth="1dp"
-            app:hintTextColor="@color/orange"
-            app:layout_constraintEnd_toStartOf="@+id/toLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateTxt">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fromED"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="12dp"
-                android:focusableInTouchMode="false"
-                android:hint="From"
-                android:inputType="none"
-                android:textSize="14sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/toLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            app:boxBackgroundColor="@color/white"
-            app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_8sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_8sdp"
-            app:boxCornerRadiusTopStart="@dimen/_8sdp"
-            app:boxStrokeColor="@color/gray"
-            app:boxStrokeWidth="1dp"
-            app:hintTextColor="@color/orange"
-            app:layout_constraintBottom_toBottomOf="@+id/fromLayout"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fromLayout"
-            app:layout_constraintTop_toTopOf="@+id/fromLayout">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/toED"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/dateTxt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="12dp"
-                android:focusableInTouchMode="false"
-                android:hint="To"
-                android:inputType="none"
-                android:textSize="14sp" />
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="@string/date"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fromLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                app:boxStrokeColor="@color/gray"
+                app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
+                app:layout_constraintEnd_toStartOf="@+id/toLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateTxt">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fromED"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:focusableInTouchMode="false"
+                    android:hint="From"
+                    android:inputType="none"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/toLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                app:boxStrokeColor="@color/gray"
+                app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/orange"
+                app:layout_constraintBottom_toBottomOf="@+id/fromLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/fromLayout"
+                app:layout_constraintTop_toTopOf="@+id/fromLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/toED"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:focusableInTouchMode="false"
+                    android:hint="To"
+                    android:inputType="none"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orderRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintBottom_toTopOf="@+id/totalOrderLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fromLayout"
-            tools:itemCount="2"
-            tools:listitem="@layout/layout_order" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/totalOrderLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            android:padding="@dimen/_12sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderRecycler">
+            app:layout_constraintTop_toBottomOf="@+id/layout_date"
+            tools:itemCount="2"
+            tools:listitem="@layout/layout_order" />
 
-            <TextView
-                android:id="@+id/totalTxt"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressLoading"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total Order"
-                app:layout_constraintBottom_toTopOf="@+id/totalSalesTxt"
+                android:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/orderCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5 Orders"
-                app:layout_constraintBottom_toBottomOf="@+id/totalTxt"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/totalTxt" />
-
-            <TextView
-                android:id="@+id/totalSalesTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:text="Total Sales"
-                app:layout_constraintBottom_toTopOf="@+id/totalReturnTxt"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/totalTxt" />
-
-            <TextView
-                android:id="@+id/totalSales"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:text="EGP 25000"
-                app:layout_constraintBottom_toBottomOf="@+id/totalSalesTxt"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/totalSalesTxt" />
-
-            <TextView
-                android:id="@+id/totalReturnTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:text="Total Returns:"
-                app:layout_constraintBottom_toTopOf="@+id/netTxt"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/totalSalesTxt" />
-
-            <TextView
-                android:id="@+id/totalReturn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:text="EGP 45000"
-                app:layout_constraintBottom_toBottomOf="@+id/totalReturnTxt"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/totalReturnTxt" />
-
-            <TextView
-                android:id="@+id/netTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:text="Net:"
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0.5"
+                android:background="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/totalReturnTxt" />
-
-            <TextView
-                android:id="@+id/netTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:text="EGP 45000"
-                app:layout_constraintBottom_toBottomOf="@+id/netTxt"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/netTxt" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
