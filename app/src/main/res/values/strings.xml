@@ -82,7 +82,6 @@
     <string name="add_new_address">Add new address</string>
     <string name="back">back</string>
     <string name="add_card">Add card</string>
-    <string name="deals_made_for_you">Deals made for you!</string>
     <string name="apply">Apply</string>
     <string name="your_pdf">Your PDF</string>
     <string name="update">Update</string>
@@ -223,5 +222,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="search">Search</string>
+    <string name="deals_made_for_you">Deals made for you!</string>
 
 </resources>

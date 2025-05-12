@@ -9,10 +9,7 @@ class HomeRepository {
 
     suspend fun getCategory() = retrofit.getCategories()
 
-    suspend fun getBestSeller(
-    ) = retrofit.getBestSeller(
-        1,
-    )
+    suspend fun getBestSeller() = retrofit.getBestSeller(1,)
 
     suspend fun getProduct(
         categoryId: Int,

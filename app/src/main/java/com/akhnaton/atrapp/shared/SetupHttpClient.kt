@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.shared
 
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -63,25 +64,33 @@ class SetupHttpClient {
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(httpLoggingInterceptor)
 
-            // apply headers
+            // apply headers with logging
             builder.apply {
                 addInterceptor(
                     Interceptor { chain ->
-                        val builder = chain.request().newBuilder()
+                        val originalRequest = chain.request()
+                        val requestBuilder = originalRequest.newBuilder()
                             .addHeader(
                                 "Accept", "application/json"
                             )
                             .addHeader(
-                                "token", "${SharedPreferenceHelper.userToken}"
-                            )
-                            .addHeader(
-                                "device_type", "Android"
-                            )
-                            .addHeader(
-                                "version", "${SharedPreferenceHelper.version}"
+                                "Authorization", "Bearer ${SharedPreferenceHelper.userToken}"
                             )
 
-                        val response = chain.proceed(builder.build())
+                        // Log request headers
+                        val request = requestBuilder.build()
+                        Log.d("HTTP_REQUEST", "Request Headers:")
+                        request.headers.forEach { (name, value) ->
+                            Log.d("HTTP_REQUEST", "$name: $value")
+                        }
+
+                        val response = chain.proceed(request)
+
+                        // Log response headers
+                        Log.d("HTTP_RESPONSE", "Response Headers:")
+                        response.headers.forEach { (name, value) ->
+                            Log.d("HTTP_RESPONSE", "$name: $value")
+                        }
 
                         return@Interceptor response
                     }
@@ -93,5 +102,4 @@ class SetupHttpClient {
             throw RuntimeException(e)
         }
     }
-
 }
