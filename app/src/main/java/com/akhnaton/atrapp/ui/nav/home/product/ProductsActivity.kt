@@ -138,7 +138,7 @@ class ProductsActivity : BaseActivity() {
     private fun getBestSeller() {
         lifecycleScope.launch {
             bestSellerViewModel.homeIntent.send(
-                BestSellerIntent.GetBestSeller
+                BestSellerIntent.GetBestSeller(1)
             )
         }
     }

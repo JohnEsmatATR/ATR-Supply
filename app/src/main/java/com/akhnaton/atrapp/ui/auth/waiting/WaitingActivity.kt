@@ -1,8 +1,10 @@
 package com.akhnaton.atrapp.ui.auth.waiting
 
+import android.content.Intent
 import android.os.Bundle
 import com.akhnaton.atrapp.databinding.ActivityWaitingBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.ui.nav.HomeActivity
 
 class WaitingActivity : BaseActivity() {
     lateinit var binding: ActivityWaitingBinding
@@ -18,6 +20,10 @@ class WaitingActivity : BaseActivity() {
 
     private fun init() {}
 
-    private fun onClick() {}
+    private fun onClick() {
+        binding.btnContinueShopping.setOnClickListener {
+            startActivity(Intent(this@WaitingActivity,HomeActivity::class.java))
+        }
+    }
 
 }

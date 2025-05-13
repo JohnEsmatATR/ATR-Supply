@@ -43,7 +43,8 @@ interface IAuth {
         @Part attach_ownership: MultipartBody.Part,
         @Part attach_tax: MultipartBody.Part,
         @Part attach_license: MultipartBody.Part,
-    ) : Response<BaseModel<LoginModel>>
+    ) : Response<BaseModel<List<LoginModel>>>
+
 
     @FormUrlEncoded
     @POST(ConstantLinks.SEND_OTP)

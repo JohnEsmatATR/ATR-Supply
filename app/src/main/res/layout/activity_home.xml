@@ -22,7 +22,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_55sdp"
         android:background="@drawable/bottom_nav_rounded"
         app:backgroundTint="@null"
         app:itemActiveIndicatorStyle="@color/gray"
@@ -32,6 +32,7 @@
         app:itemTextAppearanceInactive="@color/black"
         app:itemTextColor="@drawable/bottom_nav_icon_color_selector"
         app:labelVisibilityMode="labeled"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,7 @@
         android:id="@+id/btn_tracking"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="37dp"
+        android:layout_marginBottom="@dimen/_35sdp"
         android:background="@drawable/btn_floating_style"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="15dp"

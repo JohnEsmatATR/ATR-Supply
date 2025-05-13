@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.model.common.BaseModel
@@ -7,6 +8,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerInten
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.domain.HomeRepository
+import com.akhnaton.atrapp.shared.Common
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.Channel
@@ -31,20 +33,22 @@ class BestSellerViewModel : ViewModel() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo()
+                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo(1)
 
                 }
             }
         }
     }
 
-    private fun getBestsellerRepo() {
+    private fun getBestsellerRepo(bestSeller: Int) {
         viewModelScope.launch {
             _state.value = BestSellerStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getBestSeller()
+                val response = HomeRepository().getBestSeller(bestSeller)
                 if (response.code() == 200) {
+                    Log.d(Common.KeroDebug, "getBestsellerRepo ${response.body()!!}")
                     BestSellerStatus.GetBestSeller(response.body()!!)
+
                 } else {
                     BestSellerStatus.Error(response.body()!!.message)
                 }

@@ -74,8 +74,12 @@ class SetupHttpClient {
                                 "Accept", "application/json"
                             )
                             .addHeader(
-                                "Authorization", "Bearer ${SharedPreferenceHelper.userToken}"
+                                "token", "${SharedPreferenceHelper.userToken}"
                             )
+                            .addHeader(
+                                "version", "${SharedPreferenceHelper.version}"
+                            )
+                            .addHeader("device_type", "Android")
 
                         // Log request headers
                         val request = requestBuilder.build()

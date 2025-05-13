@@ -1,8 +1,19 @@
 package com.akhnaton.atrapp.ui.nav
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -19,15 +30,13 @@ class HomeActivity : BaseActivity() {
     lateinit var binding: ActivityHomeBinding
     lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        enableEdgeToEdge()
-
         init()
         onClick()
-
     }
 
     private fun init() {

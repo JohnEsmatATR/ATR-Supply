@@ -53,9 +53,7 @@
                 android:id="@+id/im_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="80dp"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_logo" />
 
             <TextView
@@ -206,6 +204,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:hint="@string/phone_number"
+                    android:maxLength="11"
                     android:inputType="phone"
                     android:textSize="14sp" />
 

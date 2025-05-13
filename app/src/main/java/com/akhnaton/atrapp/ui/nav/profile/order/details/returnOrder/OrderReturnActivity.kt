@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
 import com.akhnaton.atrapp.databinding.ActivityOrderReturnBinding
-import com.akhnaton.atrapp.ui.nav.profile.order.details.OrderDetailsAdapter
 
 class OrderReturnActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderReturnBinding

@@ -52,11 +52,9 @@
             <ImageView
                 android:id="@+id/im_logo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="80dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_logo" />
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_logo"
+                />
 
             <TextView
                 android:id="@+id/txt_welcome"
@@ -110,13 +108,13 @@
                 android:id="@+id/layout_upload_national_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/style_upload_pdf"
                 android:clickable="true"
-                android:focusable="true"
                 android:enabled="false"
+                android:focusable="true"
+                android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -127,10 +125,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_upload"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <TextView
                     android:id="@+id/txt_upload_national_id"
@@ -139,13 +137,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/upload_national_id"
-                    android:textSize="14sp"
                     android:textColor="@color/mid_gray_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ic_upload_national_id"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_national_id"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -153,13 +151,13 @@
                 android:id="@+id/layout_upload_license"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/style_upload_pdf"
                 android:clickable="true"
-                android:focusable="true"
                 android:enabled="false"
+                android:focusable="true"
+                android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -170,10 +168,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_upload"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <TextView
                     android:id="@+id/txt_upload_license"
@@ -182,13 +180,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/upload_license"
-                    android:textSize="14sp"
                     android:textColor="@color/mid_gray_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ic_upload_license"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_license"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -196,13 +194,13 @@
                 android:id="@+id/layout_upload_commercial_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/style_upload_pdf"
                 android:clickable="true"
-                android:focusable="true"
                 android:enabled="false"
+                android:focusable="true"
+                android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -213,10 +211,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_upload"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <TextView
                     android:id="@+id/txt_upload_commercial_register"
@@ -225,13 +223,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/upload_commercial_register"
-                    android:textSize="14sp"
                     android:textColor="@color/mid_gray_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ic_upload_commercial_register"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_commercial_register"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -239,13 +237,13 @@
                 android:id="@+id/layout_upload_lease_or_ownership_contract"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/style_upload_pdf"
                 android:clickable="true"
-                android:focusable="true"
                 android:enabled="false"
+                android:focusable="true"
+                android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -256,10 +254,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_upload"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <TextView
                     android:id="@+id/txt_upload_lease_or_ownership_contract"
@@ -268,13 +266,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/upload_lease_or_ownership_contract"
-                    android:textSize="14sp"
                     android:textColor="@color/mid_gray_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ic_upload_lease_or_ownership_contract"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_lease_or_ownership_contract"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -282,13 +280,13 @@
                 android:id="@+id/layout_upload_tax_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/style_upload_pdf"
                 android:clickable="true"
-                android:focusable="true"
                 android:enabled="false"
+                android:focusable="true"
+                android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_notes">
@@ -299,10 +297,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_upload"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <TextView
                     android:id="@+id/txt_upload_tax_card"
@@ -311,13 +309,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/upload_tax_card"
-                    android:textSize="14sp"
                     android:textColor="@color/mid_gray_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ic_upload_tax_card"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintEnd_toStartOf="@id/ic_upload_tax_card"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

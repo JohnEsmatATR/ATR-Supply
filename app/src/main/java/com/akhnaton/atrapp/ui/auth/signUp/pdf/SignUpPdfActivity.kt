@@ -2,7 +2,9 @@ package com.akhnaton.atrapp.ui.auth.signUp.pdf
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
@@ -25,6 +27,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.io.FileOutputStream
 
 class SignUpPdfActivity : BaseActivity() {
     private lateinit var binding: ActivitySignUpPdfBinding
@@ -78,33 +81,30 @@ class SignUpPdfActivity : BaseActivity() {
             finish()
         }
         binding.layoutUploadNationalId.setOnClickListener {
-            chooseIdPhoto(100)
+            choosePdfFile(100)
         }
         binding.layoutUploadLicense.setOnClickListener {
-            chooseIdPhoto(200)
+            choosePdfFile(200)
         }
         binding.layoutUploadCommercialRegister.setOnClickListener {
-            chooseIdPhoto(300)
+            choosePdfFile(300)
         }
         binding.layoutUploadLeaseOrOwnershipContract.setOnClickListener {
-            chooseIdPhoto(400)
+            choosePdfFile(400)
         }
         binding.layoutUploadTaxCard.setOnClickListener {
-            chooseIdPhoto(500)
+            choosePdfFile(500)
         }
+
 
     }
 
-    private fun chooseIdPhoto(code: Int) {
+    private fun choosePdfFile(code: Int) {
         requestCode = code
-        with(this)
-            .crop()
-            .compress(300)
-            .maxResultSize(
-                1080,
-                1080
-            )
-            .start()
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "application/pdf"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(Intent.createChooser(intent, "Select PDF"), code)
     }
 
     private fun uploadImagesId(img: String, name: String): MultipartBody.Part {
@@ -132,7 +132,7 @@ class SignUpPdfActivity : BaseActivity() {
                             showToastSnack("Registered Successfully!", false)
                             val intent = Intent(this@SignUpPdfActivity, WaitingActivity::class.java)
                             startActivity(intent)
-                            finish()
+                            finishAffinity()
 
                         } else if (it.data.status == 401) {
                             hideProgressDialog(binding.progressLoading)
@@ -212,41 +212,72 @@ class SignUpPdfActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_CANCELED) {
+        if (resultCode != Activity.RESULT_OK || data == null || data.data == null) {
+            showToastSnack("Something went wrong. Please select the PDF again.", true)
             return
         }
 
-        val contentURI = data?.let { it.data }
+        val uri = data.data!!
+        val filePath = getRealPathFromURI(uri)
+        val fileName = getFileName(uri)
 
-        if (this.requestCode == 100 && resultCode == RESULT_OK) {
-            if (data != null && contentURI != null) {
-                imNationalId = contentURI.path!!
-                binding.txtUploadNationalId.setText(contentURI.path.toString())
+        when (this.requestCode) {
+            100 -> {
+                imNationalId = filePath
+                binding.txtUploadNationalId.text = fileName
             }
-        } else if (this.requestCode == 200 && resultCode == RESULT_OK) {
-            if (data != null && contentURI != null) {
-                imLicense = contentURI.path!!
-                binding.txtUploadLicense.setText(contentURI.path.toString())
+            200 -> {
+                imLicense = filePath
+                binding.txtUploadLicense.text = fileName
             }
-        } else if (this.requestCode == 300 && resultCode == RESULT_OK) {
-            if (data != null && contentURI != null) {
-                imCommercialRegister = contentURI.path!!
-                binding.txtUploadCommercialRegister.setText(contentURI.path.toString())
+            300 -> {
+                imCommercialRegister = filePath
+                binding.txtUploadCommercialRegister.text = fileName
             }
-        } else if (this.requestCode == 400 && resultCode == RESULT_OK) {
-            if (data != null && contentURI != null) {
-                imLeaseOrOwnershipContract = contentURI.path!!
-                binding.txtUploadLeaseOrOwnershipContract.setText(contentURI.path.toString())
+            400 -> {
+                imLeaseOrOwnershipContract = filePath
+                binding.txtUploadLeaseOrOwnershipContract.text = fileName
             }
-        } else if (this.requestCode == 500 && resultCode == RESULT_OK) {
-            if (data != null && contentURI != null) {
-                imTaxCard = contentURI.path!!
-                binding.txtUploadTaxCard.setText(contentURI.path.toString())
+            500 -> {
+                imTaxCard = filePath
+                binding.txtUploadTaxCard.text = fileName
             }
-        } else {
-            showToastSnack("something went wrong, Add Image Again", true)
         }
     }
+
+    private fun getFileName(uri: Uri): String {
+        var result: String? = null
+        if (uri.scheme == "content") {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
+                }
+            } finally {
+                cursor?.close()
+            }
+        }
+        if (result == null) {
+            result = uri.path
+            val cut = result?.lastIndexOf('/')
+            if (cut != -1 && cut != null) {
+                result = result?.substring(cut + 1)
+            }
+        }
+        return result ?: "unknown.pdf"
+    }
+
+    private fun getRealPathFromURI(uri: Uri): String {
+        val inputStream = contentResolver.openInputStream(uri)
+        val file = File(cacheDir, getFileName(uri))
+        val outputStream = FileOutputStream(file)
+        inputStream?.copyTo(outputStream)
+        inputStream?.close()
+        outputStream.close()
+        return file.absolutePath
+    }
+
+
 }
 
 

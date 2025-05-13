@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.domain
 
 import com.akhnaton.atrapp.data.interfaces.IProducts
+import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.shared.RetrofitClient
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 
@@ -9,7 +10,7 @@ class HomeRepository {
 
     suspend fun getCategory() = retrofit.getCategories()
 
-    suspend fun getBestSeller() = retrofit.getBestSeller(1,)
+    suspend fun getBestSeller(bestSeller: Int) = retrofit.getBestSeller(bestSeller)
 
     suspend fun getProduct(
         categoryId: Int,

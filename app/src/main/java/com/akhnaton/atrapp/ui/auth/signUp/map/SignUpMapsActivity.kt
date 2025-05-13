@@ -6,12 +6,15 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.ui.auth.waiting.WaitingActivity
+import com.akhnaton.atrapp.databinding.ActivitySignUpMapsBinding
+import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.ui.auth.signUp.pdf.SignUpPdfActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,10 +28,6 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.akhnaton.atrapp.databinding.ActivitySignUpMapsBinding
-import com.akhnaton.atrapp.shared.BaseActivity
-import com.akhnaton.atrapp.shared.Common
-import com.akhnaton.atrapp.ui.auth.signUp.pdf.SignUpPdfActivity
 import java.io.IOException
 import java.util.Locale
 
@@ -47,7 +46,7 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        enableEdgeToEdge()
         init()
         onClick()
     }
@@ -90,22 +89,21 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        // Enable the user's location
-        if (ActivityCompat.checkSelfPermission(
+        // تأكد من تفعيل كل الجيستشرز
+        googleMap.uiSettings.isZoomGesturesEnabled = true
+        googleMap.uiSettings.isScrollGesturesEnabled = true
+        googleMap.uiSettings.isTiltGesturesEnabled = true
+        googleMap.uiSettings.isRotateGesturesEnabled = true
+        googleMap.uiSettings.isMyLocationButtonEnabled = true
+
+        // (اختياري) تفعيل موقعي
+        if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            return
+            googleMap.isMyLocationEnabled = true
         }
-        googleMap.isMyLocationEnabled = false
-
-        // Set default location (e.g., city center)
-        val defaultLocation = CameraUpdateFactory.newLatLngZoom(LatLng(37.7749, -122.4194), 15f)
-        googleMap.moveCamera(defaultLocation)
     }
 
     private fun startPlacePicker() {
@@ -130,34 +128,40 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         intent.putExtra("longitude", markerPosition.longitude.toString())
         intent.putExtra("title", getArea(markerPosition))
         intent.putExtra("address", getAddress(markerPosition))
-
         startActivity(intent)
+
     }
 
     private fun showCurrentLocation() {
-        // Check for location permissions before requesting the location
+
+        if (!::googleMap.isInitialized) {
+           // Toast.makeText(this, "Google Map not initialized", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
         if (checkLocationPermission()) {
-            // Request the last known location
+
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location ->
                     if (location != null) {
                         val currentLatLng = LatLng(location.latitude, location.longitude)
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
-
                     } else {
-                        // Handle the case where the location is not available
+
                         Toast.makeText(this, "Unable to retrieve current location", Toast.LENGTH_SHORT).show()
                     }
                 }
                 .addOnFailureListener { e ->
-                    // Handle the failure to get location
+
                     Toast.makeText(this, "Error getting current location: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
-            // Request location permissions if not granted
+
             requestLocationPermission()
         }
     }
+
 
     private fun getAddress(location: LatLng): String {
         val geocoder = Geocoder(this, Locale.getDefault())
