@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.ui.auth.signUp.map
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
@@ -89,14 +90,14 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        // تأكد من تفعيل كل الجيستشرز
+
         googleMap.uiSettings.isZoomGesturesEnabled = true
         googleMap.uiSettings.isScrollGesturesEnabled = true
         googleMap.uiSettings.isTiltGesturesEnabled = true
         googleMap.uiSettings.isRotateGesturesEnabled = true
         googleMap.uiSettings.isMyLocationButtonEnabled = true
 
-        // (اختياري) تفعيل موقعي
+
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -117,18 +118,26 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun showMarkerLocation() {
-        val markerPosition = googleMap.cameraPosition.target
-        val intent = Intent(this@SignUpMapsActivity, SignUpPdfActivity::class.java)
-        intent.putExtra("firstName", firstName)
-        intent.putExtra("lastName", lastName)
-        intent.putExtra("email", email)
-        intent.putExtra("password", password)
-        intent.putExtra("phone", phone)
-        intent.putExtra("latitude", markerPosition.latitude.toString())
-        intent.putExtra("longitude", markerPosition.longitude.toString())
-        intent.putExtra("title", getArea(markerPosition))
-        intent.putExtra("address", getAddress(markerPosition))
-        startActivity(intent)
+        val mapAddress = binding.spWriteCustomerLocation.text.toString()
+        if (mapAddress.isEmpty()){
+            showToastSnack("برجاء ادخال العنوان", true)
+        }
+        else{
+            val markerPosition = googleMap.cameraPosition.target
+            val intent = Intent(this@SignUpMapsActivity, SignUpPdfActivity::class.java)
+            intent.putExtra("firstName", firstName)
+            intent.putExtra("lastName", lastName)
+            intent.putExtra("email", email)
+            intent.putExtra("password", password)
+            intent.putExtra("phone", phone)
+            intent.putExtra("latitude", markerPosition.latitude.toString())
+            intent.putExtra("longitude", markerPosition.longitude.toString())
+            intent.putExtra("title", getArea(markerPosition))
+            intent.putExtra("address", getAddress(markerPosition))
+            intent.putExtra("mapLocation",mapAddress)
+            startActivity(intent)
+
+        }
 
     }
 
@@ -147,6 +156,10 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
                     if (location != null) {
                         val currentLatLng = LatLng(location.latitude, location.longitude)
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+
+                        val address = getAddressFromLatLng(this@SignUpMapsActivity,location.latitude,
+                            location.longitude)
+                        binding.spWriteCustomerLocation.setText(address ?: "No address found")
                     } else {
 
                         Toast.makeText(this, "Unable to retrieve current location", Toast.LENGTH_SHORT).show()
@@ -268,5 +281,24 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
     companion object {
         private const val AUTOCOMPLETE_REQUEST_CODE = 1
         private const val LOCATION_PERMISSION_REQUEST_CODE = 2
+    }
+
+    fun getAddressFromLatLng(context: Context, latitude: Double, longitude: Double): String? {
+        return try {
+            val geocoder = Geocoder(context, Locale("ar"))
+            val addresses: List<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
+            if (!addresses.isNullOrEmpty()) {
+                val address: Address = addresses[0]
+                val fullAddress = (0..address.maxAddressLineIndex).joinToString(", ") { index ->
+                    address.getAddressLine(index)
+                }
+                fullAddress
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }

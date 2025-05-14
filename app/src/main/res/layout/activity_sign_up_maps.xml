@@ -19,37 +19,54 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        android:fillViewport="true"
-        android:layout_alignParentBottom="true"
-        android:paddingHorizontal="20dp">
 
-        <LinearLayout
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/map">
+
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="start"
+            android:text="@string/fill_your_address"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_write_customer_location"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/orange"
+            android:layout_marginTop="5dp"
+            android:alpha=".75"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/orange"
+            app:boxStrokeWidth="1dp">
 
-
-            <TextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sp_write_customer_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="start"
-                android:text="@string/fill_your_address"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"/>
+                android:hint="العنوان المقترح"
+                android:cursorVisible="true"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-         \
 
-        </LinearLayout>
-    </ScrollView>
 
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/marker"

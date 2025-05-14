@@ -21,5 +21,6 @@ sealed class RegisterIntent {
         val attach_ownership: MultipartBody.Part,
         val attach_tax: MultipartBody.Part,
         val attach_license: MultipartBody.Part,
+        val mapAddress :RequestBody
     ) : RegisterIntent()
 }

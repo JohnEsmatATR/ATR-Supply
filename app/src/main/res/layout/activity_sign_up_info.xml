@@ -125,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:hint="@string/first_name"
+                    android:cursorVisible="true"
                     android:inputType="textPersonName"
                     android:textSize="14sp" />
 

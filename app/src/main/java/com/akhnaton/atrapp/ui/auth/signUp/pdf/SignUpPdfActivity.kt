@@ -41,7 +41,7 @@ class SignUpPdfActivity : BaseActivity() {
     private var longitude = ""
     private var title = ""
     private var address = ""
-
+    private var mapAddress=""
     private var imNationalId: String = ""
     private var imLicense: String = ""
     private var imCommercialRegister: String = ""
@@ -69,7 +69,7 @@ class SignUpPdfActivity : BaseActivity() {
         longitude = intent.getStringExtra("longitude") ?: ""
         title = intent.getStringExtra("title") ?: ""
         address = intent.getStringExtra("address") ?: ""
-
+        mapAddress=intent.getStringExtra("mapLocation")?:""
         registerObserve()
     }
 
@@ -170,6 +170,7 @@ class SignUpPdfActivity : BaseActivity() {
         val _title = title.toRequestBody("text/plain".toMediaTypeOrNull())
         val _address = address.toRequestBody("text/plain".toMediaTypeOrNull())
         val _firebaseToken = "_firebaseToken".toRequestBody("text/plain".toMediaTypeOrNull())
+        val _mapLocation = mapAddress.toRequestBody("text/plain".toMediaTypeOrNull())
         val _imNationalId = uploadImagesId(imNationalId, "attach_identity")
         val _imLicense = uploadImagesId(imLicense, "attach_license")
         val _imCommercialRegister =
@@ -204,6 +205,7 @@ class SignUpPdfActivity : BaseActivity() {
                         _imCommercialRegister,
                         _imLeaseOrOwnershipContract,
                         _imTaxCard,
+                        _mapLocation
                     )
                 )
             }
