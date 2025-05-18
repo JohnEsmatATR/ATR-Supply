@@ -75,14 +75,15 @@ class CartFragment : BaseFragment() {
                     is CartStatus.GetMyCart -> {
                         if (it.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
-
-                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
-
                             products = it.data.data!!
-
                             checkNoProducts()
-
                             setupMyCartRecycler(products)
+                            val totals = cartViewModel.calculateCartTotals(products)
+                            binding.txtItemTotal.text = totals.totalBeforeDiscount.toString()
+                            binding.txtDiscount.text= totals.discount.toString()
+                            binding.txtDeliveryFree.text= totals.deliveryFee.toString() ?: "Free"
+                            binding.txtGrandTotal.text=totals.grandTotal.toString()
+
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
@@ -158,8 +159,13 @@ class CartFragment : BaseFragment() {
         }
     }
 
-    private fun deleteProductFromCart(productId: Int) {
+    private fun deleteProductFromCart(productId: Int, position: Int) {
         lifecycleScope.launch {
+            (products as ArrayList).removeAt(position)
+            cartAdapter.setData(products, true, "cart")
+            checkNoProducts()
+
+
             addToCartViewModel.addToCartIntent.send(
                 AddToCartIntent.AddProductToCart(
                     productId,
@@ -168,6 +174,7 @@ class CartFragment : BaseFragment() {
             )
         }
     }
+
 
     private fun setupMyCartRecycler(list: List<ProductModel>) {
         val layoutManager =
@@ -192,6 +199,12 @@ class CartFragment : BaseFragment() {
                         product.ID,
                         quantity,
                     )
+                }
+            },
+            onDeleteClick = {product ,position ->
+                lifecycleScope.launch {
+                    (products as ArrayList)[position] = product
+                    deleteProductFromCart(product.ID,position)
                 }
             })
         cartAdapter.setData(list, true, "cart")

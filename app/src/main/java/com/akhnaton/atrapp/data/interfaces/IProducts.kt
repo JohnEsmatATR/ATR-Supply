@@ -7,6 +7,7 @@ import com.akhnaton.atrapp.shared.ConstantLinks
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface IProducts {
@@ -44,4 +45,19 @@ interface IProducts {
         @Field("product_id") productId: Int?,
     ): Response<BaseModel<List<ProductModel>>>
 
+    @FormUrlEncoded
+    @POST(ConstantLinks.GET_FAV_PRODUCT)
+    suspend fun addFavoriteProduct(
+        @Header("Authorization") token: String,
+        @Field("item_id") productId: Int,
+        @Field("liked") liked: Boolean
+    ): Response<BaseModel<Any>>
+
+    @FormUrlEncoded
+    @POST(ConstantLinks.DELETE_FROM_FAV)
+    suspend fun deleteFromFav(
+        @Header("Authorization") token: String,
+        @Field("item_id") productId: Int,
+        @Field("liked") liked: Boolean
+    ): Response<BaseModel<Any>>
 }

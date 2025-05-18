@@ -13,6 +13,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_8sdp"
@@ -128,6 +129,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_price">
 
                 <androidx.cardview.widget.CardView
@@ -158,10 +160,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:text="@{cart.MY_QUANTITY + ``}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="@{cart.MY_QUANTITY + ``}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_item_name" />
 
@@ -189,7 +191,15 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-
+            <ImageView
+                android:id="@+id/delete_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/trush_bin"
+                android:layout_marginEnd="@dimen/_3sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/layout_quantity" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

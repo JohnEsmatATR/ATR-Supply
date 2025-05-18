@@ -1,5 +1,7 @@
 package com.akhnaton.atrapp.shared
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.res.Configuration
 import android.os.Bundle

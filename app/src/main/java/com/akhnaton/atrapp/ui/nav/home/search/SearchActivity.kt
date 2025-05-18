@@ -22,6 +22,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchStatus
 import com.akhnaton.atrapp.databinding.ActivitySearchBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
@@ -175,6 +176,13 @@ class SearchActivity : BaseActivity() {
                         showToastSnack(it.error.toString(), true)
                     }
 
+                    is FavoriteStatus.AddProductToFavourites -> {
+                        hideProgressDialog(binding.progressLoading)
+                        Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                        showToastSnack(it.data.message, false)
+                    }
+
+                    is FavoriteStatus.DeleteProductToFavourites -> TODO()
                 }
             }
         }
@@ -233,15 +241,15 @@ class SearchActivity : BaseActivity() {
         productId: Int,
         add: Boolean,
     ) {
-//        lifecycleScope.launch {
-//            favoriteViewModel.favoriteIntent.send(
-//                FavoriteIntent.AddProductToFavourites(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    productId,
-//                    add,
-//                )
-//            )
-//        }
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.AddProductToFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                )
+            )
+        }
     }
 
 //    private fun addProductToCart(product: ProductModel) {

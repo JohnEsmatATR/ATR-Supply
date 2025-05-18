@@ -1,19 +1,18 @@
 package com.akhnaton.atrapp.ui.nav.home.product
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsStatus
 import com.akhnaton.atrapp.databinding.ActivityProductsBinding
@@ -64,7 +63,7 @@ class ProductsActivity : BaseActivity() {
             }
         }
 
-        
+
     }
 
 
@@ -201,54 +200,85 @@ class ProductsActivity : BaseActivity() {
     }
 
     private fun favoriteObserve() {
-//        lifecycleScope.launch {
-//            favoriteViewModel.state.collect {
-//                when (it) {
-//                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
-//                    is FavoriteStatus.Loading -> {
-//                        Log.d(Common.KeroDebug, "observeHome: Loading")
-//                        showProgressDialog(binding.progressLoading)
-//                    }
-//
-//                    is FavoriteStatus.AddProductToFavourites -> {
-//                        if (it.data.status == 1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
-//                            showToastSnack(it.data.message, false)
-//
-//                        } else if (it.data.status == 401) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            showToastSnack(it.data.message, true)
-//                        }
-//                    }
-//
-//                    is FavoriteStatus.GetMyFavourites -> {}
-//
-//                    is FavoriteStatus.Error -> {
-//                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-//                        hideProgressDialog(binding.progressLoading)
-//                        showToastSnack(it.error.toString(), true)
-//                    }
-//                }
-//            }
-//        }
+        lifecycleScope.launch {
+            favoriteViewModel.state.collect {
+                when (it) {
+                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is FavoriteStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is FavoriteStatus.AddProductToFavourites -> {
+                        if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            showToastSnack(it.data.message, false)
+
+                        } else if (it.data.status == 401) {
+                            hideProgressDialog(binding.progressLoading)
+                            //onTokenExpired(it.data.errors!![0])
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+
+                    is FavoriteStatus.GetFavorite -> {
+                        hideProgressDialog(binding.progressLoading)
+                        Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                        setupProductsRecycler(it.data.data!!)
+                    }
+
+                    is FavoriteStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                    is FavoriteStatus.DeleteProductToFavourites -> {
+                        if (it.data.status == 1) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            showToastSnack(it.data.message, false)
+
+                        } else if (it.data.status == 401) {
+                            hideProgressDialog(binding.progressLoading)
+                            //onTokenExpired(it.data.errors!![0])
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
     private fun addProductToFavorite(productId: Int, add: Boolean, ) {
-//        lifecycleScope.launch {
-//            favoriteViewModel.favoriteIntent.send(
-//                FavoriteIntent.AddProductToFavourites(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    productId,
-//                    add,
-//                )
-//            )
-//        }
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.AddProductToFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                )
+            )
+        }
+    }
+    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.DeleteFromFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                )
+            )
+        }
     }
 
 
@@ -273,7 +303,12 @@ class ProductsActivity : BaseActivity() {
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
-                addProductToFavorite(product.ID, isFavorite)
+                if (isFavorite){
+                    addProductToFavorite(product.ID, isFavorite)
+                }else{
+                    deleteProductToFavorite(product.ID, isFavorite)
+                }
+
             }
         )
         adapter.setData(list, false, flag)

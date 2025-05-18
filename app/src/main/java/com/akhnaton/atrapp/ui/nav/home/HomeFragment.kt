@@ -96,7 +96,7 @@ class HomeFragment : BaseFragment() {
                 when (it) {
                     is BestSellerStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is BestSellerStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        Log.d(Common.KeroDebug, "bestSellerObserve: Loading")
                         showProgressDialog(binding.progressLoading)
                     }
 
@@ -106,7 +106,7 @@ class HomeFragment : BaseFragment() {
                             listBestSeller.clear()
                             listBestSeller.addAll(it.data.data!!)
                             listBestSeller.size
-                            Log.d(Common.KeroDebug, "observeHome: best saler ${it.data.data!!}")
+                            Log.d(Common.KeroDebug, "bestSellerObserve: best saler ${it.data.data!!}")
                             setupProductBestSellerRecycler(listBestSeller)
                         } else {
                             hideProgressDialog(binding.progressLoading)
@@ -115,7 +115,7 @@ class HomeFragment : BaseFragment() {
                     }
 
                     is BestSellerStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        Log.d(Common.KeroDebug, "bestSellerObserve Error: ${it.error.toString()}")
                         hideProgressDialog(binding.progressLoading)
                         showToastSnack(it.error.toString(), true)
                     }
@@ -136,7 +136,7 @@ class HomeFragment : BaseFragment() {
     private fun getBestSeller() {
         lifecycleScope.launch {
             bestSellerViewModel.homeIntent.send(
-                BestSellerIntent.GetBestSeller(1)
+                BestSellerIntent.GetBestSeller(2)
             )
         }
     }

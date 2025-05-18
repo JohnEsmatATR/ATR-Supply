@@ -101,4 +101,7 @@ dependencies {
     //Pick Image From Camera And Gallery
     implementation("com.github.dhaval2404:imagepicker:2.1")
 
+    //recyclerview
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+
 }

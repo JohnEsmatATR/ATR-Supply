@@ -122,9 +122,9 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
+                            Log.d("TAG", "cartObserve: ${it.data.message}")
                         }
                     }
-
 
                     is CheckoutStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")

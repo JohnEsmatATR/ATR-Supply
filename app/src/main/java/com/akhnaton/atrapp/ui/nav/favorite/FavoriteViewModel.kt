@@ -1,13 +1,9 @@
 package com.akhnaton.atrapp.ui.nav.favorite
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.domain.HomeRepository
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,14 +26,16 @@ class FavoriteViewModel : ViewModel() {
         viewModelScope.launch {
             favoriteIntent.consumeAsFlow().collect {
                 when (it) {
-                    is FavoriteIntent.GetFavorite -> addProductToFavourites()
+                    is FavoriteIntent.GetFavorite -> getFavorites()
+                    is FavoriteIntent.AddProductToFavourites -> addProductToFavorites(it.token,it.productId,it.add)
+                    is FavoriteIntent.DeleteFromFavourites -> DeleteProductToFavorites(it.token,it.productId,it.add)
                 }
             }
         }
     }
 
 
-    private fun addProductToFavourites() {
+    private fun getFavorites() {
         viewModelScope.launch {
             _state.value = FavoriteStatus.Loading
             _state.value = try {
@@ -54,6 +52,38 @@ class FavoriteViewModel : ViewModel() {
 
         }
     }
+    private fun addProductToFavorites(token: String, productId: Int, add: Boolean) {
+        viewModelScope.launch {
+            _state.value = FavoriteStatus.Loading
+            try {
+                val response = HomeRepository().addProductToFavorites(token, productId, add)
+                if (response.code() == 200) {
+                    _state.value = FavoriteStatus.AddProductToFavourites(response.body()!!)
+                } else {
+                    _state.value = FavoriteStatus.Error(response.body()?.message ?: "Unknown error")
+                }
+            } catch (e: Exception) {
+                _state.value = FavoriteStatus.Error(e.message ?: "Exception occurred")
+            }
+        }
+    }
+
+
+    private fun DeleteProductToFavorites(token: String, productId: Int, add: Boolean) {
+        viewModelScope.launch {
+            _state.value = FavoriteStatus.Loading
+            try {
+                val response = HomeRepository().deleteProductToFavorites(token, productId, add)
+                if (response.code() == 200) {
+                    _state.value = FavoriteStatus.DeleteProductToFavourites(response.body()!!)
+                } else {
+                    _state.value = FavoriteStatus.Error(response.body()?.message ?: "Unknown error")
+                }
+            } catch (e: Exception) {
+                _state.value = FavoriteStatus.Error(e.message ?: "Exception occurred")
+            }
+        }
+    }
+
 
 }
-

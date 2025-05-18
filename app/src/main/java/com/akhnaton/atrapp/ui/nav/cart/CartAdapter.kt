@@ -14,6 +14,7 @@ class CartAdapter(
     private val onClick: (product: ProductModel, position: Int) -> Unit,
     private val onPlusClick: (product: ProductModel, position: Int, quantity: Int) -> Unit,
     private val onMinusClick: (product: ProductModel, position: Int, quantity: Int) -> Unit,
+    private val onDeleteClick: (product: ProductModel, position: Int) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
     private var productsList = ArrayList<ProductModel>()
@@ -29,23 +30,25 @@ class CartAdapter(
 
     inner class ViewHolder(private val binding: LayoutCartBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         private var quantity = 1
 
         fun bind(item: ProductModel, position: Int) {
-
             binding.cart = item
             binding.quantity = item.MY_QUANTITY
+
 
             if (isVisible) {
                 binding.btnPlus.visibility = View.VISIBLE
                 binding.btnMinus.visibility = View.VISIBLE
-
+                binding.deleteItem.visibility = View.VISIBLE
             } else {
                 binding.btnPlus.visibility = View.GONE
                 binding.btnMinus.visibility = View.GONE
+                binding.deleteItem.visibility = View.GONE
             }
 
-
+            // تحميل الصورة
             binding.imItem.load(item.IMAGE_URL) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
@@ -54,38 +57,46 @@ class CartAdapter(
 
 
             binding.btnPlus.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
+                val pos = bindingAdapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
                     quantity = binding.txtQuantity.text.toString().toInt()
                     quantity++
+                    item.MY_QUANTITY = quantity
                     binding.quantity = quantity
-                    onPlusClick(item, position, quantity)
-
+                    onPlusClick(item, pos, quantity)
                 }
             }
 
+
             binding.btnMinus.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
+                val pos = bindingAdapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
                     quantity = binding.txtQuantity.text.toString().toInt()
-                    if (validateDecreaseQuantity(quantity)) {
+                    if (quantity > 1) {
                         quantity--
+                        item.MY_QUANTITY = quantity
                         binding.quantity = quantity
-                        onMinusClick(item, position, quantity)
+                        onMinusClick(item, pos, quantity)
                     }
                 }
             }
-            itemView.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    onClick(item, position)
+
+
+            binding.deleteItem.setOnClickListener {
+                val pos = bindingAdapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    onDeleteClick(item, pos)
                 }
             }
 
+
+            itemView.setOnClickListener {
+                val pos = bindingAdapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    onClick(item, pos)
+                }
+            }
         }
-
-
-        private fun validateDecreaseQuantity(qty: Int): Boolean {
-            return (qty > 1)
-        }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -98,12 +109,8 @@ class CartAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        productsList?.get(position)?.let { holder.bind(it, position) }
+        productsList.get(position)?.let { holder.bind(it, position) }
     }
 
-    override fun getItemCount(): Int {
-        return productsList.size
-    }
-
-
+    override fun getItemCount(): Int = productsList.size
 }

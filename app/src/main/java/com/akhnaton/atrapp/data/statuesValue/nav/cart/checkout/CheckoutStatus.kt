@@ -7,6 +7,6 @@ sealed class CheckoutStatus {
 
     data object Idle : CheckoutStatus()
     data object Loading : CheckoutStatus()
-    data class Checkout(val data: BaseModel<List<ProductModel>>) : CheckoutStatus()
+    data class Checkout(val data: BaseModel<ProductModel>) : CheckoutStatus()
     data class Error(val error: String?) : CheckoutStatus()
 }

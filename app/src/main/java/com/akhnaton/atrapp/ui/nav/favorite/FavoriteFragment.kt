@@ -87,6 +87,7 @@ class FavoriteFragment : BaseFragment() {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             setupProductsRecycler(it.data.data!!)
+                            Log.d(Common.KeroDebug, "favoriteObserve: ${it.data.data!!.size}")
 
                         } else if (it.data.status == 401) {
                             hideProgressDialog(binding.progressLoading)
@@ -106,6 +107,8 @@ class FavoriteFragment : BaseFragment() {
                         showToastSnack(it.error.toString(), true)
                     }
 
+                    is FavoriteStatus.AddProductToFavourites -> TODO()
+                    is FavoriteStatus.DeleteProductToFavourites -> TODO()
                 }
             }
         }

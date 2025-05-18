@@ -28,8 +28,13 @@ object ConstantLinks {
     const val CHECKOUT = "cart/check_out"
     const val MY_ORDERS = "cart/my_orders"
     const val MY_ORDERS_DETAILS = "cart/my_order_details"
+    const val DELETE_FROM_CART = "cart/add"
 
     // review
     const val GET_REVIEWS = "product/product_reviews"
     const val ADD_REVIEW = "product/add_review"
+
+    // fav
+    const val GET_FAV_PRODUCT = "product/add_fav?debug=1"
+    const val DELETE_FROM_FAV = "product/delete_fav"
 }

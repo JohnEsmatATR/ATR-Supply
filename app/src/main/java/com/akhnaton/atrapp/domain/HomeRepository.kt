@@ -1,9 +1,7 @@
 package com.akhnaton.atrapp.domain
 
 import com.akhnaton.atrapp.data.interfaces.IProducts
-import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.shared.RetrofitClient
-import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 
 class HomeRepository {
     private val retrofit = RetrofitClient.getInstance(IProducts::class.java)
@@ -31,5 +29,11 @@ class HomeRepository {
     ) = retrofit.getProductDetails(
         productId,
     )
+
+    suspend fun addProductToFavorites(token: String, productId: Int, add: Boolean)
+    = retrofit.addFavoriteProduct(token, productId,add)
+
+    suspend fun deleteProductToFavorites(token: String, productId: Int, add: Boolean)
+            = retrofit.deleteFromFav(token, productId,add)
 
 }

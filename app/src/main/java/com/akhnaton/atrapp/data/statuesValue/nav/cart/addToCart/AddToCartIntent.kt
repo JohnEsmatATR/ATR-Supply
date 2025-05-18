@@ -7,4 +7,11 @@ sealed class AddToCartIntent {
         val quantity: Int?,
     ) : AddToCartIntent()
 
+    data class deleteProductToCart(
+        val productId: Int?,
+        val quantity: Int?,
+    ) : AddToCartIntent()
+
+
+
 }

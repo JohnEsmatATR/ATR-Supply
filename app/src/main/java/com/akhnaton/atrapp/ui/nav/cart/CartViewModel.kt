@@ -55,6 +55,42 @@ class CartViewModel : ViewModel() {
             }
         }
     }
+    fun calculateCartTotals(products: List<ProductModel>): CartTotals {
+        var totalPriceBeforeDiscount = 0.0
+        var totalDiscount = 0.0
+        val deliveryFee = 20.0
+
+        for (product in products) {
+            val quantity = product.MY_QUANTITY
+            val priceWithoutTax = product.PRICE_WITHOUT_TAX
+            val priceAfterDiscount = product.PRICE_AFTER_DISCOUNT
+
+            totalPriceBeforeDiscount += priceWithoutTax * quantity
+            totalDiscount += (priceWithoutTax - priceAfterDiscount) * quantity
+        }
+
+        val totalPriceAfterDiscount = totalPriceBeforeDiscount - totalDiscount
+
+
+        val finalDeliveryFee = if (totalPriceAfterDiscount > 500) 0.0 else deliveryFee
+
+        val grandTotal = totalPriceAfterDiscount + finalDeliveryFee
+
+        return CartTotals(
+            totalBeforeDiscount = totalPriceBeforeDiscount,
+            discount = totalDiscount,
+            deliveryFee = finalDeliveryFee,
+            grandTotal = grandTotal
+        )
+    }
+
+    data class CartTotals(
+        val totalBeforeDiscount: Double,
+        val discount: Double,
+        val deliveryFee: Double,
+        val grandTotal: Double
+    )
+
 
 }
 

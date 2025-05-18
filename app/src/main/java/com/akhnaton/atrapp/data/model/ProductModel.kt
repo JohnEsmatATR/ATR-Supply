@@ -9,7 +9,7 @@ data class ProductModel(
     val DESCRIPTION: String = "",
     var IMAGE_URL: String = "",
     val QUANTITY: Int = 0,
-    val MY_QUANTITY: Int = 0,
+    var MY_QUANTITY: Int = 0,
     val WEIGHT: String = "",
     val QOUTA: Int = 0,
     val TAX: Int = 0,

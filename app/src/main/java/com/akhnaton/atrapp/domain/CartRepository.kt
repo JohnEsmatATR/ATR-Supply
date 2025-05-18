@@ -16,9 +16,17 @@ class CartRepository {
         quantity,
     )
 
+    suspend fun deleteProductFromCart(
+        productId: Int?,
+        quantity: Int?,
+    ) = retrofit.deleteFromCart(
+        productId,
+        quantity,
+    )
+
+
     suspend fun getMyCart(
     ) = retrofit.getMyCart()
 
-    suspend fun checkout(
-    ) = retrofit.checkout()
+    suspend fun checkout() = retrofit.checkout()
 }
