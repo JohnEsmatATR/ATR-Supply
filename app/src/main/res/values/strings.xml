@@ -48,7 +48,7 @@
     <string name="filter">Filter</string>
     <string name="nothing">" "</string>
     <string name="size_">Size:</string>
-    <string name="availability_">Availability:</string>
+    <string name="availability_">Availability : </string>
     <string name="minus">-</string>
     <string name="plus">+</string>
     <string name="select_the_quantity">Select the quantity</string>
@@ -63,10 +63,10 @@
     <string name="my_cart">My Cart</string>
     <string name="your_cart_is_empty">Your cart is empty</string>
     <string name="checkout">Checkout</string>
-    <string name="grand_total">Grand Total</string>
-    <string name="delivery_free">Delivery Free</string>
-    <string name="discount">Discount</string>
-    <string name="item_total">Item Total</string>
+    <string name="grand_total">Grand Total : </string>
+    <string name="delivery_free">Delivery :</string>
+    <string name="discount">Discount : </string>
+    <string name="item_total">Item Total : </string>
     <string name="user_reviews">User Reviews</string>
     <string name="you_might_also_like">You might also like</string>
     <string name="add_to_cart">Add to cart</string>

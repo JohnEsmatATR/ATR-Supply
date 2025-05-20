@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.enableEdgeToEdge
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,9 +15,12 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerInten
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.categories.CategoryActivity
 import com.akhnaton.atrapp.ui.nav.home.notifications.NotificationsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
@@ -169,6 +171,7 @@ class HomeFragment : BaseFragment() {
 //                addProductToFavorite(product.id, isFavorite)
             }
         )
+        bestSellerAdapter.isInHome= true
         bestSellerAdapter.setData(list, true, Common.bestSeller)
         binding.recyclerBestSeller.layoutManager = layoutManager
         binding.recyclerBestSeller.adapter = bestSellerAdapter

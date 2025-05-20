@@ -13,8 +13,10 @@
         android:background="@color/white"
         tools:context=".ui.nav.profile.AccountDetailsActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,16 +71,7 @@
                 app:shapeAppearanceOverlay="@style/circleImageView" />
 
 
-            <TextView
-                android:id="@+id/fullNameTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="Full Name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userImg" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nameLayout"
@@ -89,6 +82,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,22 +94,12 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:hint="Full Name"
-                    android:inputType="text"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/email"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameLayout" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailLayout"
@@ -126,6 +110,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -143,16 +128,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <TextView
-                android:id="@+id/phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/phone_number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailLayout" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/phoneLayout"
@@ -162,6 +138,7 @@
                 android:layout_marginHorizontal="20dp"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:boxStrokeWidth="1dp"
                 app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -180,16 +157,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <TextView
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/password"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneLayout" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordLayout"
@@ -200,6 +168,7 @@
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:hintTextColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -216,16 +185,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/address"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
+
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -235,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 app:boxBackgroundColor="@color/white"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:boxStrokeColor="@color/gray"
                 app:boxStrokeWidth="1dp"
                 app:hintTextColor="@color/orange"
@@ -449,6 +410,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/taxLayout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 </layout>

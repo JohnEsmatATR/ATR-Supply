@@ -75,7 +75,7 @@ class FavoriteViewModel : ViewModel() {
             try {
                 val response = HomeRepository().deleteProductToFavorites(token, productId, add)
                 if (response.code() == 200) {
-                    _state.value = FavoriteStatus.DeleteProductToFavourites(response.body()!!)
+                    _state.value = FavoriteStatus.DeleteProductToFavourites(response.body()!!,productId)
                 } else {
                     _state.value = FavoriteStatus.Error(response.body()?.message ?: "Unknown error")
                 }

@@ -25,7 +25,7 @@ class AddressesAdapter(private val onClick: (address: AddressModel, position: In
 
             binding.address = item
 
-            setChecked(item.prime, binding)
+
 
             itemView.setOnClickListener {
                 onClick(item, position)
@@ -35,14 +35,7 @@ class AddressesAdapter(private val onClick: (address: AddressModel, position: In
 
     }
 
-    fun setChecked(prime: Int, binding: LayoutAddressBinding) {
-        if (prime == 1) {
-            binding.imAddressChecked.visibility = View.GONE
-        } else {
-            binding.imAddressChecked.visibility = View.VISIBLE
-        }
 
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = LayoutAddressBinding.inflate(

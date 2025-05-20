@@ -31,10 +31,11 @@
 
         <ImageView
             android:id="@+id/btn_favorite"
-            android:layout_width="20dp"
-            android:layout_height="20sp"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             android:layout_marginBottom="10dp"
             android:src="@drawable/ic_favorite"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -145,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
-                    android:text="@string/size_"
+                    android:text="Dosagasc : "
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -256,7 +257,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:hint="1"
+                        android:text="1"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -330,6 +331,7 @@
                 android:layout_marginHorizontal="20sp"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_description">
@@ -378,6 +380,12 @@
                         android:stepSize="0.1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                    <TextView
+                        android:id="@+id/is_stock"
+                        android:layout_width="wrap_content"
+                        android:text="In Stock"
+                        android:layout_marginStart="@dimen/_5ssp"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

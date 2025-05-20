@@ -37,7 +37,6 @@ class CartAdapter(
             binding.cart = item
             binding.quantity = item.MY_QUANTITY
 
-
             if (isVisible) {
                 binding.btnPlus.visibility = View.VISIBLE
                 binding.btnMinus.visibility = View.VISIBLE
@@ -48,25 +47,31 @@ class CartAdapter(
                 binding.deleteItem.visibility = View.GONE
             }
 
-            // تحميل الصورة
+            // تعطيل زرار + لو MY_QUANTITY == QUANTITY
+            binding.btnPlus.isEnabled = item.MY_QUANTITY < item.QUANTITY
+
             binding.imItem.load(item.IMAGE_URL) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
                 error(R.drawable.ic_logo)
             }
 
-
             binding.btnPlus.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     quantity = binding.txtQuantity.text.toString().toInt()
-                    quantity++
-                    item.MY_QUANTITY = quantity
-                    binding.quantity = quantity
-                    onPlusClick(item, pos, quantity)
+                    if (quantity < item.QUANTITY) {
+                        quantity++
+                        item.MY_QUANTITY = quantity
+                        binding.quantity = quantity
+                        binding.btnPlus.isEnabled = quantity < item.QUANTITY
+                        onPlusClick(item, pos, quantity)
+                        if (quantity  == item.QUANTITY) {
+                            binding.btnPlus.isEnabled = false
+                        }
+                    }
                 }
             }
-
 
             binding.btnMinus.setOnClickListener {
                 val pos = bindingAdapterPosition
@@ -77,10 +82,13 @@ class CartAdapter(
                         item.MY_QUANTITY = quantity
                         binding.quantity = quantity
                         onMinusClick(item, pos, quantity)
+
+                        if (quantity < item.QUANTITY) {
+                            binding.btnPlus.isEnabled = true
+                        }
                     }
                 }
             }
-
 
             binding.deleteItem.setOnClickListener {
                 val pos = bindingAdapterPosition
@@ -89,7 +97,6 @@ class CartAdapter(
                 }
             }
 
-
             itemView.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
@@ -97,6 +104,7 @@ class CartAdapter(
                 }
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

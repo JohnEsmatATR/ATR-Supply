@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.AddressModel
 import com.akhnaton.atrapp.databinding.ActivityAddressesBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import kotlinx.coroutines.launch
 
 class   AddressesActivity : BaseActivity() {
     private lateinit var binding: ActivityAddressesBinding
@@ -33,7 +35,7 @@ class   AddressesActivity : BaseActivity() {
     }
 
     private fun init() {
-        getAddresses()
+        //getAddresses()
     }
 
     private fun onClick() {
@@ -111,23 +113,23 @@ class   AddressesActivity : BaseActivity() {
 //        }
     }
 
-    private fun getAddresses() {
-        val list = ArrayList<AddressModel>()
-        val item = AddressModel(ID= "", city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
-            user_id = 0, country_name = "Egypt", city_name = "Cairo", area_name = "Area", floor_number = 0, apartment_number = 0, ADDRESS = "Pharmacy", landmark = "Landmark", prime = 0 )
-        list.add(item)
-        list.add(item)
-        list.add(item)
-        list.add(item)
-        setupMyCartRecycler(list)
-//        lifecycleScope.launch {
-//            viewModel.addressIntent.send(
-//                AddressIntent.GetMyAddresses(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                )
-//            )
-//        }
-    }
+//    private fun getAddresses() {
+//        val list = ArrayList<AddressModel>()
+//        val item = AddressModel(ID= "", city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
+//            user_id = 0, country_name = "Egypt", city_name = "Cairo", area_name = "Area", floor_number = 0, apartment_number = 0, ADDRESS = "Pharmacy", landmark = "Landmark", prime = 0 )
+//        list.add(item)
+//        list.add(item)
+//        list.add(item)
+//        list.add(item)
+//        setupMyCartRecycler(list)
+////        lifecycleScope.launch {
+////            viewModel.addressIntent.send(
+////                AddressIntent.GetMyAddresses(
+////                    "Bearer ${SharedPreferenceHelper.userToken}",
+////                )
+////            )
+////        }
+//    }
 
 
     private fun makeAddressPrime(addressId: String) {

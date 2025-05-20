@@ -81,7 +81,7 @@ class CategoryActivity : BaseActivity(), AllCategoryAdapter.OnCategoryClickListe
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetCategories")
                             listCategory.addAll(it.data.data!!)
-
+                            Log.d(Common.KeroDebug, "observeHome: GetCategoriessssssss${listCategory.size}")
                             setAdapterData(listCategory)
                         } else {
                             hideProgressDialog(binding.progressLoading)

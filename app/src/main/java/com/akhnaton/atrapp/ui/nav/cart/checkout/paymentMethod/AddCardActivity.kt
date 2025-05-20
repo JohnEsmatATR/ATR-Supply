@@ -3,8 +3,10 @@ package com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import com.akhnaton.atrapp.databinding.ActivityAddCardBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import java.util.Calendar
 
 class AddCardActivity : BaseActivity() {
 
@@ -32,6 +34,36 @@ class AddCardActivity : BaseActivity() {
 
         init()
         onClick()
+        binding.btnCheckout.setOnClickListener {
+            val name = binding.txtCardHolderName.text.toString()
+            val number = binding.txtCardNumber.text.toString()
+            val expiry = binding.txtExpiryDate.text.toString()
+            val cvv = binding.txtCvv.text.toString()
+
+            if (!isValidCardHolderName(name)) {
+                binding.txtCardHolderName.error = "Please enter a valid name"
+                return@setOnClickListener
+            }
+
+            if (!isValidCardNumber(number)) {
+                binding.txtCardNumber.error = "Invalid card number"
+                return@setOnClickListener
+            }
+
+            if (!isValidExpiryDate(expiry)) {
+                binding.txtExpiryDate.error = "Invalid expiry date"
+                return@setOnClickListener
+            }
+
+            if (!isValidCVV(cvv)) {
+                binding.txtCvv.error = "Invalid CVV"
+                return@setOnClickListener
+            }
+
+
+            Toast.makeText(this, "Card is valid!", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun init() {
@@ -120,5 +152,47 @@ class AddCardActivity : BaseActivity() {
         }
         return digits
     }
+
+    // Card Validation
+    private fun isValidCardHolderName(name: String): Boolean {
+        return name.trim().isNotEmpty() && name.matches(Regex("^[a-zA-Z\\s]{2,40}$"))
+    }
+    private fun isValidCardNumber(number: String): Boolean {
+        val cleanNumber = number.replace("-", "")
+        if (cleanNumber.length != 16) return false
+        return isValidLuhn(cleanNumber)
+    }
+    private fun isValidLuhn(number: String): Boolean {
+        var sum = 0
+        var alternate = false
+        for (i in number.length - 1 downTo 0) {
+            var n = number[i].toString().toInt()
+            if (alternate) {
+                n *= 2
+                if (n > 9) n -= 9
+            }
+            sum += n
+            alternate = !alternate
+        }
+        return sum % 10 == 0
+    }
+    private fun isValidExpiryDate(date: String): Boolean {
+        if (!date.matches(Regex("^\\d{2}/\\d{2}$"))) return false
+
+        val parts = date.split("/")
+        val month = parts[0].toIntOrNull() ?: return false
+        val year = parts[1].toIntOrNull() ?: return false
+
+        if (month !in 1..12) return false
+
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR) % 100
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
+
+        return year > currentYear || (year == currentYear && month >= currentMonth)
+    }
+    private fun isValidCVV(cvv: String): Boolean {
+        return cvv.length == 3 && cvv.all { it.isDigit() }
+    }
+
 
 }

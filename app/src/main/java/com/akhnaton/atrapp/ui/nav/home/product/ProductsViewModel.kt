@@ -18,42 +18,52 @@ class ProductsViewModel : ViewModel() {
     val homeIntent = Channel<ProductsIntent>(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<ProductsStatus>(ProductsStatus.Idle)
-
     val state: StateFlow<ProductsStatus> get() = _state
+
+    // pagination values
+    var currentPage = 1
+    private val limit = 50
+    private var isLoading = false
+    private var isLastPage = false
 
     init {
         makeProductsObserve()
     }
-
     private fun makeProductsObserve() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is ProductsIntent.GetProducts -> getProductsBasedOnCategoryRepo(
-                        it.categoryId,
-                    )
+                    is ProductsIntent.GetProducts -> getProductsBasedOnCategoryRepo(it.categoryId)
                 }
             }
         }
     }
 
-    private fun getProductsBasedOnCategoryRepo(
-        categoryId: Int,
-    ) {
+
+
+    private fun getProductsBasedOnCategoryRepo(categoryId: Int) {
         viewModelScope.launch {
+            isLoading = true
             _state.value = ProductsStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getProduct(categoryId)
+                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit)
                 if (response.code() == 200) {
-                    ProductsStatus.GetProducts(response.body()!!)
+                    val data = response.body()!!
+                    if (data.data!!.size < limit) {
+                        isLastPage = true
+                    }
+                    if (!isLastPage) currentPage++
+                    ProductsStatus.GetProducts(data)
                 } else {
                     ProductsStatus.Error(response.message())
                 }
             } catch (e: Exception) {
                 ProductsStatus.Error(e.message)
             }
+            isLoading = false
         }
     }
 
 }
+
 

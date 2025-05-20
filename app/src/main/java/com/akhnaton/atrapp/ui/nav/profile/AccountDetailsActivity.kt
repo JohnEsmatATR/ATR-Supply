@@ -24,7 +24,7 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         binding.layoutPdf.visibility = View.GONE
         binding.passwordLayout.visibility = View.GONE
-        binding.password.visibility = View.GONE
+      //  binding.password.visibility = View.GONE
 
         binding.nameED.isEnabled = false
         binding.phoneED.isEnabled = false

@@ -19,6 +19,7 @@ import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 class CartFragment : BaseFragment() {
     lateinit var binding: FragmentCartBinding
@@ -78,11 +79,12 @@ class CartFragment : BaseFragment() {
                             products = it.data.data!!
                             checkNoProducts()
                             setupMyCartRecycler(products)
+                            val decimalFormat = DecimalFormat("#0.0")
                             val totals = cartViewModel.calculateCartTotals(products)
-                            binding.txtItemTotal.text = totals.totalBeforeDiscount.toString()
-                            binding.txtDiscount.text= totals.discount.toString()
-                            binding.txtDeliveryFree.text= totals.deliveryFee.toString() ?: "Free"
-                            binding.txtGrandTotal.text=totals.grandTotal.toString()
+                            binding.txtItemTotal.text = decimalFormat.format(totals.totalBeforeDiscount)
+                            binding.txtDiscount.text = decimalFormat.format(totals.discount)
+                            binding.txtDeliveryFree.text = if (totals.deliveryFee == 0.0) "Free Delivery" else decimalFormat.format(totals.deliveryFee)
+                            binding.txtGrandTotal.text = decimalFormat.format(totals.grandTotal)
 
                         } else {
                             hideProgressDialog(binding.progressLoading)
@@ -216,10 +218,11 @@ class CartFragment : BaseFragment() {
     private fun checkNoProducts() {
         if (products.isEmpty()) {
             binding.txtNoProducts.visibility = View.VISIBLE
-            binding.layoutCart.visibility = View.GONE
+          //  binding.layoutCart.visibility = View.GONE
+
         } else {
             binding.txtNoProducts.visibility = View.GONE
-            binding.layoutCart.visibility = View.VISIBLE
+          //  binding.layoutCart.visibility = View.VISIBLE
         }
     }
 

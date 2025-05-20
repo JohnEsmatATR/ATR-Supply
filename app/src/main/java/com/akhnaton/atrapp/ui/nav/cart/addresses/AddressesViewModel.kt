@@ -1,14 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart.addresses
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.launch
 
 class AddressesViewModel : ViewModel()  {
 //    val addressIntent = Channel<AddressIntent>(Channel.UNLIMITED)

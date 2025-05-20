@@ -60,4 +60,14 @@ interface IProducts {
         @Field("item_id") productId: Int,
         @Field("liked") liked: Boolean
     ): Response<BaseModel<Any>>
+
+    @FormUrlEncoded
+    @POST(ConstantLinks.GET_ALL_PRODUCT)
+    suspend fun getProductsByPagination(
+        @Field("category_id") categoryId: Int?,
+        @Field("page") page: Int,
+        @Field("per_page") limit: Int
+    ): Response<BaseModel<List<ProductModel>>>
+
+
 }

@@ -2,6 +2,7 @@ package com.akhnaton.atrapp.ui.nav.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.privacyLayout.setOnClickListener(this)
         binding.aboutLayout.setOnClickListener(this)
         binding.contactLayout.setOnClickListener(this)
+        binding.logoutLayout.setOnClickListener(this)
         return binding.root
     }
 
@@ -67,9 +69,13 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                 it.userToken = null
                 it.language = "en"
             }
+
             val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            requireActivity().finish()
         }
+
     }
 
 

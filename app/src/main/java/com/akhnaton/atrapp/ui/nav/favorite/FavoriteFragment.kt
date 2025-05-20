@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,9 +16,11 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.databinding.FragmentFavoriteBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class FavoriteFragment : BaseFragment() {
     lateinit var binding: FragmentFavoriteBinding
@@ -25,6 +28,8 @@ class FavoriteFragment : BaseFragment() {
     lateinit var adapter: ProductAdapter
     private var flag = ""
     private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private var productList = mutableListOf<ProductModel>()
+
 //    private val addToCartViewModel: AddToCartViewModel by viewModels()
 //    lateinit var favoriteAdapter: FavoriteAdapter
 //    lateinit var products: List<ProductModel>
@@ -38,11 +43,15 @@ class FavoriteFragment : BaseFragment() {
 
         favoriteObserve()
         addToCartObserve()
+        search()
 
         return binding.root
     }
 
     private fun setupProductsRecycler(list: List<ProductModel>) {
+        productList.clear()
+        productList.addAll(list)
+
         val layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = ProductAdapter(
             onClick = { product, position ->
@@ -52,13 +61,18 @@ class FavoriteFragment : BaseFragment() {
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
-                addProductToFavorite(product.ID, isFavorite)
+                if (isFavorite) {
+                    addProductToFavorite(product.ID, isFavorite)
+                } else {
+                    deleteProductToFavorite(product.ID, isFavorite)
+                }
             }
         )
-        adapter.setData(list, false, flag)
+        adapter.setData(productList, false, flag)
         binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -108,7 +122,23 @@ class FavoriteFragment : BaseFragment() {
                     }
 
                     is FavoriteStatus.AddProductToFavourites -> TODO()
-                    is FavoriteStatus.DeleteProductToFavourites -> TODO()
+                    is FavoriteStatus.DeleteProductToFavourites -> {
+                        hideProgressDialog(binding.progressLoading)
+                        if (it.data.status == 200) {
+                            Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
+                            showToastSnack(it.data.message, false)
+
+                            // احذف المنتج من القائمة وحدّث الـ adapter
+                            productList.removeIf { product -> product.ID == it.productId } // <-- لازم تبعت الـ ID في الحالة
+                            adapter.setData(productList, false, flag)
+
+                        } else if (it.data.status == 401) {
+                            //onTokenExpired(it.data.errors!![0])
+                        } else {
+                            showToastSnack(it.data.message, true)
+                        }
+                    }
+
                 }
             }
         }
@@ -167,15 +197,15 @@ class FavoriteFragment : BaseFragment() {
         productId: Int,
         add: Boolean,
     ) {
-//        lifecycleScope.launch {
-//            favoriteViewModel.favoriteIntent.send(
-//                FavoriteIntent.AddProductToFavourites(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    productId,
-//                    add,
-//                )
-//            )
-//        }
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.AddProductToFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                )
+            )
+        }
     }
 
 //    private fun addProductToCart(product: ProductModel) {
@@ -222,5 +252,46 @@ class FavoriteFragment : BaseFragment() {
 //        binding.recycler.layoutManager = layoutManager
 //        binding.recycler.adapter = favoriteAdapter
 //    }
+
+
+
+    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.DeleteFromFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                )
+            )
+        }
+    }
+
+
+    private fun search() {
+        binding.txtSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(txt: String?): Boolean {
+                val query = txt?.lowercase(Locale.getDefault())?.trim() ?: ""
+                val filteredList = if (query.isEmpty()) {
+                    productList
+                } else {
+                    productList.filter { product ->
+                        product.TITLE.lowercase(Locale.getDefault()).contains(query) ||
+                                product.DESCRIPTION.lowercase(Locale.getDefault()).contains(query)
+                    }
+                }
+
+                if (::adapter.isInitialized) {
+                    adapter.updateList(filteredList)
+                }
+
+                return true
+            }
+        })
+    }
 
 }
