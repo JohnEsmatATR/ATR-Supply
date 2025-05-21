@@ -1,9 +1,13 @@
 package com.akhnaton.atrapp.shared
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.res.Configuration
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Gravity
@@ -32,6 +36,7 @@ open class BaseActivity : AppCompatActivity() {
         dp = resources.displayMetrics.density
 
         setAppLocale(SharedPreferenceHelper.language ?: "en")
+
 
     }
 
@@ -156,10 +161,28 @@ open class BaseActivity : AppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
-    fun getVersion(): String {
-        val pInfo: PackageInfo =
-            baseContext.packageManager.getPackageInfo(baseContext.packageName, 0)
-        return pInfo.versionName
+//    fun getVersion(): String {
+//        val pInfo: PackageInfo =
+//            baseContext.packageManager.getPackageInfo(baseContext.packageName, 0)
+//        return pInfo.versionName
+//    }
+
+    open fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        } else {
+            @Suppress("DEPRECATION")
+            val networkInfo = connectivityManager.activeNetworkInfo
+            @Suppress("DEPRECATION")
+            networkInfo != null && networkInfo.isConnected
+        }
     }
+
 
 }

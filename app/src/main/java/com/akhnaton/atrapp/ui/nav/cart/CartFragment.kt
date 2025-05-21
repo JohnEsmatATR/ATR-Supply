@@ -17,6 +17,8 @@ import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.databinding.FragmentCartBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.ShimmerAdapter
+import com.akhnaton.atrapp.shared.ShimmerAdapterCart
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
@@ -27,6 +29,7 @@ class CartFragment : BaseFragment() {
     private val addToCartViewModel: AddToCartViewModel by viewModels()
     private lateinit var cartAdapter: CartAdapter
     private var products: List<ProductModel> = ArrayList()
+    private lateinit var shimmerAdapter: ShimmerAdapterCart
 
 
     override fun onCreateView(
@@ -49,6 +52,12 @@ class CartFragment : BaseFragment() {
     }
 
     private fun init() {
+        shimmerAdapter = ShimmerAdapterCart(10)
+
+        binding.recycler.apply {
+            layoutManager =LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = shimmerAdapter
+        }
 
 
         getMyCart()
@@ -69,12 +78,15 @@ class CartFragment : BaseFragment() {
                     is CartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is CartStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        //showProgressDialog(binding.progressLoading)
+                        binding.recycler.adapter = shimmerAdapter
 
+                        binding.recycler.visibility=View.VISIBLE
                     }
 
                     is CartStatus.GetMyCart -> {
                         if (it.data.status == 200) {
+                            binding.recycler.visibility=View.VISIBLE
                             hideProgressDialog(binding.progressLoading)
                             products = it.data.data!!
                             checkNoProducts()
@@ -85,10 +97,13 @@ class CartFragment : BaseFragment() {
                             binding.txtDiscount.text = decimalFormat.format(totals.discount)
                             binding.txtDeliveryFree.text = if (totals.deliveryFee == 0.0) "Free Delivery" else decimalFormat.format(totals.deliveryFee)
                             binding.txtGrandTotal.text = decimalFormat.format(totals.grandTotal)
+                            binding.txtNoProducts.visibility = View.GONE
 
                         } else {
                             hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
+                            binding.txtNoProducts.visibility = View.VISIBLE
+                            binding.recycler.visibility=View.GONE
+                           // showToastSnack(it.data.message, true)
                         }
                     }
 
@@ -115,14 +130,15 @@ class CartFragment : BaseFragment() {
                     }
 
                     is AddToCartStatus.AddToCart -> {
-                        if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                        if (it.data.status == 400) {
+                          //  hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             getMyCart()
 
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
+
                         }
 
                     }
@@ -217,12 +233,13 @@ class CartFragment : BaseFragment() {
 
     private fun checkNoProducts() {
         if (products.isEmpty()) {
+
             binding.txtNoProducts.visibility = View.VISIBLE
-          //  binding.layoutCart.visibility = View.GONE
+            binding.layoutCart.visibility = View.GONE
 
         } else {
             binding.txtNoProducts.visibility = View.GONE
-          //  binding.layoutCart.visibility = View.VISIBLE
+            binding.layoutCart.visibility = View.VISIBLE
         }
     }
 

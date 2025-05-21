@@ -18,4 +18,6 @@
     <color name="teal">#25C97A</color>
     <color name="yellow">#FCE625</color>
 
+    <color name="shimmer_background">#393838</color>
+
 </resources>

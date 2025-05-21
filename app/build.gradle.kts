@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.akhnaton.atrapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.akhnaton.atrapp"
@@ -48,11 +48,12 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("androidx.activity:activity:1.10.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("androidx.fragment:fragment-ktx:1.6.0")
 
     //Sdp & Ssp
@@ -103,5 +104,8 @@ dependencies {
 
     //recyclerview
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
+
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
 
 }

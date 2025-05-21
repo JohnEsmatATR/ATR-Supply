@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,12 +21,14 @@ import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.shared.ShimmerAdapter
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.categories.CategoryActivity
 import com.akhnaton.atrapp.ui.nav.home.notifications.NotificationsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.home.search.SearchActivity
+import com.akhnaton.atrapp.util.isNetworkAvailable
 import kotlinx.coroutines.launch
 
 
@@ -33,22 +36,21 @@ class HomeFragment : BaseFragment() {
     lateinit var binding: FragmentHomeBinding
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val bestSellerViewModel: BestSellerViewModel by viewModels()
-
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
     lateinit var categoriesAdapter: CategoryAdapter
     lateinit var bestSellerAdapter: ProductAdapter
     var listCategory = mutableListOf<CategoryModel>()
     var listBestSeller = mutableListOf<ProductModel>()
+    private lateinit var shimmerAdapter: ShimmerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
-
-
         onClick()
-
         return binding.root
+
     }
 
     override fun onResume() {
@@ -64,13 +66,13 @@ class HomeFragment : BaseFragment() {
                     is CategoryStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is CategoryStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.recyclerCategory.adapter = shimmerAdapter
                     }
 
                     is CategoryStatus.GetCategory -> {
                         if (it.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
-
+                            binding
                             listCategory.clear()
                             listCategory.addAll(it.data.data!!)
                             Log.d(Common.KeroDebug, "observeHome: GetCategories : ${it.data.data!!}")
@@ -99,7 +101,8 @@ class HomeFragment : BaseFragment() {
                     is BestSellerStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is BestSellerStatus.Loading -> {
                         Log.d(Common.KeroDebug, "bestSellerObserve: Loading")
-                        showProgressDialog(binding.progressLoading)
+                      //  showProgressDialog(binding.progressLoading)
+                        binding.recyclerBestSeller.adapter = shimmerAdapter
                     }
 
                     is BestSellerStatus.GetBestSeller -> {
@@ -168,7 +171,11 @@ class HomeFragment : BaseFragment() {
                 startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
-//                addProductToFavorite(product.id, isFavorite)
+                if (isFavorite) {
+                    addProductToFavorite(product.ID, isFavorite)
+                } else {
+                    deleteProductToFavorite(product.ID, isFavorite)
+                }
             }
         )
         bestSellerAdapter.isInHome= true
@@ -180,13 +187,22 @@ class HomeFragment : BaseFragment() {
 
     private fun init() {
         binding.progressLoading.isEnabled = false
+        shimmerAdapter = ShimmerAdapter(10)
 
+        binding.recyclerCategory.apply {
+            layoutManager =LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = shimmerAdapter
+        }
+        binding.recyclerBestSeller.apply {
+            layoutManager =LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = shimmerAdapter
+        }
         categoryObserve()
         bestSellerObserve()
         getCategories()
         getBestSeller()
-    }
 
+    }
     private fun onClick() {
 //        binding.txtSeeAllCategory.setOnClickListener {
 //            val intent = Intent(context, SeeAllActivity::class.java)
@@ -227,4 +243,30 @@ class HomeFragment : BaseFragment() {
         }
 
     }
+
+
+    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.AddProductToFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                )
+            )
+        }
+    }
+    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.DeleteFromFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                )
+            )
+        }
+    }
+
+
 }

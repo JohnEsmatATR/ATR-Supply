@@ -22,7 +22,8 @@ class CartAdapter(
     private var type: String = ""
 
     fun setData(cart: List<ProductModel>, isVisible: Boolean, type: String) {
-        productsList = cart as ArrayList
+        productsList.clear()
+        productsList.addAll(cart)
         this.isVisible = isVisible
         this.type = type
         notifyDataSetChanged()
@@ -47,7 +48,7 @@ class CartAdapter(
                 binding.deleteItem.visibility = View.GONE
             }
 
-            // تعطيل زرار + لو MY_QUANTITY == QUANTITY
+
             binding.btnPlus.isEnabled = item.MY_QUANTITY < item.QUANTITY
 
             binding.imItem.load(item.IMAGE_URL) {

@@ -84,7 +84,7 @@ class ProductDetailsActivity : BaseActivity() {
         binding.txtItemName.text = product.TITLE
         binding.txtPrice.text = "${product.PRICE_AFTER_DISCOUNT} LE"
         binding.txtOldPrice.text = "${product.PRICE_WITH_TAX} LE"
-        binding.txtAvailability.text = "${product.WEIGHT}"
+        binding.txtSize.text = "${product.WEIGHT}"
         binding.txtDescription.text = "${product.DESCRIPTION}"
         binding.isStock.apply {
             text = if (product.IN_STOCK) "In Stock" else "Out of Stock"
@@ -102,58 +102,58 @@ class ProductDetailsActivity : BaseActivity() {
 
 
         addToCartObserve()
-        favoriteObserve()
+       // favoriteObserve()
 
     }
-    private fun favoriteObserve() {
-        lifecycleScope.launch {
-            favoriteViewModel.state.collect {
-                when (it) {
-                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
-                    is FavoriteStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
-                    }
-
-                    is FavoriteStatus.AddProductToFavourites -> {
-                        hideProgressDialog(binding.progressLoading)
-                        if (it.data.status == 200) {
-                            showToastSnack(it.data.message, false)
-
-                        } else if (it.data.status == 401) {
-
-                        } else {
-                            showToastSnack(it.data.message, true)
-                        }
-                    }
-
-                    is FavoriteStatus.GetFavorite -> {
-                        hideProgressDialog(binding.progressLoading)
-                        Log.d(Common.KeroDebug, "observeHome: GetProducts")
-
-                    }
-
-                    is FavoriteStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
-                    }
-
-                    is FavoriteStatus.DeleteProductToFavourites -> {
-                        hideProgressDialog(binding.progressLoading)
-                        if (it.data.status == 200) {
-                            showToastSnack(it.data.message, false)
-
-                        } else if (it.data.status == 401) {
-
-                        } else {
-                            showToastSnack(it.data.message, true)
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    private fun favoriteObserve() {
+//        lifecycleScope.launch {
+//            favoriteViewModel.state.collect {
+//                when (it) {
+//                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+//                    is FavoriteStatus.Loading -> {
+//                        Log.d(Common.KeroDebug, "observeHome: Loading")
+//                        showProgressDialog(binding.progressLoading)
+//                    }
+//
+//                    is FavoriteStatus.AddProductToFavourites -> {
+//                        hideProgressDialog(binding.progressLoading)
+//                        if (it.data.status == 200) {
+//                            showToastSnack(it.data.message, false)
+//
+//                        } else if (it.data.status == 401) {
+//
+//                        } else {
+//                            showToastSnack(it.data.message, true)
+//                        }
+//                    }
+//
+//                    is FavoriteStatus.GetFavorite -> {
+//                        hideProgressDialog(binding.progressLoading)
+//                        Log.d(Common.KeroDebug, "observeHome: GetProducts")
+//
+//                    }
+//
+//                    is FavoriteStatus.Error -> {
+//                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+//                        hideProgressDialog(binding.progressLoading)
+//                        showToastSnack(it.error.toString(), true)
+//                    }
+//
+//                    is FavoriteStatus.DeleteProductToFavourites -> {
+//                        hideProgressDialog(binding.progressLoading)
+//                        if (it.data.status == 200) {
+//                            showToastSnack(it.data.message, false)
+//
+//                        } else if (it.data.status == 401) {
+//
+//                        } else {
+//                            showToastSnack(it.data.message, true)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     private fun onClick() {
         binding.btnBack.setOnClickListener {
             finish()

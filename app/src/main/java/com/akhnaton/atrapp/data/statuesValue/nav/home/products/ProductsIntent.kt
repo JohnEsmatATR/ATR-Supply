@@ -4,5 +4,6 @@ sealed class ProductsIntent {
 
     data class GetProducts(
         val categoryId: Int,
+        val page: Int,
     ) : ProductsIntent()
 }

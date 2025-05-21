@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/btn_back"
-            android:layout_width="20dp"
-            android:layout_height="20sp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
@@ -177,11 +177,11 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/txt_availability"
+                    app:layout_constraintEnd_toStartOf="@id/is_stock"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/txt_availability"
+                    android:id="@+id/is_stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -380,12 +380,7 @@
                         android:stepSize="0.1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-                    <TextView
-                        android:id="@+id/is_stock"
-                        android:layout_width="wrap_content"
-                        android:text="In Stock"
-                        android:layout_marginStart="@dimen/_5ssp"
-                        android:layout_height="wrap_content"/>
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

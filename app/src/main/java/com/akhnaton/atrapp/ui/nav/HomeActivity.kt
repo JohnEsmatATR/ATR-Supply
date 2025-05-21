@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.akhnaton.atrapp.ui.nav.favorite.FavoriteFragment
 import com.akhnaton.atrapp.ui.nav.home.HomeFragment
 import com.akhnaton.atrapp.ui.nav.profile.ProfileFragment
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
+import com.akhnaton.atrapp.util.isNetworkAvailable
 
 class HomeActivity : BaseActivity() {
     lateinit var binding: ActivityHomeBinding
@@ -37,6 +39,8 @@ class HomeActivity : BaseActivity() {
         setContentView(binding.root)
         init()
         onClick()
+
+
     }
 
     private fun init() {
@@ -173,4 +177,5 @@ class HomeActivity : BaseActivity() {
             }
         }
     }
+
 }

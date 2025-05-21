@@ -1,4 +1,5 @@
 package com.akhnaton.atrapp.ui.nav.home.product
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +16,6 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatu
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsStatus
-import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchStatus
 import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
@@ -25,7 +24,6 @@ import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
-import com.akhnaton.atrapp.ui.nav.home.search.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -56,24 +54,25 @@ class ProductsActivity : BaseActivity() {
         init()
         onClick()
         search()
+        currentPage = intent.getIntExtra("saved_page", 1)
     }
 
 
     private fun init() {
-        productsObserve()
-        bestSellerObserve()
-       // favoriteObserve()
-
 
         flag = intent.getStringExtra("flag") ?: ""
 
         when (flag) {
             Common.category -> {
+                productsObserve()
                 category = intent.getSerializableExtra("category") as CategoryModel
-                getProductsBasedOnCategory(category.ID)
+                categoryId = category.ID  // أضف هذا السطر
+                getProductsBasedOnCategory(categoryId)
+
             }
             Common.bestSeller -> {
                 getBestSeller()
+                bestSellerObserve()
             }
         }
 
@@ -85,30 +84,6 @@ class ProductsActivity : BaseActivity() {
             finish()
         }
     }
-
-
-
-//    private fun search() {
-//        binding.txtSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(p0: String?): Boolean {
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(txt: String?): Boolean {
-//                val list: List<ProductModel> = ArrayList()
-//                for (product in products) {
-//                    if (product.TITLE.lowercase(Locale.getDefault()).trim()
-//                            .contains(txt ?: "".lowercase(Locale.getDefault()).trim())
-//                        || product.DESCRIPTION.lowercase(Locale.getDefault()).trim()
-//                            .contains(txt ?: "".lowercase(Locale.getDefault()).trim())) {
-//                        (list as ArrayList).add(product)
-//                    }
-//                }
-//                setupProductsRecycler(list)
-//                return true
-//            }
-//        })
-//    }
 
     private fun bestSellerObserve() {
         lifecycleScope.launch {
@@ -163,15 +138,17 @@ class ProductsActivity : BaseActivity() {
                 when (state) {
                     is ProductsStatus.Idle -> {
                         Log.d(Common.KeroDebug, "Pagination Log: State = Idle")
-                        binding.txtNoProducts.visibility = View.VISIBLE
+                        binding.txtNoProducts.visibility = View.GONE
                     }
                     is ProductsStatus.Loading -> {
                         isLoading = true
                         Log.d(Common.KeroDebug, "Pagination Log: Loading page $currentPage")
                         showProgressDialog(binding.progressLoading)
+                        binding.txtNoProducts.visibility = View.GONE
                     }
                     is ProductsStatus.GetProducts -> {
                         isLoading = false
+
                         hideProgressDialog(binding.progressLoading)
 
                         if (state.data.status != -1) {
@@ -190,8 +167,8 @@ class ProductsActivity : BaseActivity() {
                             if (dataList.isNotEmpty()) {
                                 binding.txtNoProducts.visibility = View.GONE
                                 products.addAll(dataList)
-                                setupProductsRecycler(dataList) // بدل adapter.addData(dataList)
-                                currentPage++  // نزود رقم الصفحة للتحميل القادم
+                                setupProductsRecycler(dataList)
+                                currentPage++
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                             }
@@ -213,11 +190,6 @@ class ProductsActivity : BaseActivity() {
             }
         }
     }
-
-
-
-
-
 
     private fun addProductToFavorite(productId: Int, add: Boolean, ) {
         lifecycleScope.launch {
@@ -243,11 +215,12 @@ class ProductsActivity : BaseActivity() {
     }
 
 
-    private fun getProductsBasedOnCategory(categoryId: Int) {
+    private fun getProductsBasedOnCategory(categoryId: Int, page: Int = 1) {
         lifecycleScope.launch {
             viewModel.homeIntent.send(
                 ProductsIntent.GetProducts(
-                    categoryId,
+                    categoryId = categoryId,
+                    page = page
                 )
             )
         }
@@ -290,7 +263,10 @@ class ProductsActivity : BaseActivity() {
                             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 3) {
                                 Log.d(Common.KeroDebug, "Pagination Log: Triggering load for page $currentPage")
                                 lifecycleScope.launch(Dispatchers.Main) {
-                                    viewModel.homeIntent.send(ProductsIntent.GetProducts(categoryId))
+                                    viewModel.homeIntent.send(ProductsIntent.GetProducts(
+                                        categoryId,
+                                        currentPage
+                                    ))
                                 }
 
                             }
@@ -331,5 +307,9 @@ class ProductsActivity : BaseActivity() {
             }
         })
     }
+
+
+
+
 
 }

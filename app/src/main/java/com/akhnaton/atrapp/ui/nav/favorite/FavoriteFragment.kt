@@ -17,6 +17,7 @@ import com.akhnaton.atrapp.databinding.FragmentFavoriteBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.shared.ShimmerAdapter
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import kotlinx.coroutines.launch
@@ -29,6 +30,7 @@ class FavoriteFragment : BaseFragment() {
     private var flag = ""
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private var productList = mutableListOf<ProductModel>()
+    private lateinit var shimmerAdapter: ShimmerAdapter
 
 //    private val addToCartViewModel: AddToCartViewModel by viewModels()
 //    lateinit var favoriteAdapter: FavoriteAdapter
@@ -82,6 +84,12 @@ class FavoriteFragment : BaseFragment() {
     }
 
     private fun init() {
+        shimmerAdapter = ShimmerAdapter(10)
+
+        binding.recycler.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = shimmerAdapter
+        }
         getMyFavorite()
     }
 
@@ -93,7 +101,8 @@ class FavoriteFragment : BaseFragment() {
                     is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is FavoriteStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        //showProgressDialog(binding.progressLoading)
+                        binding.recycler.adapter = shimmerAdapter
                     }
 
                     is FavoriteStatus.GetFavorite -> {
@@ -124,20 +133,28 @@ class FavoriteFragment : BaseFragment() {
                     is FavoriteStatus.AddProductToFavourites -> TODO()
                     is FavoriteStatus.DeleteProductToFavourites -> {
                         hideProgressDialog(binding.progressLoading)
+
                         if (it.data.status == 200) {
                             Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
                             showToastSnack(it.data.message, false)
 
-                            // احذف المنتج من القائمة وحدّث الـ adapter
-                            productList.removeIf { product -> product.ID == it.productId } // <-- لازم تبعت الـ ID في الحالة
+                            // احذف العنصر من القائمة
+                            productList.removeIf { product -> product.ID == it.productId }
+
+                            // أعد تحديث الأدابتر (أو اربط الأدابتر الحقيقي لو الشيمر شغال)
+                            if (binding.recycler.adapter != adapter) {
+                                binding.recycler.adapter = adapter
+                            }
+
                             adapter.setData(productList, false, flag)
 
                         } else if (it.data.status == 401) {
-                            //onTokenExpired(it.data.errors!![0])
+                            // onTokenExpired(it.data.errors!![0])
                         } else {
                             showToastSnack(it.data.message, true)
                         }
                     }
+
 
                 }
             }

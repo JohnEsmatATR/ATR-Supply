@@ -7,10 +7,10 @@ import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.ui.auth.onBoarding.WelcomeActivity
 import com.akhnaton.atrapp.databinding.ActivitySplashBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.onBoarding.WelcomeActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,4 +54,5 @@ class SplashActivity : BaseActivity() {
             }
         }
     }
+
 }

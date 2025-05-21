@@ -22,7 +22,7 @@ interface ICart {
     suspend fun getMyCart(): Response<BaseModel<List<ProductModel>>>
 
     @POST(ConstantLinks.CHECKOUT)
-    suspend fun checkout(): Response<BaseModel<ProductModel>>
+    suspend fun checkout(): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.DELETE_FROM_CART)

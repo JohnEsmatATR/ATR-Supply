@@ -126,10 +126,10 @@ open class BaseFragment : Fragment() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
-    fun getVersion(): String {
-        val pInfo: PackageInfo =
-            requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
-        return pInfo.versionName
-    }
+//    fun getVersion(): String {
+//        val pInfo: PackageInfo =
+//            requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+//        return pInfo.versionName
+//    }
 
 }
