@@ -80,7 +80,6 @@ class CartFragment : BaseFragment() {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         //showProgressDialog(binding.progressLoading)
                         binding.recycler.adapter = shimmerAdapter
-
                         binding.recycler.visibility=View.VISIBLE
                     }
 
@@ -126,17 +125,17 @@ class CartFragment : BaseFragment() {
                     is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is AddToCartStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                      //showProgressDialog(binding.progressLoading)
                     }
 
                     is AddToCartStatus.AddToCart -> {
-                        if (it.data.status == 400) {
+                        if (it.data.status == 200) {
                           //  hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             getMyCart()
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            // hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
 
                         }
@@ -145,7 +144,7 @@ class CartFragment : BaseFragment() {
 
                     is AddToCartStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        //hideProgressDialog(binding.progressLoading)
                         showToastSnack(it.error.toString(), true)
                     }
 

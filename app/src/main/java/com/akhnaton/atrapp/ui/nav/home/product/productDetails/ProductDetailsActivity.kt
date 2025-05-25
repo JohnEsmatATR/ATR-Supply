@@ -5,9 +5,11 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -48,22 +50,6 @@ class ProductDetailsActivity : BaseActivity() {
             finish()
         }
 
-        if (product.IS_LIKED) {
-            binding.btnFavorite.load(R.drawable.ic_favorite_fill)
-        } else {
-            binding.btnFavorite.load(R.drawable.ic_favorite)
-        }
-
-        binding.btnFavorite.setOnClickListener {
-            if (product.IS_LIKED) {
-                binding.btnFavorite.load(R.drawable.ic_favorite)
-                deleteProductToFavorite(product.ID, false)
-            } else {
-                binding.btnFavorite.load(R.drawable.ic_favorite_fill)
-                addProductToFavorite(product.ID, true)
-            }
-            product.IS_LIKED = !product.IS_LIKED
-        }
 
 
     }
@@ -75,7 +61,9 @@ class ProductDetailsActivity : BaseActivity() {
         binding.txtYouMightAlsoLike.visibility = View.GONE
 
         product = intent.getSerializableExtra("product") as ProductModel
+        val transitionName = intent.getStringExtra("transitionName")
 
+        ViewCompat.setTransitionName(binding.imProduce, transitionName)
         binding.imProduce.load(product.IMAGE_URL) {
             crossfade(true)
             placeholder(R.drawable.ic_logo)
@@ -225,24 +213,28 @@ class ProductDetailsActivity : BaseActivity() {
 
     }
 
-    private fun setupProductSuggestRecycler(list: List<ProductModel>) {
-        val layoutManager =
-            LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
-        productSuggestAdapter = ProductAdapter(
-            onClick = { product, position ->
-                val intent = Intent(baseContext, ProductDetailsActivity::class.java)
-                intent.putExtra("flag", Common.category)
-                intent.putExtra("product", product)
-                startActivity(intent)
-            },
-            onFavoriteClick = { product, position, isFavorite ->
-//                addProductToFavorite(product.id, isFavorite)
-            }
-        )
-        productSuggestAdapter.setData(list, true, Common.bestSeller)
-        binding.recyclerSuggest.layoutManager = layoutManager
-        binding.recyclerSuggest.adapter = productSuggestAdapter
-    }
+//   // private fun setupProductSuggestRecycler(list: List<ProductModel>) {
+//        val layoutManager =
+//            LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
+//        productSuggestAdapter = ProductAdapter(
+//            onClick = { product, position ->
+//                val intent = Intent(baseContext, ProductDetailsActivity::class.java)
+//                intent.putExtra("flag", Common.category)
+//                intent.putExtra("product", product)
+//                startActivity(intent)
+//            },
+//            onFavoriteClick = { product, position, isFavorite ->
+//                if (isFavorite) {
+//                    addProductToFavorite(product.ID, isFavorite)
+//                } else {
+//                    deleteProductToFavorite(product.ID, isFavorite)
+//                }
+//            }
+//        )
+//        productSuggestAdapter.setData(list, true, Common.bestSeller)
+//        binding.recyclerSuggest.layoutManager = layoutManager
+//        binding.recyclerSuggest.adapter = productSuggestAdapter
+//    }
     private fun setupReviewRecycler(list: List<ReviewModel>) {
         val layoutManager =
             LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
@@ -279,6 +271,22 @@ class ProductDetailsActivity : BaseActivity() {
         }
     }
 
+//    if (product.IS_LIKED) {
+//        binding.btnFavorite.load(R.drawable.ic_favorite_fill)
+//    } else {
+//        binding.btnFavorite.load(R.drawable.ic_favorite)
+//    }
+//
+//    binding.btnFavorite.setOnClickListener {
+//        if (product.IS_LIKED) {
+//            binding.btnFavorite.load(R.drawable.ic_favorite)
+//            deleteProductToFavorite(product.ID, false)
+//        } else {
+//            binding.btnFavorite.load(R.drawable.ic_favorite_fill)
+//            addProductToFavorite(product.ID, true)
+//        }
+//        product.IS_LIKED = !product.IS_LIKED
+//    }
 
 
 }

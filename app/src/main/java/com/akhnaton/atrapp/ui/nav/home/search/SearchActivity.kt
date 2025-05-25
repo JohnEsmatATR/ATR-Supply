@@ -8,6 +8,7 @@ import android.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
@@ -132,11 +133,20 @@ class SearchActivity : BaseActivity() {
         if (!::adapter.isInitialized) {
             val layoutManager = GridLayoutManager(this, 2)
             adapter = ProductAdapter(
-                onClick = { product, position ->
-                    val intent = Intent(this, ProductDetailsActivity::class.java)
-                    intent.putExtra("flag", Common.category)
-                    intent.putExtra("product", product)
-                    startActivity(intent)
+                onClick = { product, position, sharedView, transitionName ->
+                    val intent = Intent(this@SearchActivity, ProductDetailsActivity::class.java).apply {
+                        putExtra("flag", Common.category)
+                        putExtra("product", product)
+                        putExtra("transitionName", transitionName)
+                    }
+
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@SearchActivity,  // لو داخل Fragment
+                        sharedView,
+                        transitionName
+                    )
+
+                    startActivity(intent, options.toBundle())
                 },
                 onFavoriteClick = { product, position, isFavorite ->
                     if (isFavorite) {

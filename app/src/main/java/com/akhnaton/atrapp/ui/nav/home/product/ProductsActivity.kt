@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.activity.viewModels
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -231,11 +232,20 @@ class ProductsActivity : BaseActivity() {
         if (!::adapter.isInitialized) {
             val layoutManager = GridLayoutManager(this, 2)
             adapter = ProductAdapter(
-                onClick = { product, position ->
-                    val intent = Intent(this, ProductDetailsActivity::class.java)
-                    intent.putExtra("flag", Common.category)
-                    intent.putExtra("product", product)
-                    startActivity(intent)
+                onClick = { product, position, sharedView, transitionName ->
+                    val intent = Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
+                        putExtra("flag", Common.category)
+                        putExtra("product", product)
+                        putExtra("transitionName", transitionName)
+                    }
+
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@ProductsActivity,
+                        sharedView,
+                        transitionName
+                    )
+
+                    startActivity(intent, options.toBundle())
                 },
                 onFavoriteClick = { product, position, isFavorite ->
                     if (isFavorite) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -46,6 +47,7 @@ class FavoriteFragment : BaseFragment() {
         favoriteObserve()
         addToCartObserve()
         search()
+        init()
 
         return binding.root
     }
@@ -56,11 +58,20 @@ class FavoriteFragment : BaseFragment() {
 
         val layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = ProductAdapter(
-            onClick = { product, position ->
-                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
-                intent.putExtra("flag", Common.category)
-                intent.putExtra("product", product)
-                startActivity(intent)
+            onClick = { product, position, sharedView, transitionName ->
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                    putExtra("flag", Common.category)
+                    putExtra("product", product)
+                    putExtra("transitionName", transitionName)
+                }
+
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    requireActivity(),
+                    sharedView,
+                    transitionName
+                )
+
+                startActivity(intent, options.toBundle())
             },
             onFavoriteClick = { product, position, isFavorite ->
                 if (isFavorite) {
@@ -79,7 +90,7 @@ class FavoriteFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        init()
+        //init()
 
     }
 
@@ -136,12 +147,10 @@ class FavoriteFragment : BaseFragment() {
 
                         if (it.data.status == 200) {
                             Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
-                            showToastSnack(it.data.message, false)
+                            //showToastSnack(it.data.message, false)
 
-                            // احذف العنصر من القائمة
                             productList.removeIf { product -> product.ID == it.productId }
 
-                            // أعد تحديث الأدابتر (أو اربط الأدابتر الحقيقي لو الشيمر شغال)
                             if (binding.recycler.adapter != adapter) {
                                 binding.recycler.adapter = adapter
                             }
@@ -151,7 +160,7 @@ class FavoriteFragment : BaseFragment() {
                         } else if (it.data.status == 401) {
                             // onTokenExpired(it.data.errors!![0])
                         } else {
-                            showToastSnack(it.data.message, true)
+                           // showToastSnack(it.data.message, true)
                         }
                     }
 

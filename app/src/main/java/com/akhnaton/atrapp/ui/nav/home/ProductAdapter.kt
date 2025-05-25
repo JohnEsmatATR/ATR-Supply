@@ -1,20 +1,20 @@
 package com.akhnaton.atrapp.ui.nav.home
 
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
-import com.akhnaton.atrapp.shared.Common
 
 class ProductAdapter(
-    private val onClick: (product: ProductModel, position: Int) -> Unit,
+    private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit
+    ,
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit
 ) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
@@ -67,8 +67,11 @@ class ProductAdapter(
             }
 
             itemView.setOnClickListener {
-                onClick(item, position)
+                val sharedView = binding.imItem
+                val transitionName = ViewCompat.getTransitionName(sharedView) ?: "itemImageTransition"
+                onClick(item, position, sharedView, transitionName)
             }
+
         }
 
         private fun changeFavoriteButton() {

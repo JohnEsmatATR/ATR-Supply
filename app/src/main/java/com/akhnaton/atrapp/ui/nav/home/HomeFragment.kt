@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -163,12 +164,22 @@ class HomeFragment : BaseFragment() {
     private fun setupProductBestSellerRecycler(list: List<ProductModel>) {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
         bestSellerAdapter = ProductAdapter(
-            onClick = { product, position ->
-                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
-                intent.putExtra("flag", Common.category)
-                intent.putExtra("product", product)
-                startActivity(intent)
+            onClick = { product, position, sharedView, transitionName ->
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                    putExtra("flag", Common.category)
+                    putExtra("product", product)
+                    putExtra("transitionName", transitionName)
+                }
+
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    requireActivity(),  // لو داخل Fragment
+                    sharedView,
+                    transitionName
+                )
+
+                startActivity(intent, options.toBundle())
             },
             onFavoriteClick = { product, position, isFavorite ->
                 if (isFavorite) {
@@ -178,11 +189,13 @@ class HomeFragment : BaseFragment() {
                 }
             }
         )
-        bestSellerAdapter.isInHome= true
+
+        bestSellerAdapter.isInHome = true
         bestSellerAdapter.setData(list, true, Common.bestSeller)
         binding.recyclerBestSeller.layoutManager = layoutManager
         binding.recyclerBestSeller.adapter = bestSellerAdapter
     }
+
 
 
     private fun init() {
