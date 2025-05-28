@@ -28,8 +28,10 @@ class SearchViewModel : ViewModel() {
             searchIntent.consumeAsFlow().collect {
                 when (it) {
                     is SearchIntent.SearchProduct -> searchProduct(
-                        it.word,
+                        it.word,it.categoryId
                     )
+
+
                 }
             }
         }
@@ -37,12 +39,13 @@ class SearchViewModel : ViewModel() {
 
 
     private fun searchProduct(
-        word:String,
+        word:String?="",
+        categoryId :Int?=0
     ) {
         viewModelScope.launch {
             _state.value = SearchStatus.Loading
             _state.value = try {
-                val response = HomeRepository().searchProduct(word)
+                val response = HomeRepository().searchProduct(word,categoryId)
                 if (response.code() == 200) {
                     SearchStatus.SearchProduct(response.body()!!)
                 } else {

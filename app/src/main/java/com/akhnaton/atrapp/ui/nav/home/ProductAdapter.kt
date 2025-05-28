@@ -23,14 +23,15 @@ class ProductAdapter(
     private lateinit var flag: String
      var isInHome: Boolean = false
 
-    fun setData(newList: List<ProductModel>, isLoadMore: Boolean, flag: String) {
-        this.flag = flag
-        if (!isLoadMore) {
+    // في ProductAdapter
+    fun setData(newList: List<ProductModel>, isAppend: Boolean, flag: String) {
+        if (!isAppend) {
             productsList.clear()
         }
         productsList.addAll(newList)
         notifyDataSetChanged()
     }
+
 
     fun addData(newList: List<ProductModel>) {
         val startPosition = productsList.size

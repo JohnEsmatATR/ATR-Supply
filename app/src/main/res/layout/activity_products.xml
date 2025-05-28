@@ -65,6 +65,7 @@
         android:layout_margin="15dp"
         android:paddingHorizontal="15dp"
         android:paddingVertical="5dp"
+        android:visibility="gone"
         android:background="@drawable/background_filter_style"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,43 +82,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/filter"
+
             android:textColor="@color/mid_gray_1"
             android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_filter">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start"
-            tools:text="Skin Care"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/txt_see_all_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="end"
-            tools:text="20 items"
-            android:textColor="@color/mid_gray_1"
-            android:textSize="12sp"
             />
 
     </LinearLayout>
@@ -127,16 +94,15 @@
         android:id="@+id/recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="25dp"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_category"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar"
         app:spanCount="2"
         tools:itemCount="10"
         tools:listitem="@layout/layout_product" />

@@ -36,7 +36,8 @@ interface IProducts {
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun searchProduct(
-        @Field("search") search: String,
+        @Field("search") search: String?= "",
+        @Field("category_id") categoryId: Int?=null
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded
@@ -68,6 +69,11 @@ interface IProducts {
         @Field("page") page: Int,
         @Field("per_page") limit: Int
     ): Response<BaseModel<List<ProductModel>>>
-
+    @FormUrlEncoded
+    @POST(ConstantLinks.GET_ALL_PRODUCT)
+    suspend fun filterProduct(
+        @Field("search") search: String?= "",
+        @Field("category_id") categoryId: Int
+    ): Response<BaseModel<List<ProductModel>>>
 
 }
