@@ -201,11 +201,6 @@ class SearchActivity : BaseActivity() {
         recyclerView.adapter = filterAdapter
     }
 
-
-
-
-
-
     private fun observeCategoryState() {
         lifecycleScope.launch {
             cateViewModel.state.collect { state ->
