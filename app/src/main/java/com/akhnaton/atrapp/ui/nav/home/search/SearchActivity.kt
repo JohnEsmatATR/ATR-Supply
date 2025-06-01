@@ -57,11 +57,12 @@ class SearchActivity : BaseActivity() {
     private fun onClick() {
         binding.txtSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(qString: String): Boolean {
+                searchWord = qString
                 return true
             }
             override fun onQueryTextSubmit(qString: String): Boolean {
                 if (qString.isNotEmpty()) {
-                    searchWord = qString
+
                     searchProduct(qString)
                 }
                 return true
@@ -177,25 +178,30 @@ class SearchActivity : BaseActivity() {
     private fun setupCategoryRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.filter_recy)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
         filterAdapter = FilterProductsAdapter(
             onClick = { categoryId, title ->
-                val word = binding.txtSearchWord.text.toString().trim()
-
-
+                var searchWord = binding.txtSearch.query.toString().trim()
+                if (searchWord.isEmpty()) {
+                    searchWord = ""
+                }
+                binding.txtSearchWord.text = searchWord
                 if (::adapter.isInitialized) {
                     adapter.setData(emptyList(), false, flag)
                 }
-
                 lifecycleScope.launch {
                     searchViewModel.searchIntent.send(
-                        SearchIntent.SearchProduct(word, categoryId)
+                        SearchIntent.SearchProduct(searchWord, categoryId)
                     )
                 }
             },
             categories = emptyList()
         )
+
         recyclerView.adapter = filterAdapter
     }
+
+
 
 
 
