@@ -6,8 +6,8 @@ object ConstantLinks {
     //const val BASE_URL = "http://sales.atr-eg.com/customer_test/"   //test
     // out site company use https
 
-    const val BASE_URL = "https://sales.atr-eg.com/customer_test/"          // test
-    //const val BASE_URL = "https://sales.atr-eg.com/customer/"     // Prod
+    const val BASE_URL = "http://10.42.151.27/customer_test/"          // test
+   // const val BASE_URL = "https://sales.atr-eg.com/customer/"     // Prod
 
     // Auth
     const val LOGIN = "user/login"
@@ -37,4 +37,7 @@ object ConstantLinks {
     // fav
     const val GET_FAV_PRODUCT = "product/add_fav?debug=1"
     const val DELETE_FROM_FAV = "product/delete_fav"
+
+    // get user address
+    const val CUSTOMER_ADDRESS = "user/get_customer_sites"
 }

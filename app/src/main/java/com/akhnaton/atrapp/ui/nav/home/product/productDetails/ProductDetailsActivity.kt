@@ -63,7 +63,7 @@ class ProductDetailsActivity : BaseActivity() {
         product = intent.getSerializableExtra("product") as ProductModel
         val transitionName = intent.getStringExtra("transitionName")
 
-        ViewCompat.setTransitionName(binding.imProduce, transitionName)
+        ViewCompat.setTransitionName(binding.txtItemName, transitionName)
         binding.imProduce.load(product.IMAGE_URL) {
             crossfade(true)
             placeholder(R.drawable.ic_logo)

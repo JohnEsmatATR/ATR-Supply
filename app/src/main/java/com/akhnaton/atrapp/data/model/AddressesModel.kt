@@ -1,5 +1,8 @@
 package com.akhnaton.atrapp.data.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializer
+
 data class AddressesModel(
     val addresses: List<AddressModel> = ArrayList(),
 )
@@ -9,6 +12,7 @@ data class AddNewAddressModel(
 )
 
 data class AddressModel(
+    @SerialName("PARTY_SITE_ID")
     val ID: String = "",
     val LONGITUDE: String = "",
     val LATITUDE: String = "",

@@ -11,8 +11,9 @@
     android:layout_marginStart="@dimen/_2sdp"
     app:shimmer_direction="left_to_right">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="@dimen/_120sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
        >
@@ -20,12 +21,12 @@
         <View
             android:id="@+id/mage_view"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="@dimen/_90sdp"
             android:background="@drawable/bg_shimmer_placeholder"
             android:layout_marginBottom="8dp" />
 
 
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </com.facebook.shimmer.ShimmerFrameLayout>

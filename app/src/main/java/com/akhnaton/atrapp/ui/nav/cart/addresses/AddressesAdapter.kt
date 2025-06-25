@@ -13,10 +13,12 @@ class AddressesAdapter(private val onClick: (address: AddressModel, position: In
 
     private var addressesList = ArrayList<AddressModel>()
 
-    fun setData(cart: List<AddressModel>) {
-        addressesList = cart as ArrayList
+    fun setData(newList: List<AddressModel>) {
+        addressesList.clear()
+        addressesList.addAll(newList)
         notifyDataSetChanged()
     }
+
 
     inner class ViewHolder(private val binding: LayoutAddressBinding) :
         RecyclerView.ViewHolder(binding.root) {

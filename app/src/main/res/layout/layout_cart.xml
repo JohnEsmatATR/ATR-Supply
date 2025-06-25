@@ -42,9 +42,10 @@
                 <ImageView
                     android:id="@+id/im_item"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
-                    tools:src="@drawable/im_best_seller" />
+                   />
             </androidx.cardview.widget.CardView>
 
             <!-- Data Section -->
@@ -52,11 +53,10 @@
                 android:id="@+id/layout_data"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                app:layout_constraintStart_toEndOf="@id/card_image"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/txt_item_name"
@@ -67,9 +67,9 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Eva Skin Clinic Collagen Deep Lines Filler 50 ML" />
 
                 <!-- Size Row -->
@@ -78,9 +78,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/txt_item_name"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/txt_item_name">
 
                     <TextView
                         android:id="@+id/txt_size_text"
@@ -108,8 +108,8 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayout"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
                 <TextView
                     android:id="@+id/txt_price"
@@ -190,9 +190,9 @@
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
                     android:src="@drawable/trush_bin"
+                    app:layout_constraintBottom_toBottomOf="@id/layout_quantity"
                     app:layout_constraintStart_toEndOf="@id/layout_quantity"
-                    app:layout_constraintTop_toTopOf="@id/layout_quantity"
-                    app:layout_constraintBottom_toBottomOf="@id/layout_quantity" />
+                    app:layout_constraintTop_toTopOf="@id/layout_quantity" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

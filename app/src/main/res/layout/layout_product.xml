@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="productModel"
             type="com.akhnaton.atrapp.data.model.ProductModel" />
@@ -19,7 +18,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/card_image"
             android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,21 +27,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
 
-                <ImageView
-                    android:id="@+id/im_item"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:transitionName="itemImageTransition"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/im_best_seller"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/im_best_seller" />
+                <!-- تم إزالة im_item بناءً على طلبك -->
 
                 <ImageView
                     android:id="@+id/im_favorite"
@@ -56,7 +44,6 @@
                     android:src="@drawable/ic_favorite_fill"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
                 <ImageView
                     android:id="@+id/im_discount"
@@ -80,7 +67,6 @@
                     app:layout_constraintStart_toStartOf="@id/im_discount"
                     app:layout_constraintTop_toTopOf="@id/im_discount"
                     tools:text="20%" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -137,7 +123,6 @@
                 tools:text="44.00 EGP" />
 
         </LinearLayout>
-
 
         <RatingBar
             android:id="@+id/rating_bar"

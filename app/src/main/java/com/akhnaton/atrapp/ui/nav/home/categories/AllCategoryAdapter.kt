@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.LayoutAllCategoryBinding
+import com.bumptech.glide.Glide
 
 class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategoryViewHolder>() {
 
@@ -42,7 +43,9 @@ class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategory
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CategoryModel) {
             binding.categoryModel = data
-            binding.imItem.load(data.IMAGE_URL)
+            Glide.with(binding.root.context)
+                .load(data.IMAGE_URL)
+                .into(binding.imItem)
             binding.cardItem.setOnClickListener {
                 listener.onCategoryClick(data)
                 binding.executePendingBindings()

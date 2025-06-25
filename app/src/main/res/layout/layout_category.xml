@@ -11,40 +11,48 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_30sdp"
         android:layout_margin="5dp">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_item"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            app:strokeColor="@color/orange"
+            android:layout_height="match_parent"
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_item"
+                    android:padding="@dimen/_8sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:text="Makeup"
+                    android:gravity="center"
+                    android:text="@{categoryModel.TITLE}"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/im_item"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/im_category"
-                tools:src="@drawable/im_category"
                 android:scaleType="fitXY" />
-        </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/txt_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Makeup"
-            android:text="@{categoryModel.TITLE}"
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_item"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        </com.google.android.material.card.MaterialCardView>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -79,7 +79,7 @@ class SetupHttpClient {
                             .addHeader(
                                 "version", "${SharedPreferenceHelper.version}"
                             )
-                            .addHeader("device_type", "Android")
+                            .addHeader("devicetype", "Android")
 
                         // Log request headers
                         val request = requestBuilder.build()

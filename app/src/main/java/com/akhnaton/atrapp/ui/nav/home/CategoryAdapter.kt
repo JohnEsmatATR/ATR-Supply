@@ -8,6 +8,7 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.LayoutCategoryBinding
 import com.akhnaton.atrapp.shared.Common
+import com.bumptech.glide.Glide
 import java.util.ArrayList
 
 class CategoryAdapter(private val onClick: (category: CategoryModel, position: Int) -> Unit) :
@@ -27,11 +28,9 @@ class CategoryAdapter(private val onClick: (category: CategoryModel, position: I
 
             binding.categoryModel = item
 
-            binding.imItem.load(item.IMAGE_URL) {
-                crossfade(true)
-                placeholder(R.drawable.ic_logo)
-                error(R.drawable.ic_logo)
-            }
+            Glide.with(binding.root.context)
+                .load(item.IMAGE_URL)
+                .into(binding.imItem)
 
 
             itemView.setOnClickListener {

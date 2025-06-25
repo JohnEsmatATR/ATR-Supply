@@ -13,13 +13,12 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.NoNetworkConnectionActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.nav.home.search.SearchActivity"
             android:exported="false" />
