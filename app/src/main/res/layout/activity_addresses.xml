@@ -8,22 +8,13 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:context=".ui.nav.cart.addresses.AddressesActivity">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:layout_marginTop="@dimen/_14sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="3"
-            tools:listitem="@layout/layout_address" />
+
+
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_apply"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_bar">
@@ -66,21 +57,18 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_add_address"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_46sdp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/ic_add_address"
-                    app:backgroundTint="@null"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_gravity="top"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recycler" />
-
+                    app:layout_constraintTop_toTopOf="@+id/scrollView2"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/layout_address" />
 
             </LinearLayout>
         </ScrollView>

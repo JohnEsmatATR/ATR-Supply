@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.data.model
 
 import com.akhnaton.atrapp.data.model.review.ReviewModel
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class ProductModel(

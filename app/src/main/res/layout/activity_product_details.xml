@@ -184,11 +184,11 @@
 
                 <TextView
                     android:id="@+id/is_stock"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_50sdp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:gravity="center"
-                    android:text="65 ML"
+
                     android:textColor="@color/mid_gray_2"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"

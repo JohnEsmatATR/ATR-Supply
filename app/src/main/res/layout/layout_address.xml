@@ -12,7 +12,6 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="@dimen/_16sdp"
         android:layout_marginVertical="@dimen/_8sdp"
         android:layout_height="@dimen/_50sdp">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="@{address.ADDRESS}"
+                    android:text="@{address.ID}"
                     android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="14sp"
@@ -80,11 +79,11 @@
                     android:id="@+id/txt_address_country"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:gravity="start"
+                    android:fontFamily="@font/cairo_medium"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
                     android:text="@{address.TITLE}"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_address_name"

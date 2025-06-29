@@ -1,10 +1,7 @@
 package com.akhnaton.atrapp.domain
 
 import com.akhnaton.atrapp.data.interfaces.IProducts
-import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.shared.RetrofitClient
-import com.google.android.gms.common.api.Response
 
 class HomeRepository {
     private val retrofit = RetrofitClient.getInstance(IProducts::class.java)

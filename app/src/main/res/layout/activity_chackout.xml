@@ -153,8 +153,9 @@
 
                     <TextView
                         android:id="@+id/im_address_change"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/_75sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:gravity="center"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:text="@string/change"
                         android:textColor="@color/orange"
@@ -344,6 +345,7 @@
                     android:id="@+id/layout_visa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginHorizontal="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/style_background_payment_method">

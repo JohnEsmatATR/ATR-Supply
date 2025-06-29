@@ -11,7 +11,7 @@ import com.akhnaton.atrapp.shared.Common
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
-class CategoryAdapter(private val onClick: (category: CategoryModel, position: Int) -> Unit) :
+class CategoryAdapter(private val onClick: (category: CategoryModel, position: Int,) -> Unit) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private var apartmentsList = ArrayList<CategoryModel>()

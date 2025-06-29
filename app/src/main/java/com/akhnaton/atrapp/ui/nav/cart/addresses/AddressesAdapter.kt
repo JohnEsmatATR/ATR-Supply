@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart.addresses
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class AddressesAdapter(private val onClick: (address: AddressModel, position: In
 
     fun setData(newList: List<AddressModel>) {
         addressesList.clear()
+        Log.d("TAG", "setData: ${newList}")
         addressesList.addAll(newList)
         notifyDataSetChanged()
     }
@@ -24,14 +26,12 @@ class AddressesAdapter(private val onClick: (address: AddressModel, position: In
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: AddressModel, position: Int) {
-
             binding.address = item
-
-
-
+            binding.executePendingBindings()
             itemView.setOnClickListener {
                 onClick(item, position)
             }
+            Log.d("DEBUG", "Binding TITLE: ${item.TITLE}")
 
         }
 

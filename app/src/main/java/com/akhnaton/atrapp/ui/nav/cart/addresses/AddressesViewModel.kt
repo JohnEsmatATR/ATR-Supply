@@ -3,7 +3,6 @@ package com.akhnaton.atrapp.ui.nav.cart.addresses
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.model.AddressModel
-import com.akhnaton.atrapp.data.model.AddressesModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
@@ -35,7 +34,7 @@ class AddressesViewModel : ViewModel()  {
                         it.customerId,
                     )
 
-                    is AddressIntent.AddUserAddress -> {}
+
 
                     is AddressIntent.MakeAddressPrime ->{}
 
@@ -75,53 +74,8 @@ class AddressesViewModel : ViewModel()  {
 
 
 
-//
-//    private fun addUserAddress (
-//        token: String?,
-//        address: String?,
-//        landmark: String?,
-//        receiverName: String?,
-//        receiverPhone: String?,
-//        floorNumber: Int?,
-//        apartmentNumber: Int?,
-//        cityId: Int?,
-//        countryId: Int?,
-//        areaId: Int?,
-//        prime: Int?,
-//    ) {
-//        viewModelScope.launch {
-//            _state.value = AddressStatus.Loading
-//            _state.value = try {
-//                val response = AddressRepository().addUserAddress(
-//                    token,
-//                    address,
-//                    landmark,
-//                    receiverName,
-//                    receiverPhone,
-//                    floorNumber,
-//                    apartmentNumber,
-//                    cityId,
-//                    countryId,
-//                    areaId,
-//                    prime,
-//                )
-//                if (response.code() == 200) {
-//                    AddressStatus.AddUserAddress(response.body()!!)
-//                } else {
-//                    val error = GsonBuilder().create()
-//                    val theList = error.fromJson<BaseModel<AddNewAddressModel, ErrorAddressesModel>>(
-//                        response.errorBody()?.string(), object :
-//                            TypeToken<BaseModel<AddNewAddressModel, ErrorAddressesModel>>() {}.type
-//                    )
-//                    AddressStatus.AddUserAddress(theList)
-//                }
-//
-//            } catch (e: Exception) {
-//                AddressStatus.Error(e.message)
-//            }
-//
-//        }
-//    }
+
+
 
 
 //    private fun makeAddressPrime (

@@ -22,6 +22,8 @@ interface IProducts {
         @Field("best_seller") bestSeller: Int?,
     ): Response<BaseModel<List<ProductModel>>>
 
+
+
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun getProducts(

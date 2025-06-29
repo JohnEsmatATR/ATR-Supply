@@ -48,7 +48,7 @@ class SearchActivity : BaseActivity() {
         onClick()
         setupCategoryRecyclerView()
         observeCategoryState()
-        getCategories()
+
         searchObserve()
     }
 
@@ -129,7 +129,6 @@ class SearchActivity : BaseActivity() {
     private fun searchProduct(word: String, categoryId: Int? = null) {
         lifecycleScope.launch {
             searchViewModel.searchIntent.send(
-
                     SearchIntent.SearchProduct(word)
 
 
@@ -219,13 +218,7 @@ class SearchActivity : BaseActivity() {
 
 
 
-    private fun getCategories() {
-        lifecycleScope.launch {
-            cateViewModel.homeIntent.send(
-                CategoryIntent.GetCategories
-            )
-        }
-    }
+
     private fun addProductToFavorite(
         productId: Int,
         add: Boolean,

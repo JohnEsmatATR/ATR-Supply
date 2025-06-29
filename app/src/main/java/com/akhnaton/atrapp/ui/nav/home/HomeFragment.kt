@@ -1,6 +1,5 @@
 package com.akhnaton.atrapp.ui.nav.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -29,7 +28,6 @@ import com.akhnaton.atrapp.ui.nav.home.notifications.NotificationsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.home.search.SearchActivity
-import com.akhnaton.atrapp.util.isNetworkAvailable
 import kotlinx.coroutines.launch
 
 
@@ -154,6 +152,7 @@ class HomeFragment : BaseFragment() {
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", Common.category)
             intent.putExtra("category", category)
+
             startActivity(intent)
         })
         categoriesAdapter.setData(list)
@@ -171,10 +170,12 @@ class HomeFragment : BaseFragment() {
                     putExtra("flag", Common.category)
                     putExtra("product", product)
                     putExtra("transitionName", transitionName)
+                    putExtra("product_id",product.ID)
+
                 }
 
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(),  // لو داخل Fragment
+                    requireActivity(),
                     sharedView,
                     transitionName
                 )

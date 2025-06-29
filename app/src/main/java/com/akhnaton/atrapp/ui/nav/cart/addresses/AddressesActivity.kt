@@ -21,7 +21,6 @@ class   AddressesActivity : BaseActivity() {
     private lateinit var binding: ActivityAddressesBinding
     private val viewModel: AddressesViewModel by viewModels()
     lateinit var addressesAdapter: AddressesAdapter
-    var isChecked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,30 +30,13 @@ class   AddressesActivity : BaseActivity() {
         onClick()
         getAddress()
     }
-
-    private fun setupBinding() {
-
-    }
-    override fun onResume() {
-        super.onResume()
-        init()
-    }
-
-    private fun init() {
-        //getAddresses()
-    }
-
     private fun onClick() {
         binding.btnBack.setOnClickListener {
             finish()
         }
-        binding.btnAddAddress.setOnClickListener {
-            startActivity(Intent(this@AddressesActivity, AddNewAddressActivity::class.java))
-            finish()
-        }
+
 
     }
-
     private fun observe() {
         lifecycleScope.launch {
             viewModel.state.collect {
@@ -67,13 +49,10 @@ class   AddressesActivity : BaseActivity() {
                     }
 
                     is AddressStatus.GetMyAddresses -> {
-                        if (it.result.status == 1) {
+                        if (it.result.status == 200) {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
-                            if (isChecked) {
-                                setResult(RESULT_OK)
-                                finish()
-                            }
+
                             setupMyCartRecycler(it.result.data!!)
 
                         } else if (it.result.status == 401) {
@@ -87,9 +66,7 @@ class   AddressesActivity : BaseActivity() {
 
                     }
 
-                    is AddressStatus.AddUserAddress -> {
 
-                    }
 
                     is AddressStatus.MakeAddressPrime -> {
 //                        if (it.data.status == 1) {
@@ -120,23 +97,7 @@ class   AddressesActivity : BaseActivity() {
         }
     }
 
-//    private fun getAddresses() {
-//        val list = ArrayList<AddressModel>()
-//        val item = AddressModel(ID= "", city_id = 0, area_id = 0, receiver_name = "asdasd", receiver_phone = "phone",
-//            user_id = 0, country_name = "Egypt", city_name = "Cairo", area_name = "Area", floor_number = 0, apartment_number = 0, ADDRESS = "Pharmacy", landmark = "Landmark", prime = 0 )
-//        list.add(item)
-//        list.add(item)
-//        list.add(item)
-//        list.add(item)
-//        setupMyCartRecycler(list)
-////        lifecycleScope.launch {
-////            viewModel.addressIntent.send(
-////                AddressIntent.GetMyAddresses(
-////                    "Bearer ${SharedPreferenceHelper.userToken}",
-////                )
-////            )
-////        }
-//    }
+
 
 
     private fun makeAddressPrime(addressId: String) {
@@ -151,7 +112,7 @@ class   AddressesActivity : BaseActivity() {
     }
 
     private fun getAddress() {
-        Log.d("DEBUG", "Sending AddressIntent")
+
         lifecycleScope.launch {
             viewModel.addressIntent.send(
                 AddressIntent.GetMyAddresses(12447)
@@ -162,10 +123,8 @@ class   AddressesActivity : BaseActivity() {
     private fun setupMyCartRecycler(list: List<AddressModel>) {
         val layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         addressesAdapter =  AddressesAdapter(onClick = { address, position ->
-            makeAddressPrime(address.ID)
             Log.d("DEBUG", "First address: ${list.firstOrNull()?.receiver_name}")
 
-            isChecked = true
         })
         addressesAdapter.setData(list)
         binding.recycler.layoutManager = layoutManager

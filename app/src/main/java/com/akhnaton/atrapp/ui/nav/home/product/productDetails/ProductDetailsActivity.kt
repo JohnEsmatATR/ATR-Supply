@@ -1,11 +1,11 @@
 package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -18,15 +18,18 @@ import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.review.ReviewModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
 import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
-import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
+import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 import kotlinx.coroutines.launch
 
@@ -34,7 +37,7 @@ class ProductDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailsBinding
     private val addCartViewModel: AddToCartViewModel by viewModels()
     private val favoriteViewModel :FavoriteViewModel by  viewModels()
-    lateinit var productSuggestAdapter: ProductAdapter
+    private val viewModel : ProductDetailsViewModel by viewModels()
     lateinit var reviewAdapter: ReviewAdapter
     lateinit var product: ProductModel
     var quantity: Int = 1
@@ -50,11 +53,11 @@ class ProductDetailsActivity : BaseActivity() {
             finish()
         }
 
-
-
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun init() {
+
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         binding.layoutReviews.visibility = View.VISIBLE
@@ -62,86 +65,53 @@ class ProductDetailsActivity : BaseActivity() {
 
         product = intent.getSerializableExtra("product") as ProductModel
         val transitionName = intent.getStringExtra("transitionName")
+   //     Log.d("TAG", "received product from intent: ${product}")
 
-        ViewCompat.setTransitionName(binding.txtItemName, transitionName)
+
+            ViewCompat.setTransitionName(binding.txtItemName, transitionName)
         binding.imProduce.load(product.IMAGE_URL) {
             crossfade(true)
             placeholder(R.drawable.ic_logo)
             error(R.drawable.ic_logo)
         }
-        binding.txtItemName.text = product.TITLE
-        binding.txtPrice.text = "${product.PRICE_AFTER_DISCOUNT} LE"
-        binding.txtOldPrice.text = "${product.PRICE_WITH_TAX} LE"
-        binding.txtSize.text = "${product.WEIGHT}"
-        binding.txtDescription.text = "${product.DESCRIPTION}"
-        binding.isStock.apply {
-            text = if (product.IN_STOCK) "In Stock" else "Out of Stock"
-            setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    if (product.IN_STOCK) R.color.snack_green else R.color.snack_red
-                )
-            )
-        }
-
-        binding.btnBack.isEnabled = product.IN_STOCK
+        val productId = product.ID.toInt()
+        //getBestSeller(productId)
 
 
+//        binding.txtItemName.text = product.TITLE
+//        binding.txtPrice.text = "${product.PRICE_AFTER_DISCOUNT} LE"
+//        binding.txtOldPrice.text = "${product.PRICE_WITH_TAX} LE"
+//        binding.txtSize.text = "${product.WEIGHT}"
+//        binding.txtDescription.text = "${product.DESCRIPTION}"
+//        binding.isStock.apply {
+//            text = if (product.IN_STOCK) "In Stock" else "Out of Stock"
+//            setTextColor(
+//                ContextCompat.getColor(
+//                    context,
+//                    if (product.IN_STOCK) R.color.snack_green else R.color.snack_red
+//                )
+//            )
+//        }
 
 
+
+
+        observeProduct()
+        getProductDetails(productId)
         addToCartObserve()
        // favoriteObserve()
 
     }
-//    private fun favoriteObserve() {
-//        lifecycleScope.launch {
-//            favoriteViewModel.state.collect {
-//                when (it) {
-//                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
-//                    is FavoriteStatus.Loading -> {
-//                        Log.d(Common.KeroDebug, "observeHome: Loading")
-//                        showProgressDialog(binding.progressLoading)
-//                    }
-//
-//                    is FavoriteStatus.AddProductToFavourites -> {
-//                        hideProgressDialog(binding.progressLoading)
-//                        if (it.data.status == 200) {
-//                            showToastSnack(it.data.message, false)
-//
-//                        } else if (it.data.status == 401) {
-//
-//                        } else {
-//                            showToastSnack(it.data.message, true)
-//                        }
-//                    }
-//
-//                    is FavoriteStatus.GetFavorite -> {
-//                        hideProgressDialog(binding.progressLoading)
-//                        Log.d(Common.KeroDebug, "observeHome: GetProducts")
-//
-//                    }
-//
-//                    is FavoriteStatus.Error -> {
-//                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-//                        hideProgressDialog(binding.progressLoading)
-//                        showToastSnack(it.error.toString(), true)
-//                    }
-//
-//                    is FavoriteStatus.DeleteProductToFavourites -> {
-//                        hideProgressDialog(binding.progressLoading)
-//                        if (it.data.status == 200) {
-//                            showToastSnack(it.data.message, false)
-//
-//                        } else if (it.data.status == 401) {
-//
-//                        } else {
-//                            showToastSnack(it.data.message, true)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+
+    private fun getProductDetails(productId: Int) {
+        lifecycleScope.launch {
+            viewModel.homeIntent.send(
+                ProductDetailsIntent.GetProductDetails(productId)
+            )
+        }
+    }
+
     private fun onClick() {
         binding.btnBack.setOnClickListener {
             finish()
@@ -203,7 +173,8 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun addProductToCart() {
-        if (product.IN_STOCK){
+        val valiablity = binding.isStock.text.toString()
+        if (valiablity == "In Stock"){
             lifecycleScope.launch {
                 addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity))
             }
@@ -248,28 +219,28 @@ class ProductDetailsActivity : BaseActivity() {
 
 
 
-    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.AddProductToFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
-        }
-    }
-    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.DeleteFromFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
-        }
-    }
+//    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.AddProductToFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
+//    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.DeleteFromFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
 
 //    if (product.IS_LIKED) {
 //        binding.btnFavorite.load(R.drawable.ic_favorite_fill)
@@ -287,6 +258,49 @@ class ProductDetailsActivity : BaseActivity() {
 //        }
 //        product.IS_LIKED = !product.IS_LIKED
 //    }
+private fun observeProduct() {
+    lifecycleScope.launch {
+        viewModel.state.collect {
+            when (it) {
+                is ProductDetailsStatus.Error -> {
+                    Toast.makeText(this@ProductDetailsActivity, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
+                    Log.d("TAG", "observeProduct: ${it.error}")
+                }
+
+                is ProductDetailsStatus.GetProductDetails -> {
+                    if (it.data.status == 200) {
+                        val productData = it.data.data?.firstOrNull()
+                        productData?.let { p ->
+                            binding.txtItemName.text = p.TITLE
+                            binding.txtPrice.text = "${p.PRICE_AFTER_DISCOUNT} LE"
+                            binding.txtOldPrice.text = "${p.PRICE_WITH_TAX} LE"
+                            binding.txtSize.text = p.WEIGHT
+                            binding.txtDescription.text = p.DESCRIPTION
+
+                            binding.isStock.text = if (p.IN_STOCK) "In Stock" else "Out of Stock"
+                            Toast.makeText(this@ProductDetailsActivity, p.IN_STOCK.toString(), Toast.LENGTH_SHORT).show()
+
+                            binding.isStock.setTextColor(
+                                ContextCompat.getColor(
+                                    binding.root.context,
+                                    if (p.IN_STOCK) R.color.snack_green else R.color.snack_red
+                                )
+                            )
+                        } ?: Toast.makeText(this@ProductDetailsActivity, "Product not found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                ProductDetailsStatus.Idle -> {
+                    Log.d(Common.KeroDebug, "observeProduct: Idle")
+                }
+
+                ProductDetailsStatus.Loading -> {
+                    // يمكن تضيف شريط تحميل هنا
+                }
+            }
+        }
+    }
+}
 
 
 }

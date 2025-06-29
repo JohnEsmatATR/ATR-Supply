@@ -1,10 +1,11 @@
-package com.akhnaton.atrapp.ui.nav.home
+package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
 import com.akhnaton.atrapp.domain.HomeRepository
 import com.akhnaton.atrapp.shared.Common
 import kotlinx.coroutines.channels.Channel
@@ -13,13 +14,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
-class BestSellerViewModel : ViewModel() {
+class ProductDetailsViewModel : ViewModel() {
 
-    val homeIntent = Channel<BestSellerIntent>(Channel.UNLIMITED)
+    val homeIntent = Channel<ProductDetailsIntent>(Channel.UNLIMITED)
 
-    private val _state = MutableStateFlow<BestSellerStatus>(BestSellerStatus.Idle)
 
-    val state: StateFlow<BestSellerStatus> get() = _state
+    private val _state = MutableStateFlow<ProductDetailsStatus>(ProductDetailsStatus.Idle)
+
+    val state: StateFlow<ProductDetailsStatus> get() = _state
 
     init {
         makeHomeObserve()
@@ -29,27 +31,27 @@ class BestSellerViewModel : ViewModel() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo(1)
+                    is ProductDetailsIntent.GetProductDetails -> getBestsellerRepo(it.bestSeller)
 
                 }
             }
         }
     }
 
-    private fun getBestsellerRepo(bestSeller: Int) {
+    private fun getBestsellerRepo(productDetails: Int) {
         viewModelScope.launch {
-            _state.value = BestSellerStatus.Loading
+            _state.value = ProductDetailsStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getBestSeller(bestSeller)
+                val response = HomeRepository().getProductDetails(productDetails)
                 if (response.code() == 200) {
                     Log.d(Common.KeroDebug, "getBestsellerRepo ${response.body()!!}")
-                    BestSellerStatus.GetBestSeller(response.body()!!)
+                    ProductDetailsStatus.GetProductDetails(response.body()!!)
 
                 } else {
-                    BestSellerStatus.Error(response.body()!!.message)
+                    ProductDetailsStatus.Error(response.body()!!.message)
                 }
             } catch (e: Exception) {
-                BestSellerStatus.Error(e.message)
+                ProductDetailsStatus.Error(e.message)
             }
         }
     }

@@ -6,6 +6,7 @@ import com.akhnaton.atrapp.shared.ConstantLinks
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -21,7 +22,7 @@ interface ICart {
     @POST(ConstantLinks.GET_MY_CART)
     suspend fun getMyCart(): Response<BaseModel<List<ProductModel>>>
 
-    @POST(ConstantLinks.CHECKOUT)
+    @GET(ConstantLinks.CHECKOUT)
     suspend fun checkout(): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded

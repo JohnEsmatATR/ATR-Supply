@@ -113,7 +113,7 @@ class CheckoutActivity : BaseActivity(), OnClickListener {
                     }
 
                     is CheckoutStatus.Checkout -> {
-                        if (it.data.status == 400) {
+                        if (it.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
