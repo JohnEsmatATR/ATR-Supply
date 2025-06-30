@@ -1,11 +1,13 @@
 package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 
 import android.annotation.SuppressLint
+import android.app.ComponentCaller
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -27,6 +29,7 @@ import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
@@ -51,6 +54,13 @@ class ProductDetailsActivity : BaseActivity() {
         onClick()
         binding.btnBack.setOnClickListener {
             finish()
+        }
+
+        binding.btnGoToCart.setOnClickListener {
+            val intent = Intent(this@ProductDetailsActivity, HomeActivity::class.java)
+            intent.putExtra("open_cart", true)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
     }
@@ -155,6 +165,9 @@ class ProductDetailsActivity : BaseActivity() {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             showToastSnack(it.data.message, false)
+                            binding.btnGoToCart.visibility= View.VISIBLE
+                            val animation = AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.slide_up)
+                            binding.btnGoToCart.startAnimation(animation)
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
@@ -309,6 +322,8 @@ private fun observeProduct() {
         }
     }
 }
+
+
 
 
 }

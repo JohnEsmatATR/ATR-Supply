@@ -81,7 +81,8 @@
         <activity
             android:name=".ui.nav.HomeActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.nav.home.product.ProductsActivity"
             android:exported="false" />

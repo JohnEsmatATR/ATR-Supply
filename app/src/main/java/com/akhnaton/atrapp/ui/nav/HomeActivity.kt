@@ -1,6 +1,8 @@
 package com.akhnaton.atrapp.ui.nav
 
+import android.app.ComponentCaller
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -39,6 +41,7 @@ class HomeActivity : BaseActivity() {
         setContentView(binding.root)
         init()
         onClick()
+
 
 
     }
@@ -177,5 +180,17 @@ class HomeActivity : BaseActivity() {
             }
         }
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (intent.getBooleanExtra("open_cart", false)) {
+
+            setItemSelected(R.id.cart)
+            binding.bottomNavigationView.selectedItemId = R.id.cart
+        }
+    }
+
+
+
 
 }
