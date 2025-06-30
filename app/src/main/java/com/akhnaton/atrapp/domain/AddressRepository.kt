@@ -9,7 +9,9 @@ import retrofit2.Response
 
 class AddressRepository {
     private val retrofit = RetrofitClient.getInstance(Address::class.java)
-    suspend fun getMyAddresses(
-        customerCode: Int
-    ): Response<BaseModel<List<AddressModel>>> = retrofit.getAllAddress(customerCode)
+
+
+    suspend fun getMyAddresses(): Response<BaseModel<List<AddressModel>>> = retrofit.getAllAddress()
+
+    suspend fun changeDefaultSite(partySiteId : String): Response<BaseModel<AddressModel>> = retrofit.changeDefaultSite(partySiteId)
 }

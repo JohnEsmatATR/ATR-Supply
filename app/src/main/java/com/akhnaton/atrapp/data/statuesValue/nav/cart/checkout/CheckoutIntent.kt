@@ -3,6 +3,6 @@ package com.akhnaton.atrapp.data.statuesValue.nav.cart.checkout
 
 sealed class CheckoutIntent {
 
-    data object Checkout : CheckoutIntent()
+    data class Checkout(val paymentId : Int) : CheckoutIntent()
 
 }

@@ -30,13 +30,9 @@ class AddressesViewModel : ViewModel()  {
         viewModelScope.launch {
             addressIntent.consumeAsFlow().collect {
                 when (it) {
-                    is AddressIntent.GetMyAddresses -> getAddresses(
-                        it.customerId,
-                    )
+                    is AddressIntent.GetMyAddresses -> getAddresses()
 
-
-
-                    is AddressIntent.MakeAddressPrime ->{}
+                    is AddressIntent.MakeAddressPrime ->makeAddressPrime(it.partySiteId)
 
                 }
             }
@@ -45,12 +41,12 @@ class AddressesViewModel : ViewModel()  {
 
 
 
-    private fun getAddresses(customerId: Int) {
+    private fun getAddresses() {
         viewModelScope.launch {
             _state.value = AddressStatus.Loading
 
             val resultStatus = try {
-                val response = AddressRepository().getMyAddresses(customerId)
+                val response = AddressRepository().getMyAddresses()
 
                 if (response.isSuccessful && response.body() != null) {
                     AddressStatus.GetMyAddresses(response.body()!!)
@@ -71,6 +67,30 @@ class AddressesViewModel : ViewModel()  {
     }
 
 
+    private fun makeAddressPrime(partySiteId: String) {
+        viewModelScope.launch {
+            _state.value = AddressStatus.Loading
+
+            val resultStatus = try {
+                val response = AddressRepository().changeDefaultSite(partySiteId)
+
+                if (response.isSuccessful && response.body() != null) {
+                    AddressStatus.MakeAddressPrime(response.body()!!)
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val parsedError: BaseModel<AddressModel> = GsonBuilder().create().fromJson(
+                        errorBody,
+                        object : TypeToken<BaseModel<AddressModel>>() {}.type
+                    )
+                    AddressStatus.MakeAddressPrime(parsedError)
+                }
+            } catch (e: Exception) {
+                AddressStatus.Error(e.message)
+            }
+
+            _state.value = resultStatus
+        }
+    }
 
 
 

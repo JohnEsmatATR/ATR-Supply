@@ -11,7 +11,7 @@ sealed class AddressStatus {
 
     data class GetMyAddresses(val result: BaseModel<List<AddressModel>>) : AddressStatus()
 
-    data class MakeAddressPrime(val result: BaseModel<AddNewAddressModel>) : AddressStatus()
+    data class MakeAddressPrime(val result: BaseModel<AddressModel>) : AddressStatus()
 
     data class Error(val message: String?) : AddressStatus()
 }

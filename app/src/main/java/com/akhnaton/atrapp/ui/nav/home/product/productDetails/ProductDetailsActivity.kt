@@ -270,25 +270,33 @@ private fun observeProduct() {
                 is ProductDetailsStatus.GetProductDetails -> {
                     if (it.data.status == 200) {
                         val productData = it.data.data?.firstOrNull()
-                        productData?.let { p ->
-                            binding.txtItemName.text = p.TITLE
-                            binding.txtPrice.text = "${p.PRICE_AFTER_DISCOUNT} LE"
-                            binding.txtOldPrice.text = "${p.PRICE_WITH_TAX} LE"
-                            binding.txtSize.text = p.WEIGHT
-                            binding.txtDescription.text = p.DESCRIPTION
+                        if (productData != null) {
+                            // عرض بيانات المنتج
+                            binding.txtItemName.text = productData.TITLE
+                            binding.txtPrice.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
+                            binding.txtOldPrice.text = "${productData.PRICE_WITH_TAX} LE"
+                            binding.txtSize.text = productData.WEIGHT
+                            binding.txtDescription.text = productData.DESCRIPTION
 
-                            binding.isStock.text = if (p.IN_STOCK) "In Stock" else "Out of Stock"
-                            Toast.makeText(this@ProductDetailsActivity, p.IN_STOCK.toString(), Toast.LENGTH_SHORT).show()
-
+                            binding.isStock.text = if (productData.IN_STOCK) "In Stock" else "Out of Stock"
                             binding.isStock.setTextColor(
                                 ContextCompat.getColor(
                                     binding.root.context,
-                                    if (p.IN_STOCK) R.color.snack_green else R.color.snack_red
+                                    if (productData.IN_STOCK) R.color.snack_green else R.color.snack_red
                                 )
                             )
-                        } ?: Toast.makeText(this@ProductDetailsActivity, "Product not found", Toast.LENGTH_SHORT).show()
+
+
+                            binding.nestedScrollView.visibility = View.VISIBLE
+                            binding.productNotFound.visibility = View.GONE
+                        } else {
+
+                            binding.nestedScrollView.visibility = View.GONE
+                            binding.productNotFound.visibility = View.VISIBLE
+                        }
                     }
                 }
+
 
                 ProductDetailsStatus.Idle -> {
                     Log.d(Common.KeroDebug, "observeProduct: Idle")

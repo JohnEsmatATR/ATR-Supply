@@ -31,5 +31,6 @@ data class AddressModel(
     val apartment_number: Int = 0,
     val ADDRESS: String = "",
     val landmark: String = "",
+    @SerializedName("IS_DEFAULT")
     var prime: Int = 0,
 )

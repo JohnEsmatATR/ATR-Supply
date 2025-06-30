@@ -29,6 +29,7 @@ object ConstantLinks {
     const val MY_ORDERS = "cart/my_orders"
     const val MY_ORDERS_DETAILS = "cart/my_order_details"
     const val DELETE_FROM_CART = "cart/add"
+    const val PAYMENT_TYPE = "user/get_customer_payment_type"
 
     // review
     const val GET_REVIEWS = "product/product_reviews"
@@ -40,4 +41,5 @@ object ConstantLinks {
 
     // get user address
     const val CUSTOMER_ADDRESS = "user/get_customer_sites"
+    const val CHANGE_DEFAULT_ADDRESS= "user/change_default_site"
 }

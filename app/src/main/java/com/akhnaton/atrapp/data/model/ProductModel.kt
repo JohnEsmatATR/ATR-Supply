@@ -25,4 +25,6 @@ data class ProductModel(
     val RATE: String = "",
     val REVIEWS: ReviewModel = ReviewModel(),
     val IN_STOCK: Boolean = false,
+    @SerializedName("order_numbers")
+    val orderNumbers: List<String> = emptyList()
 ): Serializable

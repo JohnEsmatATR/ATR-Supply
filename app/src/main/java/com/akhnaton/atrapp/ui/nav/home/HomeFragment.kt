@@ -6,12 +6,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
@@ -22,6 +25,8 @@ import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.shared.ShimmerAdapter
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.categories.CategoryActivity
 import com.akhnaton.atrapp.ui.nav.home.notifications.NotificationsActivity
@@ -41,13 +46,21 @@ class HomeFragment : BaseFragment() {
     var listCategory = mutableListOf<CategoryModel>()
     var listBestSeller = mutableListOf<ProductModel>()
     private lateinit var shimmerAdapter: ShimmerAdapter
+    private val viewModel: AddressesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
+
         onClick()
+
+        binding.cardAddress.setOnClickListener {
+            val intent = Intent(requireContext(), AddressesActivity::class.java)
+            startActivity(intent)
+        }
+        init()
         return binding.root
 
     }
@@ -55,7 +68,6 @@ class HomeFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        init()
     }
 
     private fun categoryObserve() {
@@ -92,7 +104,60 @@ class HomeFragment : BaseFragment() {
             }
         }
     }
+    private fun observeAddress() {
+        lifecycleScope.launch {
+            viewModel.state.collect {
+                Log.d("DEBUGGGGG", "Received state: $it")
+                when (it) {
+                    is AddressStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idleeeee")
+                    is AddressStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
 
+                    is AddressStatus.GetMyAddresses -> {
+                        if (it.result.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "Received: GetProducts")
+
+                            val addresses = it.result.data ?: emptyList()
+
+                            // اطبع كل عنوان عنده prime == 1
+                            addresses.forEach { address ->
+                                if (address.prime == 1) {
+                                    Log.d("DEBUG_ADDRESS", "Prime address found: $address")
+                                    binding.defaultAddress.text=address.TITLE
+                                }
+                            }
+
+                            val hasDefault = addresses.any { address -> address.prime == 1 }
+                            if (!hasDefault) {
+                                val intent = Intent(requireContext(), AddressesActivity::class.java)
+                                startActivity(intent)
+                            }
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                        }
+                    }
+
+
+
+                    is AddressStatus.MakeAddressPrime -> {}
+
+                    is AddressStatus.Error -> {}
+
+                }
+            }
+        }
+    }
+    private fun getAddress() {
+        lifecycleScope.launch {
+            viewModel.addressIntent.send(
+                AddressIntent.GetMyAddresses
+            )
+        }
+    }
     private fun bestSellerObserve() {
         lifecycleScope.launch {
             bestSellerViewModel.state.collect {
@@ -215,6 +280,8 @@ class HomeFragment : BaseFragment() {
         bestSellerObserve()
         getCategories()
         getBestSeller()
+        observeAddress()
+        getAddress()
 
     }
     private fun onClick() {

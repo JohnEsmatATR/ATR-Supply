@@ -27,17 +27,17 @@ class CheckoutViewModel : ViewModel() {
         viewModelScope.launch {
             checkoutIntent.consumeAsFlow().collect {
                 when (it) {
-                    is CheckoutIntent.Checkout -> checkout()
+                    is CheckoutIntent.Checkout -> checkout(it.paymentId)
                 }
             }
         }
     }
 
-    private fun checkout() {
+    private fun checkout(paymentId : Int) {
         viewModelScope.launch {
             _state.value = CheckoutStatus.Loading
             _state.value = try {
-                val response = CartRepository().checkout()
+                val response = CartRepository().checkout(paymentId)
                 if (response.code() == 200) {
                     CheckoutStatus.Checkout(response.body()!!)
                 } else if (response.code() == 401) {

@@ -28,5 +28,7 @@ class CartRepository {
     suspend fun getMyCart(
     ) = retrofit.getMyCart()
 
-    suspend fun checkout() = retrofit.checkout()
+    suspend fun checkout(paymentId : Int) = retrofit.checkout(paymentId)
+
+    suspend fun getPaymentType() = retrofit.getPaymentType()
 }

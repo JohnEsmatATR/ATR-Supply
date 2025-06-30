@@ -11,10 +11,10 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.AddressModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.databinding.ActivityAddressesBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.ui.nav.HomeActivity
 import kotlinx.coroutines.launch
 
 class   AddressesActivity : BaseActivity() {
@@ -112,10 +112,9 @@ class   AddressesActivity : BaseActivity() {
     }
 
     private fun getAddress() {
-
         lifecycleScope.launch {
             viewModel.addressIntent.send(
-                AddressIntent.GetMyAddresses(12447)
+                AddressIntent.GetMyAddresses
             )
         }
     }
@@ -124,6 +123,14 @@ class   AddressesActivity : BaseActivity() {
         val layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         addressesAdapter =  AddressesAdapter(onClick = { address, position ->
             Log.d("DEBUG", "First address: ${list.firstOrNull()?.receiver_name}")
+            val id = address.ID.toString()
+            lifecycleScope.launch {
+                viewModel.addressIntent.send(
+                    AddressIntent.MakeAddressPrime(id)
+                )
+            }
+            startActivity(Intent(this@AddressesActivity, HomeActivity::class.java))
+            finishAffinity()
 
         })
         addressesAdapter.setData(list)

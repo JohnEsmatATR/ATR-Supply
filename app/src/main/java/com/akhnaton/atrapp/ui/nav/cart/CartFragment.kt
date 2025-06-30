@@ -23,92 +23,92 @@ import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 class CartFragment : BaseFragment() {
-    lateinit var binding: FragmentCartBinding
+
+    private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by viewModels()
     private val addToCartViewModel: AddToCartViewModel by viewModels()
+
     private lateinit var cartAdapter: CartAdapter
-    private var products: List<ProductModel> = ArrayList()
     private lateinit var shimmerAdapter: ShimmerAdapterCart
+
+    private var products: List<ProductModel> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCartBinding.inflate(inflater)
-        cartObserve()
-        addToCartObserve()
-        onClick()
+        binding = FragmentCartBinding.inflate(inflater, container, false)
+        observeCart()
+        observeAddToCart()
+        setupClickListeners()
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        init()
+        initCart()
     }
 
-    private fun init() {
+    private fun initCart() {
         shimmerAdapter = ShimmerAdapterCart(10)
         binding.recycler.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = shimmerAdapter
         }
         getMyCart()
     }
 
-    private fun onClick() {
+    private fun setupClickListeners() {
         binding.btnCheckout.setOnClickListener {
             val intent = Intent(requireContext(), CheckoutActivity::class.java)
             startActivity(intent)
         }
     }
 
-    private fun cartObserve() {
+    private fun observeCart() {
         lifecycleScope.launch {
-            cartViewModel.state.collect {
-                when (it) {
-                    is CartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+            cartViewModel.state.collect { state ->
+                when (state) {
+                    is CartStatus.Idle -> Log.d(Common.KeroDebug, "CartStatus: Idle")
                     is CartStatus.Loading -> {
                         binding.recycler.adapter = shimmerAdapter
                         binding.recycler.visibility = View.VISIBLE
                     }
                     is CartStatus.GetMyCart -> {
-                        if (it.data.status == 200) {
-                            products = it.data.data ?: emptyList()
-                            binding.recycler.visibility = View.VISIBLE
-                            hideProgressDialog(binding.progressLoading)
-                            checkNoProducts()
+                        hideProgressDialog(binding.progressLoading)
+                        products = state.data.data ?: emptyList()
+                        if (products.isNotEmpty()) {
                             setupMyCartRecycler(products)
                             updateCartSummaryUI()
                             binding.txtNoProducts.visibility = View.GONE
+                            binding.recycler.visibility = View.VISIBLE
                         } else {
-                            hideProgressDialog(binding.progressLoading)
-                            binding.txtNoProducts.visibility = View.VISIBLE
-                            binding.recycler.visibility = View.GONE
+                            showEmptyState()
                         }
                     }
                     is CartStatus.Error -> {
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        showToastSnack(state.error.toString(), true)
+                        showEmptyState()
                     }
                 }
             }
         }
     }
 
-    private fun addToCartObserve() {
+    private fun observeAddToCart() {
         lifecycleScope.launch {
-            addToCartViewModel.state.collect {
-                when (it) {
-                    is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+            addToCartViewModel.state.collect { state ->
+                when (state) {
+                    is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "AddToCart: Idle")
                     is AddToCartStatus.Loading -> {}
                     is AddToCartStatus.AddToCart -> {
-                        if (it.data.status != 200) {
-                            showToastSnack(it.data.message, true)
+                        if (state.data.status != 200) {
+                            showToastSnack(state.data.message, true)
                         }
-                        // لا تعيد تحميل البيانات
                     }
                     is AddToCartStatus.Error -> {
-                        showToastSnack(it.error.toString(), true)
+                        showToastSnack(state.error.toString(), true)
                     }
                 }
             }
@@ -121,36 +121,15 @@ class CartFragment : BaseFragment() {
         }
     }
 
-    private fun addProductToCart(productId: Int, quantity: Int) {
-        lifecycleScope.launch {
-            addToCartViewModel.addToCartIntent.send(
-                AddToCartIntent.AddProductToCart(productId, quantity)
-            )
-        }
-    }
-
-    private fun deleteProductFromCart(productId: Int, position: Int) {
-        lifecycleScope.launch {
-            (products as ArrayList).removeAt(position)
-            cartAdapter.setData(products, true, "cart")
-            updateCartSummaryUI()
-            checkNoProducts()
-            addToCartViewModel.addToCartIntent.send(
-                AddToCartIntent.AddProductToCart(productId, 0)
-            )
-        }
-    }
-
     private fun setupMyCartRecycler(list: List<ProductModel>) {
         cartAdapter = CartAdapter(
             onClick = { _, _ -> },
             onPlusClick = { product, position, quantity ->
                 lifecycleScope.launch {
-                        (products as ArrayList)[position] = product.copy(MY_QUANTITY = quantity)
-                        cartAdapter.setData(products, true, "cart")
-                        updateCartSummaryUI()
-                        addProductToCart(product.ID, quantity)
-
+                    (products as ArrayList)[position] = product.copy(MY_QUANTITY = quantity)
+                    cartAdapter.setData(products, true, "cart")
+                    updateCartSummaryUI()
+                    addProductToCart(product.ID, quantity)
                 }
             },
             onMinusClick = { product, position, quantity ->
@@ -167,27 +146,61 @@ class CartFragment : BaseFragment() {
                 }
             }
         )
-        binding.recycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.adapter = cartAdapter
         cartAdapter.setData(list, true, "cart")
-    }
-
-    private fun checkNoProducts() {
-        if (products.isEmpty()) {
-            binding.txtNoProducts.visibility = View.VISIBLE
-            binding.layoutCart.visibility = View.GONE
-        } else {
-            binding.txtNoProducts.visibility = View.GONE
-            binding.layoutCart.visibility = View.VISIBLE
-        }
+        binding.layoutCart.visibility = View.VISIBLE
     }
 
     private fun updateCartSummaryUI() {
+        if (products.isEmpty()) {
+            binding.txtItemTotal.text = "0.0"
+            binding.txtDiscount.text = "0.0"
+            binding.txtDeliveryFree.text = "0.0"
+            binding.txtGrandTotal.text = "0.0"
+            return
+        }
+
         val totals = cartViewModel.calculateCartTotals(products)
         val decimalFormat = DecimalFormat("#0.0")
         binding.txtItemTotal.text = decimalFormat.format(totals.totalBeforeDiscount)
         binding.txtDiscount.text = decimalFormat.format(totals.discount)
-        binding.txtDeliveryFree.text = if (totals.deliveryFee == 0.0) "Free Delivery" else decimalFormat.format(totals.deliveryFee)
+        binding.txtDeliveryFree.text =
+            if (totals.deliveryFee == 0.0) "Free Delivery" else decimalFormat.format(totals.deliveryFee)
         binding.txtGrandTotal.text = decimalFormat.format(totals.grandTotal)
     }
+
+    private fun deleteProductFromCart(productId: Int, position: Int) {
+        lifecycleScope.launch {
+            (products as ArrayList).removeAt(position)
+            cartAdapter.setData(products, true, "cart")
+            updateCartSummaryUI()
+            checkEmptyAfterDelete()
+            addToCartViewModel.addToCartIntent.send(
+                AddToCartIntent.AddProductToCart(productId, 0)
+            )
+        }
+    }
+
+    private fun addProductToCart(productId: Int, quantity: Int) {
+        lifecycleScope.launch {
+            addToCartViewModel.addToCartIntent.send(
+                AddToCartIntent.AddProductToCart(productId, quantity)
+            )
+        }
+    }
+
+    private fun checkEmptyAfterDelete() {
+        if (products.isEmpty()) {
+            showEmptyState()
+        }
+    }
+
+    private fun showEmptyState() {
+        binding.recycler.visibility = View.GONE
+        binding.layoutCart.visibility = View.GONE
+        binding.txtNoProducts.visibility = View.VISIBLE
+        updateCartSummaryUI()
+    }
+
 }
