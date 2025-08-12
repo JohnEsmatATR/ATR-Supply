@@ -180,7 +180,8 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         val geocoder = Geocoder(this, Locale.getDefault())
 
         return try {
-            val addresses: List<Address> = geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+            val addresses: List<Address> = geocoder
+                .getFromLocation(location.latitude, location.longitude, 1)!!
 
             if (addresses.isNotEmpty()) {
                 val address: String = addresses[0].getAddressLine(0)
