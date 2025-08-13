@@ -15,6 +15,10 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.akhnaton.atrapp.R
 
@@ -42,9 +46,8 @@ open class BaseFragment : Fragment() {
             val layout =
                 LayoutInflater.from(context).inflate(R.layout.snack_bar_layout, null, false)
             layout.setBackgroundColor(
-                if (flag) this.resources.getColor(R.color.snack_red) else this.resources.getColor(
-                    R.color.snack_green
-                )
+                if (flag) ContextCompat.getColor(requireContext(), R.color.snack_red) else
+                    ContextCompat.getColor(requireContext(), R.color.snack_green)
             )
             val image = layout.findViewById<ImageView>(R.id.image)
             image.setImageResource(if (flag) R.drawable.ic_error else R.drawable.ic_success)
@@ -58,12 +61,12 @@ open class BaseFragment : Fragment() {
             val params = snackbar.view.layoutParams as FrameLayout.LayoutParams
             params.gravity = Gravity.TOP
             snackbar.view.setBackgroundColor(
-                if (flag) this.resources.getColor(R.color.snack_red)
-                else this.resources.getColor(R.color.snack_green)
+                if (flag)   ContextCompat.getColor(requireContext(), R.color.snack_red)
+                else   ContextCompat.getColor(requireContext(), R.color.snack_green)
             )
             snackbar.setBackgroundTint(
-                if (flag) this.resources.getColor(R.color.snack_red)
-                else this.resources.getColor(R.color.snack_green)
+                if (flag)   ContextCompat.getColor(requireContext(), R.color.snack_red)
+                else   ContextCompat.getColor(requireContext(), R.color.snack_green)
             )
 
             snackbar.view.layoutParams = params
@@ -98,11 +101,16 @@ open class BaseFragment : Fragment() {
         return builder
     }
 
+
     fun hideStatusBar() {
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        val window = requireActivity().window
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            hide(WindowInsetsCompat.Type.statusBars())
+            systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     fun validateIncreaseQuantity(qty: Int, max: Int): Boolean {

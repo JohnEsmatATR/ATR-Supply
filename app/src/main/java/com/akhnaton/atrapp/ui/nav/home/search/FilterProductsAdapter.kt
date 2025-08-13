@@ -21,7 +21,7 @@ class FilterProductsAdapter(
 
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
+                val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     selectedPosition = position
                     notifyDataSetChanged()

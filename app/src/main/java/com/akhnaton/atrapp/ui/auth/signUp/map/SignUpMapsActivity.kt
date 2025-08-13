@@ -6,9 +6,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -43,6 +45,7 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
     var password = ""
     var phone = ""
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpMapsBinding.inflate(layoutInflater)
@@ -52,6 +55,7 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         onClick()
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun init() {
         firstName = intent.getStringExtra("firstName")?:""
         lastName = intent.getStringExtra("lastName")?:""
@@ -76,6 +80,7 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun onClick() {
         binding.btnConfirmLocation.setOnClickListener {
             showMarkerLocation()
@@ -141,6 +146,7 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun showCurrentLocation() {
 
         if (!::googleMap.isInitialized) {
@@ -157,9 +163,16 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
                         val currentLatLng = LatLng(location.latitude, location.longitude)
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
 
-                        val address = getAddressFromLatLng(this@SignUpMapsActivity,location.latitude,
-                            location.longitude)
-                        binding.spWriteCustomerLocation.setText(address ?: "No address found")
+
+
+                        getAddressFromLatLng(
+                            this@SignUpMapsActivity,
+                            location.latitude,
+                            location.longitude
+                        ) { address ->
+                            binding.spWriteCustomerLocation.setText(address ?: "No address found")
+                        }
+
                     } else {
 
                         Toast.makeText(this, "Unable to retrieve current location", Toast.LENGTH_SHORT).show()
@@ -180,7 +193,8 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         val geocoder = Geocoder(this, Locale.getDefault())
 
         return try {
-            val addresses: List<Address> = geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+            val addresses: List<Address> = geocoder
+                .getFromLocation(location.latitude, location.longitude, 1)!!
 
             if (addresses.isNotEmpty()) {
                 val address: String = addresses[0].getAddressLine(0)
@@ -258,6 +272,7 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -283,22 +298,32 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 2
     }
 
-    fun getAddressFromLatLng(context: Context, latitude: Double, longitude: Double): String? {
-        return try {
-            val geocoder = Geocoder(context, Locale("ar"))
-            val addresses: List<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
-            if (!addresses.isNullOrEmpty()) {
-                val address: Address = addresses[0]
-                val fullAddress = (0..address.maxAddressLineIndex).joinToString(", ") { index ->
-                    address.getAddressLine(index)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun getAddressFromLatLng(context: Context, latitude: Double, longitude: Double, onResult: (String?) -> Unit) {
+        val geocoder = Geocoder(context, Locale("ar"))
+
+        geocoder.getFromLocation(
+            latitude,
+            longitude,
+            1,
+            object : Geocoder.GeocodeListener {
+                override fun onGeocode(addresses: MutableList<Address>) {
+                    if (addresses.isNotEmpty()) {
+                        val address = addresses[0]
+                        val fullAddress = (0..address.maxAddressLineIndex).joinToString(", ") { index ->
+                            address.getAddressLine(index)
+                        }
+                        onResult(fullAddress)
+                    } else {
+                        onResult(null)
+                    }
                 }
-                fullAddress
-            } else {
-                null
+
+                override fun onError(errorMessage: String?) {
+                    onResult(null)
+                }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+        )
     }
+
 }

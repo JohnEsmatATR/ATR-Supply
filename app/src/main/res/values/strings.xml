@@ -98,7 +98,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="view_order">View Order</string>
     <string name="order_details">Order Details</string>
     <string name="contact_us">Contact Us</string>
-    <string name="company_address">9 Al Sharikat, Al Fawalah, Abdeen, Cairo Governorate \n 4282013</string>
+    <string name="company_address">Company Address</string>
     <string name="return_items">Return Items</string>
     <string name="confirm_your_return">Confirm your return</string>
     <string name="language">Language</string>
@@ -223,5 +223,34 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="last_name">Last name</string>
     <string name="search">Search</string>
     <string name="deals_made_for_you">Deals made for you!</string>
+    <string name="about_us">About Us</string>
+    <string name="account_details">Account Details</string>
+    <string name="full_name">Full Name</string>
+    <string name="fill_your_addresss">Fill your address</string>
+    <string name="upload_your_pdff">Upload your pdf</string>
+    <string name="call_service">Call Service</string>
+    <string name="_17125">17125</string>
+    <string name="choose_your_language">Choose Your Language</string>
+    <string name="order_number_53453">Order Number 53453</string>
+    <string name="price">Price:</string>
+    <string name="order_number">Order Number 53453</string>
+    <string name="pricee">Price:</string>
+    <string name="quantity">Quantity:</string>
+    <string name="privacy_and_terms">Privacy and Terms</string>
+    <string name="dosagasc">Dosagasc :</string>
+    <string name="order_confirmed">Order Confirmed</string>
+    <string name="your_order_has_been_confirmed_we_will_send_you_a_confirmation_email_shortly">Your order has been confirmed, we will send you a confirmation email shortly.</string>
+    <string name="track_order">Track Order</string>
+    <string name="priceee">Price :</string>
+    <string name="searchh">Search</string>
+    <string name="account_detailss">Account details</string>
+    <string name="order_historyy">Order History</string>
+    <string name="rate_the_app">Rate the app</string>
+    <string name="languages">Languages</string>
+    <string name="privacy_and_termss">Privacy and Terms</string>
+    <string name="about_uss">About us</string>
+    <string name="contact_uss">Contact us</string>
+    <string name="logout">Logout</string>
+    <string name="select_your_preferred_language_to_go">Select your preferred language to Go</string>
 
 </resources>

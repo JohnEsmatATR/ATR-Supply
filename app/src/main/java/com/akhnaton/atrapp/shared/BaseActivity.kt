@@ -21,6 +21,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.akhnaton.atrapp.R
@@ -48,7 +49,7 @@ open class BaseActivity : AppCompatActivity() {
         try {
             val layout = LayoutInflater.from(this).inflate(R.layout.snack_bar_layout, null, false)
             layout.setBackgroundColor(
-                if (flag) this.resources.getColor(R.color.snack_red) else this.resources.getColor(
+                if (flag)  ContextCompat.getColor(this@BaseActivity, R.color.snack_red) else this.resources.getColor(
                     R.color.snack_green
                 )
             )
@@ -56,7 +57,7 @@ open class BaseActivity : AppCompatActivity() {
             image.setImageResource(if (flag) R.drawable.ic_error else R.drawable.ic_success)
             val text = layout.findViewById<TextView>(R.id.text)
             text.text = word
-            text.setTextColor(this.resources.getColor(R.color.white))
+            text.setTextColor(ContextCompat.getColor(this@BaseActivity, R.color.white))
             val parentLayout = findViewById<View>(android.R.id.content)
             val snackbar = Snackbar.make(parentLayout, "", BaseTransientBottomBar.LENGTH_SHORT)
             (snackbar.view as ViewGroup).removeAllViews()
@@ -64,12 +65,12 @@ open class BaseActivity : AppCompatActivity() {
             val params = snackbar.view.layoutParams as FrameLayout.LayoutParams
             params.gravity = Gravity.TOP
             snackbar.view.setBackgroundColor(
-                if (flag) this.resources.getColor(R.color.snack_red)
-                else this.resources.getColor(R.color.snack_green)
+                if (flag) ContextCompat.getColor(this@BaseActivity, R.color.snack_red)
+                else ContextCompat.getColor(this@BaseActivity, R.color.snack_green)
             )
             snackbar.setBackgroundTint(
-                if (flag) this.resources.getColor(R.color.snack_red)
-                else this.resources.getColor(R.color.snack_green)
+                if (flag) ContextCompat.getColor(this@BaseActivity, R.color.snack_red)
+                else  ContextCompat.getColor(this@BaseActivity, R.color.snack_green)
             )
 
             snackbar.view.layoutParams = params
@@ -150,7 +151,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun setAppLocale(lang: String) {
-        val locale = Locale(lang)
+        val locale = Locale.forLanguageTag(lang)
         Locale.setDefault(locale)
 
         val config = Configuration()
@@ -158,8 +159,10 @@ open class BaseActivity : AppCompatActivity() {
 
         SharedPreferenceHelper.language = lang
 
-        resources.updateConfiguration(config, resources.displayMetrics)
+        val context = createConfigurationContext(config)
+        context.resources
     }
+
 
 //    fun getVersion(): String {
 //        val pInfo: PackageInfo =

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ATR APP</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="or">أو</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="continue_as">المتابعة كـ</string>
+    <string name="guest">زائر</string>
+    <string name="get_started">ابدأ الآن</string>
+    <string name="welcome_to_atr_app">مرحباً\nبك في تطبيق ATR</string>
+    <string name="welcome">مرحباً</string>
+    <string name="please_enter_your_data_to_continue">من فضلك أدخل بياناتك للمتابعة</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="email_or_customer_code">البريد الإلكتروني أو كود العميل</string>
+    <string name="password">كلمة المرور</string>
+    <string name="forgot_password">نسيت كلمة المرور؟</string>
+    <string name="don_t_have_account">ليس لديك حساب؟</string>
+    <string name="fill_your_info">املأ بياناتك</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="next">التالي</string>
+    <string name="upload_your_pdf">ارفع مستنداتك</string>
+    <string name="upload_national_id">ارفع بطاقة الرقم القومي</string>
+    <string name="upload_license">ارفع الرخصة</string>
+    <string name="upload_commercial_register">ارفع السجل التجاري</string>
+
+    <string name="upload_lease_or_ownership_contract">ارفع عقد الإيجار أو الملكية</string>
+    <string name="upload_tax_card">ارفع البطاقة الضريبية</string>
+    <string name="google_map_key">AIzaSyA6rGnt_C0SV-Bxe0sSKS2G0BIu2D0CW_A</string>
+    <string name="address">العنوان</string>
+    <string name="fill_your_address">املأ عنوانك</string>
+    <string name="your_input_is_being_uploaded_please_wait_while_we_approve_your_request">يتم رفع بياناتك.\nيرجى الانتظار حتى نوافق على طلبك</string>
+    <string name="continue_as_guest">المتابعة كزائر</string>
+    <string name="forget_password">نسيت كلمة المرور</string>
+    <string name="please_enter_the_mail_address">يرجى إدخال البريد الإلكتروني\nأو رقم الهاتف الذي استخدمته\nعند التسجيل</string>
+    <string name="verify">تأكيد</string>
+    <string name="enter_the_verification_code_that_we_sent_you_to_your_phone_number">أدخل رمز التحقق الذي أرسلناه\nإلى رقم هاتفك</string>
+    <string name="create_new_password">إنشاء كلمة مرور جديدة</string>
+    <string name="you_have_successfully_reset_your_password_please_use_your_new_password_when_logging_in">تمت إعادة تعيين كلمة المرور بنجاح. يرجى استخدام كلمة المرور الجديدة عند تسجيل الدخول</string>
+    <string name="password_reset_successful">إعادة تعيين كلمة المرور\nبنجاح</string>
+    <string name="home">الرئيسية</string>
+    <string name="favorite">المفضلة</string>
+    <string name="cart">سلة التسوق</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="categories">الفئات</string>
+    <string name="best_seller">الأكثر مبيعاً</string>
+    <string name="no_products">لا توجد منتجات</string>
+    <string name="filter">تصفية</string>
+    <string name="nothing">" "</string>
+    <string name="size_">الحجم:</string>
+
+
+    <string name="availability_">المتاح:</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="select_the_quantity">اختر الكمية</string>
+    <string name="description">الوصف</string>
+    <string name="description_etc">
+        • عيادة إيفا للشعر هي علامة تجارية للعناية بالشعر تقدم مجموعة متنوعة
+        \nمن المنتجات لأنواع الشعر واحتياجاته المختلفة.
+        \n• بعض منتجاتهم تشمل الشامبوهات، البلسم، ماسكات الشعر، السيروم، ومنتجات التصفيف.
+    </string>
+    <string name="my_cart">سلة التسوق الخاصة بي</string>
+    <string name="your_cart_is_empty">سلة التسوق فارغة</string>
+    <string name="checkout">إتمام الشراء</string>
+    <string name="grand_total">الإجمالي الكلي:</string>
+    <string name="delivery_free">التوصيل:</string>
+    <string name="discount">الخصم:</string>
+    <string name="item_total">إجمالي العناصر:</string>
+    <string name="user_reviews">آراء المستخدمين</string>
+    <string name="you_might_also_like">قد يعجبك أيضاً</string>
+    <string name="add_to_cart">أضف إلى السلة</string>
+    <string name="shipping_address">عنوان الشحن</string>
+    <string name="change">تغيير</string>
+    <string name="payment_method">طريقة الدفع</string>
+
+
+    <string name="cash_on_delivery">الدفع عند الاستلام</string>
+    <string name="fawry">فوري</string>
+    <string name="confirm">تأكيد</string>
+    <string name="choose_area">اختر المنطقة</string>
+    <string name="choose_city">اختر المدينة</string>
+    <string name="add">إضافة</string>
+    <string name="add_new_address">إضافة عنوان جديد</string>
+    <string name="back">رجوع</string>
+    <string name="add_card">إضافة بطاقة</string>
+    <string name="apply">تطبيق</string>
+    <string name="your_pdf">ملفك PDF</string>
+    <string name="update">تحديث</string>
+    <string name="who_we_are">من نحن</string>
+    <string name="aboutUs">
+        "تأسست ATR عام 1975، وهي اليوم مزوّد خدمات تجارية متكامل، تقدم خدمات وحلول 360° لعملائنا في مجالات الأدوية، مستحضرات التجميل، الأجهزة الطبية، والمواد الغذائية والمشروبات في منطقة الشرق الأوسط وشمال إفريقيا.
+        مع قوة عاملة تتجاوز 1000 موظف، وموارد واسعة، وشبكات توزيع قوية، ومعرفة عميقة بالمستهلك والسوق، يستطيع عملاؤنا تعزيز وجودهم عالمياً، وأن يصبحوا قادة في صناعتهم.
+        خدماتنا تبني العلامات التجارية وتدعم عملاءنا في التوسع وتحقيق أقصى قدر من التواجد والوعي من خلال؛ تقديم خدمات سلسلة الإمداد، وتوزيع المبيعات، والمعلومات التسويقية، والاستيراد، واللوائح التنظيمية، وتطوير استراتيجيات المفاهيم.
+        بالإضافة إلى مجموعة واسعة من الخدمات التكميلية الأخرى، التي تقدمها فرق متخصصة وملتزمة، تدرس الأسواق المختلفة، وتعرف أفضل الممارسات، لتقدم أفضل الخدمات المصممة خصيصاً لعملائنا."
+    </string>
+    <string name="return_policy">سياسة الإرجاع</string>
+    <string name="return_policy_text">
+        في Rideshare، المتاح عبر الموقع rideshare.com، واحدة من أولوياتنا الرئيسية هي خصوصية زوارنا.
+        تحتوي وثيقة سياسة الخصوصية هذه على أنواع المعلومات التي يتم جمعها وتسجيلها بواسطة Rideshare وكيفية استخدامها.
+        إذا كانت لديك أسئلة إضافية أو تحتاج إلى مزيد من المعلومات حول سياسة الخصوصية الخاصة بنا، فلا تتردد في الاتصال بنا.
+    </string>
+    <string name="terms_condition"><![CDATA[الشروط والأحكام]]></string>
+    <string name="terms_condition_text">
+        تنطبق سياسة الخصوصية هذه فقط على أنشطتنا عبر الإنترنت، وهي صالحة لزوار موقعنا الإلكتروني فيما يتعلق بالمعلومات التي شاركوها و/أو جمعوها في Rideshare.
+        لا تنطبق هذه السياسة على أي معلومات يتم جمعها دون اتصال بالإنترنت أو عبر قنوات أخرى غير هذا الموقع.
+        تم إنشاء سياسة الخصوصية الخاصة بنا بمساعدة مولد سياسة الخصوصية المجاني.
+    </string>
+    <string name="order_history">سجل الطلبات</string>
+    <string name="view_order">عرض الطلب</string>
+    <string name="order_details">تفاصيل الطلب</string>
+    <string name="contact_us">اتصل بنا</string>
+
+    <string name="company_address">عنوان الشركه</string>
+    <string name="return_items">إرجاع المنتجات</string>
+    <string name="confirm_your_return">تأكيد عملية الإرجاع</string>
+    <string name="language">اللغة</string>
+    <string name="english">الإنجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="date">التاريخ:</string>
+    <string name="reviews">التقييمات</string>
+    <string name="give_a_review">إعطاء تقييم</string>
+    <string name="filters">الفلاتر</string>
+    <string name="like">إعجاب</string>
+    <string name="submit_a_review">إرسال التقييم</string>
+    <string name="write_a_review">اكتب مراجعة</string>
+    <string name="tap_a_star_to_rate">اضغط على نجمة للتقييم</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="you_can_pay_with_an_instant_code_the_code_is_valid_for_payment_within_12_hours">يمكنك الدفع بكود فوري.\nالكود صالح للدفع خلال 12 ساعة</string>
+    <string name="fawry_code">كود فوري:</string>
+
+    <string name="title_activity_add_fawry">إضافة فوري</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">الجزء الأول</string>
+    <string name="second_fragment_label">الجزء الثاني</string>
+    <string name="previous">السابق</string>
+
+    <string name="lorem_ipsum">
+        لوريم إيبسوم هو نص تجريبي يُستخدم في صناعة الطباعة والتنضيد. تم استخدام لوريم إيبسوم كنص معياري منذ القرن الخامس عشر، عندما أخذت مطبعة مجهولة مجموعة من الأحرف وقامت ببعثرتها لصنع كتاب عينات أحرف. لم يقتصر الأمر على بقاء هذا النص خمسة قرون دون أن يتغير، بل إنه أيضًا دخل إلى النشر الإلكتروني بشكل شبه حرفي.\n\n
+        يتم استخدام لوريم إيبسوم لأنه يعطي توزيعاً طبيعياً للحروف، على عكس استخدام نصوص مكررة أو مفردات معروفة، مما يجعله يبدو كنص مقروء. العديد من برامج النشر المكتبي ومحررات صفحات الويب تستخدم حالياً لوريم إيبسوم كنص افتراضي، وبالبحث عن عبارة "Lorem Ipsum" ستجد العديد من المواقع الحديثة التي ما زالت في مهدها.\n\n
+        هناك العديد من الأشكال المتاحة من نصوص لوريم إيبسوم، لكن معظمها تعرض للتغيير بطريقة ما عن طريق إضافة بعض الفكاهة أو الكلمات العشوائية التي لا تبدو مقبولة.\n\n
+        إذا كنت ستستخدم نص لوريم إيبسوم، تأكد من عدم وجود أي شيء محرج أو غير ملائم مخبأ بداخله. جميع مولدات لوريم إيبسوم على الإنترنت تميل إلى تكرار أجزاء محددة مسبقاً، مما يجعل هذا النص معيارياً في هذا المجال.
+    </string>
+
+
+    <string name="cvc">رمز التحقق CVC</string>
+    <string name="mm_yy">شهر/سنة</string>
+    <string name="xxxx_xxxx_xxxx_xxxx">XXXX XXXX XXXX XXXX</string>
+    <string name="card_holder_name">اسم صاحب البطاقة</string>
+    <string name="your_name">اسمك</string>
+    <string name="card_number">رقم البطاقة</string>
+    <string name="expiry_date">تاريخ الانتهاء</string>
+    <string name="cvv">رمز الأمان CVV</string>
+    <string name="your_card">بطاقتك</string>
+    <string name="remove">إزالة</string>
+    <string name="track_your_order">تتبع طلبك</string>
+    <string name="hello_blank_fragment">مرحباً، مكون فارغ</string>
+    <string name="first_name">الاسم الأول</string>
+    <string name="last_name">الاسم الأخير</string>
+    <string name="search">بحث</string>
+    <string name="deals_made_for_you">عروض مصممة خصيصاً لك!</string>
+    <string name="about_us">من نحن</string>
+    <string name="account_details">تفاصيل الحساب</string>
+    <string name="full_name">الاسم الكامل</string>
+    <string name="fill_your_addresss">أدخل عنوانك</string>
+    <string name="upload_your_pdff">ارفع ملف PDF الخاص بك</string>
+    <string name="call_service">اتصل بخدمة العملاء</string>
+    <string name="_17125">١٧١٢٥</string>
+    <string name="choose_your_language">اختر لغتك</string>
+    <string name="order_number_53453">رقم الطلب 53453</string>
+    <string name="price">السعر:</string>
+    <string name="order_number">رقم الطلب 53453</string>
+    <string name="pricee">السعر:</string>
+    <string name="quantity">الكمية:</string>
+    <string name="privacy_and_terms">الخصوصية والشروط</string>
+
+    <string name="dosagasc">الجرعة :</string>
+    <string name="order_confirmed">تم تأكيد الطلب</string>
+    <string name="your_order_has_been_confirmed_we_will_send_you_a_confirmation_email_shortly">
+        تم تأكيد طلبك، سنرسل لك بريدًا إلكترونيًا للتأكيد قريبًا.
+    </string>
+    <string name="track_order">تتبع الطلب</string>
+    <string name="priceee">السعر :</string>
+    <string name="searchh">بحث</string>
+    <string name="account_detailss">تفاصيل الحساب</string>
+    <string name="order_historyy">سجل الطلبات</string>
+    <string name="rate_the_app">قيّم التطبيق</string>
+    <string name="languages">اللغات</string>
+    <string name="privacy_and_termss">الخصوصية والشروط</string>
+    <string name="about_uss">من نحن</string>
+    <string name="contact_uss">اتصل بنا</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="select_your_preferred_language_to_go">اختر لغتك المفضلة للمتابعة</string>
+</resources>

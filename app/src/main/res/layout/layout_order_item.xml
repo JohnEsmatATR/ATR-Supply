@@ -61,9 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_4sdp"
-            android:text="@{`Quantity: ` + data.quantity}"
+            android:text="@{`الكميه: ` + data.quantity}"
             android:textColor="@color/black"
-            tootls:text="Quantity: 4"
+            tootls:text="الكميه : 4"
             app:layout_constraintBottom_toTopOf="@+id/priceLayout"
             app:layout_constraintStart_toEndOf="@+id/cardImg"
             app:layout_constraintTop_toBottomOf="@id/productName" />
@@ -83,7 +83,7 @@
                 android:id="@+id/priceTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Price:"
+                android:text="@string/price"
                 android:textColor="@color/black" />
 
             <TextView

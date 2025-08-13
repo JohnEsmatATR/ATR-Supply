@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav
 
+import android.annotation.SuppressLint
 import android.app.ComponentCaller
 import android.content.Context
 import android.content.Intent

@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_42sdp"
-            android:text="Choose Your Language"
+            android:text="@string/choose_your_language"
             android:textSize="@dimen/_22ssp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_6sdp"
-            android:text="Select your preferred language to Go"
+            android:text="@string/select_your_preferred_language_to_go"
             android:textColor="@color/mid_gray_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +100,7 @@
             app:layout_constraintTop_toBottomOf="@+id/selectLangDes">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btnEnglish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -115,6 +116,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/ic_checkmark"
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
@@ -141,6 +143,7 @@
             app:layout_constraintTop_toBottomOf="@+id/layout_english">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btnArabic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -156,6 +159,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/ic_checkmark2"
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
