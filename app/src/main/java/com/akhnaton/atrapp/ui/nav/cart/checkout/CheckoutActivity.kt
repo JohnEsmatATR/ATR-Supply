@@ -61,18 +61,20 @@ class CheckoutActivity : BaseActivity() {
 
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
-                            val orderNumbers = it.data.data?.orderNumbers ?: emptyList()
+                            val orderNumbers = it.data.data?.orderNumbers
 
                             val intent = Intent(this@CheckoutActivity, FawryActivity::class.java).apply {
-                                putStringArrayListExtra("order_numbers", ArrayList(orderNumbers))
+                                putExtra("order_numbers", orderNumbers)
                             }
-                            startActivity(intent)
+                        startActivity(intent)
 
-                        } else {
+                        finish()
 
-                            showToastSnack(it.data.message, true)
-                            Log.d("TAG", "cartObserve: ${it.data.message}")
-                        }
+                    } else {
+
+                    showToastSnack(it.data.message, true)
+                    Log.d("TAG", "cartObserve: ${it.data.message}")
+                }
                     }
 
 
