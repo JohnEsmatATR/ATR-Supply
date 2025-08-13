@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.akhnaton.atrapp.data.model.auth.LoginModel
 import com.google.gson.Gson
+import java.util.Locale
 
 object SharedPreferenceHelper {
 
@@ -70,4 +71,15 @@ object SharedPreferenceHelper {
             editor.putString(mySharedPreference_userObj, json).apply()
 
         }
+
+    fun setLocale(context: Context, langCode: String) {
+        language = langCode // حفظ اللغة
+        val locale = Locale(langCode)
+        Locale.setDefault(locale)
+        val config = context.resources.configuration
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+    }
+
+
 }

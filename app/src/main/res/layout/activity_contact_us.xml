@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
-            android:text="Call Service"
+            android:text="@string/call_service"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,7 @@
             android:id="@+id/callServiceNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="17125"
+            android:text="@string/_17125"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/callServiceTxt" />

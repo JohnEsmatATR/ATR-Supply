@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="Account details"
+                android:text="@string/account_detailss"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icProfile"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="Order History"
+                android:text="@string/order_historyy"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icClock"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -158,7 +158,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="Rate the app"
+                android:text="@string/rate_the_app"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icStar"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -206,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="Languages"
+                android:text="@string/languages"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icWorld"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -254,7 +254,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="Privacy and Terms"
+                android:text="@string/privacy_and_termss"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icPrivacy"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -302,7 +302,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="About us"
+                android:text="@string/about_uss"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icAbout"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -350,7 +350,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="Contact us"
+                android:text="@string/contact_uss"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icContact"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -398,7 +398,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:text="Logout"
+                android:text="@string/logout"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/icLogout"
                 app:layout_constraintTop_toTopOf="parent" />

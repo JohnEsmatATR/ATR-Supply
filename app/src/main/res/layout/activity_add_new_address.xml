@@ -67,7 +67,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fill your address"
+                android:text="@string/fill_your_addresss"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:text="Upload your pdf"
+                android:text="@string/upload_your_pdff"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 

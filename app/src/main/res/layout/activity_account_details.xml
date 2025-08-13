@@ -48,7 +48,7 @@
                     android:layout_marginTop="@dimen/_16sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:gravity="center"
-                    android:text="Account Details"
+                    android:text="@string/account_details"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
-                    android:hint="Full Name"
+                    android:hint="@string/full_name"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
