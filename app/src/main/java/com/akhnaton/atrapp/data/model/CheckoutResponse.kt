@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class CheckoutResponse(
     @SerializedName("order_numbers")
-    val orderNumbers: List<String> = emptyList()
+    val orderNumbers: String = ""
 )

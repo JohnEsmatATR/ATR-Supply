@@ -18,14 +18,14 @@ class FawryActivity : BaseActivity() {
     }
 
     private fun init() {
-        val orderNumbers = intent.getStringArrayListExtra("order_numbers") ?: arrayListOf()
+        val orderNumbers = intent.getStringExtra("order_numbers") ?: ""
 
         // اطبعهم في اللوج للتأكد
         Log.d("ORDER_PATH", "Received Order Numbers: $orderNumbers")
 
         // مثال لو عايز تعرض أول رقم بس في TextView
         if (orderNumbers.isNotEmpty()) {
-            binding.txtOrderNumber.text = orderNumbers.joinToString("\n")
+            binding.txtOrderNumber.text = orderNumbers
         } else {
             binding.txtOrderNumber.text = "No order numbers received."
         }
