@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:text="Total:"
+                android:text="@string/total"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/v1" />
 

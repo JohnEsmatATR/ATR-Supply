@@ -58,7 +58,7 @@ class CartViewModel : ViewModel() {
     fun calculateCartTotals(products: List<ProductModel>): CartTotals {
         var totalPriceBeforeDiscount = 0.0
         var totalDiscount = 0.0
-        val deliveryFee = 20.0
+        val deliveryFee = 0.0 // دايمًا Free
 
         for (product in products) {
             val quantity = product.MY_QUANTITY
@@ -71,9 +71,7 @@ class CartViewModel : ViewModel() {
 
         val totalPriceAfterDiscount = totalPriceBeforeDiscount - totalDiscount
 
-
-        val finalDeliveryFee = if (totalPriceAfterDiscount > 500) 0.0 else deliveryFee
-
+        val finalDeliveryFee = deliveryFee
         val grandTotal = totalPriceAfterDiscount + finalDeliveryFee
 
         return CartTotals(
@@ -83,6 +81,7 @@ class CartViewModel : ViewModel() {
             grandTotal = grandTotal
         )
     }
+
 
     data class CartTotals(
         val totalBeforeDiscount: Double,

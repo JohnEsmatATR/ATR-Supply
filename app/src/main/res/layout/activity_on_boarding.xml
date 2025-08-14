@@ -88,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:weightSum="11">
 
@@ -124,6 +125,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView

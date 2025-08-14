@@ -114,7 +114,7 @@
             android:layout_marginStart="@dimen/_18sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:fontFamily="sans-serif-medium"
-            android:text="Contact us in Social Media"
+            android:text="@string/contact_us_in_social_media"
             android:textColor="@color/black"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintStart_toStartOf="parent"
@@ -125,6 +125,7 @@
             android:id="@+id/whatsAppCard"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_66sdp"
+            android:clickable="true"
             android:layout_margin="@dimen/_12sdp"
             app:cardBackgroundColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/social">
@@ -157,7 +158,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Continue to chat"
+                    android:text="@string/continue_to_chat"
                     android:textColor="@color/orange"
                     android:layout_marginEnd="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -172,6 +173,7 @@
             android:id="@+id/facebookCard"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_66sdp"
+            android:clickable="true"
             android:layout_margin="@dimen/_12sdp"
             app:cardBackgroundColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/whatsAppCard">
@@ -195,13 +197,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:text="Facebook"
                     android:fontFamily="sans-serif-light"
+                    android:text="Facebook"
                     android:textSize="@dimen/_14ssp"
-                    app:layout_constraintTop_toTopOf="@+id/imgFacebook"
-                    app:layout_constraintStart_toEndOf="@+id/imgFacebook"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/imgFacebook"
+                    app:layout_constraintStart_toEndOf="@+id/imgFacebook"
+                    app:layout_constraintTop_toTopOf="@+id/imgFacebook" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
@@ -214,7 +218,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Follow"
+                    android:text="@string/follow"
                     android:textColor="@color/orange"
                     android:layout_marginEnd="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -227,6 +231,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/linkedinCard"
             android:layout_width="match_parent"
+            android:clickable="true"
             android:layout_height="@dimen/_66sdp"
             android:layout_margin="@dimen/_12sdp"
             app:cardBackgroundColor="@color/white"
@@ -234,6 +239,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+
                 android:layout_height="match_parent">
 
                 <ImageView
@@ -251,17 +257,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:text="Linkedin"
                     android:fontFamily="sans-serif-light"
+                    android:text="Linkedin"
                     android:textSize="@dimen/_14ssp"
-                    app:layout_constraintTop_toTopOf="@+id/imgLinkedin"
-                    app:layout_constraintStart_toEndOf="@+id/imgLinkedin"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/imgLinkedin"
+                    app:layout_constraintStart_toEndOf="@+id/imgLinkedin"
+                    app:layout_constraintTop_toTopOf="@+id/imgLinkedin" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:text="20,3K Followers   •   136 Posts"
+                    android:visibility="gone"
                     android:fontFamily="sans-serif-light"
                     app:layout_constraintStart_toEndOf="@+id/imgLinkedin"
                     app:layout_constraintTop_toBottomOf="@+id/linkedinTxt"
@@ -270,7 +278,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Follow"
+                    android:text="@string/follow"
                     android:textColor="@color/orange"
                     android:layout_marginEnd="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -282,6 +290,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/linkedasdinCard"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_66sdp"
             android:layout_margin="@dimen/_12sdp"
@@ -307,15 +316,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:text="Youtube"
                     android:fontFamily="sans-serif-light"
+                    android:text="Youtube"
                     android:textSize="@dimen/_14ssp"
-                    app:layout_constraintTop_toTopOf="@+id/imgYoutube"
-                    app:layout_constraintStart_toEndOf="@+id/imgYoutube"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/imgYoutube"
+                    app:layout_constraintStart_toEndOf="@+id/imgYoutube"
+                    app:layout_constraintTop_toTopOf="@+id/imgYoutube" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:text="20,3K Followers   •   136 Posts"
                     android:fontFamily="sans-serif-light"
@@ -326,7 +337,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Follow"
+                    android:text="@string/follow"
                     android:textColor="@color/orange"
                     android:layout_marginEnd="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"

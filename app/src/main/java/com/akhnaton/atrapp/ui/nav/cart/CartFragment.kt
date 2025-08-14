@@ -165,9 +165,9 @@ class CartFragment : BaseFragment() {
         val decimalFormat = DecimalFormat("#0.0")
         binding.txtItemTotal.text = decimalFormat.format(totals.totalBeforeDiscount)
         binding.txtDiscount.text = decimalFormat.format(totals.discount)
-        binding.txtDeliveryFree.text =
-            if (totals.deliveryFee == 0.0) "Free Delivery" else decimalFormat.format(totals.deliveryFee)
+        binding.txtDeliveryFree.text = "Free Delivery"
         binding.txtGrandTotal.text = decimalFormat.format(totals.grandTotal)
+
     }
 
     private fun deleteProductFromCart(productId: Int, position: Int) {

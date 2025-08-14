@@ -10,30 +10,50 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityContactUsBinding
 
 
-class ContactUsActivity : AppCompatActivity(), View.OnClickListener {
+class ContactUsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContactUsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupBinding()
+        setupListeners()
     }
 
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contact_us)
-        binding.btnBack.setOnClickListener(this)
-        binding.callServiceNumber.setOnClickListener(this)
     }
 
-    override fun onClick(v: View) {
-        if (v.id == binding.btnBack.id) {
+    private fun setupListeners() {
+
+        binding.whatsAppCard.setOnClickListener {
+            val phone = "17125" // رقم واتساب
+            val url = "https://wa.me/$phone"
+            openLink(url)
+        }
+
+
+        binding.facebookCard.setOnClickListener {
+            openLink("https://www.facebook.com/share/1FGQyT7r9k/")
+        }
+
+
+        binding.linkedinCard.setOnClickListener {
+            openLink("https://www.linkedin.com/in/jonathan-ehab-1a818b223/")
+        }
+
+
+        binding.linkedasdinCard.setOnClickListener {
+            openLink("https://youtube.com/@evapharma?si=ixHSkpWzAkf9cY7B")
+        }
+
+
+        binding.btnBack.setOnClickListener {
             finish()
         }
+    }
 
-        if (v.id == binding.callServiceNumber.id) {
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.setData(Uri.parse("tel:${binding.callServiceNumber.text}"))
-            startActivity(intent)
-
-        }
-
+    private fun openLink(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 }

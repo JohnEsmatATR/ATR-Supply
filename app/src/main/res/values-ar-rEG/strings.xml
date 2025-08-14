@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ATR APP</string>
-    <string name="sign_up">إنشاء حساب</string>
+    <string name="sign_up">عميل حالي</string>
     <string name="or">أو</string>
-    <string name="login">تسجيل الدخول</string>
+    <string name="login">عميل جديد</string>
     <string name="continue_as">المتابعة كـ</string>
     <string name="guest">زائر</string>
     <string name="get_started">ابدأ الآن</string>
@@ -113,7 +113,7 @@
     <string name="order_details">تفاصيل الطلب</string>
     <string name="contact_us">اتصل بنا</string>
 
-    <string name="company_address">عنوان الشركه</string>
+    <string name="company_address">9 شارع الشريكات المتفرع من شارع الفواله - عبدين</string>
     <string name="return_items">إرجاع المنتجات</string>
     <string name="confirm_your_return">تأكيد عملية الإرجاع</string>
     <string name="language">اللغة</string>
@@ -193,4 +193,11 @@
     <string name="contact_uss">اتصل بنا</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="select_your_preferred_language_to_go">اختر لغتك المفضلة للمتابعة</string>
+    <string name="contact_us_in_social_media">تواصل معنا عبر وسائل التواصل الاجتماعي</string>
+    <string name="continue_to_chat">متابعة المحادثة</string>
+    <string name="follow">متابعة</string>
+    <string name="total">الإجمالي:</string>
+    <string name="quantite">الكمية:</string>
+
+
 </resources>
