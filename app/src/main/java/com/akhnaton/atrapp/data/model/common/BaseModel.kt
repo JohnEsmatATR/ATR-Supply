@@ -5,7 +5,7 @@ import com.akhnaton.atrapp.data.model.PaginationModel
 data class BaseModel<T>(
     val message: String = "",
     val status: Int = 0,
-    var data: T?,
-    var pagination: PaginationModel,
-    var total: String,
+    val data: T? = null,
+    val pagination: PaginationModel? = null,
+    val total: String? = null
 )

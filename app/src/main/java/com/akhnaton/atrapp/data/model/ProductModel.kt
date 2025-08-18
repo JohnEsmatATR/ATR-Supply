@@ -21,6 +21,8 @@ data class ProductModel(
     val PRICE_DISCOUNT_PERCENTAGE: String = "",
     val PRICE_AFTER_DISCOUNT: Double = 0.0,
     val PRICE_WITH_TAX: Double = 0.0,
+    val BUY : Int?= null,
+    val GET : Int?=null,
     val MY_QUANTITY_TOTAL_PRICE: Double = 0.0,
     val RATE: String = "",
     val REVIEWS: ReviewModel = ReviewModel(),

@@ -47,7 +47,7 @@
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_26sdp"
             android:fontFamily="sans-serif-medium"
-            android:text="@{data.name}"
+            android:text='@{String.valueOf(data.name)}'
             android:textSize="@dimen/_12sdp"
             app:layout_constraintBottom_toTopOf="@+id/quantity"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
-            android:text="@{data.quantity}"
+            android:text="@{String.valueOf(data.quantity)}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/priceLayout"
             app:layout_constraintStart_toEndOf="@+id/textView2"
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
-                android:text="@{data.price +` EGP`}"
+                android:text="@{String.valueOf(data.price) +` EGP`}"
                 tootls:text="345 EGP"
                 android:textColor="@color/black" />
 
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
-                android:text="@{data.discountPrice +` EGP`}"
+                android:text="@{String.valueOf(data.discountPrice) +` EGP`}"
                 tootls:text="345 EGP"
                 android:textColor="@color/black" />
         </LinearLayout>

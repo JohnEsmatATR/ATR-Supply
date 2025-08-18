@@ -42,4 +42,8 @@ object ConstantLinks {
     // get user address
     const val CUSTOMER_ADDRESS = "user/get_customer_sites"
     const val CHANGE_DEFAULT_ADDRESS= "user/change_default_site"
+
+    //home panner
+    const val PANNER ="home/banner"
+    const val ORDER_STATES = "cart/my_orders"
 }

@@ -9,9 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.orde_states.OrderStatesIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDetails.MyOrderDetailsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDetails.MyOrderDetailsStatus
 import com.akhnaton.atrapp.databinding.ActivityOrderDetailsBinding
+import com.akhnaton.atrapp.domain.OrderStateRepository
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import kotlinx.coroutines.launch
@@ -20,16 +22,19 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderDetailsBinding
     private val orderDetailsViewModel: MyOrderDetailsViewModel by viewModels()
     private var mAdapter = OrderDetailsAdapter()
-    private var mList = mutableListOf<OrderDetailsModel>()
+ var mList = mutableListOf<OrderDetailsModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         init()
     }
-
+    private val viewModel: OrderStatesViewModel by viewModels {
+        OrderStatesViewModelFactory(OrderStateRepository())
+    }
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_details)
 //        binding.returnItemsLayout.setOnClickListener(this)
+
         binding.btnBack.setOnClickListener(this)
         binding.productRecycler.apply {
             layoutManager =
@@ -46,6 +51,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
 
         observe()
         getOrderDetails(orgSysId)
+       getOrderStates(orgSysId)
     }
 
 
@@ -104,4 +110,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun getOrderStates(orgSysId: String) {
+        viewModel.handleIntent(OrderStatesIntent.GetOrderState, orgSysId)
+    }
 }

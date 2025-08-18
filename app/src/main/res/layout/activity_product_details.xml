@@ -81,7 +81,6 @@
                 android:background="@color/white"
                 android:scaleType="fitCenter"
                 android:transitionName="itemImageTransition"
-                tools:src="@drawable/im_best_seller"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,13 +93,25 @@
                 android:layout_marginHorizontal="20sp"
                 android:layout_marginTop="10dp"
                 android:gravity="start"
-                android:text="Eva Hair clinic - Gold Argan - Triple defense"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/btn_share"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/im_produce" />
+
+            <TextView
+                android:id="@+id/buy_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:gravity="start"
+                android:textColor="@color/gray"
+                android:textSize="14dp"
+                android:text="@{String.valueOf(data.BUY)}"
+                app:layout_constraintEnd_toStartOf="@id/btn_share"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_item_name" />
 
             <ImageView
                 android:id="@+id/btn_share"
@@ -124,7 +135,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_item_name">
+                app:layout_constraintTop_toBottomOf="@+id/buy_txt">
 
                 <TextView
                     android:id="@+id/txt_price"
@@ -132,7 +143,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:gravity="center"
-                    android:text="90 LE"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -143,7 +153,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:gravity="center"
-                    android:text="500 LE"
                     android:textColor="@color/mid_gray_1"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -178,7 +187,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
-                    android:text="65 ML"
                     android:textColor="@color/mid_gray_2"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -205,7 +213,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:gravity="center"
-
                     android:textColor="@color/mid_gray_2"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -336,8 +343,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="0dp"
-                    android:text="@string/description_etc"
-                    android:textColor="@color/mid_gray_2"
+                     android:textColor="@color/mid_gray_2"
                     android:textSize="14sp" />
 
 

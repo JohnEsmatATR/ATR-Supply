@@ -39,7 +39,6 @@ class ProductsActivity : BaseActivity() {
     private var category = CategoryModel()
     lateinit var adapter: ProductAdapter
     private var flag = ""
-    private var id = -1
     private var isLoading = false
     private var isLastPage = false
     private var categoryId: Int = 0
@@ -149,27 +148,16 @@ class ProductsActivity : BaseActivity() {
                     }
                     is ProductsStatus.GetProducts -> {
                         isLoading = false
-
                         hideProgressDialog(binding.progressLoading)
 
                         if (state.data.status != -1) {
                             val dataList = state.data.data ?: emptyList()
                             pageSize = state.data.pagination?.page_size ?: pageSize
 
-                            Log.d(Common.KeroDebug, "Pagination Log: Received ${dataList.size} items on page $currentPage")
-
-                            if (dataList.size < pageSize) {
-                                isLastPage = true
-                                Log.d(Common.KeroDebug, "Pagination Log: Reached last page at page $currentPage")
-                            } else {
-                                isLastPage = false
-                            }
-
                             if (dataList.isNotEmpty()) {
                                 binding.txtNoProducts.visibility = View.GONE
                                 products.addAll(dataList)
                                 setupProductsRecycler(dataList)
-                                currentPage++
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                             }
@@ -177,9 +165,9 @@ class ProductsActivity : BaseActivity() {
                         } else {
                             binding.txtNoProducts.visibility = View.VISIBLE
                             showToastSnack(state.data.message, true)
-                            Log.d(Common.KeroDebug, "Pagination Log: Error status from server: ${state.data.status}")
                         }
                     }
+
                     is ProductsStatus.Error -> {
                         isLoading = false
                         hideProgressDialog(binding.progressLoading)

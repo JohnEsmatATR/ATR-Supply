@@ -88,20 +88,32 @@ class ProductDetailsActivity : BaseActivity() {
        // favoriteObserve()
 
     }
+    @SuppressLint("SetTextI18n")
     private fun observeProduct() {
         lifecycleScope.launch {
             viewModel.state.collect {
                 when (it) {
                     is ProductDetailsStatus.Error -> {
+                        hideProgressDialog(binding.progressLoading)
                         Toast.makeText(this@ProductDetailsActivity, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
                         Log.d("TAG", "observeProduct: ${it.error}")
                     }
 
                     is ProductDetailsStatus.GetProductDetails -> {
                         if (it.data.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
                             val productData = it.data.data?.firstOrNull()
                             if (productData != null) {
+                                val buy = productData.BUY
+                                val get = productData.GET
 
+                                if (buy == 0 || get == 0) {
+                                    binding.buyTxt.visibility = View.GONE
+                                } else {
+                                    val text = getString(R.string.buy_x_get_y, buy, get)
+                                    binding.buyTxt.text = text
+                                    binding.buyTxt.visibility = View.VISIBLE
+                                }
                                 binding.txtItemName.text = productData.TITLE
                                 binding.txtPrice.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
                                 binding.txtOldPrice.text = "${productData.PRICE_WITH_TAX} LE"
@@ -135,7 +147,7 @@ class ProductDetailsActivity : BaseActivity() {
                     }
 
                     ProductDetailsStatus.Loading -> {
-
+                        showProgressDialog(binding.progressLoading)
                     }
                 }
             }
@@ -187,6 +199,7 @@ class ProductDetailsActivity : BaseActivity() {
                     is AddToCartStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         showProgressDialog(binding.progressLoading)
+
                     }
 
                     is AddToCartStatus.AddToCart -> {

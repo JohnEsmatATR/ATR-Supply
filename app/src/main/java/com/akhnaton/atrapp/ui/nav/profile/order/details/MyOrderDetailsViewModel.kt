@@ -2,24 +2,14 @@ package com.akhnaton.atrapp.ui.nav.profile.order.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.model.common.BaseModel
-import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
-import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.myOrders.MyOrdersIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.myOrders.MyOrdersStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDetails.MyOrderDetailsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDetails.MyOrderDetailsStatus
-import com.akhnaton.atrapp.domain.CartRepository
 import com.akhnaton.atrapp.domain.OrdersRepository
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class MyOrderDetailsViewModel : ViewModel() {
 

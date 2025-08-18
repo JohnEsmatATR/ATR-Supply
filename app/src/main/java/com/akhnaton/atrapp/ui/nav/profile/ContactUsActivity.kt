@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityContactUsBinding
+import androidx.core.net.toUri
 
 
 class ContactUsActivity : AppCompatActivity() {
@@ -26,7 +27,7 @@ class ContactUsActivity : AppCompatActivity() {
     private fun setupListeners() {
 
         binding.whatsAppCard.setOnClickListener {
-            val phone = "17125" // رقم واتساب
+            val phone = "17125"
             val url = "https://wa.me/$phone"
             openLink(url)
         }
@@ -53,7 +54,7 @@ class ContactUsActivity : AppCompatActivity() {
     }
 
     private fun openLink(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         startActivity(intent)
     }
 }

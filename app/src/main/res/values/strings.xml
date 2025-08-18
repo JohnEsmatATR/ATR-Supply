@@ -42,7 +42,7 @@
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
     <string name="view_all">View All</string>
-    <string name="categories">Categories</string>
+    <string name="pharma">Pharma</string>
     <string name="best_seller">Best Seller</string>
     <string name="no_products">No Products</string>
     <string name="filter">Filter</string>
@@ -256,6 +256,10 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="continue_to_chat">Continue to chat</string>
     <string name="follow">Follow</string>
     <string name="total">Total:</string>
-    <string name="quantite">Quantite :</string>
+    <string name="quantite">quantity :</string>
+    <string name="buy_x_get_y">Buy %1$d get %2$d free</string>
+    <string name="cosmetics">Cosmetics</string>
+    <string name="categories">Categories</string>
+
 
 </resources>

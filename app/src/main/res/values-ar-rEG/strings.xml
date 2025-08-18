@@ -44,7 +44,7 @@
     <string name="cart">سلة التسوق</string>
     <string name="profile">الملف الشخصي</string>
     <string name="view_all">عرض الكل</string>
-    <string name="categories">الفئات</string>
+    <string name="pharma">فارما</string>
     <string name="best_seller">الأكثر مبيعاً</string>
     <string name="no_products">لا توجد منتجات</string>
     <string name="filter">تصفية</string>
@@ -198,6 +198,8 @@
     <string name="follow">متابعة</string>
     <string name="total">الإجمالي:</string>
     <string name="quantite">الكمية:</string>
-
+    <string name="buy_x_get_y">اشتري %1$d واحصل على %2$d مجانًا</string>
+    <string name="cosmetics">كوزمتكس</string>
+    <string name="categories">فئات</string>
 
 </resources>

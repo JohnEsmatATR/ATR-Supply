@@ -6,11 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
+import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
@@ -20,6 +21,8 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatu
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerState
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
@@ -30,9 +33,14 @@ import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.categories.CategoryActivity
 import com.akhnaton.atrapp.ui.nav.home.notifications.NotificationsActivity
+import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
+import com.akhnaton.atrapp.ui.nav.home.panner.PannerViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.home.search.SearchActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -47,6 +55,13 @@ class HomeFragment : BaseFragment() {
     var listBestSeller = mutableListOf<ProductModel>()
     private lateinit var shimmerAdapter: ShimmerAdapter
     private val viewModel: AddressesViewModel by viewModels()
+
+    private val pannerViewModel: PannerViewModel by viewModels()
+    private lateinit var viewPager: ViewPager
+
+    private var currentPage = 0
+    private var direction = 1
+    private var sliderJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,7 +102,8 @@ class HomeFragment : BaseFragment() {
                             listCategory.clear()
                             listCategory.addAll(it.data.data!!)
                             Log.d(Common.KeroDebug, "observeHome: GetCategories : ${it.data.data!!}")
-                            setupCategoriesRecycler(listCategory)
+                            setupPharmaRecycler(listCategory)
+                            setupCosmeticsRecycler(listCategory)
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
@@ -116,29 +132,29 @@ class HomeFragment : BaseFragment() {
                     }
 
                     is AddressStatus.GetMyAddresses -> {
-                        if (it.result.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
-                            Log.d(Common.KeroDebug, "Received: GetProducts")
-
-                            val addresses = it.result.data ?: emptyList()
-
-                            // اطبع كل عنوان عنده prime == 1
-                            addresses.forEach { address ->
-                                if (address.prime == 1) {
-                                    Log.d("DEBUG_ADDRESS", "Prime address found: $address")
-                                    binding.defaultAddress.text=address.TITLE
-                                }
-                            }
-
-                            val hasDefault = addresses.any { address -> address.prime == 1 }
-                            if (!hasDefault) {
-                                val intent = Intent(requireContext(), AddressesActivity::class.java)
-                                startActivity(intent)
-                            }
-
-                        } else {
-                            hideProgressDialog(binding.progressLoading)
-                        }
+//                        if (it.result.status == 200) {
+//                            hideProgressDialog(binding.progressLoading)
+//                            Log.d(Common.KeroDebug, "Received: GetProducts")
+//
+//                            val addresses = it.result.data ?: emptyList()
+//
+//
+//                            addresses.forEach { address ->
+//                                if (address.prime == 1) {
+//                                    Log.d("DEBUG_ADDRESS", "Prime address found: $address")
+//                                    binding.defaultAddress.text=address.TITLE
+//                                }
+//                            }
+//
+//                            val hasDefault = addresses.any { address -> address.prime == 1 }
+//                            if (!hasDefault) {
+//                                val intent = Intent(requireContext(), AddressesActivity::class.java)
+//                                startActivity(intent)
+//                            }
+//
+//                        } else {
+//                            hideProgressDialog(binding.progressLoading)
+//                        }
                     }
 
 
@@ -210,7 +226,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun setupCategoriesRecycler(list: List<CategoryModel>) {
+    private fun setupCosmeticsRecycler(list: List<CategoryModel>) {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         categoriesAdapter = CategoryAdapter(onClick = { category, position ->
@@ -223,6 +239,20 @@ class HomeFragment : BaseFragment() {
         categoriesAdapter.setData(list)
         binding.recyclerCategory.layoutManager = layoutManager
         binding.recyclerCategory.adapter = categoriesAdapter
+    }
+    private fun setupPharmaRecycler(list: List<CategoryModel>) {
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        categoriesAdapter = CategoryAdapter(onClick = { category, position ->
+            val intent = Intent(requireContext(), ProductsActivity::class.java)
+            intent.putExtra("flag", Common.category)
+            intent.putExtra("category", category)
+
+            startActivity(intent)
+        })
+        categoriesAdapter.setData(list)
+        binding.recyclerPharma.layoutManager = layoutManager
+        binding.recyclerPharma.adapter = categoriesAdapter
     }
 
     private fun setupProductBestSellerRecycler(list: List<ProductModel>) {
@@ -282,6 +312,7 @@ class HomeFragment : BaseFragment() {
         getBestSeller()
         observeAddress()
         getAddress()
+        setPlannerView()
 
     }
     private fun onClick() {
@@ -348,6 +379,62 @@ class HomeFragment : BaseFragment() {
             )
         }
     }
+    private fun setPlannerView() {
+
+        lifecycleScope.launch {
+            pannerViewModel.state.collect { state ->
+                when (state) {
+                    is PannerState.Loading -> {
+
+                    }
+                    is PannerState.Success -> {
+                        val adapter = BannerAdapter(state.banners)
+                        viewPager = binding.slider
+                        viewPager.adapter = adapter
+                        startAutoSlider(state.banners.size)
+                    }
+                    is PannerState.Error -> {
+                        Log.d("TAG", "setPlannerView:${state.message} ")
+                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
 
 
+        pannerViewModel.handleIntent(PannerIntent.getPanners)
+    }
+
+
+    private fun startAutoSlider(bannersSize: Int) {
+
+        sliderJob?.cancel()
+
+        sliderJob = lifecycleScope.launch(Dispatchers.Main) {
+            while (true) {
+                delay(1500)
+
+                if (bannersSize > 1) {
+                    currentPage += direction
+
+
+                    if (currentPage == bannersSize - 1) {
+                        direction = -1
+                    }
+
+                    else if (currentPage == 0) {
+                        direction = 1
+                    }
+
+                    viewPager.setCurrentItem(currentPage, true)
+                }
+            }
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sliderJob?.cancel()
+    }
 }
+
+
