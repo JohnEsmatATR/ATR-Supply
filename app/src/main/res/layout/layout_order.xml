@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="data"
             type="com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel" />
@@ -15,55 +14,76 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_8sdp"
         app:cardBackgroundColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="@dimen/_12sdp"
+        app:cardElevation="4dp"
         app:strokeColor="@color/gray"
-        app:strokeWidth="2dp">
+        app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_12sdp">
 
+            <!-- Order Number -->
             <TextView
                 android:id="@+id/orderNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:gravity="center"
                 android:fontFamily="sans-serif-medium"
                 android:text="@{`Order No. ` + data.ORIG_SYS_DOCUMENT_REF}"
-                tools:text="Order No. 4513154651321"
+
+                android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
+            <!-- Status -->
+            <TextView
+                android:id="@+id/orderStatus"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginVertical="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:background="@drawable/status_background"
+                android:fontFamily="sans-serif-medium"
+                android:text="@{data.STATUS}"
+
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/orderNumber"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Delivery Time -->
+            <TextView
+                android:id="@+id/deliverTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="sans-serif"
+                android:text="@{`Delivery: ` + data.DEILVER_TIME}"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintTop_toBottomOf="@id/orderStatus"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- View Order Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewOrderBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/view_order"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                app:backgroundTint="@color/orange"
+                app:cornerRadius="@dimen/_8sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/orderNumber"
-                app:rippleColor="@color/orange"
-                app:strokeColor="@color/orange"
-                app:strokeWidth="1dp">
+                app:layout_constraintTop_toBottomOf="@id/deliverTime" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/viewOrderBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/view_order"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_10ssp" />
-
-            </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

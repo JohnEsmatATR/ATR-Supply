@@ -132,29 +132,29 @@ class HomeFragment : BaseFragment() {
                     }
 
                     is AddressStatus.GetMyAddresses -> {
-//                        if (it.result.status == 200) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "Received: GetProducts")
-//
-//                            val addresses = it.result.data ?: emptyList()
-//
-//
-//                            addresses.forEach { address ->
-//                                if (address.prime == 1) {
-//                                    Log.d("DEBUG_ADDRESS", "Prime address found: $address")
-//                                    binding.defaultAddress.text=address.TITLE
-//                                }
-//                            }
-//
-//                            val hasDefault = addresses.any { address -> address.prime == 1 }
-//                            if (!hasDefault) {
-//                                val intent = Intent(requireContext(), AddressesActivity::class.java)
-//                                startActivity(intent)
-//                            }
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                        }
+                        if (it.result.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "Received: GetProducts")
+
+                            val addresses = it.result.data ?: emptyList()
+
+
+                            addresses.forEach { address ->
+                                if (address.prime == 1) {
+                                    Log.d("DEBUG_ADDRESS", "Prime address found: $address")
+                                    binding.defaultAddress.text=address.TITLE
+                                }
+                            }
+
+                            val hasDefault = addresses.any { address -> address.prime == 1 }
+                            if (!hasDefault) {
+                                val intent = Intent(requireContext(), AddressesActivity::class.java)
+                                startActivity(intent)
+                            }
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                        }
                     }
 
 
