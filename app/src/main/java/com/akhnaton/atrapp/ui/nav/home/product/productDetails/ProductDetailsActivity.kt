@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.akhnaton.atrapp.R
@@ -40,7 +41,7 @@ class ProductDetailsActivity : BaseActivity() {
     var quantity: Int = 1
     private var productQuantity : Int=0
 
-
+    private lateinit var bonusAdapter: BonusAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
@@ -85,8 +86,16 @@ class ProductDetailsActivity : BaseActivity() {
         observeProduct()
         getProductDetails(productId)
         addToCartObserve()
-       // favoriteObserve()
+        initBonusRecycler()
+    }
 
+    private fun initBonusRecycler() {
+        bonusAdapter = BonusAdapter()
+        binding.bonusRecycler.apply {
+            adapter = bonusAdapter
+            layoutManager = LinearLayoutManager(this@ProductDetailsActivity)
+
+        }
     }
     @SuppressLint("SetTextI18n")
     private fun observeProduct() {
@@ -103,24 +112,17 @@ class ProductDetailsActivity : BaseActivity() {
                         if (it.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
                             val productData = it.data.data?.firstOrNull()
-                            if (productData != null) {
-                                val buy = productData.BUY
-                                val get = productData.GET
 
-                                if (buy == 0 || get == 0) {
-                                    binding.buyTxt.visibility = View.GONE
-                                } else {
-                                    val text = getString(R.string.buy_x_get_y, buy, get)
-                                    binding.buyTxt.text = text
-                                    binding.buyTxt.visibility = View.VISIBLE
-                                }
+                            if (productData != null) {
+
                                 binding.txtItemName.text = productData.TITLE
                                 binding.txtPrice.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
                                 binding.txtOldPrice.text = "${productData.PRICE_WITH_TAX} LE"
                                 binding.txtSize.text = productData.WEIGHT
                                 binding.txtDescription.text = productData.DESCRIPTION
                                 productQuantity = productData.QUANTITY
-                                Log.d("TAG", "observeProduct productQuantity : ${productQuantity}")
+                                Log.d("TAG", "observeProduct productQuantity : $productQuantity")
+
 
                                 binding.isStock.text = if (productData.IN_STOCK) "In Stock" else "Out of Stock"
                                 binding.isStock.setTextColor(
@@ -130,16 +132,28 @@ class ProductDetailsActivity : BaseActivity() {
                                     )
                                 )
 
+                                // 🟢 BonusData
+                                // 🟢 BonusData
+                                val bonusList = productData.BONUS_DATA
+                                if (!bonusList.isNullOrEmpty()) {
+                                    binding.bonusRecycler.visibility = View.VISIBLE
+                                    bonusAdapter.setData(bonusList)
+                                } else {
+                                    binding.bonusRecycler.visibility = View.GONE
+                                }
 
+
+                                // 🟢 عرض الشاشة الأساسية
                                 binding.nestedScrollView.visibility = View.VISIBLE
                                 binding.productNotFound.visibility = View.GONE
                             } else {
-
+                                // 🟠 المنتج مش موجود
                                 binding.nestedScrollView.visibility = View.GONE
                                 binding.productNotFound.visibility = View.VISIBLE
                             }
                         }
                     }
+
 
 
                     ProductDetailsStatus.Idle -> {

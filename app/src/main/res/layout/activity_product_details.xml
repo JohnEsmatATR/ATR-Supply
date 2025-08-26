@@ -100,15 +100,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/im_produce" />
 
-            <TextView
-                android:id="@+id/buy_txt"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/bonus_recycler"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20sp"
                 android:gravity="start"
                 android:textColor="@color/gray"
+                tools:listitem="@layout/bonus_item"
+                tools:itemCount="2"
                 android:textSize="14dp"
-                android:text="@{String.valueOf(data.BUY)}"
                 app:layout_constraintEnd_toStartOf="@id/btn_share"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_item_name" />
@@ -135,7 +136,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buy_txt">
+                app:layout_constraintTop_toBottomOf="@+id/bonus_recycler">
 
                 <TextView
                     android:id="@+id/txt_price"
@@ -510,7 +511,7 @@
                 android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:background="@drawable/button_background_with_shadow"
+                android:backgroundTint="@color/white"
                 android:text="go to cart"
                 android:textColor="@color/orange"
                 android:elevation="@dimen/_50sdp"

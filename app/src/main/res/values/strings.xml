@@ -260,6 +260,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="buy_x_get_y">Buy %1$d get %2$d free</string>
     <string name="cosmetics">Cosmetics</string>
     <string name="categories">Categories</string>
-
+    <string name="bonus_offer">Buy %1$s Get %2$s</string>
 
 </resources>

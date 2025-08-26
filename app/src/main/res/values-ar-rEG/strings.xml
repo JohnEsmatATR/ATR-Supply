@@ -201,5 +201,5 @@
     <string name="buy_x_get_y">اشتري %1$d واحصل على %2$d مجانًا</string>
     <string name="cosmetics">كوزمتكس</string>
     <string name="categories">فئات</string>
-
+    <string name="bonus_offer">اشتري %1$d واحصل على %2$d</string>
 </resources>

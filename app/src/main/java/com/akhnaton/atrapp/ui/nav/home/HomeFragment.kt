@@ -161,7 +161,9 @@ class HomeFragment : BaseFragment() {
 
                     is AddressStatus.MakeAddressPrime -> {}
 
-                    is AddressStatus.Error -> {}
+                    is AddressStatus.Error -> {
+
+                    }
 
                 }
             }
