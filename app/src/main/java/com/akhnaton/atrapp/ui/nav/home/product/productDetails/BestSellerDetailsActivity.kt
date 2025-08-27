@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -20,28 +21,28 @@ import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
-import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
+import com.akhnaton.atrapp.databinding.ActivityBestSallerDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
+import com.akhnaton.atrapp.ui.nav.home.product.BestSellerActivity
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 import kotlinx.coroutines.launch
 
-class ProductDetailsActivity : BaseActivity() {
-    lateinit var binding: ActivityProductDetailsBinding
+class BestSellerDetailsActivity : BaseActivity() {
+    private lateinit var binding: ActivityBestSallerDetailsBinding
     private val addCartViewModel: AddToCartViewModel by viewModels()
     private val favoriteViewModel :FavoriteViewModel by  viewModels()
     private val viewModel : ProductDetailsViewModel by viewModels()
     lateinit var product: ProductModel
     var quantity: Int = 1
-    private var productQuantity : Int=0
-    private lateinit var flag: String
     private lateinit var bonusAdapter: BonusAdapter
+    private var productQuantity : Int=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProductDetailsBinding.inflate(layoutInflater)
+        binding = ActivityBestSallerDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         init()
@@ -51,21 +52,17 @@ class ProductDetailsActivity : BaseActivity() {
         }
 
         binding.btnGoToCart.setOnClickListener {
-            val intent = Intent(this@ProductDetailsActivity, HomeActivity::class.java)
+            val intent = Intent(this@BestSellerDetailsActivity, HomeActivity::class.java)
             intent.putExtra("open_cart", true)
-            intent.putExtra("from_product_details", true)
+            intent.putExtra("from_best_seller_details", true) // 👈 هنا بدل from_product_details
             intent.putExtra("product", product)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
         }
 
-
-
     }
-
     @SuppressLint("SuspiciousIndentation")
     private fun init() {
-        flag = intent.getStringExtra("flag") ?: ""
 
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -74,10 +71,10 @@ class ProductDetailsActivity : BaseActivity() {
 
         product = intent.getSerializableExtra("product") as ProductModel
         val transitionName = intent.getStringExtra("transitionName")
-   //     Log.d("TAG", "received product from intent: ${product}")
+        //     Log.d("TAG", "received product from intent: ${product}")
 
 
-            ViewCompat.setTransitionName(binding.txtItemName, transitionName)
+        ViewCompat.setTransitionName(binding.txtItemName, transitionName)
         binding.imProduce.load(product.IMAGE_URL) {
             crossfade(true)
             placeholder(R.drawable.ic_logo)
@@ -86,16 +83,17 @@ class ProductDetailsActivity : BaseActivity() {
         val productId = product.ID.toInt()
 
         observeProduct()
-        getProductDetails(productId,flag)
+      //  getProductDetails(productId)
         addToCartObserve()
         initBonusRecycler()
+        handleBackPress()
     }
 
     private fun initBonusRecycler() {
         bonusAdapter = BonusAdapter()
         binding.bonusRecycler.apply {
             adapter = bonusAdapter
-            layoutManager = LinearLayoutManager(this@ProductDetailsActivity)
+            layoutManager = LinearLayoutManager(this@BestSellerDetailsActivity)
 
         }
     }
@@ -106,7 +104,7 @@ class ProductDetailsActivity : BaseActivity() {
                 when (it) {
                     is ProductDetailsStatus.Error -> {
                         hideProgressDialog(binding.progressLoading)
-                        Toast.makeText(this@ProductDetailsActivity, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@BestSellerDetailsActivity, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
                         Log.d("TAG", "observeProduct: ${it.error}")
                     }
 
@@ -134,7 +132,8 @@ class ProductDetailsActivity : BaseActivity() {
                                     )
                                 )
 
-
+                                // 🟢 BonusData
+                                // 🟢 BonusData
                                 val bonusList = productData.BONUS_DATA
                                 if (!bonusList.isNullOrEmpty()) {
                                     binding.bonusRecycler.visibility = View.VISIBLE
@@ -144,11 +143,11 @@ class ProductDetailsActivity : BaseActivity() {
                                 }
 
 
-
+                                // 🟢 عرض الشاشة الأساسية
                                 binding.nestedScrollView.visibility = View.VISIBLE
                                 binding.productNotFound.visibility = View.GONE
                             } else {
-
+                                // 🟠 المنتج مش موجود
                                 binding.nestedScrollView.visibility = View.GONE
                                 binding.productNotFound.visibility = View.VISIBLE
                             }
@@ -182,7 +181,7 @@ class ProductDetailsActivity : BaseActivity() {
             finish()
         }
         binding.layoutViewAllReviews.setOnClickListener {
-            val intent = Intent(this@ProductDetailsActivity, ReviewActivity::class.java)
+            val intent = Intent(this@BestSellerDetailsActivity, ReviewActivity::class.java)
             intent.putExtra("product", product)
             startActivity(intent)
         }
@@ -190,12 +189,12 @@ class ProductDetailsActivity : BaseActivity() {
             addProductToCart()
         }
         binding.btnPlus.setOnClickListener {
-           if (validateIncreaseQuantity(quantity, productQuantity)) {
+            if (validateIncreaseQuantity(quantity, productQuantity)) {
                 quantity++
-               Log.d("TAG", "onClick QUANTITY :${productQuantity} ")
+                Log.d("TAG", "onClick QUANTITY :${productQuantity} ")
                 binding.txtQuantity.setText(quantity.toString())
 
-           }
+            }
         }
         binding.btnMinus.setOnClickListener {
             if (validateDecreaseQuantity(quantity)) {
@@ -223,7 +222,7 @@ class ProductDetailsActivity : BaseActivity() {
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             showToastSnack(it.data.message, false)
                             binding.btnGoToCart.visibility= View.VISIBLE
-                            val animation = AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.slide_up)
+                            val animation = AnimationUtils.loadAnimation(this@BestSellerDetailsActivity, R.anim.slide_up)
                             binding.btnGoToCart.startAnimation(animation)
                         } else {
                             hideProgressDialog(binding.progressLoading)
@@ -253,4 +252,10 @@ class ProductDetailsActivity : BaseActivity() {
         }
 
     }
+    private fun handleBackPress() {
+        onBackPressedDispatcher.addCallback(this) {
+            startActivity(Intent(applicationContext, BestSellerActivity::class.java))
+        }
+    }
+
 }

@@ -5,18 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.LayoutCategoryBinding
 import com.akhnaton.atrapp.shared.Common
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
-class CategoryAdapter(private val onClick: (category: CategoryModel, position: Int,) -> Unit) :
+class CategoryAdapter(private val onClick: (category: CategoriesModel, position: Int,) -> Unit) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    private var apartmentsList = ArrayList<CategoryModel>()
+    private var apartmentsList = ArrayList<CategoriesModel>()
 
-    fun setData(categories: List<CategoryModel>) {
+    fun setData(categories: List<CategoriesModel>) {
         apartmentsList = categories as ArrayList
         notifyDataSetChanged()
     }
@@ -24,7 +25,7 @@ class CategoryAdapter(private val onClick: (category: CategoryModel, position: I
     inner class ViewHolder(private val binding: LayoutCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: CategoryModel, position: Int) {
+        fun bind(item: CategoriesModel, position: Int) {
 
             binding.categoryModel = item
 

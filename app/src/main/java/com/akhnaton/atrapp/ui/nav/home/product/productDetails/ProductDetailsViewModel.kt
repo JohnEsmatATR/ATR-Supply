@@ -31,18 +31,18 @@ class ProductDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is ProductDetailsIntent.GetProductDetails -> getBestsellerRepo(it.bestSeller)
+                    is ProductDetailsIntent.GetProductDetails -> getBestsellerRepo(it.bestSeller, it.categories)
 
                 }
             }
         }
     }
 
-    private fun getBestsellerRepo(productDetails: Int) {
+    private fun getBestsellerRepo(productDetails: Int,  categories: String) {
         viewModelScope.launch {
             _state.value = ProductDetailsStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getProductDetails(productDetails)
+                val response = HomeRepository().getProductDetails(productDetails,categories)
                 if (response.code() == 200) {
                     Log.d(Common.KeroDebug, "getBestsellerRepo ${response.body()!!}")
                     ProductDetailsStatus.GetProductDetails(response.body()!!)

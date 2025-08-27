@@ -201,19 +201,19 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun observeCategoryState() {
-        lifecycleScope.launch {
-            cateViewModel.state.collect { state ->
-                when (state) {
-                    is CategoryStatus.GetCategory -> {
-                        filterAdapter.updateCategories(state.data.data ?: emptyList())
-                    }
-                    is CategoryStatus.Error -> {
-                        Toast.makeText(this@SearchActivity, "Error: ${state.error}", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> Unit
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            cateViewModel.state.collect { state ->
+//                when (state) {
+//                    is CategoryStatus.GetCategory -> {
+//                        filterAdapter.updateCategories(state.data.data ?: emptyList())
+//                    }
+//                    is CategoryStatus.Error -> {
+//                        Toast.makeText(this@SearchActivity, "Error: ${state.error}", Toast.LENGTH_SHORT).show()
+//                    }
+//                    else -> Unit
+//                }
+//            }
+//        }
     }
 
 

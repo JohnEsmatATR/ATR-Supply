@@ -1,40 +1,36 @@
 package com.akhnaton.atrapp.ui.nav
 
 import android.annotation.SuppressLint
-import android.app.ComponentCaller
-import android.content.Context
+import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.ActivityHomeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.nav.cart.CartFragment
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteFragment
 import com.akhnaton.atrapp.ui.nav.home.HomeFragment
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.BestSellerDetailsActivity
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.profile.ProfileFragment
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
-import com.akhnaton.atrapp.util.isNetworkAvailable
 
+@Suppress("INFERRED_TYPE_VARIABLE_INTO_POSSIBLE_EMPTY_INTERSECTION")
 class HomeActivity : BaseActivity() {
     lateinit var binding: ActivityHomeBinding
     lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private var cameFromProductDetails = false
+    private var lastOpenedProduct: ProductModel? = null
 
+    private var backPressedTime: Long = 0
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +38,7 @@ class HomeActivity : BaseActivity() {
         setContentView(binding.root)
         init()
         onClick()
-
+        handleBackPress()
 
 
     }
@@ -50,6 +46,7 @@ class HomeActivity : BaseActivity() {
     private fun init() {
         initNavBottom()
         setupDrawer()
+        handleIntent(intent)
     }
 
 
@@ -118,6 +115,7 @@ class HomeActivity : BaseActivity() {
             commit()
         }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setItemSelected(item: Int) {
         val homeFragment = HomeFragment()
         val cartFragment = CartFragment()
@@ -184,13 +182,87 @@ class HomeActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (intent.getBooleanExtra("open_cart", false)) {
+        intent?.let { handleIntent(it) }
+    }
+    private fun handleIntent(intent: Intent) {
+        if (intent.getBooleanExtra("from_product_details", false)) {
+            cameFromProductDetails = true
+            lastOpenedProduct = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra("product", ProductModel::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra("product")
+            }
+        }
 
-            setItemSelected(R.id.cart)
+        if (intent.getBooleanExtra("from_best_seller_details", false)) {
+            cameFromBestSellerDetails = true
+            lastOpenedProduct = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra("product", ProductModel::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra("product")
+            }
+        }
+
+        if (intent.getBooleanExtra("open_cart", false)) {
             binding.bottomNavigationView.selectedItemId = R.id.cart
+            setItemSelected(R.id.cart)
         }
     }
 
+
+    private fun handleBackPress() {
+        onBackPressedDispatcher.addCallback(this) {
+            val selectedItemId = binding.bottomNavigationView.selectedItemId
+
+            if (selectedItemId == R.id.cart && (cameFromProductDetails || cameFromBestSellerDetails)) {
+
+                val fromBestSeller = cameFromBestSellerDetails
+                cameFromProductDetails = false
+                cameFromBestSellerDetails = false
+
+                lastOpenedProduct?.let { product ->
+                    val intent = if (fromBestSeller) {
+                        Intent(this@HomeActivity, BestSellerDetailsActivity::class.java)
+                    } else {
+                        Intent(this@HomeActivity, ProductDetailsActivity::class.java)
+                    }
+                    intent.putExtra("product", product)
+                    startActivity(intent)
+                }
+                return@addCallback
+            }
+
+            if (selectedItemId != R.id.home) {
+                binding.bottomNavigationView.selectedItemId = R.id.home
+                setItemSelected(R.id.home)
+            } else {
+                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                    AlertDialog.Builder(this@HomeActivity)
+                        .setTitle(getString(R.string.exit_title))
+                        .setMessage(getString(R.string.exit_message))
+                        .setPositiveButton(getString(R.string.yes)) { _, _ -> finishAffinity() }
+                        .setNegativeButton(getString(R.string.no), null)
+                        .show()
+                } else {
+                    Toast.makeText(
+                        this@HomeActivity,
+                        getString(R.string.press_again_to_exit),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                backPressedTime = System.currentTimeMillis()
+            }
+        }
+    }
+
+
+    companion object {
+        var cameFromProductDetails = false
+        var cameFromBestSellerDetails = false
+        var lastOpenedProduct: ProductModel? = null
+    }
 
 
 

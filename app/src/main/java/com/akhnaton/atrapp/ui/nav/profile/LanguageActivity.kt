@@ -18,7 +18,7 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // نطبق اللغة المحفوظة قبل تحميل الواجهة
+
         SharedPreferenceHelper.setLocale(this, SharedPreferenceHelper.language ?: "en")
 
         setupBinding()

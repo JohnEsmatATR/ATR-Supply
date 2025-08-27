@@ -6,7 +6,7 @@
     <data>
         <variable
             name="categoryModel"
-            type="com.akhnaton.atrapp.data.model.CategoryModel" />
+            type="com.akhnaton.atrapp.data.model.CategoriesModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

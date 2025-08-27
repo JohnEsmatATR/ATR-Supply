@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,7 @@ import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
@@ -36,9 +38,9 @@ class ProductsActivity : BaseActivity() {
     private val favoriteViewModel: FavoriteViewModel by viewModels()
    // private val searchViewModel: SearchViewModel by viewModels()
     private var products: MutableList<ProductModel> = ArrayList()
-    private var category = CategoryModel()
+    private var category: CategoryModel? = CategoryModel()
     lateinit var adapter: ProductAdapter
-    private var flag = ""
+
     private var isLoading = false
     private var isLastPage = false
     private var categoryId: Int = 0
@@ -47,6 +49,7 @@ class ProductsActivity : BaseActivity() {
     private var currentPage = 1
     private var pageSize = 10
 
+    private lateinit var flag: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
@@ -59,25 +62,17 @@ class ProductsActivity : BaseActivity() {
 
 
     private fun init() {
+        productsObserve()
+        Log.d("TAG", "ProductsActivity: ProductsActivity ")
 
+        category = intent.getSerializableExtra("category") as? CategoryModel
+
+        categoryId = category?.ID ?: 0
         flag = intent.getStringExtra("flag") ?: ""
-
-        when (flag) {
-            Common.category -> {
-                productsObserve()
-                category = intent.getSerializableExtra("category") as CategoryModel
-                categoryId = category.ID  // أضف هذا السطر
-                getProductsBasedOnCategory(categoryId)
-
-            }
-            Common.bestSeller -> {
-                getBestSeller()
-                bestSellerObserve()
-            }
-        }
-
-
+        getProductsBasedOnCategory(categoryId, category = flag)
     }
+
+
 
     private fun onClick() {
         binding.btnBack.setOnClickListener {
@@ -204,12 +199,13 @@ class ProductsActivity : BaseActivity() {
     }
 
 
-    private fun getProductsBasedOnCategory(categoryId: Int, page: Int = 1) {
+    private fun getProductsBasedOnCategory(categoryId: Int, page: Int = 1,category: String) {
         lifecycleScope.launch {
             viewModel.homeIntent.send(
                 ProductsIntent.GetProducts(
                     categoryId = categoryId,
-                    page = page
+                    page = page,
+                    category
                 )
             )
         }
@@ -260,10 +256,11 @@ class ProductsActivity : BaseActivity() {
                         if (!isLoading && !isLastPage) {
                             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 3) {
                                 Log.d(Common.KeroDebug, "Pagination Log: Triggering load for page $currentPage")
-                                lifecycleScope.launch(Dispatchers.Main) {
+                                lifecycleScope.launch{
                                     viewModel.homeIntent.send(ProductsIntent.GetProducts(
                                         categoryId,
-                                        currentPage
+                                        currentPage,
+flag
                                     ))
                                 }
 
@@ -305,9 +302,4 @@ class ProductsActivity : BaseActivity() {
             }
         })
     }
-
-
-
-
-
 }

@@ -1,6 +1,5 @@
 package com.akhnaton.atrapp.ui.nav.home.product
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
@@ -32,7 +31,7 @@ class ProductsViewModel : ViewModel() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is ProductsIntent.GetProducts -> getProductsBasedOnCategoryRepo(it.categoryId)
+                    is ProductsIntent.GetProducts -> getProductsBasedOnCategoryRepo(it.categoryId, it.categoriesName)
                 }
             }
         }
@@ -40,12 +39,12 @@ class ProductsViewModel : ViewModel() {
 
 
 
-    private fun getProductsBasedOnCategoryRepo(categoryId: Int) {
+    private fun getProductsBasedOnCategoryRepo(categoryId: Int, categoryName : String) {
         viewModelScope.launch {
             isLoading = true
             _state.value = ProductsStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit)
+                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit,categoryName)
                 if (response.code() == 200) {
                     val data = response.body()!!
                     if (data.data!!.size < limit) {

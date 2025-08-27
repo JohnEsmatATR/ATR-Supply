@@ -25,13 +25,16 @@ class HomeRepository {
     suspend fun searchProduct(word: String?="",categoryId: Int?=null) = retrofit.searchProduct(
         word,categoryId
     )
-    suspend fun getProductsByPagination(categoryId: Int, page: Int, limit: Int) = retrofit.getProductsByPagination(categoryId, page, limit)
+    suspend fun getProductsByPagination(categoryId: Int, page: Int, limit: Int,categories : String) =
+        retrofit.getProductsByPagination(categoryId, page, limit,categories)
 
 
     suspend fun getProductDetails(
         productId: Int,
+        categories: String
     ) = retrofit.getProductDetails(
         productId,
+        categories
     )
 
     suspend fun addProductToFavorites(token: String, productId: Int, add: Boolean)

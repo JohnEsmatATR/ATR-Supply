@@ -53,10 +53,11 @@ class CheckoutActivity : BaseActivity() {
                     is CheckoutStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is CheckoutStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-
+                        showProgressDialog(binding.progressLoading)
                     }
 
                     is CheckoutStatus.Checkout -> {
+                        hideProgressDialog(binding.progressLoading)
                         if (it.data.status == 200) {
 
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
@@ -80,7 +81,7 @@ class CheckoutActivity : BaseActivity() {
 
                     is CheckoutStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-
+                        hideProgressDialog(binding.progressLoading)
                         showToastSnack(it.error.toString(), true)
                     }
 

@@ -260,6 +260,16 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="buy_x_get_y">Buy %1$d get %2$d free</string>
     <string name="cosmetics">Cosmetics</string>
     <string name="categories">Categories</string>
-    <string name="bonus_offer">Buy %1$s Get %2$s</string>
+    <string name="bonus_offer">Buy %1$d Get %2$d</string>
+
+
+    <string name="exit_title">Exit</string>
+    <string name="exit_message">Do you want to exit the app?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="press_again_to_exit">Press again to exit</string>
+
+    <string name="buy_label">buy</string>
+    <string name="get_label">get</string>
 
 </resources>

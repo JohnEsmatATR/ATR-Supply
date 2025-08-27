@@ -78,11 +78,11 @@ class CategoryActivity : BaseActivity(), AllCategoryAdapter.OnCategoryClickListe
 
                     is CategoryStatus.GetCategory -> {
                         if (it.data.status != -1) {
-                            hideProgressDialog(binding.progressLoading)
-                            Log.d(Common.KeroDebug, "observeHome: GetCategories")
-                            listCategory.addAll(it.data.data!!)
-                            Log.d(Common.KeroDebug, "observeHome: GetCategoriessssssss${listCategory.size}")
-                            setAdapterData(listCategory)
+//                            hideProgressDialog(binding.progressLoading)
+//                            Log.d(Common.KeroDebug, "observeHome: GetCategories")
+//                            listCategory.addAll(it.data.data!!)
+//                            Log.d(Common.KeroDebug, "observeHome: GetCategoriessssssss${listCategory.size}")
+//                            setAdapterData(listCategory)
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
@@ -101,10 +101,10 @@ class CategoryActivity : BaseActivity(), AllCategoryAdapter.OnCategoryClickListe
     }
 
     private fun getCategories() {
-        lifecycleScope.launch {
-            categoryViewModel.homeIntent.send(
-                CategoryIntent.GetCategories
-            )
-        }
+//        lifecycleScope.launch {
+//            categoryViewModel.homeIntent.send(
+//                CategoryIntent.GetCategories
+//            )
+//        }
     }
 }

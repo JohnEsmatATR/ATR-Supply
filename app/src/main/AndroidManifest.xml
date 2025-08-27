@@ -8,18 +8,25 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".AtrApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
-        android:name=".AtrApp"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.nav.home.product.productDetails.BestSellerDetailsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ATRAPP" />
+        <activity
+            android:name=".ui.nav.home.product.BestSellerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ATRAPP" />
         <activity
             android:name=".ui.nav.home.search.SearchActivity"
             android:exported="false" />
@@ -83,7 +90,7 @@
             android:name=".ui.nav.HomeActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.home.product.ProductsActivity"
             android:exported="false" />

@@ -8,7 +8,6 @@ import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface IProducts {
@@ -21,7 +20,6 @@ interface IProducts {
     suspend fun getBestSeller(
         @Field("best_seller") bestSeller: Int?,
     ): Response<BaseModel<List<ProductModel>>>
-
 
 
     @FormUrlEncoded
@@ -39,14 +37,15 @@ interface IProducts {
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun searchProduct(
-        @Field("search") search: String?= "",
-        @Field("category_id") categoryId: Int?=null
+        @Field("search") search: String? = "",
+        @Field("category_id") categoryId: Int? = null
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun getProductDetails(
         @Field("product_id") productId: Int?,
+        @Field("order_type") categories: String
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded
@@ -70,12 +69,14 @@ interface IProducts {
     suspend fun getProductsByPagination(
         @Field("category_id") categoryId: Int?,
         @Field("page") page: Int,
-        @Field("per_page") limit: Int
+        @Field("per_page") limit: Int,
+        @Field("order_type") categories: String
     ): Response<BaseModel<List<ProductModel>>>
+
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun filterProduct(
-        @Field("search") search: String?= "",
+        @Field("search") search: String? = "",
         @Field("category_id") categoryId: Int
     ): Response<BaseModel<List<ProductModel>>>
 

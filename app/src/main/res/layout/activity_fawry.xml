@@ -69,6 +69,7 @@
             android:paddingVertical="@dimen/_15sdp"
             android:elevation="@dimen/_12sdp"
             android:paddingHorizontal="@dimen/_15sdp"
+            android:layout_marginHorizontal="20dp"
             android:background="@drawable/btn_white_style"
             android:orientation="horizontal"
             >
@@ -102,7 +103,7 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="@dimen/_20sdp"
-        android:elevation="@dimen/_15sdp"
+        android:elevation="@dimen/_50sdp"
         android:layout_marginTop="5dp"
         app:cornerRadius="8dp"
       android:backgroundTint="@color/orange"

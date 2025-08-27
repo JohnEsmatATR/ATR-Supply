@@ -45,5 +45,7 @@ object ConstantLinks {
 
     //home panner
     const val PANNER ="home/banner"
-    const val ORDER_STATES = "cart/my_orders"
+
+    //order types and categories
+    const val ORDER_TYPES= "category/order_type_and_category_list"
 }
