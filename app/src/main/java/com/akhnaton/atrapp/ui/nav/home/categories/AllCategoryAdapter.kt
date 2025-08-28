@@ -3,7 +3,7 @@ package com.akhnaton.atrapp.ui.nav.home.categories
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
+import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.LayoutAllCategoryBinding
 import com.bumptech.glide.Glide
@@ -11,10 +11,10 @@ import com.bumptech.glide.Glide
 class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategoryViewHolder>() {
 
     private lateinit var listener: OnCategoryClickListener
-    private var mList = mutableListOf<CategoryModel>()
+    private var mList = mutableListOf<CategoriesModel>()
 
 
-    fun setCategoriesList(category: List<CategoryModel>, listener: OnCategoryClickListener) {
+    fun setCategoriesList(category: List<CategoriesModel>, listener: OnCategoryClickListener) {
         this.mList = category.toMutableList()
         this.listener = listener
         notifyDataSetChanged()
@@ -41,7 +41,7 @@ class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategory
         val binding: LayoutAllCategoryBinding,
         private val listener: OnCategoryClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: CategoryModel) {
+        fun bind(data: CategoriesModel) {
             binding.categoryModel = data
             Glide.with(binding.root.context)
                 .load(data.IMAGE_URL)
@@ -53,6 +53,6 @@ class AllCategoryAdapter() : RecyclerView.Adapter<AllCategoryAdapter.AllCategory
         }
     }
     interface OnCategoryClickListener {
-        fun onCategoryClick(category: CategoryModel)
+        fun onCategoryClick(category: CategoriesModel)
     }
 }

@@ -212,4 +212,6 @@
 
     <string name="buy_label">اشتري</string>
     <string name="get_label">واحصل على</string>
+
+    <string name="products">منتجات</string>
 </resources>

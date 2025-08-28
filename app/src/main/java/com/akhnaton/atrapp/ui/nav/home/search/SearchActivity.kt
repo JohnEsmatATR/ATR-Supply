@@ -138,40 +138,40 @@ class SearchActivity : BaseActivity() {
 
 
     private fun setupProductsRecycler(list: List<ProductModel>) {
-        if (!::adapter.isInitialized) {
-            val layoutManager = GridLayoutManager(this, 2)
-            adapter = ProductAdapter(
-                onClick = { product, position, sharedView, transitionName ->
-                    val intent = Intent(this@SearchActivity, ProductDetailsActivity::class.java).apply {
-                        putExtra("flag", Common.category)
-                        putExtra("product", product)
-                        putExtra("transitionName", transitionName)
-                    }
-
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this@SearchActivity,  // لو داخل Fragment
-                        sharedView,
-                        transitionName
-                    )
-
-                    startActivity(intent, options.toBundle())
-                },
-                onFavoriteClick = { product, position, isFavorite ->
-                    if (isFavorite) {
-                        addProductToFavorite(product.ID, isFavorite)
-                    } else {
-                        deleteProductToFavorite(product.ID, isFavorite)
-                    }
-                }
-            )
-
-            adapter.setData(list, false, flag)
-            binding.recycler.layoutManager = layoutManager
-            binding.recycler.adapter = adapter
-
-        } else {
-            adapter.setData(list, false, flag)
-        }
+//        if (!::adapter.isInitialized) {
+//            val layoutManager = GridLayoutManager(this, 2)
+//            adapter = ProductAdapter(
+//                onClick = { product, position, sharedView, transitionName ->
+//                    val intent = Intent(this@SearchActivity, ProductDetailsActivity::class.java).apply {
+//                        putExtra("flag", Common.category)
+//                        putExtra("product", product)
+//                        putExtra("transitionName", transitionName)
+//                    }
+//
+//                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                        this@SearchActivity,  // لو داخل Fragment
+//                        sharedView,
+//                        transitionName
+//                    )
+//
+//                    startActivity(intent, options.toBundle())
+//                },
+//                onFavoriteClick = { product, position, isFavorite ->
+//                    if (isFavorite) {
+//                        addProductToFavorite(product.ID, isFavorite)
+//                    } else {
+//                        deleteProductToFavorite(product.ID, isFavorite)
+//                    }
+//                }
+//            )
+//
+//            adapter.setData(list, false, flag)
+//            binding.recycler.layoutManager = layoutManager
+//            binding.recycler.adapter = adapter
+//
+//        } else {
+//            adapter.setData(list, false, flag)
+//        }
     }
 
     private fun setupCategoryRecyclerView() {
@@ -219,30 +219,30 @@ class SearchActivity : BaseActivity() {
 
 
 
-    private fun addProductToFavorite(
-        productId: Int,
-        add: Boolean,
-    ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.AddProductToFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
-        }
-    }
-
-    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.DeleteFromFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
-        }
-    }
+//    private fun addProductToFavorite(
+//        productId: Int,
+//        add: Boolean,
+//    ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.AddProductToFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
+//
+//    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.DeleteFromFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
 }

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.akhnaton.atrapp.data.model.CartProduct
+import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
@@ -18,6 +20,7 @@ import com.akhnaton.atrapp.databinding.FragmentCartBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.ShimmerAdapterCart
+import com.akhnaton.atrapp.ui.nav.cart.checkout.CartParentAdapter
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
@@ -28,10 +31,10 @@ class CartFragment : BaseFragment() {
     private val cartViewModel: CartViewModel by viewModels()
     private val addToCartViewModel: AddToCartViewModel by viewModels()
 
-    private lateinit var cartAdapter: CartAdapter
+    private lateinit var parentAdapter: CartParentAdapter
     private lateinit var shimmerAdapter: ShimmerAdapterCart
 
-    private var products: List<ProductModel> = emptyList()
+    private var cartData: List<CartResponse> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +42,7 @@ class CartFragment : BaseFragment() {
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
         observeCart()
-        observeAddToCart()
+        observeCartQuantity()
         setupClickListeners()
         return binding.root
     }
@@ -69,25 +72,21 @@ class CartFragment : BaseFragment() {
         lifecycleScope.launch {
             cartViewModel.state.collect { state ->
                 when (state) {
-                    is CartStatus.Idle -> Log.d(Common.KeroDebug, "CartStatus: Idle")
+                    is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        binding.recycler.adapter = shimmerAdapter
-                        binding.recycler.visibility = View.VISIBLE
+                        showProgressDialog(binding.progressLoading)
                     }
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
-                        products = state.data.data ?: emptyList()
-                        if (products.isNotEmpty()) {
-                            setupMyCartRecycler(products)
+                        cartData = state.data.data ?: emptyList()
+                        if (cartData.isNotEmpty()) {
+                            setupParentRecycler(cartData)
                             updateCartSummaryUI()
-                            binding.txtNoProducts.visibility = View.GONE
-                            binding.recycler.visibility = View.VISIBLE
                         } else {
                             showEmptyState()
                         }
                     }
                     is CartStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
                         showToastSnack(state.error.toString(), true)
                         showEmptyState()
                     }
@@ -96,20 +95,20 @@ class CartFragment : BaseFragment() {
         }
     }
 
-    private fun observeAddToCart() {
+    private fun observeCartQuantity() {
         lifecycleScope.launch {
             addToCartViewModel.state.collect { state ->
                 when (state) {
-                    is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "AddToCart: Idle")
-                    is AddToCartStatus.Loading -> {}
                     is AddToCartStatus.AddToCart -> {
-                        if (state.data.status != 200) {
-                            showToastSnack(state.data.message, true)
-                        }
+                        hideProgressDialog(binding.progressLoading)
                     }
                     is AddToCartStatus.Error -> {
+                        Log.e(Common.KeroDebug, "Cart Error: ${state.error}")
                         showToastSnack(state.error.toString(), true)
+                        hideProgressDialog(binding.progressLoading)
                     }
+                    AddToCartStatus.Idle -> hideProgressDialog(binding.progressLoading)
+                    AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
                 }
             }
         }
@@ -121,39 +120,35 @@ class CartFragment : BaseFragment() {
         }
     }
 
-    private fun setupMyCartRecycler(list: List<ProductModel>) {
-        cartAdapter = CartAdapter(
+    private fun setupParentRecycler(list: List<CartResponse>) {
+        parentAdapter = CartParentAdapter(
             onClick = { _, _ -> },
-            onPlusClick = { product, position, quantity ->
+            onPlusClick = { product, _, quantity ->
                 lifecycleScope.launch {
-                    (products as ArrayList)[position] = product.copy(MY_QUANTITY = quantity)
-                    cartAdapter.setData(products, true, "cart")
+                    addProductToCart(product.id, quantity, product)
                     updateCartSummaryUI()
-                    addProductToCart(product.ID, quantity)
                 }
             },
-            onMinusClick = { product, position, quantity ->
+            onMinusClick = { product, _, quantity ->
                 lifecycleScope.launch {
-                    (products as ArrayList)[position] = product.copy(MY_QUANTITY = quantity)
-                    cartAdapter.setData(products, true, "cart")
+                    addProductToCart(product.id, quantity, product)
                     updateCartSummaryUI()
-                    addProductToCart(product.ID, quantity)
                 }
             },
-            onDeleteClick = { product, position ->
+            onDeleteClick = { product, _ ->
                 lifecycleScope.launch {
-                    deleteProductFromCart(product.ID, position)
+                    deleteProductFromCart(product)
                 }
             }
         )
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.recycler.adapter = cartAdapter
-        cartAdapter.setData(list, true, "cart")
+        binding.recycler.adapter = parentAdapter
+        parentAdapter.setData(list)
         binding.layoutCart.visibility = View.VISIBLE
     }
 
     private fun updateCartSummaryUI() {
-        if (products.isEmpty()) {
+        if (cartData.isEmpty()) {
             binding.txtItemTotal.text = "0.0"
             binding.txtDiscount.text = "0.0"
             binding.txtDeliveryFree.text = "0.0"
@@ -161,37 +156,47 @@ class CartFragment : BaseFragment() {
             return
         }
 
-        val totals = cartViewModel.calculateCartTotals(products)
+        // دمج كل الـ products من order types عشان الحسابات
+        val allProducts = cartData.flatMap { it.items.products }
+        val totals = cartViewModel.calculateCartTotals(allProducts)
         val decimalFormat = DecimalFormat("#0.0")
         binding.txtItemTotal.text = decimalFormat.format(totals.totalBeforeDiscount)
         binding.txtDiscount.text = decimalFormat.format(totals.discount)
         binding.txtDeliveryFree.text = "Free Delivery"
         binding.txtGrandTotal.text = decimalFormat.format(totals.grandTotal)
-
     }
 
-    private fun deleteProductFromCart(productId: Int, position: Int) {
+    private fun deleteProductFromCart(product: CartProduct) {
         lifecycleScope.launch {
-            (products as ArrayList).removeAt(position)
-            cartAdapter.setData(products, true, "cart")
+            // شيل المنتج من الـ cartData
+            cartData = cartData.map { cartResponse ->
+                cartResponse.copy(
+                    items = cartResponse.items.copy(
+                        products = cartResponse.items.products.filter { it.id != product.id }
+                    )
+                )
+            }.filter { it.items.products.isNotEmpty() }
+
+            parentAdapter.setData(cartData)
             updateCartSummaryUI()
             checkEmptyAfterDelete()
+
             addToCartViewModel.addToCartIntent.send(
-                AddToCartIntent.AddProductToCart(productId, 0)
+                AddToCartIntent.AddProductToCart(product.id, 0, product.title)
             )
         }
     }
 
-    private fun addProductToCart(productId: Int, quantity: Int) {
+    private fun addProductToCart(productId: Int, quantity: Int, product: CartProduct) {
         lifecycleScope.launch {
             addToCartViewModel.addToCartIntent.send(
-                AddToCartIntent.AddProductToCart(productId, quantity)
+                AddToCartIntent.AddProductToCart(productId, quantity, product.title)
             )
         }
     }
 
     private fun checkEmptyAfterDelete() {
-        if (products.isEmpty()) {
+        if (cartData.isEmpty()) {
             showEmptyState()
         }
     }
@@ -202,5 +207,6 @@ class CartFragment : BaseFragment() {
         binding.txtNoProducts.visibility = View.VISIBLE
         updateCartSummaryUI()
     }
-
 }
+
+

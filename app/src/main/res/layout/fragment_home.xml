@@ -93,6 +93,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:paddingTop="@dimen/_15sdp"
                     app:cardCornerRadius="15dp"
+                    android:visibility="gone"
                     app:cardElevation="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

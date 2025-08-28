@@ -62,7 +62,8 @@ class CheckoutActivity : BaseActivity() {
 
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
-                            val orderNumbers = it.data.data?.orderNumbers
+                            val orderNumbers = it.data.data?.orderNumbers?.toString()
+                            Log.d("TAG", "cartObserve orderNumbers :${orderNumbers} ")
 
                             val intent = Intent(this@CheckoutActivity, FawryActivity::class.java).apply {
                                 putExtra("order_numbers", orderNumbers)
@@ -93,7 +94,7 @@ class CheckoutActivity : BaseActivity() {
     private fun checkOut(paymentId : Int) {
         lifecycleScope.launch {
             checkoutViewModel.checkoutIntent.send(
-                CheckoutIntent.Checkout(paymentId)
+                CheckoutIntent.Checkout(paymentId, "Cosmetics")
             )
         }
     }
@@ -107,7 +108,7 @@ class CheckoutActivity : BaseActivity() {
         }
 
         binding.paymentTypesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@CheckoutActivity, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(this@CheckoutActivity, LinearLayoutManager.VERTICAL, false)
             adapter = paymentAdapter
         }
     }
@@ -122,6 +123,8 @@ class CheckoutActivity : BaseActivity() {
                     is PaymentTypeStatus.Checkout -> {
                         val list = state.data.data ?: emptyList()
                         paymentAdapter.setData(list)
+                        Log.d("TAG", "observePaymentTypes: ${list}")
+                        Log.d("TAG", "observePaymentTypes: ${list.size}")
 
                     }
                     is PaymentTypeStatus.Error -> {

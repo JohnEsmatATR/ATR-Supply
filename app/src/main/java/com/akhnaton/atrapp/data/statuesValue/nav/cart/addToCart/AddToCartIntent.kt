@@ -5,6 +5,7 @@ sealed class AddToCartIntent {
     data class AddProductToCart(
         val productId: Int?,
         val quantity: Int?,
+        val category: String
     ) : AddToCartIntent()
 
     data class deleteProductToCart(

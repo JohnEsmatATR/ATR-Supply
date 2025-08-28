@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
@@ -54,8 +55,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -88,7 +89,6 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:gravity="end|center_vertical"
-                tools:text="500.00 EGP"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -125,7 +125,6 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:gravity="end|center_vertical"
-                android:text="20.00 EGP"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -178,7 +177,7 @@
             android:layout_width="match_parent"
             android:layout_height="30sp"
             android:layout_marginHorizontal="@dimen/_16sdp"
-            android:layout_marginVertical="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_search">
@@ -201,7 +200,7 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:gravity="end|center_vertical"
-                android:text="700.00 EGP"
+
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

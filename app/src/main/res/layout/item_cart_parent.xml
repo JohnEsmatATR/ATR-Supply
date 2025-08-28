@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="cartResponse"
+            type="com.akhnaton.atrapp.data.model.CartResponse" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- orderType -->
+        <TextView
+            android:id="@+id/txt_order_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{cartResponse.orderType}"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            tools:text="Pharma" />
+
+        <!-- RecyclerView للمنتجات -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_products"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/layout_cart" />
+
+    </LinearLayout>
+</layout>

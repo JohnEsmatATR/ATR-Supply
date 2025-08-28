@@ -6,24 +6,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.databinding.LayoutCartBinding
-import com.akhnaton.atrapp.shared.Common
 
 class CartAdapter(
-    private val onClick: (product: ProductModel, position: Int) -> Unit,
-    private val onPlusClick: (product: ProductModel, position: Int, quantity: Int) -> Unit,
-    private val onMinusClick: (product: ProductModel, position: Int, quantity: Int) -> Unit,
-    private val onDeleteClick: (product: ProductModel, position: Int) -> Unit
+    private val onClick: (product: CartProduct, position: Int) -> Unit,
+    private val onPlusClick: (product: CartProduct, position: Int, quantity: Int) -> Unit,
+    private val onMinusClick: (product: CartProduct, position: Int, quantity: Int) -> Unit,
+    private val onDeleteClick: (product: CartProduct, position: Int) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
-    private var productsList = ArrayList<ProductModel>()
+    private var productsList = ArrayList<CartProduct>()
     private var isVisible: Boolean = true
     private var type: String = ""
 
-    fun setData(cart: List<ProductModel>, isVisible: Boolean, type: String) {
+    fun setData(cartProducts: List<CartProduct>, isVisible: Boolean, type: String) {
         productsList.clear()
-        productsList.addAll(cart)
+        productsList.addAll(cartProducts)
         this.isVisible = isVisible
         this.type = type
         notifyDataSetChanged()
@@ -32,12 +31,11 @@ class CartAdapter(
     inner class ViewHolder(private val binding: LayoutCartBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private var quantity = 1
+        fun bind(item: CartProduct, position: Int) {
 
-        fun bind(item: ProductModel, position: Int) {
             binding.cart = item
-            binding.quantity = item.MY_QUANTITY
-
+            binding.quantity = item.myQuantity
+            // إظهار/إخفاء الأزرار
             if (isVisible) {
                 binding.btnPlus.visibility = View.VISIBLE
                 binding.btnMinus.visibility = View.VISIBLE
@@ -48,49 +46,43 @@ class CartAdapter(
                 binding.deleteItem.visibility = View.GONE
             }
 
-
-            binding.btnPlus.isEnabled = item.MY_QUANTITY < item.QUANTITY
-
-            binding.imItem.load(item.IMAGE_URL) {
+            // تحميل الصورة
+            binding.imItem.load(item.imageUrl) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)
                 error(R.drawable.ic_logo)
             }
 
+            // زر + زيادة الكمية
+            binding.btnPlus.isEnabled = item.myQuantity < item.quantity
             binding.btnPlus.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    quantity = binding.txtQuantity.text.toString().toInt()
-                    if (quantity < item.QUANTITY) {
+                    var quantity = binding.txtQuantity.text.toString().toInt()
+                    if (quantity < item.quantity) {
                         quantity++
-                        item.MY_QUANTITY = quantity
-                        binding.quantity = quantity
-                        binding.btnPlus.isEnabled = quantity < item.QUANTITY
-                        onPlusClick(item, pos, quantity)
-                        if (quantity  == item.QUANTITY) {
-                            binding.btnPlus.isEnabled = false
-                        }
+                        binding.txtQuantity.text = quantity.toString()
+                        onPlusClick(item.copy(myQuantity = quantity), pos, quantity)
+                        binding.btnPlus.isEnabled = quantity < item.quantity
                     }
                 }
             }
 
+            // زر - نقصان الكمية
             binding.btnMinus.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    quantity = binding.txtQuantity.text.toString().toInt()
+                    var quantity = binding.txtQuantity.text.toString().toInt()
                     if (quantity > 1) {
                         quantity--
-                        item.MY_QUANTITY = quantity
-                        binding.quantity = quantity
-                        onMinusClick(item, pos, quantity)
-
-                        if (quantity < item.QUANTITY) {
-                            binding.btnPlus.isEnabled = true
-                        }
+                        binding.txtQuantity.text = quantity.toString()
+                        onMinusClick(item.copy(myQuantity = quantity), pos, quantity)
+                        binding.btnPlus.isEnabled = quantity < item.quantity
                     }
                 }
             }
 
+            // زر الحذف
             binding.deleteItem.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
@@ -98,6 +90,7 @@ class CartAdapter(
                 }
             }
 
+            // كليك على العنصر
             itemView.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
@@ -105,7 +98,6 @@ class CartAdapter(
                 }
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -118,7 +110,7 @@ class CartAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        productsList.get(position)?.let { holder.bind(it, position) }
+        holder.bind(productsList[position], position)
     }
 
     override fun getItemCount(): Int = productsList.size

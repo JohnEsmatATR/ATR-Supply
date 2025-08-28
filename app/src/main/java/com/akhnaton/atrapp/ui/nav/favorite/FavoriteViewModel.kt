@@ -1,4 +1,5 @@
 package com.akhnaton.atrapp.ui.nav.favorite
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
@@ -27,8 +28,19 @@ class FavoriteViewModel : ViewModel() {
             favoriteIntent.consumeAsFlow().collect {
                 when (it) {
                     is FavoriteIntent.GetFavorite -> getFavorites()
-                    is FavoriteIntent.AddProductToFavourites -> addProductToFavorites(it.token,it.productId,it.add)
-                    is FavoriteIntent.DeleteFromFavourites -> DeleteProductToFavorites(it.token,it.productId,it.add)
+                    is FavoriteIntent.AddProductToFavourites -> addProductToFavorites(
+                        it.token,
+                        it.productId,
+                        it.add,
+                        it.categories
+                    )
+
+                    is FavoriteIntent.DeleteFromFavourites -> DeleteProductToFavorites(
+                        it.token,
+                        it.productId,
+                        it.add,
+                        it.categories
+                    )
                 }
             }
         }
@@ -52,11 +64,12 @@ class FavoriteViewModel : ViewModel() {
 
         }
     }
-    private fun addProductToFavorites(token: String, productId: Int, add: Boolean) {
+
+    private fun addProductToFavorites(token: String, productId: Int, add: Boolean,categories: String) {
         viewModelScope.launch {
             _state.value = FavoriteStatus.Loading
             try {
-                val response = HomeRepository().addProductToFavorites(token, productId, add)
+                val response = HomeRepository().addProductToFavorites(token, productId, add,categories)
                 if (response.code() == 200) {
                     _state.value = FavoriteStatus.AddProductToFavourites(response.body()!!)
                 } else {
@@ -69,13 +82,14 @@ class FavoriteViewModel : ViewModel() {
     }
 
 
-    private fun DeleteProductToFavorites(token: String, productId: Int, add: Boolean) {
+    private fun DeleteProductToFavorites(token: String, productId: Int, add: Boolean,categories: String) {
         viewModelScope.launch {
             _state.value = FavoriteStatus.Loading
             try {
-                val response = HomeRepository().deleteProductToFavorites(token, productId, add)
+                val response = HomeRepository().deleteProductToFavorites(token, productId, add,categories)
                 if (response.code() == 200) {
-                    _state.value = FavoriteStatus.DeleteProductToFavourites(response.body()!!,productId)
+                    _state.value =
+                        FavoriteStatus.DeleteProductToFavourites(response.body()!!, productId)
                 } else {
                     _state.value = FavoriteStatus.Error(response.body()?.message ?: "Unknown error")
                 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="cart"
-            type="com.akhnaton.atrapp.data.model.ProductModel" />
+            type="com.akhnaton.atrapp.data.model.CartProduct" />
         <variable
             name="quantity"
             type="Integer" />
@@ -63,7 +63,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_4sdp"
-                    android:text="@{cart.TITLE}"
+                    android:text="@{cart.title}"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -94,7 +94,7 @@
                         android:id="@+id/txt_size"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{cart.WEIGHT}"
+                        android:text="@{cart.weight}"
                         android:textColor="@color/mid_gray_2"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -115,7 +115,7 @@
                     android:id="@+id/txt_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{cart.PRICE_AFTER_DISCOUNT + ``}"
+                    android:text="@{cart.priceWithoutTax + ``}"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -158,7 +158,7 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{cart.MY_QUANTITY + ``}"
+                        android:text="@{cart.myQuantity + ``}"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />

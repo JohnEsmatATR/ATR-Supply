@@ -2,61 +2,67 @@ package com.akhnaton.atrapp.ui.nav.home.categories
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.interfaces.GetCategories
+import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.CategoryModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoriesIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoryState
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.databinding.ActivityCategoryBinding
 import com.akhnaton.atrapp.shared.BaseActivity
-import com.akhnaton.atrapp.shared.Common
-import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import kotlinx.coroutines.launch
 
 
-class CategoryActivity : BaseActivity(), AllCategoryAdapter.OnCategoryClickListener,
-    View.OnClickListener {
+class CategoryActivity : BaseActivity(),
+    AllCategoryAdapter.OnCategoryClickListener, View.OnClickListener {
+
     private lateinit var binding: ActivityCategoryBinding
-    private var listCategory = mutableListOf<CategoryModel>()
-    private val categoryViewModel: CategoryViewModel by viewModels()
+    private val categoryViewModel: CategoryListViewModel by viewModels()
     private var mAdapter: AllCategoryAdapter = AllCategoryAdapter()
+    private lateinit var category: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        category = intent.getStringExtra("category_type").toString()
+
         setupBinding()
-        categoryObserve()
-        getCategories()
+        observeCategory()
+        categoryViewModel.handleIntent(CategoriesIntent.GetCategories(category))
     }
 
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category)
-        binding.recCategory.adapter = mAdapter
-        binding.recCategory.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        binding.recCategory.itemAnimator = DefaultItemAnimator()
+        binding.recCategory.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(
+                this@CategoryActivity,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+            itemAnimator = DefaultItemAnimator()
+        }
         binding.btnBack.setOnClickListener(this)
     }
 
-    private fun setAdapterData(data: List<CategoryModel>) {
+    private fun setAdapterData(data: List<CategoriesModel>) {
         mAdapter.setCategoriesList(data, this)
     }
 
-    override fun onCategoryClick(category: CategoryModel) {
+    override fun onCategoryClick(category: CategoriesModel) {
         val intent = Intent(this, ProductsActivity::class.java)
-        intent.putExtra("flag", Common.category)
-        intent.putExtra("category", category)
+        intent.putExtra("flag", this.category) // جاي من Pharma or Cosmetics
+        intent.putExtra("categoryId", category.ID)
+      // لازم يكون Serializable أو Parcelable
         startActivity(intent)
     }
 
@@ -66,45 +72,26 @@ class CategoryActivity : BaseActivity(), AllCategoryAdapter.OnCategoryClickListe
         }
     }
 
-    private fun categoryObserve() {
+    private fun observeCategory() {
         lifecycleScope.launch {
-            categoryViewModel.state.collect {
-                when (it) {
-                    is CategoryStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
-                    is CategoryStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeHome: Loading")
+            categoryViewModel.state.collect { state ->
+                when (state) {
+                    is CategoryState.Idle -> {
+
+                    }
+                    is CategoryState.Loading -> {
                         showProgressDialog(binding.progressLoading)
                     }
-
-                    is CategoryStatus.GetCategory -> {
-                        if (it.data.status != -1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeHome: GetCategories")
-//                            listCategory.addAll(it.data.data!!)
-//                            Log.d(Common.KeroDebug, "observeHome: GetCategoriessssssss${listCategory.size}")
-//                            setAdapterData(listCategory)
-                        } else {
-                            hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
-                        }
-                    }
-
-                    is CategoryStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                    is CategoryState.Success -> {
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        setAdapterData(state.response.data!!)
                     }
-
+                    is CategoryState.Error -> {
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(state.message, true)
+                    }
                 }
             }
         }
-    }
-
-    private fun getCategories() {
-//        lifecycleScope.launch {
-//            categoryViewModel.homeIntent.send(
-//                CategoryIntent.GetCategories
-//            )
-//        }
     }
 }

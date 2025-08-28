@@ -246,7 +246,7 @@ class ProductDetailsActivity : BaseActivity() {
         val valiablity = binding.isStock.text.toString()
         if (valiablity == "In Stock"){
             lifecycleScope.launch {
-                addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity))
+                addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity,flag))
             }
         }else {
             showToastSnack("Product Out Of Stock", true)

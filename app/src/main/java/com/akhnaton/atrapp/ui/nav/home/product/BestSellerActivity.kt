@@ -172,28 +172,28 @@ class BestSellerActivity : BaseActivity() {
 //        }
     }
 
-    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.AddProductToFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
-        }
-    }
-    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.DeleteFromFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
-        }
-    }
+//    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.AddProductToFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
+//    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.DeleteFromFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
 
     private fun handleBackPress() {
         onBackPressedDispatcher.addCallback(this) {

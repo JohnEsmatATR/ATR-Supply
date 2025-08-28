@@ -19,7 +19,7 @@ object ConstantLinks {
     const val LOGOUT = "auth/logout"
 
     // categories & products
-    const val GET_CATEGORIES = "category/list"
+    const val GET_CATEGORY_LIST = "category/list"
     const val GET_ALL_PRODUCT = "product/list"
 
     // cart

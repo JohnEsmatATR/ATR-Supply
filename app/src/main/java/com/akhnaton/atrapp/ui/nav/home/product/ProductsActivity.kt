@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
-import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.lifecycleScope
@@ -22,12 +21,10 @@ import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
-import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -65,10 +62,10 @@ class ProductsActivity : BaseActivity() {
         productsObserve()
         Log.d("TAG", "ProductsActivity: ProductsActivity ")
 
-        category = intent.getSerializableExtra("category") as? CategoryModel
-
-        categoryId = category?.ID ?: 0
         flag = intent.getStringExtra("flag") ?: ""
+        val categoryId: Int = intent.getIntExtra("categoryId", -1)
+        Log.d("TAG", "init flag: ${flag}")
+        Log.d("TAG", "init categoryId: ${categoryId}")
         getProductsBasedOnCategory(categoryId, category = flag)
     }
 
@@ -182,6 +179,7 @@ class ProductsActivity : BaseActivity() {
                     "Bearer ${SharedPreferenceHelper.userToken}",
                     productId,
                     add,
+                    flag
                 )
             )
         }
@@ -193,6 +191,7 @@ class ProductsActivity : BaseActivity() {
                     "Bearer ${SharedPreferenceHelper.userToken}",
                     productId,
                     add,
+                    flag
                 )
             )
         }
@@ -218,7 +217,7 @@ class ProductsActivity : BaseActivity() {
             adapter = ProductAdapter(
                 onClick = { product, position, sharedView, transitionName ->
                     val intent = Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
-                        putExtra("flag", Common.category)
+                        putExtra("flag", flag)
                         putExtra("product", product)
                         putExtra("transitionName", transitionName)
                     }

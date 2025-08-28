@@ -6,7 +6,7 @@ import com.akhnaton.atrapp.shared.RetrofitClient
 class HomeRepository {
     private val retrofit = RetrofitClient.getInstance(IProducts::class.java)
 
-    suspend fun getCategory() = retrofit.getCategories()
+    suspend fun getCategory( categories: String) = retrofit.getCategories(categories)
 
     suspend fun filterProduct(search : String? = "" , categoryId: Int) = retrofit.filterProduct(search, categoryId)
 
@@ -37,10 +37,10 @@ class HomeRepository {
         categories
     )
 
-    suspend fun addProductToFavorites(token: String, productId: Int, add: Boolean)
-    = retrofit.addFavoriteProduct(token, productId,add)
+    suspend fun addProductToFavorites(token: String, productId: Int, add: Boolean, categories: String)
+    = retrofit.addFavoriteProduct(token, productId,add,categories)
 
-    suspend fun deleteProductToFavorites(token: String, productId: Int, add: Boolean)
-            = retrofit.deleteFromFav(token, productId,add)
+    suspend fun deleteProductToFavorites(token: String, productId: Int, add: Boolean,categories: String)
+            = retrofit.deleteFromFav(token, productId,add,categories)
 
 }

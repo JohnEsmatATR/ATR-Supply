@@ -1,8 +1,10 @@
 package com.akhnaton.atrapp.data.interfaces
 
+import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoriesIntent
 import com.akhnaton.atrapp.shared.ConstantLinks
 import retrofit2.Response
 import retrofit2.http.Field
@@ -12,8 +14,11 @@ import retrofit2.http.POST
 
 interface IProducts {
 
-    @POST(ConstantLinks.GET_CATEGORIES)
-    suspend fun getCategories(): Response<BaseModel<List<CategoryModel>>>
+    @POST(ConstantLinks.GET_CATEGORY_LIST)
+    @FormUrlEncoded
+    suspend fun getCategories(
+        @Field("parent_category") categories: String
+    ): Response<BaseModel<List<CategoriesModel>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.GET_ALL_PRODUCT)
@@ -54,6 +59,7 @@ interface IProducts {
         @Header("Authorization") token: String,
         @Field("item_id") productId: Int,
         @Field("liked") liked: Boolean,
+        @Field("order_type") categories: String
     ): Response<BaseModel<Any>>
 
     @FormUrlEncoded
@@ -61,7 +67,8 @@ interface IProducts {
     suspend fun deleteFromFav(
         @Header("Authorization") token: String,
         @Field("item_id") productId: Int,
-        @Field("liked") liked: Boolean
+        @Field("liked") liked: Boolean,
+        @Field("order_type") categories: String
     ): Response<BaseModel<Any>>
 
     @FormUrlEncoded

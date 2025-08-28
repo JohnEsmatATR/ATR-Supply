@@ -11,9 +11,11 @@ class CartRepository {
     suspend fun addProductToCart(
         productId: Int?,
         quantity: Int?,
+        category: String
     ) = retrofit.addToCart(
         productId,
         quantity,
+        category
     )
 
     suspend fun deleteProductFromCart(
@@ -28,7 +30,7 @@ class CartRepository {
     suspend fun getMyCart(
     ) = retrofit.getMyCart()
 
-    suspend fun checkout(paymentId : Int) = retrofit.checkout(paymentId)
+    suspend fun checkout(paymentId : Int ,  category: String) = retrofit.checkout(paymentId,category)
 
     suspend fun getPaymentType() = retrofit.getPaymentType()
 }

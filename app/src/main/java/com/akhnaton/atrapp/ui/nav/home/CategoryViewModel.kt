@@ -6,14 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.domain.CategoriesRepository
-import com.akhnaton.atrapp.domain.HomeRepository
 import com.akhnaton.atrapp.shared.Common
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-
 
 class CategoryViewModel : ViewModel() {
 
@@ -49,4 +47,3 @@ class CategoryViewModel : ViewModel() {
         }
     }
 }
-

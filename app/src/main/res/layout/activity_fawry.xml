@@ -61,40 +61,50 @@
             />
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
-            android:layout_gravity="center"
-            android:paddingVertical="@dimen/_15sdp"
-            android:elevation="@dimen/_12sdp"
-            android:paddingHorizontal="@dimen/_15sdp"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/btn_white_style"
-            android:orientation="horizontal"
-            >
+            android:paddingVertical="@dimen/_15sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:elevation="@dimen/_12sdp">
 
-
+            <!-- عنوان -->
             <TextView
-                android:id="@+id/txtOrderNumber"
-                android:layout_width="match_parent"
+                android:id="@+id/txtOrderTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="12345678"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_14sdp"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="رقم/أرقام الطلب الخاصة بك :  "
+                android:text="رقم/أرقام الطلب الخاصة بك:"
                 android:textColor="@color/mid_gray_2"
                 android:textSize="@dimen/_14sdp"
-                />
-        </LinearLayout>
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- الأرقام -->
+            <TextView
+                android:id="@+id/txtOrderNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="138356280825-21257\n157078280825-06278"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_16sdp"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:scrollHorizontally="false"
+                android:singleLine="false"
+                app:layout_constraintTop_toBottomOf="@id/txtOrderTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

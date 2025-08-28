@@ -30,12 +30,15 @@ class AddToCartViewModel : ViewModel() {
                     is AddToCartIntent.AddProductToCart -> addProductToCart(
                         it.productId,
                         it.quantity,
+                        it.category
                     )
 
                     is AddToCartIntent.deleteProductToCart -> deleteProductFromCart(
                         it.productId,
                         it.quantity
                     )
+
+
                 }
             }
         }
@@ -45,6 +48,7 @@ class AddToCartViewModel : ViewModel() {
     private fun addProductToCart(
         productId: Int?,
         quantity: Int?,
+        category: String
     ) {
         viewModelScope.launch {
             _state.value = AddToCartStatus.Loading
@@ -52,6 +56,7 @@ class AddToCartViewModel : ViewModel() {
                 val response = CartRepository().addProductToCart(
                     productId,
                     quantity,
+                    category
                 )
                 if (response.code() == 200) {
                     AddToCartStatus.AddToCart(response.body()!!)

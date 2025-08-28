@@ -46,7 +46,7 @@ class HomeActivity : BaseActivity() {
     private fun init() {
         initNavBottom()
         setupDrawer()
-        handleIntent(intent)
+        handleBackPress()
     }
 
 
@@ -182,86 +182,35 @@ class HomeActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent?.let { handleIntent(it) }
-    }
-    private fun handleIntent(intent: Intent) {
-        if (intent.getBooleanExtra("from_product_details", false)) {
-            cameFromProductDetails = true
-            lastOpenedProduct = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra("product", ProductModel::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                intent.getParcelableExtra("product")
-            }
-        }
-
-        if (intent.getBooleanExtra("from_best_seller_details", false)) {
-            cameFromBestSellerDetails = true
-            lastOpenedProduct = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra("product", ProductModel::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                intent.getParcelableExtra("product")
-            }
-        }
-
         if (intent.getBooleanExtra("open_cart", false)) {
-            binding.bottomNavigationView.selectedItemId = R.id.cart
+
             setItemSelected(R.id.cart)
+            binding.bottomNavigationView.selectedItemId = R.id.cart
         }
     }
-
-
     private fun handleBackPress() {
         onBackPressedDispatcher.addCallback(this) {
             val selectedItemId = binding.bottomNavigationView.selectedItemId
 
-            if (selectedItemId == R.id.cart && (cameFromProductDetails || cameFromBestSellerDetails)) {
-
-                val fromBestSeller = cameFromBestSellerDetails
-                cameFromProductDetails = false
-                cameFromBestSellerDetails = false
-
-                lastOpenedProduct?.let { product ->
-                    val intent = if (fromBestSeller) {
-                        Intent(this@HomeActivity, BestSellerDetailsActivity::class.java)
-                    } else {
-                        Intent(this@HomeActivity, ProductDetailsActivity::class.java)
-                    }
-                    intent.putExtra("product", product)
-                    startActivity(intent)
-                }
-                return@addCallback
-            }
-
             if (selectedItemId != R.id.home) {
+                // لو مش في Home → يرجعه للـ Home
                 binding.bottomNavigationView.selectedItemId = R.id.home
                 setItemSelected(R.id.home)
             } else {
+                // لو في Home → لازم ضغطتين
                 if (backPressedTime + 2000 > System.currentTimeMillis()) {
                     AlertDialog.Builder(this@HomeActivity)
-                        .setTitle(getString(R.string.exit_title))
-                        .setMessage(getString(R.string.exit_message))
-                        .setPositiveButton(getString(R.string.yes)) { _, _ -> finishAffinity() }
-                        .setNegativeButton(getString(R.string.no), null)
+                        .setTitle("الخروج")
+                        .setMessage("هل تريد الخروج من التطبيق؟")
+                        .setPositiveButton("نعم") { _, _ -> finish() }
+                        .setNegativeButton("لا", null)
                         .show()
                 } else {
-                    Toast.makeText(
-                        this@HomeActivity,
-                        getString(R.string.press_again_to_exit),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@HomeActivity, "اضغط مرة أخرى للخروج", Toast.LENGTH_SHORT).show()
                 }
                 backPressedTime = System.currentTimeMillis()
             }
         }
-    }
-
-
-    companion object {
-        var cameFromProductDetails = false
-        var cameFromBestSellerDetails = false
-        var lastOpenedProduct: ProductModel? = null
     }
 
 

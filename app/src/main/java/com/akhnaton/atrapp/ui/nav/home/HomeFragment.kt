@@ -252,8 +252,7 @@ class HomeFragment : BaseFragment() {
         categoriesAdapter = CategoryAdapter(onClick = { category, position ->
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", "Cosmetics")
-
-
+            intent.putExtra("categoryId", category.ID)
             startActivity(intent)
         })
         categoriesAdapter.setData(list)
@@ -266,7 +265,7 @@ class HomeFragment : BaseFragment() {
         categoriesAdapter = CategoryAdapter(onClick = { category, position ->
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", "Pharma")
-
+            intent.putExtra("categoryId", category.ID)
 
             startActivity(intent)
         })
@@ -365,40 +364,48 @@ class HomeFragment : BaseFragment() {
             val intent = Intent(context, NotificationsActivity::class.java)
             startActivity(intent)
         }
-        binding.txtSeeAllCategory.setOnClickListener {
-            val intent = Intent(requireContext(), CategoryActivity::class.java)
-            startActivity(intent)
-        }
+
         binding.cardSearch.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
-
-    }
-
-
-    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.AddProductToFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
+        binding.txtSeeAllCategoryPhrama.setOnClickListener {
+            val intent = Intent(requireContext(), CategoryActivity::class.java)
+            intent.putExtra("category_type", "Pharma")
+            startActivity(intent)
         }
-    }
-    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
-        lifecycleScope.launch {
-            favoriteViewModel.favoriteIntent.send(
-                FavoriteIntent.DeleteFromFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}",
-                    productId,
-                    add,
-                )
-            )
+
+        binding.txtSeeAllCategory.setOnClickListener {
+            val intent = Intent(requireContext(), CategoryActivity::class.java)
+            intent.putExtra("category_type", "Cosmetics")
+            startActivity(intent)
         }
+
     }
+
+
+//    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.AddProductToFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
+//    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+//        lifecycleScope.launch {
+//            favoriteViewModel.favoriteIntent.send(
+//                FavoriteIntent.DeleteFromFavourites(
+//                    "Bearer ${SharedPreferenceHelper.userToken}",
+//                    productId,
+//                    add,
+//                )
+//            )
+//        }
+//    }
     private fun setPlannerView() {
 
         lifecycleScope.launch {

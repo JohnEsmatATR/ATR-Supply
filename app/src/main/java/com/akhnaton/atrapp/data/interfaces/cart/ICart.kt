@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.data.interfaces.cart
 
+import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.data.model.CheckoutResponse
 import com.akhnaton.atrapp.data.model.PaymentModel
 import com.akhnaton.atrapp.data.model.ProductModel
@@ -8,9 +9,7 @@ import com.akhnaton.atrapp.shared.ConstantLinks
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface ICart {
 
@@ -19,15 +18,19 @@ interface ICart {
     suspend fun addToCart(
         @Field("item_id") productId: Int?,
         @Field("quantity") quantity: Int?,
+        @Field("order_type")category: String
     ): Response<BaseModel<ArrayList<String>>>
 
     @POST(ConstantLinks.GET_MY_CART)
-    suspend fun getMyCart(): Response<BaseModel<List<ProductModel>>>
+    suspend fun getMyCart(
+
+    ): Response<BaseModel<List<CartResponse>>>
 
     @FormUrlEncoded
     @POST(ConstantLinks.CHECKOUT)
     suspend fun checkout(
-        @Field("payment_id") paymentId: Int
+        @Field("payment_id") paymentId: Int,
+        @Field("order_type") category: String
     ): Response<BaseModel<CheckoutResponse>>
 
 

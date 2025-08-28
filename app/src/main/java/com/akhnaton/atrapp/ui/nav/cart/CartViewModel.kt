@@ -2,33 +2,28 @@ package com.akhnaton.atrapp.ui.nav.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.model.common.BaseModel
+import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.domain.CartRepository
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class CartViewModel : ViewModel() {
 
     val cartIntent = Channel<CartIntent>(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<CartStatus>(CartStatus.Idle)
-
     val state: StateFlow<CartStatus> get() = _state
 
     init {
-        makeHomeObserve()
+        makeObserve()
     }
 
-    private fun makeHomeObserve() {
+    private fun makeObserve() {
         viewModelScope.launch {
             cartIntent.consumeAsFlow().collect {
                 when (it) {
@@ -55,33 +50,32 @@ class CartViewModel : ViewModel() {
             }
         }
     }
-    fun calculateCartTotals(products: List<ProductModel>): CartTotals {
+
+    // 🟢 الحساب بالموديل الجديد CartProduct
+    fun calculateCartTotals(products: List<CartProduct>): CartTotals {
         var totalPriceBeforeDiscount = 0.0
         var totalDiscount = 0.0
-        val deliveryFee = 0.0 // دايمًا Free
+        val deliveryFee = 0.0 // Free
 
         for (product in products) {
-            val quantity = product.MY_QUANTITY
-            val priceWithoutTax = product.PRICE_WITHOUT_TAX
-            val priceAfterDiscount = product.PRICE_AFTER_DISCOUNT
+            val quantity = product.myQuantity
+            val priceWithoutTax = product.priceWithoutTax
+            val priceAfterDiscount = product.priceAfterDiscount
 
             totalPriceBeforeDiscount += priceWithoutTax * quantity
             totalDiscount += (priceWithoutTax - priceAfterDiscount) * quantity
         }
 
         val totalPriceAfterDiscount = totalPriceBeforeDiscount - totalDiscount
-
-        val finalDeliveryFee = deliveryFee
-        val grandTotal = totalPriceAfterDiscount + finalDeliveryFee
+        val grandTotal = totalPriceAfterDiscount + deliveryFee
 
         return CartTotals(
             totalBeforeDiscount = totalPriceBeforeDiscount,
             discount = totalDiscount,
-            deliveryFee = finalDeliveryFee,
+            deliveryFee = deliveryFee,
             grandTotal = grandTotal
         )
     }
-
 
     data class CartTotals(
         val totalBeforeDiscount: Double,
@@ -89,7 +83,6 @@ class CartViewModel : ViewModel() {
         val deliveryFee: Double,
         val grandTotal: Double
     )
-
-
 }
+
 
