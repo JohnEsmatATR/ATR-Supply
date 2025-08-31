@@ -33,6 +33,9 @@ class CheckoutActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setupBinding()
         cartObserve()
+        binding.imBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setupBinding() {
@@ -118,9 +121,10 @@ class CheckoutActivity : BaseActivity() {
                 when (state) {
                     is PaymentTypeStatus.Idle -> {}
                     is PaymentTypeStatus.Loading -> {
-
+                        showProgressDialog(binding.progressLoading)
                     }
                     is PaymentTypeStatus.Checkout -> {
+                        hideProgressDialog(binding.progressLoading)
                         val list = state.data.data ?: emptyList()
                         paymentAdapter.setData(list)
                         Log.d("TAG", "observePaymentTypes: ${list}")
@@ -128,6 +132,7 @@ class CheckoutActivity : BaseActivity() {
 
                     }
                     is PaymentTypeStatus.Error -> {
+                        hideProgressDialog(binding.progressLoading)
                         showToastSnack("Error: ${state.error}", true)
                     }
                 }

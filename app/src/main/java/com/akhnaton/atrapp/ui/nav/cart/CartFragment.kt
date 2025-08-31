@@ -156,7 +156,7 @@ class CartFragment : BaseFragment() {
             return
         }
 
-        // دمج كل الـ products من order types عشان الحسابات
+
         val allProducts = cartData.flatMap { it.items.products }
         val totals = cartViewModel.calculateCartTotals(allProducts)
         val decimalFormat = DecimalFormat("#0.0")
@@ -168,7 +168,7 @@ class CartFragment : BaseFragment() {
 
     private fun deleteProductFromCart(product: CartProduct) {
         lifecycleScope.launch {
-            // شيل المنتج من الـ cartData
+
             cartData = cartData.map { cartResponse ->
                 cartResponse.copy(
                     items = cartResponse.items.copy(
