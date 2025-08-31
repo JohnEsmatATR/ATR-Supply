@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -65,6 +67,8 @@ class ProductDetailsActivity : BaseActivity() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun init() {
+        setupQuantityEditText()
+
         flag = intent.getStringExtra("flag") ?: ""
 
         binding.txtOldPrice.paintFlags =
@@ -133,6 +137,7 @@ class ProductDetailsActivity : BaseActivity() {
                                         if (productData.IN_STOCK) R.color.snack_green else R.color.snack_red
                                     )
                                 )
+                                binding.txtQuantity.isEnabled=productData.IN_STOCK
 
 
                                 val bonusList = productData.BONUS_DATA
@@ -253,4 +258,47 @@ class ProductDetailsActivity : BaseActivity() {
         }
 
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupQuantityEditText() {
+        binding.txtQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
+
+        // أثناء الكتابة
+        binding.txtQuantity.doOnTextChanged { text, _, _, _ ->
+            val value = text.toString().toIntOrNull()
+
+            if (value != null) {
+                when {
+                    value < 1 -> {
+                        quantity = 1
+                        binding.txtQuantity.setText("1")
+                        binding.txtQuantity.setSelection(binding.txtQuantity.text!!.length)
+                    }
+                    value > productQuantity -> {
+                        quantity = productQuantity
+                        binding.txtQuantity.setText(productQuantity.toString())
+                        binding.txtQuantity.setSelection(binding.txtQuantity.text!!.length)
+                    }
+                    else -> {
+                        quantity = value
+                    }
+                }
+            } else {
+                // هنا المستخدم مسح القيمة، هنسيبها فاضية مؤقتًا
+                quantity = 0
+            }
+        }
+
+        // أول ما يسيب EditText (يفقد التركيز)
+        binding.txtQuantity.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                if (binding.txtQuantity.text.isNullOrEmpty()) {
+                    quantity = 1
+                    binding.txtQuantity.setText("1")
+                }
+            }
+        }
+    }
+
+
 }
