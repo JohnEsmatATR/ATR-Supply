@@ -60,7 +60,7 @@ class FavoriteFragment : BaseFragment() {
         adapter = ProductAdapter(
             onClick = { product, position, sharedView, transitionName ->
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
-                    putExtra("flag", Common.category)
+                    putExtra("flag", product.ITEM_TYPE)
                     putExtra("product", product)
                     putExtra("transitionName", transitionName)
                 }

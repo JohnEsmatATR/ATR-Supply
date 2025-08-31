@@ -30,7 +30,7 @@ class CartParentAdapter(
         fun bind(item: CartResponse) {
             binding.cartResponse = item
 
-            // Adapter فرعي للـ products
+
             val childAdapter = CartAdapter(
                 onClick,
                 onPlusClick,

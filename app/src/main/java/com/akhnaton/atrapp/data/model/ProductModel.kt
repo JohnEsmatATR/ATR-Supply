@@ -14,6 +14,7 @@ data class ProductModel(
     val WEIGHT: String = "",
     val QOUTA: Int = 0,
     val TAX: Double = 0.0,
+    val ITEM_TYPE : String ="",
     val IS_BEST_SELLER: Boolean = false,
     var IS_LIKED: Boolean = false,
     val PRICE_WITHOUT_TAX: Double = 0.0,
