@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.text.InputFilter
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -17,7 +19,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.AddToCartResponse
 import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
@@ -29,6 +33,7 @@ import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
 class ProductDetailsActivity : BaseActivity() {
@@ -73,7 +78,7 @@ class ProductDetailsActivity : BaseActivity() {
 
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        binding.layoutReviews.visibility = View.VISIBLE
+        binding.layoutReviews.visibility = View.GONE
         binding.txtYouMightAlsoLike.visibility = View.GONE
 
         product = intent.getSerializableExtra("product") as ProductModel
@@ -213,32 +218,34 @@ class ProductDetailsActivity : BaseActivity() {
 
     private fun addToCartObserve() {
         lifecycleScope.launch {
-            addCartViewModel.state.collect {
+            addCartViewModel.state.collect { it ->
                 when (it) {
                     is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+
                     is AddToCartStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         showProgressDialog(binding.progressLoading)
-
                     }
 
                     is AddToCartStatus.AddToCart -> {
+                        hideProgressDialog(binding.progressLoading)
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
-                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
-                            showToastSnack(it.data.message, false)
-                            binding.btnGoToCart.visibility= View.VISIBLE
+                            Log.d(Common.KeroDebug, "observeHome: AddToCart Success")
+
+                            showAddToCartDialog(it.data)
+
+                            // ✅ إظهار زر الذهاب للكارت
+                           // binding.btnGoToCart.visibility = View.VISIBLE
                             val animation = AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.slide_up)
-                            binding.btnGoToCart.startAnimation(animation)
+                          //  binding.btnGoToCart.startAnimation(animation)
+
                         } else {
-                            hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
                         }
-
                     }
 
                     is AddToCartStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error}")
                         hideProgressDialog(binding.progressLoading)
                         showToastSnack(it.error.toString(), true)
                     }
@@ -246,6 +253,51 @@ class ProductDetailsActivity : BaseActivity() {
             }
         }
     }
+
+    @SuppressLint("StringFormatMatches")
+    private fun showAddToCartDialog(response: BaseModel<AddToCartResponse>) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_go_to_cart, null)
+
+        val txtTitle = dialogView.findViewById<TextView>(R.id.txtTitle)
+        val txtMessage = dialogView.findViewById<TextView>(R.id.txtMessage)
+        val txtBonus = dialogView.findViewById<TextView>(R.id.txtBonus)
+        val btnContinue = dialogView.findViewById<MaterialButton>(R.id.btnContinue)
+        val btnGoToCart = dialogView.findViewById<MaterialButton>(R.id.btnGoToCart)
+
+        txtTitle.text = getString(R.string.cart_added_title)
+        txtMessage.text = getString(R.string.cart_added_message)
+
+        // ✅ لو في bonus_quantity أكبر من 0، نظهر رسالة التهنئة
+        val bonusQty = response.data?.bonus_quantity ?: 0
+        if (bonusQty > 0) {
+            txtBonus.visibility = View.VISIBLE
+            txtBonus.text = getString(R.string.cart_bonus_message, bonusQty)
+
+        } else {
+            txtBonus.visibility = View.GONE
+        }
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        btnContinue.setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+
+        btnGoToCart.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.putExtra("open_cart", true)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
+
+        dialog.show()
+    }
+
 
     private fun addProductToCart() {
         val valiablity = binding.isStock.text.toString()
@@ -284,12 +336,11 @@ class ProductDetailsActivity : BaseActivity() {
                     }
                 }
             } else {
-                // هنا المستخدم مسح القيمة، هنسيبها فاضية مؤقتًا
                 quantity = 0
             }
         }
 
-        // أول ما يسيب EditText (يفقد التركيز)
+
         binding.txtQuantity.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 if (binding.txtQuantity.text.isNullOrEmpty()) {

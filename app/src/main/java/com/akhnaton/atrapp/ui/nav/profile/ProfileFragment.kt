@@ -10,6 +10,7 @@ import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
+import com.akhnaton.atrapp.ui.auth.onBoarding.OnBoardingActivity
 import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderHistoryActivity
 
 
@@ -70,7 +71,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                 it.language = "en"
             }
 
-            val intent = Intent(requireContext(), LoginActivity::class.java)
+            val intent = Intent(requireContext(), OnBoardingActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             requireActivity().finish()

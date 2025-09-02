@@ -1,5 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +37,6 @@ class CartAdapter(
 
             binding.cart = item
             binding.quantity = item.myQuantity
-            // إظهار/إخفاء الأزرار
             if (isVisible) {
                 binding.btnPlus.visibility = View.VISIBLE
                 binding.btnMinus.visibility = View.VISIBLE
@@ -52,6 +53,52 @@ class CartAdapter(
                 placeholder(R.drawable.ic_logo)
                 error(R.drawable.ic_logo)
             }
+            if (item.bodus_quantity == 0) {
+                binding.txtbonus.visibility = View.GONE
+                binding.textView3.visibility=View.GONE
+                binding.imageView.visibility = View.GONE
+            } else {
+                binding.txtbonus.visibility = View.VISIBLE
+                binding.imageView.visibility = View.VISIBLE
+                binding.textView3.visibility=View.VISIBLE
+                binding.txtbonus.text = item.bodus_quantity.toString()
+            }
+
+            val editQuantity = binding.txtQuantity
+            editQuantity.setText(item.myQuantity.toString())
+            editQuantity.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    val input = s.toString()
+
+                    if (input.isEmpty()) {
+
+                        return
+                    }
+
+                    var quantity = input.toIntOrNull() ?: 1
+
+
+                    if (quantity > item.quantity) {
+                        quantity = item.quantity
+                        editQuantity.setText(quantity.toString())
+                        editQuantity.setSelection(editQuantity.text.length)
+                    }
+
+
+                    if (quantity < 1) {
+                        quantity = 1
+                        editQuantity.setText(quantity.toString())
+                        editQuantity.setSelection(editQuantity.text.length)
+                    }
+
+
+                    onPlusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
+                }
+            })
 
             // زر + زيادة الكمية
             binding.btnPlus.isEnabled = item.myQuantity < item.quantity
@@ -61,7 +108,7 @@ class CartAdapter(
                     var quantity = binding.txtQuantity.text.toString().toInt()
                     if (quantity < item.quantity) {
                         quantity++
-                        binding.txtQuantity.text = quantity.toString()
+                        binding.txtQuantity.setText(quantity.toString())
                         onPlusClick(item.copy(myQuantity = quantity), pos, quantity)
                         binding.btnPlus.isEnabled = quantity < item.quantity
                     }
@@ -75,7 +122,7 @@ class CartAdapter(
                     var quantity = binding.txtQuantity.text.toString().toInt()
                     if (quantity > 1) {
                         quantity--
-                        binding.txtQuantity.text = quantity.toString()
+                        binding.txtQuantity.setText(quantity.toString())
                         onMinusClick(item.copy(myQuantity = quantity), pos, quantity)
                         binding.btnPlus.isEnabled = quantity < item.quantity
                     }

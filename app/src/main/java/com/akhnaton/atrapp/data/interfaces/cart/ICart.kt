@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.data.interfaces.cart
 
+import com.akhnaton.atrapp.data.model.AddToCartResponse
 import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.data.model.CheckoutResponse
 import com.akhnaton.atrapp.data.model.PaymentModel
@@ -19,7 +20,7 @@ interface ICart {
         @Field("item_id") productId: Int?,
         @Field("quantity") quantity: Int?,
         @Field("order_type")category: String
-    ): Response<BaseModel<ArrayList<String>>>
+    ): Response<BaseModel<AddToCartResponse>>
 
     @POST(ConstantLinks.GET_MY_CART)
     suspend fun getMyCart(
@@ -39,7 +40,7 @@ interface ICart {
     suspend fun deleteFromCart(
         @Field("item_id") productId: Int?,
         @Field("quantity") quantity: Int?,
-    ): Response<BaseModel<ArrayList<String>>>
+    ): Response<BaseModel<AddToCartResponse>>
 
 
     @POST(ConstantLinks.PAYMENT_TYPE)

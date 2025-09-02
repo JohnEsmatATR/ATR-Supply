@@ -271,5 +271,19 @@ In addition to a wide range of other complementary services, that are offered th
 
     <string name="buy_label">buy</string>
     <string name="get_label">get</string>
+    <string name="products">Products</string>
+    <string name="cart_added_title">Product added to cart</string>
+    <string name="cart_added_message">Do you want to go to your shopping cart?</string>
+    <string name="cart_bonus_message">Congratulations! You got %1$d as a gift 🎁</string>
+    <string name="continue_shopping">Continue Shopping</string>
+    <string name="go_to_cart">Go to Cart</string>
+    <string name="you_are_eligible_for">You are eligible for</string>
+    <string name="bonus">Bonus : </string>
+    <string name="login_with_customer_code">Login with Customer Code</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="customer_code_on_the_invoice">Customer code on the invoice</string>
+    <string name="enter">Enter</string>
+    <string name="register">Register</string>
+    <string name="verification">verification</string>
 
 </resources>

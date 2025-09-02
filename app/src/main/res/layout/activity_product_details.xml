@@ -154,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:textColor="@color/mid_gray_1"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -320,9 +321,12 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
             <LinearLayout
                 android:id="@+id/layout_description"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20sp"
                 android:layout_marginTop="20dp"
@@ -417,6 +421,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
                     tools:listitem="@layout/layout_review" />
@@ -482,6 +487,7 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:paddingHorizontal="20dp"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

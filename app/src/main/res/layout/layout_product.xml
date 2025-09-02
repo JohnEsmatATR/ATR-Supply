@@ -116,6 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
+                android:visibility="gone"
                 android:gravity="center"
                 android:text="@{productModel.PRICE_WITH_TAX + ` LE`}"
                 android:textColor="@color/mid_gray_1"

@@ -20,6 +20,18 @@
         android:theme="@style/Theme.ATRAPP"
         tools:targetApi="31">
         <activity
+            android:name=".ui.auth.customer_code.login.LoginWithCodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.customer_code.CustomerCodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.customer_code.code.CustomerInvoiceCodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.customer_code.otp.OTPCustomerCodeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.nav.home.product.productDetails.BestSellerDetailsActivity"
             android:exported="false"
             android:theme="@style/Theme.ATRAPP" />

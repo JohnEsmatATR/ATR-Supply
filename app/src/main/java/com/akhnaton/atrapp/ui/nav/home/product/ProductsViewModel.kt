@@ -20,7 +20,7 @@ class ProductsViewModel : ViewModel() {
 
     // pagination values
     var currentPage = 1
-    private val limit = 50
+    private val limit = 1000
     private var isLoading = false
     private var isLastPage = false
 

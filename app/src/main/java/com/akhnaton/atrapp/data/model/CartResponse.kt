@@ -55,7 +55,9 @@ data class CartProduct(
     @SerializedName("REVIEWS")
     val reviews: Reviews,
     @SerializedName("IN_STOCK")
-    val inStock: Boolean
+    val inStock: Boolean,
+    @SerializedName("BONUS_QUANTITY")
+    val bodus_quantity : Int
 )
 
 data class Reviews(

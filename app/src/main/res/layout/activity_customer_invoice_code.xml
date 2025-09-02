@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.auth.customer_code.code.CustomerInvoiceCodeActivity">
+
+    <ImageView
+        android:id="@+id/im_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="80dp"
+        android:src="@drawable/ic_logo"
+        android:layout_marginTop="@dimen/_80sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="80dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_customer_invoice_code"
+        android:layout_marginTop="@dimen/_30sdp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="@color/gray"
+        app:boxStrokeWidth="1dp"
+        app:counterTextColor="@color/orange"
+        app:hintTextColor="@color/orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/im_logo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_customer_invoice_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="12dp"
+            android:hint="@string/customer_code_on_the_invoice"
+            android:inputType="textEmailAddress"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_enter_invoice"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginHorizontal="@dimen/_60sdp"
+        android:backgroundTint="@android:color/transparent"
+        android:clickable="true"
+        android:text="@string/enter"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:textSize="@dimen/_18sdp"
+        app:cornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/layout_customer_invoice_code"
+        app:strokeColor="@color/orange"
+        app:strokeWidth="1dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

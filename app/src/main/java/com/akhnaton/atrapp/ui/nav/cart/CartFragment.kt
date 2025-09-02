@@ -35,6 +35,7 @@ class CartFragment : BaseFragment() {
     private lateinit var shimmerAdapter: ShimmerAdapterCart
 
     private var cartData: List<CartResponse> = emptyList()
+    private var cartValue : List<CartProduct> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,6 +101,7 @@ class CartFragment : BaseFragment() {
             addToCartViewModel.state.collect { state ->
                 when (state) {
                     is AddToCartStatus.AddToCart -> {
+                        getMyCart()
                         hideProgressDialog(binding.progressLoading)
                     }
                     is AddToCartStatus.Error -> {
@@ -126,13 +128,13 @@ class CartFragment : BaseFragment() {
             onPlusClick = { product, _, quantity ->
                 lifecycleScope.launch {
                     addProductToCart(product.id, quantity, product)
-                    updateCartSummaryUI()
+                //    updateCartSummaryUI()
                 }
             },
             onMinusClick = { product, _, quantity ->
                 lifecycleScope.launch {
                     addProductToCart(product.id, quantity, product)
-                    updateCartSummaryUI()
+                  //  updateCartSummaryUI()
                 }
             },
             onDeleteClick = { product, _ ->
@@ -183,6 +185,7 @@ class CartFragment : BaseFragment() {
 
             addToCartViewModel.addToCartIntent.send(
                 AddToCartIntent.AddProductToCart(product.id, 0, product.title)
+
             )
         }
     }

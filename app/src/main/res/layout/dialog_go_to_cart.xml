@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    app:cardElevation="10dp"
+    app:cardBackgroundColor="@android:color/transparent"
+    android:layout_marginTop="@dimen/_15sdp"
+    android:background="@android:color/transparent"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/white"
+        android:padding="@dimen/_15sdp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cart_added_title"
+            android:textSize="18sp"
+
+            android:drawableLeft="@drawable/ic_success_green"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"/>
+
+
+        <TextView
+            android:id="@+id/txtMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cart_added_message"
+            android:textSize="16sp"
+            android:textColor="@color/gray"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"/>
+
+
+        <TextView
+            android:id="@+id/txtBonus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cart_bonus_message"
+            android:textSize="15sp"
+            android:textColor="@color/orange"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnContinue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cornerRadius="@dimen/_8sdp"
+                android:backgroundTint="@color/gray"
+                android:text="@string/continue_shopping"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                style="@style/Widget.Material3.Button.TextButton"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGoToCart"
+                app:cornerRadius="@dimen/_8sdp"
+                android:layout_width="0dp"
+                android:backgroundTint="@color/orange"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/go_to_cart"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</androidx.cardview.widget.CardView>

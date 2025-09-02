@@ -214,4 +214,19 @@
     <string name="get_label">واحصل على</string>
 
     <string name="products">منتجات</string>
+    <string name="cart_added_title">تمت إضافة المنتج للسلة</string>
+    <string name="cart_added_message">هل تريد الذهاب إلى عربة التسوق؟</string>
+    <string name="cart_bonus_message">تهانينا! لقد حصلت على %d كهدية 🎉</string>
+
+    <string name="continue_shopping">متابعة التسوق</string>
+    <string name="go_to_cart">الذهاب إلى الكارت</string>
+    <string name="you_are_eligible_for">You are eligible for</string>
+    <string name="bonus">المكافئة :</string>
+
+    <string name="login_with_customer_code">تسجيل بكود عميل</string>
+    <string name="enter_otp">دخل رمز التحقق المكون من 6 ارقام</string>
+    <string name="customer_code_on_the_invoice">كود العميل الموجود علي الفاتوره</string>
+    <string name="enter">دخال</string>
+    <string name="register">تسجيل</string>
+    <string name="verification">تحقق</string>
 </resources>
