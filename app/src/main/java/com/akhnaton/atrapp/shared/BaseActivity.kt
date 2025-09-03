@@ -31,15 +31,13 @@ import java.util.Locale
 open class BaseActivity : AppCompatActivity() {
     var dp = 0f
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR)
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         dp = resources.displayMetrics.density
 
-        setAppLocale(SharedPreferenceHelper.language ?: "en")
-
-
+        setAppLocale(this@BaseActivity,"en")
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -150,18 +148,23 @@ open class BaseActivity : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
-    fun setAppLocale(lang: String) {
-        val locale = Locale.forLanguageTag(lang)
+    override fun attachBaseContext(newBase: Context) {
+        val lang = SharedPreferenceHelper.language ?: "en"
+        val context = setAppLocale(newBase, lang)
+        super.attachBaseContext(context)
+    }
+
+    private fun setAppLocale(context: Context, lang: String): Context {
+        val locale = Locale(lang)
         Locale.setDefault(locale)
 
         val config = Configuration()
         config.setLocale(locale)
 
-        SharedPreferenceHelper.language = lang
-
-        val context = createConfigurationContext(config)
-        context.resources
+        return context.createConfigurationContext(config)
     }
+
+
 
 
 //    fun getVersion(): String {

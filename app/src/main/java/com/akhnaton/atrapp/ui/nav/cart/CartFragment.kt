@@ -19,6 +19,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.databinding.FragmentCartBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.shared.ShimmerAdapterCart
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CartParentAdapter
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
@@ -118,7 +119,8 @@ class CartFragment : BaseFragment() {
 
     private fun getMyCart() {
         lifecycleScope.launch {
-            cartViewModel.cartIntent.send(CartIntent.GetMyCart)
+            val lang = SharedPreferenceHelper.language ?: "en"
+            cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
         }
     }
 

@@ -22,6 +22,9 @@ import com.akhnaton.atrapp.ui.nav.home.product.productDetails.BestSellerDetailsA
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.profile.ProfileFragment
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 
 @Suppress("INFERRED_TYPE_VARIABLE_INTO_POSSIBLE_EMPTY_INTERSECTION")
 class HomeActivity : BaseActivity() {
@@ -39,6 +42,7 @@ class HomeActivity : BaseActivity() {
         init()
         onClick()
         handleBackPress()
+        checkForAppUpdate()
 
 
     }
@@ -211,6 +215,38 @@ class HomeActivity : BaseActivity() {
                 backPressedTime = System.currentTimeMillis()
             }
         }
+    }
+
+    private fun checkForAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    UPDATE_REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+
+                finish()
+            }
+        }
+    }
+
+    companion object {
+        private const val UPDATE_REQUEST_CODE = 100
     }
 
 

@@ -197,9 +197,9 @@
     <string name="continue_to_chat">متابعة المحادثة</string>
     <string name="follow">متابعة</string>
     <string name="total">الإجمالي:</string>
-    <string name="quantite">الكمية:</string>
+    <string name="quantityy">الكمية:</string>
     <string name="buy_x_get_y">اشتري %1$d واحصل على %2$d مجانًا</string>
-    <string name="cosmetics">كوزمتكس</string>
+    <string name="cosmetics">تجميل</string>
     <string name="categories">فئات</string>
     <string name="bonus_offer">اشتر %1$d واحصل على %2$d</string>
 
@@ -216,12 +216,12 @@
     <string name="products">منتجات</string>
     <string name="cart_added_title">تمت إضافة المنتج للسلة</string>
     <string name="cart_added_message">هل تريد الذهاب إلى عربة التسوق؟</string>
-    <string name="cart_bonus_message">تهانينا! لقد حصلت على %d كهدية 🎉</string>
+    <string name="cart_bonus_message">تهانينا! لقد حصلت على %d كبونص 🎉</string>
 
     <string name="continue_shopping">متابعة التسوق</string>
     <string name="go_to_cart">الذهاب إلى الكارت</string>
     <string name="you_are_eligible_for">You are eligible for</string>
-    <string name="bonus">المكافئة :</string>
+    <string name="bonus">البونص :</string>
 
     <string name="login_with_customer_code">تسجيل بكود عميل</string>
     <string name="enter_otp">دخل رمز التحقق المكون من 6 ارقام</string>

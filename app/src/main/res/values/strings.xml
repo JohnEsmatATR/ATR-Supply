@@ -256,7 +256,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="continue_to_chat">Continue to chat</string>
     <string name="follow">Follow</string>
     <string name="total">Total:</string>
-    <string name="quantite">quantity :</string>
+    <string name="quantityy">Quantity :</string>
     <string name="buy_x_get_y">Buy %1$d get %2$d free</string>
     <string name="cosmetics">Cosmetics</string>
     <string name="categories">Categories</string>
@@ -274,7 +274,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="products">Products</string>
     <string name="cart_added_title">Product added to cart</string>
     <string name="cart_added_message">Do you want to go to your shopping cart?</string>
-    <string name="cart_bonus_message">Congratulations! You got %1$d as a gift 🎁</string>
+    <string name="cart_bonus_message">Congratulations! You got %1$d as a Bonus 🎁</string>
     <string name="continue_shopping">Continue Shopping</string>
     <string name="go_to_cart">Go to Cart</string>
     <string name="you_are_eligible_for">You are eligible for</string>

@@ -10,107 +10,115 @@
             type="com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_100sdp"
-
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_15sdp"
+        android:backgroundTint="@color/lightGray"
+        app:strokeWidth="0dp"
         android:layout_margin="@dimen/_10sdp"
         android:background="@color/lightGray">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardImg"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                app:cardBackgroundColor="@color/white"
+                android:visibility="gone"
+                app:cardElevation="@dimen/_2sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@null"
+                app:strokeWidth="0dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardImg"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            app:cardBackgroundColor="@color/white"
-            android:visibility="gone"
-            app:cardElevation="@dimen/_2sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@null"
-            app:strokeWidth="0dp">
+                <ImageView
+                    android:id="@+id/imgProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    />
 
-            <ImageView
-                android:id="@+id/imgProduct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_8sdp"
-             />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/productName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_26sdp"
-            android:fontFamily="sans-serif-medium"
-            android:text='@{String.valueOf(data.name)}'
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintBottom_toTopOf="@+id/quantity"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardImg"
-            app:layout_constraintTop_toTopOf="@+id/cardImg"
-            tootls:text="Eva Hand soap royal Deep Lines Filler 50 ML" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quantite"
-            app:layout_constraintBottom_toTopOf="@+id/priceLayout"
-            app:layout_constraintStart_toStartOf="@+id/productName"
-            app:layout_constraintTop_toBottomOf="@+id/productName" />
-
-        <TextView
-            android:id="@+id/quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:text="@{String.valueOf(data.quantity)}"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/priceLayout"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@id/productName"
-            tootls:text=" 4" />
-
-        <LinearLayout
-            android:id="@+id/priceLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/cardImg"
-            app:layout_constraintStart_toEndOf="@+id/cardImg"
-            app:layout_constraintTop_toBottomOf="@id/quantity">
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/priceTxt"
-                android:layout_width="wrap_content"
+                android:id="@+id/productName"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/price"
-                android:textColor="@color/black" />
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_26sdp"
+                android:fontFamily="sans-serif-medium"
+                android:text='@{String.valueOf(data.name)}'
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintBottom_toTopOf="@+id/quantity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardImg"
+                app:layout_constraintTop_toTopOf="@+id/cardImg"
+                tootls:text="Eva Hand soap royal Deep Lines Filler 50 ML" />
 
             <TextView
-                android:id="@+id/price"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:text="@{String.valueOf(data.price) +` EGP`}"
-                tootls:text="345 EGP"
-                android:textColor="@color/black" />
+                android:text="@string/quantityy"
+                app:layout_constraintBottom_toTopOf="@+id/priceLayout"
+                app:layout_constraintStart_toStartOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/productName" />
 
             <TextView
-                android:id="@+id/discountPrice"
+                android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:text="@{String.valueOf(data.discountPrice) +` EGP`}"
-                tootls:text="345 EGP"
-                android:textColor="@color/black" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@{String.valueOf(data.quantity)}"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/priceLayout"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@id/productName"
+                tootls:text=" 4" />
+
+            <LinearLayout
+                android:id="@+id/priceLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/cardImg"
+                app:layout_constraintStart_toEndOf="@+id/cardImg"
+                app:layout_constraintTop_toBottomOf="@id/quantity">
+
+                <TextView
+                    android:id="@+id/priceTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="@{String.valueOf(data.price) +` EGP`}"
+                    tootls:text="345 EGP"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/discountPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="@{String.valueOf(data.discountPrice) +` EGP`}"
+                    tootls:text="345 EGP"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
 </layout>

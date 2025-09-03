@@ -127,9 +127,10 @@
                     android:id="@+id/layout_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/price">
 
@@ -157,14 +158,14 @@
                         android:id="@+id/txt_quantity"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
+                        android:background="@null"
                         android:gravity="center"
                         android:inputType="number"
                         android:maxLength="4"
-                        android:background="@null"
                         android:text="@{cart.myQuantity + ``}"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/btn_plus"
@@ -194,6 +195,7 @@
                     android:layout_marginStart="8dp"
                     android:src="@drawable/trush_bin"
                     app:layout_constraintBottom_toBottomOf="@id/layout_quantity"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/layout_quantity"
                     app:layout_constraintTop_toTopOf="@id/layout_quantity" />
 

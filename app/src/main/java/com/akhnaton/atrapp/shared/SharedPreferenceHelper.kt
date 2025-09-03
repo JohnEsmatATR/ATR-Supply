@@ -72,13 +72,14 @@ object SharedPreferenceHelper {
 
         }
 
-    fun setLocale(context: Context, langCode: String) {
-        language = langCode // حفظ اللغة
+    fun setLocale(context: Context, langCode: String): Context {
+        language = langCode
         val locale = Locale(langCode)
         Locale.setDefault(locale)
         val config = context.resources.configuration
         config.setLocale(locale)
         context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        return context
     }
 
 

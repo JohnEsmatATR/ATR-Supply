@@ -23,8 +23,9 @@ interface ICart {
     ): Response<BaseModel<AddToCartResponse>>
 
     @POST(ConstantLinks.GET_MY_CART)
+    @FormUrlEncoded
     suspend fun getMyCart(
-
+    @Field("language") language : String
     ): Response<BaseModel<List<CartResponse>>>
 
     @FormUrlEncoded

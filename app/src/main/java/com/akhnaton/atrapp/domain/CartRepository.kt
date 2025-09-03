@@ -27,8 +27,8 @@ class CartRepository {
     )
 
 
-    suspend fun getMyCart(
-    ) = retrofit.getMyCart()
+    suspend fun getMyCart(language : String
+    ) = retrofit.getMyCart(language)
 
     suspend fun checkout(paymentId : Int ,  category: String) = retrofit.checkout(paymentId,category)
 

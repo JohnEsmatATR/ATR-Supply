@@ -27,17 +27,19 @@ class CartViewModel : ViewModel() {
         viewModelScope.launch {
             cartIntent.consumeAsFlow().collect {
                 when (it) {
-                    is CartIntent.GetMyCart -> getMyCart()
+                    is CartIntent.GetMyCart -> getMyCart(
+                        it.language
+                    )
                 }
             }
         }
     }
 
-    private fun getMyCart() {
+    private fun getMyCart(language : String) {
         viewModelScope.launch {
             _state.value = CartStatus.Loading
             _state.value = try {
-                val response = CartRepository().getMyCart()
+                val response = CartRepository().getMyCart(language)
                 if (response.code() == 200) {
                     CartStatus.GetMyCart(response.body()!!)
                 } else if (response.code() == 401) {
