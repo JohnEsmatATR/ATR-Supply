@@ -20,7 +20,7 @@
             android:id="@+id/txt_order_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{cartResponse.orderType}"
+            android:text="@{cartResponse.order_type_txt}"
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:textSize="18sp"

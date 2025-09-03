@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.*
 
@@ -68,6 +69,8 @@ class SetupHttpClient {
             builder.apply {
                 addInterceptor(
                     Interceptor { chain ->
+                        val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
+                            ?: Locale.getDefault().language
                         val originalRequest = chain.request()
                         val requestBuilder = originalRequest.newBuilder()
                             .addHeader(
@@ -80,6 +83,7 @@ class SetupHttpClient {
                                 "version", "${SharedPreferenceHelper.version}"
                             )
                             .addHeader("devicetype", "Android")
+                            .addHeader("language",lang)
 
                         // Log request headers
                         val request = requestBuilder.build()

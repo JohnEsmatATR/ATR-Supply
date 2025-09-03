@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class CartResponse(
     @SerializedName("order_type")
     val orderType: String,
+    val order_type_txt : String,
     val items: CartItems
 )
 
