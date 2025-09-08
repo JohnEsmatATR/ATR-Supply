@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ATR APP</string>
+    <string name="app_name">ATR Supply</string>
     <string name="sign_up">عميل حالي</string>
     <string name="or">أو</string>
     <string name="login">عميل جديد</string>

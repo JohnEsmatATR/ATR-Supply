@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,7 @@ import com.akhnaton.atrapp.ui.nav.cart.checkout.CartParentAdapter
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class CartFragment : BaseFragment() {
 
@@ -46,6 +48,12 @@ class CartFragment : BaseFragment() {
         observeCart()
         observeCartQuantity()
         setupClickListeners()
+        val currentLang = SharedPreferenceHelper.language
+        if (currentLang == "ar") {
+            binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        } else {
+            binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_LTR
+        }
         return binding.root
     }
 
@@ -212,6 +220,13 @@ class CartFragment : BaseFragment() {
         binding.txtNoProducts.visibility = View.VISIBLE
         updateCartSummaryUI()
     }
+
+    fun formatNumber(value: Double, context: Context): String {
+        val currentLocale = context.resources.configuration.locales[0] // أو locale من إعداداتك
+        val formatter = NumberFormat.getInstance(currentLocale)
+        return formatter.format(value)
+    }
+
 }
 
 
