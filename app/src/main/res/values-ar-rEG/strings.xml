@@ -229,4 +229,6 @@
     <string name="enter">دخال</string>
     <string name="register">تسجيل</string>
     <string name="verification">تحقق</string>
+    <string name="verificationcode">تم ارسال رقم التحقق الي الرقم</string>
+    <string name="find_code_in_invoice">عرض رقم الفتوره</string>
 </resources>

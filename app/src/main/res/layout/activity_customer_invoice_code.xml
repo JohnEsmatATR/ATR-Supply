@@ -40,7 +40,34 @@
             android:layout_height="wrap_content"
             android:drawablePadding="12dp"
             android:hint="@string/customer_code_on_the_invoice"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_customer_number_code"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="@color/gray"
+        android:layout_marginTop="@dimen/_25sdp"
+        app:boxStrokeWidth="1dp"
+        app:counterTextColor="@color/orange"
+        app:hintTextColor="@color/orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_customer_invoice_code">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_customer_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="11"
+            android:drawablePadding="12dp"
+            android:hint="@string/phone_number"
+            android:inputType="number"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,15 +75,83 @@
         android:id="@+id/btn_enter_invoice"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_25sdp"
         android:layout_marginHorizontal="@dimen/_60sdp"
         android:backgroundTint="@android:color/transparent"
         android:clickable="true"
         android:text="@string/enter"
         android:textColor="@color/black"
-        android:layout_marginTop="@dimen/_25sdp"
         android:textSize="@dimen/_18sdp"
         app:cornerRadius="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/layout_customer_invoice_code"
+        app:layout_constraintTop_toBottomOf="@+id/layout_customer_number_code"
         app:strokeColor="@color/orange"
         app:strokeWidth="1dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:text="@string/find_code_in_invoice"
+        app:layout_constraintEnd_toEndOf="@+id/btn_enter_invoice"
+        app:layout_constraintStart_toStartOf="@+id/btn_enter_invoice"
+        app:layout_constraintTop_toBottomOf="@+id/btn_enter_invoice" />
+
+    <ImageView
+        android:id="@+id/findImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:src="@drawable/question_box_24"
+        app:layout_constraintBottom_toBottomOf="@+id/textView7"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+    <ImageView
+        android:id="@+id/invoice_image"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:src="@drawable/invoice"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/progressLoading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.5"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

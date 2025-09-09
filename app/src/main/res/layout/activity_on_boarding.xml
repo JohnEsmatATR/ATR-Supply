@@ -86,7 +86,7 @@
                 android:id="@+id/goToCustomerCodeLogin"
                 android:layout_width="match_parent"
                 app:strokeWidth="1dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:clickable="true"
                 app:strokeColor="@color/orange"

@@ -285,5 +285,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="enter">Enter</string>
     <string name="register">Register</string>
     <string name="verification">verification</string>
+    <string name="verificationcode">The verification code has been sent to your number.</string>
+    <string name="find_code_in_invoice">Find Code in Invoice</string>
 
 </resources>

@@ -29,33 +29,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_25sdp"
-            android:text="تم ارسال رقم التحقق الي الرقم الزي ينتهني:"
-            app:layout_constraintEnd_toEndOf="@+id/textView4"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
+            android:text="@string/verificationcode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
+            android:id="@+id/phoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="808"
-            app:layout_constraintBottom_toBottomOf="@+id/textView5"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
 
-            app:layout_constraintTop_toTopOf="@+id/textView5" />
+            app:layout_constraintEnd_toEndOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
 
         <LinearLayout
             android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_45sdp"
             android:gravity="center"
             android:layoutDirection="rtl"
+            android:layout_marginTop="@dimen/_25sdp"
             android:orientation="horizontal"
             android:textDirection="rtl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4">
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumber">
 
             <EditText
                 android:id="@+id/et1"
@@ -63,12 +63,12 @@
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/otp_box"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:inputType="number"
-                android:focusable="true"
-                android:textColor="@color/orange"
-                android:focusableInTouchMode="true"
                 android:maxLength="1"
+                android:textColor="@color/orange"
                 android:textSize="18sp" />
 
             <EditText
@@ -77,51 +77,50 @@
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/otp_box"
-                android:textColor="@color/orange"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
+                android:textColor="@color/orange"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et3"
                 android:layout_width="50dp"
                 android:layout_height="60dp"
-                android:textColor="@color/orange"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
+                android:textColor="@color/orange"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et4"
                 android:layout_width="50dp"
                 android:layout_height="60dp"
-                android:textColor="@color/orange"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
+                android:textColor="@color/orange"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et5"
                 android:layout_width="50dp"
                 android:layout_height="60dp"
-                android:textColor="@color/orange"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
+                android:textColor="@color/orange"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et6"
-                android:textColor="@color/orange"
                 android:layout_width="50dp"
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/_5sdp"
@@ -129,6 +128,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
+                android:textColor="@color/orange"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -178,6 +178,35 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/progressLoading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.5"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

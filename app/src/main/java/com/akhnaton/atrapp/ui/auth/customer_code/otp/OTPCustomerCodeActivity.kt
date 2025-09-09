@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -13,19 +14,34 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.ValidateOtpIntent
+import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.ValidateOtpState
 import com.akhnaton.atrapp.databinding.ActivityOtpCustomerCodeBinding
+import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.auth.customer_code.login.LoginWithCodeActivity
 import com.akhnaton.atrapp.ui.auth.customer_code.otp.OtpViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class OTPCustomerCodeActivity : AppCompatActivity() {
+class OTPCustomerCodeActivity : BaseActivity() {
     private lateinit var binding: ActivityOtpCustomerCodeBinding
     private val otpViewModel: OtpViewModel by viewModels()
+    private val validateOtpViewModel: ValidateOtpViewModel by viewModels()
+    private lateinit var invoiceCode : String
+    private lateinit var phoneNumber : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOtpCustomerCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+         invoiceCode = intent.getStringExtra("invoice_code").toString()
+         phoneNumber = intent.getStringExtra("phone_number").toString()
+
+        observer()
+        Log.d("OTP", "Invoice Code: $invoiceCode, Phone: $phoneNumber")
+        binding.phoneNumber.text = phoneNumber
         val editTexts = listOf(
             binding.et1, binding.et2, binding.et3,
             binding.et4, binding.et5, binding.et6
@@ -57,7 +73,12 @@ class OTPCustomerCodeActivity : AppCompatActivity() {
             }
         }
         binding.verificationButton.setOnClickListener {
-            startActivity(Intent(this@OTPCustomerCodeActivity, LoginWithCodeActivity::class.java))
+            val otp = editTexts.joinToString("") { it.text.toString() }
+            lifecycleScope.launch {
+                validateOtpViewModel.otpIntent.send(
+                    ValidateOtpIntent.ValidateOtp(invoiceCode, phoneNumber, otp)
+                )
+            }
         }
 
     }
@@ -95,6 +116,42 @@ class OTPCustomerCodeActivity : AppCompatActivity() {
                     otpViewModel.checkOtp(inputs)
                 }
                 false
+            }
+        }
+    }
+    private fun observer() {
+        lifecycleScope.launch {
+            validateOtpViewModel.state.collect { state ->
+                when (state) {
+                    is ValidateOtpState.Idle -> Unit
+                    is ValidateOtpState.Loading -> {
+                        showProgressDialog(binding.progressLoading)
+                    }
+                    is ValidateOtpState.Success -> {
+                        hideProgressDialog(binding.progressLoading)
+                        if (state.state==200){
+                            showToastSnack(state.message, false)
+                            delay(500)
+                            Log.d("OTP", "Success: ${state.message}")
+                            val intent = Intent(
+                                this@OTPCustomerCodeActivity,
+                                LoginWithCodeActivity::class.java
+                            ).apply {
+                                putExtra("invoice_code", invoiceCode)
+                                putExtra("phone_number", phoneNumber)
+                            }
+                            startActivity(intent)
+                        }
+                        else{
+                            showToastSnack(state.message, true)
+                        }
+
+                    }
+                    is ValidateOtpState.Error -> {
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(state.error, true)
+                    }
+                }
             }
         }
     }
