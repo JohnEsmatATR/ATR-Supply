@@ -7,3 +7,5 @@ data class CategoriesModel(
     val TITLE: String? = null,
     val IMAGE_URL: String? = null
 )
+
+

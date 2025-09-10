@@ -287,5 +287,11 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="verification">verification</string>
     <string name="verificationcode">The verification code has been sent to your number.</string>
     <string name="find_code_in_invoice">Find Code in Invoice</string>
+    <string name="error_first_name">Enter first name</string>
+    <string name="error_last_name">Enter last name</string>
+    <string name="error_email">Enter email</string>
+    <string name="error_password_empty">Enter password</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_password_weak">Weak password! Must contain at least 8 characters, uppercase, lowercase, number, and special symbol.</string>
 
 </resources>

@@ -19,13 +19,15 @@ class FawryActivity : BaseActivity() {
 
     private fun init() {
         val orderNumbers = intent.getStringExtra("order_numbers") ?: ""
-
+        val msg = intent.getStringExtra("msg")?:""
+        binding.massage.text=msg
 
         Log.d("ORDER_PATH", "Received Order Numbers: $orderNumbers")
 
 
         if (orderNumbers.isNotEmpty()) {
             binding.txtOrderNumber.text = orderNumbers
+
         } else {
             binding.txtOrderNumber.text = "No order numbers received."
         }

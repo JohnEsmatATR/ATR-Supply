@@ -231,4 +231,11 @@
     <string name="verification">تحقق</string>
     <string name="verificationcode">تم ارسال رقم التحقق الي الرقم</string>
     <string name="find_code_in_invoice">عرض رقم الفتوره</string>
+    <string name="error_first_name">ادخل الاسم الأول</string>
+    <string name="error_last_name">ادخل الاسم الأخير</string>
+    <string name="error_email">ادخل البريد الإلكتروني</string>
+    <string name="error_password_empty">ادخل كلمة المرور</string>
+    <string name="error_password_mismatch">كلمة المرور غير متطابقة</string>
+    <string name="error_password_weak">كلمة المرور ضعيفة! يجب أن تحتوي على 8 حروف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص.</string>
+
 </resources>

@@ -66,10 +66,13 @@ class CheckoutActivity : BaseActivity() {
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
                             val orderNumbers = it.data.data?.orderNumbers?.toString()
+                            val msg = it.data.data?.msg?.toString()
                             Log.d("TAG", "cartObserve orderNumbers :${orderNumbers} ")
 
                             val intent = Intent(this@CheckoutActivity, FawryActivity::class.java).apply {
                                 putExtra("order_numbers", orderNumbers)
+                                putExtra("msg", msg)
+
                             }
                         startActivity(intent)
 

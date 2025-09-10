@@ -11,9 +11,11 @@ class AuthRepository {
     suspend fun login(
         email: String,
         password: String,
+        fbToken : String
     ) = retrofit.login(
         email,
         password,
+        fbToken
     )
 
     suspend fun register(

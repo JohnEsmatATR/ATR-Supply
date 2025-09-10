@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivitySignUpMapsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
@@ -31,6 +32,8 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
 
@@ -170,7 +173,10 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
                             location.latitude,
                             location.longitude
                         ) { address ->
-                            binding.spWriteCustomerLocation.setText(address ?: "No address found")
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                binding.spWriteCustomerLocation.setText(address ?: "No address found")
+                            }
+
                         }
 
                     } else {

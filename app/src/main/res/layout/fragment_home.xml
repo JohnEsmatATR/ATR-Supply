@@ -129,105 +129,18 @@
                 </androidx.cardview.widget.CardView>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_category"
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="@dimen/_100sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/view"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/card_search">
+                    app:layout_constraintTop_toBottomOf="@+id/slider"
+                    app:shimmer_auto_start="true"
+                    app:shimmer_duration="1500">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="start"
-                        android:text="@string/cosmetics"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16ssp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txt_see_all_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="@string/view_all"
-                        android:textColor="@color/orange"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="20dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_category"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/layout_category" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_pharma"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="9dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recycler_category">
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="start"
-                        android:text="@string/pharma"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16ssp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/txt_see_all_category_phrama"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txt_see_all_category_phrama"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="@string/view_all"
-                        android:textColor="@color/orange"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView6"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <include layout="@layout/item_category_shimmer" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_pharma"
@@ -236,22 +149,21 @@
                     android:layout_gravity="center"
                     android:layout_marginVertical="10dp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="20dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_pharma"
+                    app:layout_constraintTop_toBottomOf="@+id/slider"
                     tools:itemCount="5"
-                    tools:listitem="@layout/layout_category" />
+                    tools:listitem="@layout/layout_order_type_item" />
+
                 <View
                     android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/orange"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_pharma"
-                    />
+                    android:background="@color/orange"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_pharma" />
                 <LinearLayout
                     android:paddingTop="@dimen/_10sdp"
                     android:id="@+id/layout_best_seller"

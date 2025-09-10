@@ -43,6 +43,9 @@ class HomeActivity : BaseActivity() {
         onClick()
         handleBackPress()
         checkForAppUpdate()
+        binding.btnTracking.setOnClickListener {
+
+        }
 
 
     }
@@ -82,36 +85,34 @@ class HomeActivity : BaseActivity() {
 
 
     private fun initNavBottom() {
-
         setItemSelected(R.id.home)
-        binding.bottomNavigationView.menu[2].isEnabled = false
+        binding.bottomNavigationView.menu[2].isEnabled = false // اللي في النص
 
+        // ضغطه زرار btn_tracking
+        binding.btnTracking.setOnClickListener {
+            setCurrentFragment(TrackingFragment())
+            // خليه يبين كأنه مختار العنصر الأوسط (اللي معمول Disabled)
+            binding.bottomNavigationView.menu.getItem(2).isChecked = true
+
+            // reset باقي الأيقونات
+            binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
+            binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
+            binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
+            binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home -> {
-                    setItemSelected(R.id.home)
-                }
-
-                R.id.favorite -> {
-                    setItemSelected(R.id.favorite)
-                }
-
-                R.id.cart -> {
-                    setItemSelected(R.id.cart)
-                }
-
-                R.id.profile -> {
-                    setItemSelected(R.id.profile)
-                }
-
-                else -> {
-                    setItemSelected(R.id.home)
-                }
+                R.id.home -> setItemSelected(R.id.home)
+                R.id.favorite -> setItemSelected(R.id.favorite)
+                R.id.cart -> setItemSelected(R.id.cart)
+                R.id.profile -> setItemSelected(R.id.profile)
+                else -> setItemSelected(R.id.home)
             }
             true
         }
     }
+
 
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {

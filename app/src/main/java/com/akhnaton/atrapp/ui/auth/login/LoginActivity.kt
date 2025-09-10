@@ -3,10 +3,13 @@ package com.akhnaton.atrapp.ui.auth.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginStatus
+import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.RegisterFromLineIntent
 import com.akhnaton.atrapp.databinding.ActivityLoginBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
@@ -14,6 +17,7 @@ import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.forgetPassword.sendOtp.ForgetPasswordActivity
 import com.akhnaton.atrapp.ui.auth.signUp.info.SignUpInfoActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 class LoginActivity : BaseActivity() {
@@ -93,15 +97,40 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun postLogin() {
-        lifecycleScope.launch {
-            viewModel.loginIntent.send(
-                LoginIntent.Login(
-                    binding.layoutEmail.editText!!.text.toString().lowercase().trim(),
-                    binding.layoutPassword.editText!!.text.toString().trim(),
-                )
-            )
+        val email = binding.layoutEmail.editText?.text?.toString()?.trim()?.lowercase() ?: ""
+        val password = binding.layoutPassword.editText?.text?.toString()?.trim() ?: ""
+
+
+        if (email.isEmpty()) {
+            Toast.makeText(this, getString(R.string.error_password_empty), Toast.LENGTH_SHORT).show()
+            return
         }
 
+        if (password.isEmpty()) {
+            Toast.makeText(this, getString(R.string.error_password_empty), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            val fbToken = task.result ?: ""
+            Log.d("FCM", "Token: $fbToken")
+
+            lifecycleScope.launch {
+                viewModel.loginIntent.send(
+                    LoginIntent.Login(
+                        email,
+                        password,
+                        fbToken
+                    )
+                )
+            }
+        }
     }
+
 
 }

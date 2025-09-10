@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -114,5 +115,10 @@ dependencies {
     implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    //firebase
+    implementation (platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation ("com.google.firebase:firebase-messaging-ktx")
+
 
 }

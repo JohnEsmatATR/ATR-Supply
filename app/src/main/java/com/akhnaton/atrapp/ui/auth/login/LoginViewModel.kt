@@ -34,6 +34,7 @@ class LoginViewModel : ViewModel() {
                     is LoginIntent.Login -> loginRepo(
                         it.email,
                         it.password,
+                        it.fbToken
                     )
                 }
             }
@@ -43,11 +44,12 @@ class LoginViewModel : ViewModel() {
     private fun loginRepo(
         email: String,
         password: String,
+        fbToken : String
     ) {
         viewModelScope.launch {
             _state.value = LoginStatus.Loading
             _state.value = try {
-                val response = AuthRepository().login(email, password)
+                val response = AuthRepository().login(email, password,fbToken)
                 if (response.code() == 200) {
                     LoginStatus.Login(response.body()!!)
                 } else {

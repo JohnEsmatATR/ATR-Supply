@@ -7,16 +7,10 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.changePassword.ChangePasswordIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.changePassword.ChangePasswordStatus
-import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginIntent
-import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginStatus
 import com.akhnaton.atrapp.databinding.ActivityNewPasswordBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
-import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.PasswordResetSuccessfullyActivity
-import com.akhnaton.atrapp.ui.auth.login.LoginActivity
-import com.akhnaton.atrapp.ui.auth.login.LoginViewModel
-import com.akhnaton.atrapp.ui.nav.HomeActivity
 import kotlinx.coroutines.launch
 
 class NewPasswordActivity : BaseActivity() {

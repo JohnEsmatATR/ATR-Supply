@@ -12,13 +12,14 @@ import com.akhnaton.atrapp.shared.Common
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
-class CategoryAdapter(private val onClick: (category: CategoriesModel, position: Int,) -> Unit) :
-    RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class CategoryAdapter(
+    private val onClick: (category: CategoriesModel, position: Int) -> Unit
+) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    private var apartmentsList = ArrayList<CategoriesModel>()
+    private var categoriesList = ArrayList<CategoriesModel>()
 
     fun setData(categories: List<CategoriesModel>) {
-        apartmentsList = categories as ArrayList
+        categoriesList = ArrayList(categories)
         notifyDataSetChanged()
     }
 
@@ -26,20 +27,16 @@ class CategoryAdapter(private val onClick: (category: CategoriesModel, position:
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CategoriesModel, position: Int) {
-
             binding.categoryModel = item
 
             Glide.with(binding.root.context)
                 .load(item.IMAGE_URL)
                 .into(binding.imItem)
 
-
-            itemView.setOnClickListener {
+            binding.root.setOnClickListener {
                 onClick(item, position)
             }
-
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -52,11 +49,8 @@ class CategoryAdapter(private val onClick: (category: CategoriesModel, position:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        apartmentsList?.get(position)?.let { holder.bind(it, position) }
+        holder.bind(categoriesList[position], position)
     }
 
-    override fun getItemCount(): Int {
-        return apartmentsList.size
-    }
-
+    override fun getItemCount(): Int = categoriesList.size
 }

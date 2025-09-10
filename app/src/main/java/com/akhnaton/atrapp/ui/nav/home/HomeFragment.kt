@@ -52,10 +52,8 @@ class HomeFragment : BaseFragment() {
     lateinit var binding: FragmentHomeBinding
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val bestSellerViewModel: BestSellerViewModel by viewModels()
-    private val favoriteViewModel: FavoriteViewModel by viewModels()
     lateinit var categoriesAdapter: CategoryAdapter
-    lateinit var bestSellerAdapter: ProductAdapter
-    var listCategory = mutableListOf<CategoriesModel>()
+    private lateinit var orderTypeAdapter: OrderTypeAdapter
     var listBestSeller = mutableListOf<ProductModel>()
     private lateinit var shimmerAdapter: ShimmerAdapter
     private val viewModel: AddressesViewModel by viewModels()
@@ -74,67 +72,124 @@ class HomeFragment : BaseFragment() {
         binding = FragmentHomeBinding.inflate(inflater)
 
         onClick()
+        setupRecycler()
+        observeViewModel()
+        setPlannerView()
+        getAddress()
+        observeAddress()
+
+
+        lifecycleScope.launch {
+            categoryViewModel.categoryIntent.send(CategoryIntent.GetCategories)
+        }
 
         binding.cardAddress.setOnClickListener {
             val intent = Intent(requireContext(), AddressesActivity::class.java)
             startActivity(intent)
         }
-        init()
+//        init()
         return binding.root
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun setupRecycler() {
+        orderTypeAdapter = OrderTypeAdapter { category, orderType, _ ->
+            val intent = Intent(requireContext(), ProductsActivity::class.java)
+            intent.putExtra("flag", orderType)
+            intent.putExtra("categoryId", category.ID)
+            startActivity(intent)
+        }
 
+        binding.recyclerPharma.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = orderTypeAdapter
+            setHasFixedSize(true)
+        }
     }
 
-    private fun categoryObserve() {
+    private fun observeViewModel() {
         lifecycleScope.launch {
-            categoryViewModel.state.collect {
-                when (it) {
-                    is CategoryStatus.Idle ->
-                        Log.d(Common.KeroDebug, "observeCategories: Idle")
+            categoryViewModel.state.collect { state ->
+                when (state) {
+                    is CategoryStatus.Idle -> Unit
 
                     is CategoryStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeCategories: Loading")
-                        binding.recyclerCategory.adapter = shimmerAdapter
-                        binding.recyclerPharma.adapter = shimmerAdapter
+                        showProgressDialog(binding.progressLoading)
+                        binding.shimmerLayout.startShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        binding.recyclerPharma.visibility = View.GONE
                     }
 
                     is CategoryStatus.GetCategory -> {
                         hideProgressDialog(binding.progressLoading)
-                        if (it.data.status == 200) {
-                            Categorylist.clear()
-                            Categorylist.addAll(it.data.data ?: emptyList())
-                            Log.d(Common.KeroDebug, "observeCategories: ${it.data.data}")
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.INVISIBLE
+                        binding.recyclerPharma.visibility = View.VISIBLE
 
-
-                            val pharmaCategories = Categorylist
-                                .firstOrNull { model -> model.order_type == "Pharma" }
-                                ?.categories ?: emptyList()
-                            Log.d("TAG", "categoryObserve pharmaCategories : ${pharmaCategories} ")
-
-                            val cosmeticsCategories = Categorylist
-                                .firstOrNull { model -> model.order_type == "Cosmetics" }
-                                ?.categories ?: emptyList()
-                            Log.d("TAG", "categoryObserve cosmeticsCategories : ${cosmeticsCategories} ")
-                            setupPharmaRecycler(pharmaCategories)
-                            setupCosmeticsRecycler(cosmeticsCategories)
-                        } else {
-                            showToastSnack(it.data.message, true)
+                        state.data.data?.let {
+                            orderTypeAdapter.setData(it)
                         }
                     }
 
                     is CategoryStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeCategories Error: ${it.error}")
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        binding.recyclerPharma.visibility = View.VISIBLE
+                        Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
     }
+
+
+//    private fun categoryObserve() {
+//        lifecycleScope.launch {
+//            categoryViewModel.state.collect {
+//                when (it) {
+//                    is CategoryStatus.Idle ->
+//                        Log.d(Common.KeroDebug, "observeCategories: Idle")
+//
+//                    is CategoryStatus.Loading -> {
+//                        Log.d(Common.KeroDebug, "observeCategories: Loading")
+//                        binding.recyclerCategory.adapter = shimmerAdapter
+//                        binding.recyclerPharma.adapter = shimmerAdapter
+//                    }
+//
+//                    is CategoryStatus.GetCategory -> {
+//                        hideProgressDialog(binding.progressLoading)
+//                        if (it.data.status == 200) {
+//                            Categorylist.clear()
+//                            Categorylist.addAll(it.data.data ?: emptyList())
+//                            Log.d(Common.KeroDebug, "observeCategories: ${it.data.data}")
+//
+//
+//                            val pharmaCategories = Categorylist
+//                                .firstOrNull { model -> model.order_type == "Pharma" }
+//                                ?.categories ?: emptyList()
+//                            Log.d("TAG", "categoryObserve pharmaCategories : ${pharmaCategories} ")
+//
+//                            val cosmeticsCategories = Categorylist
+//                                .firstOrNull { model -> model.order_type == "Cosmetics" }
+//                                ?.categories ?: emptyList()
+//                            Log.d("TAG", "categoryObserve cosmeticsCategories : ${cosmeticsCategories} ")
+//                            setupPharmaRecycler(pharmaCategories)
+//                            setupCosmeticsRecycler(cosmeticsCategories)
+//                        } else {
+//                            showToastSnack(it.data.message, true)
+//                        }
+//                    }
+//
+//                    is CategoryStatus.Error -> {
+//                        Log.d(Common.KeroDebug, "observeCategories Error: ${it.error}")
+//                        hideProgressDialog(binding.progressLoading)
+//                        showToastSnack(it.error.toString(), true)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     private fun observeAddress() {
@@ -237,13 +292,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-//    private fun getBestSeller() {
-//        lifecycleScope.launch {
-//            bestSellerViewModel.homeIntent.send(
-//                BestSellerIntent.GetBestSeller(2)
-//            )
-//        }
-//    }
+
 
     private fun setupCosmeticsRecycler(list: List<CategoriesModel>) {
         val layoutManager =
@@ -256,8 +305,8 @@ class HomeFragment : BaseFragment() {
             startActivity(intent)
         })
         categoriesAdapter.setData(list)
-        binding.recyclerCategory.layoutManager = layoutManager
-        binding.recyclerCategory.adapter = categoriesAdapter
+//        binding.recyclerCategory.layoutManager = layoutManager
+//        binding.recyclerCategory.adapter = categoriesAdapter
     }
     private fun setupPharmaRecycler(list: List<CategoriesModel>) {
         val layoutManager =
@@ -274,66 +323,25 @@ class HomeFragment : BaseFragment() {
         binding.recyclerPharma.adapter = categoriesAdapter
     }
 
-//    private fun setupProductBestSellerRecycler(list: List<ProductModel>) {
-//        val layoutManager =
-//            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//    private fun init() {
+//        binding.progressLoading.isEnabled = false
+//        shimmerAdapter = ShimmerAdapter(10)
 //
-//        bestSellerAdapter = ProductAdapter(
-//            onClick = { product, position, sharedView, transitionName ->
-//                val intent = Intent(requireContext(), BestSellerDetailsActivity::class.java).apply {
-//                    putExtra("flag", Common.category)
-//                    putExtra("product", product)
-//                    putExtra("transitionName", transitionName)
-//                    putExtra("product_id",product.ID)
+//        binding.recyclerCategory.apply {
+//            layoutManager =LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            adapter = shimmerAdapter
+//        }
+//        binding.recyclerBestSeller.apply {
+//            layoutManager =LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            adapter = shimmerAdapter
+//        }
+//        categoryObserve()
+//        getCategories()
+//        observeAddress()
+//        getAddress()
+//        setPlannerView()
 //
-//                }
-//
-//                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                    requireActivity(),
-//                    sharedView,
-//                    transitionName
-//                )
-//
-//                startActivity(intent, options.toBundle())
-//            },
-//            onFavoriteClick = { product, position, isFavorite ->
-//                if (isFavorite) {
-//                    addProductToFavorite(product.ID, isFavorite)
-//                } else {
-//                    deleteProductToFavorite(product.ID, isFavorite)
-//                }
-//            }
-//        )
-//
-//        bestSellerAdapter.isInHome = true
-//        bestSellerAdapter.setData(list, true, Common.bestSeller)
-//        binding.recyclerBestSeller.layoutManager = layoutManager
-//        binding.recyclerBestSeller.adapter = bestSellerAdapter
 //    }
-
-
-
-    private fun init() {
-        binding.progressLoading.isEnabled = false
-        shimmerAdapter = ShimmerAdapter(10)
-
-        binding.recyclerCategory.apply {
-            layoutManager =LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = shimmerAdapter
-        }
-        binding.recyclerBestSeller.apply {
-            layoutManager =LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = shimmerAdapter
-        }
-        categoryObserve()
-        //bestSellerObserve()
-        getCategories()
-      //  getBestSeller()
-        observeAddress()
-        getAddress()
-        setPlannerView()
-
-    }
     private fun onClick() {
 //        binding.txtSeeAllCategory.setOnClickListener {
 //            val intent = Intent(context, SeeAllActivity::class.java)
@@ -350,16 +358,7 @@ class HomeFragment : BaseFragment() {
             intent.putExtra("flag", Common.bestSeller)
             startActivity(intent)
         }
-//        binding.btnBrowseAllBlog.setOnClickListener {
-//            val intent = Intent(context, BlogActivity::class.java)
-//            startActivity(intent)
-//        }
-//        binding.btnSearch.setOnClickListener {
-//            val txt = binding.txtSearch.query.toString()
-//            val intent = Intent(context, SearchActivity::class.java)
-//            intent.putExtra(Common.search, txt)
-//            startActivity(intent)
-//        }
+
         binding.imNotification.setOnClickListener {
             val intent = Intent(context, NotificationsActivity::class.java)
             startActivity(intent)
@@ -369,43 +368,20 @@ class HomeFragment : BaseFragment() {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
-        binding.txtSeeAllCategoryPhrama.setOnClickListener {
-            val intent = Intent(requireContext(), CategoryActivity::class.java)
-            intent.putExtra("category_type", "Pharma")
-            startActivity(intent)
-        }
-
-        binding.txtSeeAllCategory.setOnClickListener {
-            val intent = Intent(requireContext(), CategoryActivity::class.java)
-            intent.putExtra("category_type", "Cosmetics")
-            startActivity(intent)
-        }
+//        binding.txtSeeAllCategoryPhrama.setOnClickListener {
+//            val intent = Intent(requireContext(), CategoryActivity::class.java)
+//            intent.putExtra("category_type", "Pharma")
+//            startActivity(intent)
+//        }
+//
+//        binding.txtSeeAllCategory.setOnClickListener {
+//            val intent = Intent(requireContext(), CategoryActivity::class.java)
+//            intent.putExtra("category_type", "Cosmetics")
+//            startActivity(intent)
+//        }
 
     }
 
-
-//    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
-//        lifecycleScope.launch {
-//            favoriteViewModel.favoriteIntent.send(
-//                FavoriteIntent.AddProductToFavourites(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    productId,
-//                    add,
-//                )
-//            )
-//        }
-//    }
-//    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
-//        lifecycleScope.launch {
-//            favoriteViewModel.favoriteIntent.send(
-//                FavoriteIntent.DeleteFromFavourites(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    productId,
-//                    add,
-//                )
-//            )
-//        }
-//    }
     private fun setPlannerView() {
 
         lifecycleScope.launch {

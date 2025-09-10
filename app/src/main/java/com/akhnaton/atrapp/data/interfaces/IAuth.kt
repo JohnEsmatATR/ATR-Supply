@@ -22,6 +22,7 @@ interface IAuth {
     suspend fun login(
         @Field("email") email: String,
         @Field("password") password: String,
+        @Field("fb_token")     fbToken : String,
     ): Response<BaseModel<LoginModel>>
 
 
