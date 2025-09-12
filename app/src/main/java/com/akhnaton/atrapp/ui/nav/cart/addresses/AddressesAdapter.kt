@@ -1,9 +1,12 @@
 package com.akhnaton.atrapp.ui.nav.cart.addresses
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.AddressModel
@@ -32,6 +35,11 @@ class AddressesAdapter(private val onClick: (address: AddressModel, position: In
                 onClick(item, position)
             }
             Log.d("DEBUG", "Binding TITLE: ${item.TITLE}")
+            if (item.prime == 1) {
+                binding.card.setStrokeColor(Color.parseColor("#EE7907"))
+            }
+
+
 
         }
 

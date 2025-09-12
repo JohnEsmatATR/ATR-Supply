@@ -135,18 +135,57 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orderRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_date"
+            app:layout_constraintTop_toBottomOf="@+id/card_address"
             tools:itemCount="2"
             tools:listitem="@layout/layout_order" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar">
 
+            <LinearLayout
+                android:id="@+id/layout_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/im_location_background"
+                    app:tint="#808080" />
+
+                <TextView
+                    android:id="@+id/default_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="العنوان"
+                    android:maxLines="1"
+                    android:padding="@dimen/_5sdp"
+                    android:paddingStart="10dp"
+                    android:textColorHint="#808080"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progressLoading"

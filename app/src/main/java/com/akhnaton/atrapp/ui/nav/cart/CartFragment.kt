@@ -17,11 +17,15 @@ import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
 import com.akhnaton.atrapp.databinding.FragmentCartBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.shared.ShimmerAdapterCart
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CartParentAdapter
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
@@ -36,9 +40,9 @@ class CartFragment : BaseFragment() {
 
     private lateinit var parentAdapter: CartParentAdapter
     private lateinit var shimmerAdapter: ShimmerAdapterCart
+    private val viewModel: AddressesViewModel by viewModels()
 
     private var cartData: List<CartResponse> = emptyList()
-    private var cartValue : List<CartProduct> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +50,14 @@ class CartFragment : BaseFragment() {
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
         observeCart()
+        getAddress()
+        observeAddress()
         observeCartQuantity()
         setupClickListeners()
+        binding.cardAddress.setOnClickListener {
+            val intent = Intent(requireContext(), AddressesActivity::class.java)
+            startActivity(intent)
+        }
         val currentLang = SharedPreferenceHelper.language
         if (currentLang == "ar") {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -60,6 +70,62 @@ class CartFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         initCart()
+    }
+    private fun observeAddress() {
+        lifecycleScope.launch {
+            viewModel.state.collect {
+                Log.d("DEBUGGGGG", "Received state: $it")
+                when (it) {
+                    is AddressStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idleeeee")
+                    is AddressStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is AddressStatus.GetMyAddresses -> {
+                        if (it.result.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "Received: GetProducts")
+
+                            val addresses = it.result.data ?: emptyList()
+
+
+                            addresses.forEach { address ->
+                                if (address.prime == 1) {
+                                    Log.d("DEBUG_ADDRESS", "Prime address found: $address")
+                                    binding.defaultAddress.text=address.TITLE
+                                }
+                            }
+
+                            val hasDefault = addresses.any { address -> address.prime == 1 }
+                            if (!hasDefault) {
+                                val intent = Intent(requireContext(), AddressesActivity::class.java)
+                                startActivity(intent)
+                            }
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                        }
+                    }
+
+
+
+                    is AddressStatus.MakeAddressPrime -> {}
+
+                    is AddressStatus.Error -> {
+
+                    }
+
+                }
+            }
+        }
+    }
+    private fun getAddress() {
+        lifecycleScope.launch {
+            viewModel.addressIntent.send(
+                AddressIntent.GetMyAddresses
+            )
+        }
     }
 
     private fun initCart() {

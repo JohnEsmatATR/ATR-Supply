@@ -13,5 +13,5 @@ class AddressRepository {
 
     suspend fun getMyAddresses(): Response<BaseModel<List<AddressModel>>> = retrofit.getAllAddress()
 
-    suspend fun changeDefaultSite(partySiteId : String): Response<BaseModel<AddressModel>> = retrofit.changeDefaultSite(partySiteId)
+    suspend fun changeDefaultSite(partySiteId : String): Response<BaseModel<List<AddressModel>>> = retrofit.changeDefaultSite(partySiteId)
 }

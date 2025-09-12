@@ -20,7 +20,7 @@ interface Address {
     @POST(ConstantLinks.CHANGE_DEFAULT_ADDRESS)
     suspend fun changeDefaultSite(
         @Field("party_site_id") partySiteId: String,
-    ): Response<BaseModel<AddressModel>>
+    ): Response<BaseModel<List<AddressModel>>>
 
 
 

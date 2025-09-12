@@ -86,15 +86,14 @@ class HomeActivity : BaseActivity() {
 
     private fun initNavBottom() {
         setItemSelected(R.id.home)
-        binding.bottomNavigationView.menu[2].isEnabled = false // اللي في النص
+        binding.bottomNavigationView.menu[2].isEnabled = false
 
-        // ضغطه زرار btn_tracking
+
         binding.btnTracking.setOnClickListener {
             setCurrentFragment(TrackingFragment())
-            // خليه يبين كأنه مختار العنصر الأوسط (اللي معمول Disabled)
             binding.bottomNavigationView.menu.getItem(2).isChecked = true
 
-            // reset باقي الأيقونات
+
             binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
             binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
             binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)

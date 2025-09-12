@@ -78,7 +78,7 @@ class AddressesViewModel : ViewModel()  {
                     AddressStatus.MakeAddressPrime(response.body()!!)
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    val parsedError: BaseModel<AddressModel> = GsonBuilder().create().fromJson(
+                    val parsedError: BaseModel<List<AddressModel>> = GsonBuilder().create().fromJson(
                         errorBody,
                         object : TypeToken<BaseModel<AddressModel>>() {}.type
                     )

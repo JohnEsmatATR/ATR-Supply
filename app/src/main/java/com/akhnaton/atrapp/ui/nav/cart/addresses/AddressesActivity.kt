@@ -66,29 +66,24 @@ class   AddressesActivity : BaseActivity() {
 
                     }
 
-
-
                     is AddressStatus.MakeAddressPrime -> {
-//                        if (it.data.status == 1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
-//                            showToastSnack(it.data.message, false)
-//                            getAddresses()
-//
-//                        } else if (it.data.status == 401) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            showToastSnack(it.data.message, true)
-//                        }
+                        if (it.result.status == 200) {
+                            hideProgressDialog(binding.progressLoading)
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            showToastSnack(it.result.message, false)
+                            startActivity(Intent(this@AddressesActivity, HomeActivity::class.java))
+                            finish()
+
+                        } else {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(it.result.message, true)
+                        }
 
                     }
 
                     is AddressStatus.Error -> {
-//                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-//                        hideProgressDialog(binding.progressLoading)
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.message.toString()}")
+                        hideProgressDialog(binding.progressLoading)
 //                        showToastSnack(it.error.toString(), true)
                     }
 
@@ -122,15 +117,14 @@ class   AddressesActivity : BaseActivity() {
     private fun setupMyCartRecycler(list: List<AddressModel>) {
         val layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         addressesAdapter =  AddressesAdapter(onClick = { address, position ->
-            Log.d("DEBUG", "First address: ${list.firstOrNull()?.receiver_name}")
+            Log.d("DEBUG", "First address: ${list.firstOrNull()?.ID}")
             val id = address.ID.toString()
             lifecycleScope.launch {
                 viewModel.addressIntent.send(
                     AddressIntent.MakeAddressPrime(id)
                 )
             }
-            startActivity(Intent(this@AddressesActivity, HomeActivity::class.java))
-            finishAffinity()
+
 
         })
         addressesAdapter.setData(list)
