@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDeta
 
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
-import com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel
 
 sealed class MyOrderDetailsStatus {
 

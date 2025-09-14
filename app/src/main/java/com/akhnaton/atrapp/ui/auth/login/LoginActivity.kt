@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginStatus
-import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.RegisterFromLineIntent
 import com.akhnaton.atrapp.databinding.ActivityLoginBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common

@@ -26,17 +26,11 @@ import java.util.Locale
 
 class FavoriteFragment : BaseFragment() {
     lateinit var binding: FragmentFavoriteBinding
-    private var products: List<ProductModel> = ArrayList()
     lateinit var adapter: ProductAdapter
     private var flag = ""
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private var productList = mutableListOf<ProductModel>()
     private lateinit var shimmerAdapter: ShimmerAdapter
-
-//    private val addToCartViewModel: AddToCartViewModel by viewModels()
-//    lateinit var favoriteAdapter: FavoriteAdapter
-//    lateinit var products: List<ProductModel>
-//    lateinit var productsUnFavorite: List<ProductModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +39,6 @@ class FavoriteFragment : BaseFragment() {
         binding = FragmentFavoriteBinding.inflate(inflater)
 
         favoriteObserve()
-        addToCartObserve()
         search()
         init()
 
@@ -170,45 +163,7 @@ class FavoriteFragment : BaseFragment() {
         }
     }
 
-    private fun addToCartObserve() {
-//        lifecycleScope.launch {
-//            addToCartViewModel.state.collect {
-//                when (it) {
-//                    is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
-//                    is AddToCartStatus.Loading -> {
-//                        Log.d(Common.KeroDebug, "observeHome: Loading")
-//                        showProgressDialog(binding.progressLoading)
-//                    }
-//
-//                    is AddToCartStatus.AddProductToCart -> {
-//                        if (it.data.status == 1) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
-//
-//                            showToastSnack(it.data.message, false)
-//
-//                        } else if (it.data.status == 401) {
-//                            hideProgressDialog(binding.progressLoading)
-//                            onTokenExpired(it.data.errors!![0])
-//
-//                        } else {
-//                            hideProgressDialog(binding.progressLoading)
-//                            showToastSnack(it.data.message, true)
-//                        }
-//
-//                    }
-//
-//
-//                    is AddToCartStatus.Error -> {
-//                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-//                        hideProgressDialog(binding.progressLoading)
-//                        showToastSnack(it.error.toString(), true)
-//                    }
-//
-//                }
-//            }
-//        }
-    }
+
 
 
     private fun getMyFavorite() {
@@ -234,51 +189,6 @@ class FavoriteFragment : BaseFragment() {
             )
         }
     }
-
-//    private fun addProductToCart(product: ProductModel) {
-//        lifecycleScope.launch {
-//            addToCartViewModel.addToCartIntent.send(
-//                AddToCartIntent.AddProductToCart(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    product.product_id,
-//                    1,
-//                    product.price,
-//                    product.flag,
-//                    product.price_after_discount
-//                )
-//            )
-//        }
-//    }
-
-//    private fun setupFavoriteRecycler(list: List<ProductModel>) {
-//        val layoutManager =
-//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//        favoriteAdapter = FavoriteAdapter(
-//            onClick = { product, position ->
-//                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
-//                product.in_favourite = true
-//                product.id = product.product_id
-//                intent.putExtra("product", product)
-//                startActivity(intent)
-//            },
-//            onAddToProductClick = { product, position ->
-//                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
-//                product.in_favourite = true
-//                product.id = product.product_id
-//                intent.putExtra("product", product)
-//                startActivity(intent)
-//            },
-//            onFavoriteClick = { product, position ->
-//                addProductToFavorite(product.product_id, false)
-//                productsUnFavorite = products
-//                (productsUnFavorite as ArrayList).removeAt(position)
-//            },
-//        )
-//
-//        favoriteAdapter.setData(list)
-//        binding.recycler.layoutManager = layoutManager
-//        binding.recycler.adapter = favoriteAdapter
-//    }
 
 
 

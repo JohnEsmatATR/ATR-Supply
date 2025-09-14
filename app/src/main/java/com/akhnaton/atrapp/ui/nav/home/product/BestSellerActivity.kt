@@ -1,57 +1,31 @@
 package com.akhnaton.atrapp.ui.nav.home.product
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
-import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
 import com.akhnaton.atrapp.databinding.ActivityBestSallerBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
-import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
-import com.akhnaton.atrapp.ui.nav.home.product.productDetails.BestSellerDetailsActivity
-import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.getValue
 
 class BestSellerActivity : BaseActivity() {
     private val viewModel: ProductsViewModel by viewModels()
     private val bestSellerViewModel: BestSellerViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private var products: MutableList<ProductModel> = ArrayList()
-    private var category = CategoryModel()
     lateinit var adapter: ProductAdapter
     private lateinit var binding: ActivityBestSallerBinding
-    private var isLoading = false
-    private var isLastPage = false
-    private var currentPage = 1
-    private var pageSize = 10
-    private var categoryId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

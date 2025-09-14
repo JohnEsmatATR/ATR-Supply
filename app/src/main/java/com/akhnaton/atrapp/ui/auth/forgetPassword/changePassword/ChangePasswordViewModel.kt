@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.changePassword.ChangePasswordIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.changePassword.ChangePasswordStatus
-import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.sendOtp.SendOtpIntent
-import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.sendOtp.SendOtpStatus
 import com.akhnaton.atrapp.domain.AuthRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

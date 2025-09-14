@@ -1,8 +1,6 @@
 package com.akhnaton.atrapp.data.model
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializer
 
 data class AddressesModel(
     val addresses: List<AddressModel> = ArrayList(),

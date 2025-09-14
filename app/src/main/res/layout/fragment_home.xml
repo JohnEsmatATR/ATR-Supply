@@ -128,20 +128,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/shimmerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_100sdp"
-                    app:layout_constraintBottom_toTopOf="@+id/view"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/slider"
-                    app:shimmer_auto_start="true"
-                    app:shimmer_duration="1500">
-
-                    <include layout="@layout/item_category_shimmer" />
-                </com.facebook.shimmer.ShimmerFrameLayout>
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_pharma"
                     android:layout_width="match_parent"
@@ -227,6 +213,7 @@
                     android:layout_marginTop="@dimen/_18sdp"
                     android:layout_weight="1"
                     android:gravity="start"
+                    android:visibility="gone"
                     android:text="@string/deals_made_for_you"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16ssp"
@@ -240,7 +227,6 @@
                     android:layout_height="@dimen/_170sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:contentDescription="@string/deals_made_for_you"
-                    android:src="@drawable/hyaluronicrange"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_deals" />

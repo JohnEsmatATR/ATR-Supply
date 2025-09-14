@@ -11,7 +11,6 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +20,6 @@ import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.Validate
 import com.akhnaton.atrapp.databinding.ActivityOtpCustomerCodeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.auth.customer_code.login.LoginWithCodeActivity
-import com.akhnaton.atrapp.ui.auth.customer_code.otp.OtpViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

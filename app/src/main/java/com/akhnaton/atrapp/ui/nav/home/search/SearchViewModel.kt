@@ -40,7 +40,7 @@ class SearchViewModel : ViewModel() {
 
     private fun searchProduct(
         word:String?="",
-        categoryId :Int?=0
+        categoryId : String
     ) {
         viewModelScope.launch {
             _state.value = SearchStatus.Loading

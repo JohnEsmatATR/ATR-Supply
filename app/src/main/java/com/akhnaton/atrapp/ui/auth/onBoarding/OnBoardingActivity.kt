@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import com.akhnaton.atrapp.databinding.ActivityOnBoardingBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.auth.customer_code.code.CustomerInvoiceCodeActivity
-import com.akhnaton.atrapp.ui.auth.customer_code.otp.OTPCustomerCodeActivity
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.auth.signUp.info.SignUpInfoActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity

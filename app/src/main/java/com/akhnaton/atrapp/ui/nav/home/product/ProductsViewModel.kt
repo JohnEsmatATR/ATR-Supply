@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.home.product
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
@@ -20,7 +21,7 @@ class ProductsViewModel : ViewModel() {
 
     // pagination values
     var currentPage = 1
-    private val limit = 1000
+    private val limit = 70
     private var isLoading = false
     private var isLastPage = false
 
@@ -39,18 +40,25 @@ class ProductsViewModel : ViewModel() {
 
 
 
-    private fun getProductsBasedOnCategoryRepo(categoryId: Int, categoryName : String) {
+    private fun getProductsBasedOnCategoryRepo(categoryId: Int, categoryName: String) {
         viewModelScope.launch {
             isLoading = true
             _state.value = ProductsStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit,categoryName)
+                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit, categoryName)
                 if (response.code() == 200) {
                     val data = response.body()!!
-                    if (data.data!!.size < limit) {
+                    val products = data.data ?: emptyList()
+
+
+                    Log.d("TAG", "getProductsBasedOnCategoryRepo size:${products.size} ")
+                    if (products.size < limit) {
                         isLastPage = true
+                    } else {
+                        // نزود الصفحة بس لو جاب 99 عنصر بالظبط
+                        currentPage++
                     }
-                    if (!isLastPage) currentPage++
+
                     ProductsStatus.GetProducts(data)
                 } else {
                     ProductsStatus.Error(response.message())
@@ -61,6 +69,7 @@ class ProductsViewModel : ViewModel() {
             isLoading = false
         }
     }
+
 
 }
 

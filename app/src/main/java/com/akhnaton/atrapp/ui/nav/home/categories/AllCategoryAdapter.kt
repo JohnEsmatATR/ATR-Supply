@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.data.model.CategoriesModel
-import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.LayoutAllCategoryBinding
 import com.bumptech.glide.Glide
 

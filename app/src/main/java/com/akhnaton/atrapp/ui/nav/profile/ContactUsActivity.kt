@@ -1,14 +1,12 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityContactUsBinding
-import androidx.core.net.toUri
 
 
 class ContactUsActivity : AppCompatActivity() {

@@ -18,8 +18,6 @@ import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.nav.cart.CartFragment
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteFragment
 import com.akhnaton.atrapp.ui.nav.home.HomeFragment
-import com.akhnaton.atrapp.ui.nav.home.product.productDetails.BestSellerDetailsActivity
-import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.profile.ProfileFragment
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -44,6 +42,12 @@ class HomeActivity : BaseActivity() {
         handleBackPress()
         checkForAppUpdate()
         binding.btnTracking.setOnClickListener {
+            setCurrentFragment(TrackingFragment())
+            binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
+            binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
+            binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
+            binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
+
 
         }
 

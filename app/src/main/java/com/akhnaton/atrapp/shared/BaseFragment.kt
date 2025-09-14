@@ -1,9 +1,6 @@
 package com.akhnaton.atrapp.shared
 
-import android.content.pm.PackageInfo
 import android.graphics.Color
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -21,6 +18,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.akhnaton.atrapp.R
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 
 open class BaseFragment : Fragment() {
     var dp = 0f
@@ -44,7 +43,8 @@ open class BaseFragment : Fragment() {
     fun showToastSnack(word: String?, flag: Boolean) {
         try {
             val layout =
-                LayoutInflater.from(context).inflate(R.layout.snack_bar_layout, null, false)
+                LayoutInflater.from(context).inflate(R.layout.snack_bar_layout, null,
+                    false)
             layout.setBackgroundColor(
                 if (flag) ContextCompat.getColor(requireContext(), R.color.snack_red) else
                     ContextCompat.getColor(requireContext(), R.color.snack_green)

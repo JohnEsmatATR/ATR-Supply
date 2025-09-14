@@ -9,12 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.interfaces.GetCategories
 import com.akhnaton.atrapp.data.model.CategoriesModel
-import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoriesIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoryState
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.databinding.ActivityCategoryBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
@@ -60,9 +57,9 @@ class CategoryActivity : BaseActivity(),
 
     override fun onCategoryClick(category: CategoriesModel) {
         val intent = Intent(this, ProductsActivity::class.java)
-        intent.putExtra("flag", this.category) // جاي من Pharma or Cosmetics
+        intent.putExtra("flag", this.category)
         intent.putExtra("categoryId", category.ID)
-      // لازم يكون Serializable أو Parcelable
+
         startActivity(intent)
     }
 

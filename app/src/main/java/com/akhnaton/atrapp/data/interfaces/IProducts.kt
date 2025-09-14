@@ -1,10 +1,8 @@
 package com.akhnaton.atrapp.data.interfaces
 
 import com.akhnaton.atrapp.data.model.CategoriesModel
-import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
-import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoriesIntent
 import com.akhnaton.atrapp.shared.ConstantLinks
 import retrofit2.Response
 import retrofit2.http.Field
@@ -43,7 +41,7 @@ interface IProducts {
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun searchProduct(
         @Field("search") search: String? = "",
-        @Field("category_id") categoryId: Int? = null
+        @Field("order_type") categoryId: String
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded

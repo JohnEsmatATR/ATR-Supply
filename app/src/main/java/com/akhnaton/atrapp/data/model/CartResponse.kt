@@ -2,18 +2,47 @@ package com.akhnaton.atrapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
+data class CartApiResponse(
+    val status: Int,
+    val message: String,
+    val data: List<CartData>
+)
+
+data class CartData(
+    val carts: List<CartResponse>,
+    @SerializedName("total_carts_data")
+    val totalCartsData: TotalCartsData
+)
+
 data class CartResponse(
     @SerializedName("order_type")
     val orderType: String,
-    val order_type_txt : String,
+    @SerializedName("order_type_txt")
+    val orderTypeTxt: String,
+    @SerializedName("order_type_lang")
+    val orderTypeLang: OrderTypeLang,
     val items: CartItems
 )
 
+data class OrderTypeLang(
+    val en: String,
+    val ar: String
+)
+
 data class CartItems(
+    val pagination: Pagination,
     @SerializedName("data")
     val products: List<CartProduct>,
+    val params: List<Any>,
     @SerializedName("extra_data")
     val extraData: ExtraData?
+)
+
+data class Pagination(
+    @SerializedName("current_page")
+    val currentPage: Int,
+    @SerializedName("page_size")
+    val pageSize: Int
 )
 
 data class CartProduct(
@@ -25,6 +54,8 @@ data class CartProduct(
     val description: String,
     @SerializedName("IMAGE_URL")
     val imageUrl: String,
+    @SerializedName("ITEM_TYPE")
+    val itemType: String,
     @SerializedName("QUANTITY")
     val quantity: Int,
     @SerializedName("MY_QUANTITY")
@@ -34,7 +65,7 @@ data class CartProduct(
     @SerializedName("QOUTA")
     val quota: Int,
     @SerializedName("TAX")
-    val tax: Int,
+    val tax: Double,
     @SerializedName("IS_BEST_SELLER")
     val isBestSeller: Boolean,
     @SerializedName("IS_LIKED")
@@ -58,7 +89,7 @@ data class CartProduct(
     @SerializedName("IN_STOCK")
     val inStock: Boolean,
     @SerializedName("BONUS_QUANTITY")
-    val bodus_quantity : Int
+    val bonusQuantity: String
 )
 
 data class Reviews(
@@ -77,4 +108,11 @@ data class ExtraData(
     val totalDiscount: Double,
     @SerializedName("not_found")
     val notFound: List<Any>
+)
+
+data class TotalCartsData(
+    @SerializedName("cart_total")
+    val cartTotal: Double,
+    @SerializedName("total_discount")
+    val totalDiscount: Double
 )

@@ -1,10 +1,10 @@
 package com.akhnaton.atrapp.data.interfaces.cart
 
 import com.akhnaton.atrapp.data.model.AddToCartResponse
+import com.akhnaton.atrapp.data.model.CartApiResponse
 import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.data.model.CheckoutResponse
 import com.akhnaton.atrapp.data.model.PaymentModel
-import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.shared.ConstantLinks
 import retrofit2.Response
@@ -26,7 +26,7 @@ interface ICart {
     @FormUrlEncoded
     suspend fun getMyCart(
     @Field("language") language : String
-    ): Response<BaseModel<List<CartResponse>>>
+    ):  Response<CartApiResponse>
 
     @FormUrlEncoded
     @POST(ConstantLinks.CHECKOUT)

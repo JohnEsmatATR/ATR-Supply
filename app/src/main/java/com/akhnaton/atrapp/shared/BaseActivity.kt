@@ -1,20 +1,15 @@
 package com.akhnaton.atrapp.shared
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -22,9 +17,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.akhnaton.atrapp.R
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import com.akhnaton.atrapp.R
 import java.util.Locale
 
 
@@ -45,9 +40,11 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showToastSnack(word: String?, flag: Boolean) {
         try {
-            val layout = LayoutInflater.from(this).inflate(R.layout.snack_bar_layout, null, false)
+            val layout = LayoutInflater.from(this).inflate(R.layout.snack_bar_layout,
+                null, false)
             layout.setBackgroundColor(
-                if (flag)  ContextCompat.getColor(this@BaseActivity, R.color.snack_red) else this.resources.getColor(
+                if (flag)  ContextCompat.getColor(this@BaseActivity, R.color.snack_red)
+                else ContextCompat.getColor(this@BaseActivity,
                     R.color.snack_green
                 )
             )

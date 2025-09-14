@@ -31,7 +31,6 @@ import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
-import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
@@ -39,7 +38,6 @@ import kotlinx.coroutines.launch
 class ProductDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailsBinding
     private val addCartViewModel: AddToCartViewModel by viewModels()
-    private val favoriteViewModel :FavoriteViewModel by  viewModels()
     private val viewModel : ProductDetailsViewModel by viewModels()
     lateinit var product: ProductModel
     var quantity: Int = 1

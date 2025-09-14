@@ -3,9 +3,8 @@ package com.akhnaton.atrapp.ui.auth.customer_code.code
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.data.statuesValue.appSetting.AppSettingIntent
 import com.akhnaton.atrapp.data.statuesValue.appSetting.AppSettingState
@@ -17,7 +16,6 @@ import com.akhnaton.atrapp.ui.auth.customer_code.otp.OTPCustomerCodeActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import androidx.core.view.isVisible
 
 class CustomerInvoiceCodeActivity : BaseActivity() {
     private lateinit var binding: ActivityCustomerInvoiceCodeBinding
@@ -63,7 +61,7 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
     private fun validateInputs(invoiceCode: String, phone: String): Boolean {
         return when {
             invoiceCode.isEmpty() -> {
-                binding.txtCustomerInvoiceCode.error = "ادخل رقم الفاتورة"
+                binding.txtCustomerInvoiceCode.error = "ادخل كود العميل"
                 false
             }
 

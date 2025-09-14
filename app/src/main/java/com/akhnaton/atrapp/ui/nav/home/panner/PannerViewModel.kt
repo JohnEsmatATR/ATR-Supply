@@ -29,12 +29,13 @@ class PannerViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = PannerState.Loading
             try {
-                val response = repository.getPanner()
-                val banners = response.data?.banners ?: emptyList()
-                _state.value = PannerState.Success(banners)
+                val response = repository.getPanner()   // ده بيكون BaseModel<PannerResponse>
+                _state.value = PannerState.Success(response)
             } catch (e: Exception) {
                 _state.value = PannerState.Error(e.localizedMessage ?: "حدث خطأ غير متوقع")
             }
         }
     }
+
+
 }

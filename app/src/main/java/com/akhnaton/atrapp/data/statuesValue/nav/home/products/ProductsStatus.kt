@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.data.statuesValue.nav.home.products
 
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
-import com.akhnaton.atrapp.data.model.auth.ErrorModel
 
 sealed class ProductsStatus {
 

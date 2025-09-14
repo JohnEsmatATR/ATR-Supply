@@ -99,9 +99,8 @@
 
     <ImageView
         android:id="@+id/findImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_25sdp"
         android:src="@drawable/question_box_24"
         app:layout_constraintBottom_toBottomOf="@+id/textView7"
         app:layout_constraintStart_toEndOf="@+id/textView7"

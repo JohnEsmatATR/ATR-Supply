@@ -1,7 +1,6 @@
 package com.akhnaton.atrapp.data.statuesValue.nav.cart.checkout
 
 import com.akhnaton.atrapp.data.model.CheckoutResponse
-import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 
 sealed class CheckoutStatus {

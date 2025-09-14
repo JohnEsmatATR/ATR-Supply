@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.paymentType.PaymentIndent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.paymentType.PaymentTypeStatus
 import com.akhnaton.atrapp.domain.CartRepository

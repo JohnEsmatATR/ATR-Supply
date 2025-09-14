@@ -17,6 +17,8 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatu
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchStatus
 import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
@@ -25,6 +27,9 @@ import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
+import com.akhnaton.atrapp.ui.nav.home.search.SearchViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -33,19 +38,18 @@ class ProductsActivity : BaseActivity() {
     private val viewModel: ProductsViewModel by viewModels()
     private val bestSellerViewModel: BestSellerViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
-   // private val searchViewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
     private var products: MutableList<ProductModel> = ArrayList()
-    private var category: CategoryModel? = CategoryModel()
     lateinit var adapter: ProductAdapter
-
+    private var searchWord = ""
     private var isLoading = false
     private var isLastPage = false
     private var categoryId: Int = 0
-    private var searchWord = ""
     // this just flag not pagination values
     private var currentPage = 1
     private var pageSize = 10
-
+    private var isSearchMode = false
+    private var searchJob: Job? = null
     private lateinit var flag: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,52 +63,86 @@ class ProductsActivity : BaseActivity() {
 
 
     private fun init() {
+        flag = intent.getStringExtra("flag") ?: ""
+        val categoryId: Int = intent.getIntExtra("categoryId", 0)
+
+
+        binding.txtSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(qString: String): Boolean {
+                searchWord = qString
+                searchJob?.cancel()
+
+                searchJob = lifecycleScope.launch {
+                    delay(1000)
+                    if (qString.isNotEmpty()) {
+                        searchProduct(qString, flag)
+                    }else{
+                        getProductsBasedOnCategory(categoryId, category = flag)
+                    }
+                }
+
+                return true
+            }
+
+            override fun onQueryTextSubmit(qString: String): Boolean {
+                if (qString.isNotEmpty()) {
+                    searchProduct(qString, flag)
+                }else{
+                    getProductsBasedOnCategory(categoryId, category = flag)
+                }
+                return true
+            }
+        })
+
+
+
+        searchObserve()
         productsObserve()
         Log.d("TAG", "ProductsActivity: ProductsActivity ")
 
-        flag = intent.getStringExtra("flag") ?: ""
-        val categoryId: Int = intent.getIntExtra("categoryId", -1)
+
         Log.d("TAG", "init flag: ${flag}")
         Log.d("TAG", "init categoryId: ${categoryId}")
         getProductsBasedOnCategory(categoryId, category = flag)
     }
-
-
-
-    private fun onClick() {
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-    }
-
-    private fun bestSellerObserve() {
+    private fun searchObserve() {
         lifecycleScope.launch {
-            bestSellerViewModel.state.collect {
+            searchViewModel.state.collect {
                 when (it) {
-                    is BestSellerStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
-                    is BestSellerStatus.Loading -> {
+                    is SearchStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is SearchStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         showProgressDialog(binding.progressLoading)
+                        binding.txtNoProducts.visibility=View.GONE
                     }
 
-                    is BestSellerStatus.GetBestSeller -> {
+                    is SearchStatus.SearchProduct -> {
                         if (it.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
-                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+
+                            isSearchMode = true
                             if (it.data.data!!.isNotEmpty()) {
+                                setupProductsRecycler(it.data.data!!)
                                 binding.txtNoProducts.visibility = View.GONE
-                                products.addAll(it.data.data!!)
-                                setupProductsRecycler(products)
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                             }
+
+
+
+                        } else if (it.data.status == 401) {
+                            hideProgressDialog(binding.progressLoading)
+//                            onTokenExpired(it.data.errors!![0])
+
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
                         }
+
                     }
 
-                    is BestSellerStatus.Error -> {
+
+                    is SearchStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
                         hideProgressDialog(binding.progressLoading)
                         showToastSnack(it.error.toString(), true)
@@ -115,13 +153,21 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
-    private fun getBestSeller() {
+    private fun searchProduct(word: String, orderType : String) {
         lifecycleScope.launch {
-            bestSellerViewModel.homeIntent.send(
-                BestSellerIntent.GetBestSeller(1)
+            searchViewModel.searchIntent.send(
+                    SearchIntent.SearchProduct(word,orderType)
+
+
             )
         }
     }
+    private fun onClick() {
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+    }
+
 
 
     private fun productsObserve() {
@@ -146,13 +192,15 @@ class ProductsActivity : BaseActivity() {
                             val dataList = state.data.data ?: emptyList()
                             pageSize = state.data.pagination?.page_size ?: pageSize
 
+                            isSearchMode = false
                             if (dataList.isNotEmpty()) {
-                                binding.txtNoProducts.visibility = View.GONE
                                 products.addAll(dataList)
                                 setupProductsRecycler(dataList)
+                                binding.txtNoProducts.visibility = View.GONE
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                             }
+
 
                         } else {
                             binding.txtNoProducts.visibility = View.VISIBLE
@@ -211,6 +259,8 @@ class ProductsActivity : BaseActivity() {
     }
 
 
+
+
     private fun setupProductsRecycler(list: List<ProductModel>) {
         if (!::adapter.isInitialized) {
             val layoutManager = GridLayoutManager(this, 2)
@@ -242,63 +292,78 @@ class ProductsActivity : BaseActivity() {
             adapter.setData(list, false, flag)
             binding.recycler.layoutManager = layoutManager
             binding.recycler.adapter = adapter
-            binding.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 0) {
-                        val visibleItemCount = layoutManager.childCount
-                        val totalItemCount = layoutManager.itemCount
-                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-//                        Log.d(Common.KeroDebug, "Pagination Log: Scroll - visible $visibleItemCount," +
-//                                " total $totalItemCount, firstVisible $firstVisibleItemPosition")
+            if (!isSearchMode) {
+                if (list.size < 70) {
+                    isLastPage = true
+                }
 
-                        if (!isLoading && !isLastPage) {
-                            if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 3) {
-                                Log.d(Common.KeroDebug, "Pagination Log: Triggering load for page $currentPage")
-                                lifecycleScope.launch{
-                                    viewModel.homeIntent.send(ProductsIntent.GetProducts(
-                                        categoryId,
-                                        currentPage,
-flag
-                                    ))
+                binding.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        if (dy > 0 && !isSearchMode) {
+                            val visibleItemCount = layoutManager.childCount
+                            val totalItemCount = layoutManager.itemCount
+                            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                            if (!isLoading && !isLastPage) {
+                                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 3) {
+                                    Log.d(Common.KeroDebug, "Pagination Log: Triggering load for page $currentPage")
+                                    lifecycleScope.launch {
+                                        viewModel.homeIntent.send(
+                                            ProductsIntent.GetProducts(
+                                                categoryId,
+                                                currentPage,
+                                                flag
+                                            )
+                                        )
+                                    }
                                 }
-
                             }
                         }
                     }
-                }
-            })
-
+                })
+            }
 
         } else {
-            adapter.addData(list)
+            if (isSearchMode) {
+
+                adapter.setData(list, false, flag)
+            } else {
+
+                adapter.addData(list)
+                if (list.size < 70) {
+                    isLastPage = true
+                }
+            }
         }
     }
 
 
+
+
     private fun search() {
-        binding.txtSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(txt: String?): Boolean {
-                val query = txt?.lowercase(Locale.getDefault())?.trim() ?: ""
-                val filteredList = if (query.isEmpty()) {
-                    products
-                } else {
-                    products.filter { product ->
-                        product.TITLE.lowercase(Locale.getDefault()).contains(query) ||
-                                product.DESCRIPTION.lowercase(Locale.getDefault()).contains(query)
-                    }
-                }
-
-                if (::adapter.isInitialized) {
-                    adapter.updateList(filteredList)
-                }
-
-                return true
-            }
-        })
+//        binding.txtSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(txt: String?): Boolean {
+//                val query = txt?.lowercase(Locale.getDefault())?.trim() ?: ""
+//                val filteredList = if (query.isEmpty()) {
+//                    products
+//                } else {
+//                    products.filter { product ->
+//                        product.TITLE.lowercase(Locale.getDefault()).contains(query) ||
+//                                product.DESCRIPTION.lowercase(Locale.getDefault()).contains(query)
+//                    }
+//                }
+//
+//                if (::adapter.isInitialized) {
+//                    adapter.updateList(filteredList)
+//                }
+//
+//                return true
+//            }
+//        })
     }
 }

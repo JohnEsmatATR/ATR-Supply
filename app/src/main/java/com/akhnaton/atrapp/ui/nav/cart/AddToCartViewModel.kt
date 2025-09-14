@@ -1,7 +1,10 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.domain.CartRepository
@@ -18,6 +21,8 @@ class AddToCartViewModel : ViewModel() {
     private val _state = MutableStateFlow<AddToCartStatus>(AddToCartStatus.Idle)
 
     val state: StateFlow<AddToCartStatus> get() = _state
+
+
 
     init {
         makeHomeObserve()

@@ -1,6 +1,5 @@
 package com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.chackOtp
 
-import com.akhnaton.atrapp.data.model.auth.forgetPassword.SendOtpModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 
 sealed class CheckOtpStatus {

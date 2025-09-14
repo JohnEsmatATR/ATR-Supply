@@ -92,20 +92,6 @@ class   AddressesActivity : BaseActivity() {
         }
     }
 
-
-
-
-    private fun makeAddressPrime(addressId: String) {
-//        lifecycleScope.launch {
-//            viewModel.addressIntent.send(
-//                AddressIntent.MakeAddressPrime(
-//                    "Bearer ${SharedPreferenceHelper.userToken}",
-//                    addressId,
-//                )
-//            )
-//        }
-    }
-
     private fun getAddress() {
         lifecycleScope.launch {
             viewModel.addressIntent.send(

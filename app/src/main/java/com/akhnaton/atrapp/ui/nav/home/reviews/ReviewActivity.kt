@@ -7,18 +7,13 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.review.ReviewModel
-import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsStatus
 import com.akhnaton.atrapp.databinding.ActivityReviewBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
-import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
-import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ReviewAdapter
 import kotlinx.coroutines.launch
 
 class ReviewActivity : BaseActivity() {

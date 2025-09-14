@@ -67,7 +67,7 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
 
                     is AddressStatus.GetMyAddresses -> {
                         if (it.result.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                           // hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "Received: GetProducts")
 
                             val addresses = it.result.data ?: emptyList()
@@ -155,8 +155,8 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
                     }
 
                     is MyOrdersStatus.GetMyOrders -> {
+                        hideProgressDialog(binding.progressLoading)
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
                             mList.addAll(it.data.data!!)

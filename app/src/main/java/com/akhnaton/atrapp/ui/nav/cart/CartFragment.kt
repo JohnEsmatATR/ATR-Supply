@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.model.CartResponse
-import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
@@ -154,7 +153,7 @@ class CartFragment : BaseFragment() {
                     }
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
-                        cartData = state.data.data ?: emptyList()
+                        cartData = state.data.data.firstOrNull()?.carts ?: emptyList()
                         if (cartData.isNotEmpty()) {
                             setupParentRecycler(cartData)
                             updateCartSummaryUI()
@@ -163,6 +162,7 @@ class CartFragment : BaseFragment() {
                         }
                     }
                     is CartStatus.Error -> {
+                        Log.d("TAG", "observeCart: ${state.error.toString()}")
                         showToastSnack(state.error.toString(), true)
                         showEmptyState()
                     }

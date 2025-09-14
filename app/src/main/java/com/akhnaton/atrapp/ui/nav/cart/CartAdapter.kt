@@ -10,6 +10,11 @@ import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.databinding.LayoutCartBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class CartAdapter(
     private val onClick: (product: CartProduct, position: Int) -> Unit,
@@ -21,6 +26,8 @@ class CartAdapter(
     private var productsList = ArrayList<CartProduct>()
     private var isVisible: Boolean = true
     private var type: String = ""
+    private var debounceJob: Job? = null
+
 
     fun setData(cartProducts: List<CartProduct>, isVisible: Boolean, type: String) {
         productsList.clear()
@@ -53,7 +60,7 @@ class CartAdapter(
                 placeholder(R.drawable.ic_logo)
                 error(R.drawable.ic_logo)
             }
-            if (item.bodus_quantity == 0) {
+            if (item.bonusQuantity.toInt() == 0) {
                 binding.txtbonus.visibility = View.GONE
                 binding.textView3.visibility=View.GONE
                 binding.imageView.visibility = View.GONE
@@ -61,42 +68,42 @@ class CartAdapter(
                 binding.txtbonus.visibility = View.VISIBLE
                 binding.imageView.visibility = View.VISIBLE
                 binding.textView3.visibility=View.VISIBLE
-                binding.txtbonus.text = item.bodus_quantity.toString()
+                binding.txtbonus.text = item.bonusQuantity
             }
 
             val editQuantity = binding.txtQuantity
             editQuantity.setText(item.myQuantity.toString())
             editQuantity.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(s: Editable?) {
                     val input = s.toString()
+                    if (input.isEmpty()) return
 
-                    if (input.isEmpty()) {
 
-                        return
+                    debounceJob?.cancel()
+
+
+                    debounceJob = CoroutineScope(Dispatchers.Main).launch {
+                        delay(1000)
+
+                        var quantity = input.toIntOrNull() ?: 1
+
+                        if (quantity > item.quantity) {
+                            quantity = item.quantity
+                            editQuantity.setText(quantity.toString())
+                            editQuantity.setSelection(editQuantity.text.length)
+                        }
+
+                        if (quantity < 1) {
+                            quantity = 1
+                            editQuantity.setText(quantity.toString())
+                            editQuantity.setSelection(editQuantity.text.length)
+                        }
+
+                        onPlusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
                     }
-
-                    var quantity = input.toIntOrNull() ?: 1
-
-
-                    if (quantity > item.quantity) {
-                        quantity = item.quantity
-                        editQuantity.setText(quantity.toString())
-                        editQuantity.setSelection(editQuantity.text.length)
-                    }
-
-
-                    if (quantity < 1) {
-                        quantity = 1
-                        editQuantity.setText(quantity.toString())
-                        editQuantity.setSelection(editQuantity.text.length)
-                    }
-
-
-                    onPlusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
                 }
             })
 

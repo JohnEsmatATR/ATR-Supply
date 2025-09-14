@@ -1,17 +1,10 @@
 package com.akhnaton.atrapp.ui.nav.home.reviews
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.review.ReviewModel
-import com.akhnaton.atrapp.databinding.LayoutProductBinding
-import com.akhnaton.atrapp.databinding.LayoutReviewBinding
 import com.akhnaton.atrapp.databinding.LayoutReviewDetailsBinding
-import com.akhnaton.atrapp.shared.Common
 
 class ReviewDetailsAdapter(
     private val onClick: (product: ReviewModel, position: Int) -> Unit,

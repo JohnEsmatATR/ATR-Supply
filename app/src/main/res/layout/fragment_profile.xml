@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="locale"
         android:background="@color/white"
         tools:context=".ui.nav.profile.ProfileFragment">
 
@@ -46,6 +47,7 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_22sdp"
             android:layout_marginEnd="@dimen/_16sdp"
+            android:layoutDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userImg">
@@ -55,27 +57,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_profile"
+                android:contentDescription="@string/account_detailss"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="0dp"
-                android:gravity="start"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:text="@string/account_detailss"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/imageView6"
-                app:layout_constraintStart_toEndOf="@+id/icProfile"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:gravity="start"
+                app:layout_constraintStart_toEndOf="@id/icProfile"
+                app:layout_constraintEnd_toStartOf="@id/imageView6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_chevron_right"
+                android:contentDescription="@string/next"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -97,10 +103,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_16sdp"
+            android:layoutDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v1">
 
+            <!-- الساعة -->
             <ImageView
                 android:id="@+id/icClock"
                 android:layout_width="wrap_content"
@@ -109,6 +117,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- النص -->
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -120,6 +129,7 @@
                 app:layout_constraintStart_toEndOf="@+id/icClock"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- السهم -->
             <ImageView
                 android:id="@+id/imageView12"
                 android:layout_width="wrap_content"
@@ -129,6 +139,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
         <View

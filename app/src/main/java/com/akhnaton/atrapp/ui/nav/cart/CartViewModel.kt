@@ -1,8 +1,11 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.model.CartProduct
+import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.domain.CartRepository
@@ -19,6 +22,9 @@ class CartViewModel : ViewModel() {
     private val _state = MutableStateFlow<CartStatus>(CartStatus.Idle)
     val state: StateFlow<CartStatus> get() = _state
 
+    private val _cartResponse = MutableLiveData<CartResponse?>()
+    val cartResponse: LiveData<CartResponse?> = _cartResponse
+
     init {
         makeObserve()
     }
@@ -34,6 +40,7 @@ class CartViewModel : ViewModel() {
             }
         }
     }
+
 
     private fun getMyCart(language : String) {
         viewModelScope.launch {

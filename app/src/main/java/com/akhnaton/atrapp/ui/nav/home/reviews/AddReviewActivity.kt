@@ -2,10 +2,8 @@ package com.akhnaton.atrapp.ui.nav.home.reviews
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsStatus

@@ -3,7 +3,6 @@ package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
 import com.akhnaton.atrapp.domain.HomeRepository

@@ -1,8 +1,7 @@
 package com.akhnaton.atrapp.data.statuesValue.auth.login
 
-import com.akhnaton.atrapp.data.model.common.BaseModel
-import com.akhnaton.atrapp.data.model.auth.ErrorModel
 import com.akhnaton.atrapp.data.model.auth.LoginModel
+import com.akhnaton.atrapp.data.model.common.BaseModel
 
 sealed class LoginStatus {
 

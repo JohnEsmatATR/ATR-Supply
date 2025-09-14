@@ -3,7 +3,6 @@ package com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.PaymentModel
 import com.akhnaton.atrapp.databinding.ItemPaymentBinding
 

@@ -34,7 +34,6 @@ import kotlinx.coroutines.launch
 class BestSellerDetailsActivity : BaseActivity() {
     private lateinit var binding: ActivityBestSallerDetailsBinding
     private val addCartViewModel: AddToCartViewModel by viewModels()
-    private val favoriteViewModel :FavoriteViewModel by  viewModels()
     private val viewModel : ProductDetailsViewModel by viewModels()
     lateinit var product: ProductModel
     var quantity: Int = 1

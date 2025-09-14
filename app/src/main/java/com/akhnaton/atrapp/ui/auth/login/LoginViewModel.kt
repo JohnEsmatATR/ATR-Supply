@@ -2,13 +2,9 @@ package com.akhnaton.atrapp.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.model.auth.LoginModel
-import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginStatus
 import com.akhnaton.atrapp.domain.AuthRepository
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

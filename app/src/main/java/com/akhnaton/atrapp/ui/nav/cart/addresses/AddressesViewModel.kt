@@ -93,39 +93,4 @@ class AddressesViewModel : ViewModel()  {
     }
 
 
-
-
-
-
-
-//    private fun makeAddressPrime (
-//        token: String?,
-//        addressId: Int?,
-//    ) {
-//        viewModelScope.launch {
-//            _state.value = AddressStatus.Loading
-//            _state.value = try {
-//                val response = AddressRepository().makeAddressPrime(
-//                    token,
-//                    addressId,
-//                )
-//                if (response.code() == 200) {
-//                    AddressStatus.MakeAddressPrime(response.body()!!)
-//                } else {
-//                    val error = GsonBuilder().create()
-//                    val theList = error.fromJson<BaseModel<MakeAddressPrimeModel, List<String>>>(
-//                        response.errorBody()?.string(), object :
-//                            TypeToken<BaseModel<MakeAddressPrimeModel, List<String>>>() {}.type
-//                    )
-//                    AddressStatus.MakeAddressPrime(theList)
-//                }
-//
-//            } catch (e: Exception) {
-//                AddressStatus.Error(e.message)
-//            }
-//
-//        }
-//    }
-
-
 }

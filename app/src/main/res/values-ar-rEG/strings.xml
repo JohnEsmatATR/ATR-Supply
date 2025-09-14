@@ -11,7 +11,7 @@
     <string name="welcome">مرحباً</string>
     <string name="please_enter_your_data_to_continue">من فضلك أدخل بياناتك للمتابعة</string>
     <string name="email">البريد الإلكتروني</string>
-    <string name="email_or_customer_code">البريد الإلكتروني أو كود العميل</string>
+    <string name="email_or_customer_code">البريد الإلكتروني</string>
     <string name="password">كلمة المرور</string>
     <string name="forgot_password">نسيت كلمة المرور؟</string>
     <string name="don_t_have_account">ليس لديك حساب؟</string>

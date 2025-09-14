@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller
 
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
-import com.akhnaton.atrapp.data.model.auth.ErrorModel
 
 sealed class BestSellerStatus {
 

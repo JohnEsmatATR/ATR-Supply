@@ -1,9 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
 import android.os.Bundle
-import android.provider.ContactsContract.RawContacts.Data
 import android.view.View
-import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityAccountDetailsBinding

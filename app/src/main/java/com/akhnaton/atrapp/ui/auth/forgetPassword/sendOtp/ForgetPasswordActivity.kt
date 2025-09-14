@@ -11,7 +11,6 @@ import com.akhnaton.atrapp.databinding.ActivityForgetPasswordBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.ui.auth.forgetPassword.checkOtp.OTPActivity
-import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
 
 class ForgetPasswordActivity : BaseActivity() {

@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod
 
 import android.content.Intent
 import android.os.Bundle
-import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityYourCardsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 

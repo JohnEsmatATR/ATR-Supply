@@ -12,7 +12,6 @@ import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.Register
 import com.akhnaton.atrapp.databinding.ActivityLoginWithCodeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
-import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest

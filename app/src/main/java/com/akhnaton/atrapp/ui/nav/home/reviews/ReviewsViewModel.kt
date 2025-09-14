@@ -2,15 +2,9 @@ package com.akhnaton.atrapp.ui.nav.home.reviews
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
-import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.reviews.ReviewsStatus
-import com.akhnaton.atrapp.domain.HomeRepository
 import com.akhnaton.atrapp.domain.ReviewsRepository
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

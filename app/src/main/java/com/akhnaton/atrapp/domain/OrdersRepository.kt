@@ -1,7 +1,6 @@
 package com.akhnaton.atrapp.domain
 
 import com.akhnaton.atrapp.data.interfaces.orderHistory.IOrders
-import com.akhnaton.atrapp.data.interfaces.reviews.IReviews
 import com.akhnaton.atrapp.shared.RetrofitClient
 
 class OrdersRepository {

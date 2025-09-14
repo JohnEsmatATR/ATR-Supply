@@ -1,12 +1,11 @@
 package com.akhnaton.atrapp.ui.nav.profile.order.details.returnOrder
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
 import com.akhnaton.atrapp.databinding.ActivityOrderReturnBinding
 
 class OrderReturnActivity : AppCompatActivity(), View.OnClickListener {

@@ -12,10 +12,10 @@ class OrderTypeAdapter(
     private val onCategoryClick: (category: CategoriesModel, orderType: String, position: Int) -> Unit
 ) : RecyclerView.Adapter<OrderTypeAdapter.ViewHolder>() {
 
-    private var orderTypes = ArrayList<OrderTypeModel>()
+    private var order_type = ArrayList<OrderTypeModel>()
 
     fun setData(data: List<OrderTypeModel>) {
-        orderTypes = ArrayList(data)
+        order_type = ArrayList(data)
         notifyDataSetChanged()
     }
 
@@ -26,7 +26,8 @@ class OrderTypeAdapter(
 
         private val categoryAdapter = CategoryAdapter { category, position ->
 
-            onCategoryClick(category, currentOrderType.order_type ?: "", position)
+            onCategoryClick(category, currentOrderType.order_type_index, position)
+
         }
 
         init {
@@ -54,8 +55,8 @@ class OrderTypeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(orderTypes[position])
+        holder.bind(order_type[position])
     }
 
-    override fun getItemCount(): Int = orderTypes.size
+    override fun getItemCount(): Int = order_type.size
 }

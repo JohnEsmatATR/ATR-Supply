@@ -3,14 +3,9 @@ package com.akhnaton.atrapp.ui.nav.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoriesModel
-import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.databinding.LayoutCategoryBinding
-import com.akhnaton.atrapp.shared.Common
 import com.bumptech.glide.Glide
-import java.util.ArrayList
 
 class CategoryAdapter(
     private val onClick: (category: CategoriesModel, position: Int) -> Unit

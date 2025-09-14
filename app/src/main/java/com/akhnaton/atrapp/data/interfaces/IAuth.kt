@@ -1,11 +1,9 @@
 package com.akhnaton.atrapp.data.interfaces
 
-import com.akhnaton.atrapp.shared.ConstantLinks
-import com.akhnaton.atrapp.data.model.common.BaseModel
-import com.akhnaton.atrapp.data.model.common.UserModel
-import com.akhnaton.atrapp.data.model.auth.ErrorModel
 import com.akhnaton.atrapp.data.model.auth.LoginModel
 import com.akhnaton.atrapp.data.model.auth.forgetPassword.SendOtpModel
+import com.akhnaton.atrapp.data.model.common.BaseModel
+import com.akhnaton.atrapp.shared.ConstantLinks
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

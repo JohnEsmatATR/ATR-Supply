@@ -1,32 +1,23 @@
 package com.akhnaton.atrapp.ui.nav.home.search
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
-import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchStatus
 import com.akhnaton.atrapp.databinding.ActivitySearchBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
-import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
-import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import kotlinx.coroutines.launch
 
 class SearchActivity : BaseActivity() {
@@ -127,13 +118,13 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun searchProduct(word: String, categoryId: Int? = null) {
-        lifecycleScope.launch {
-            searchViewModel.searchIntent.send(
-                    SearchIntent.SearchProduct(word)
-
-
-            )
-        }
+//        lifecycleScope.launch {
+//            searchViewModel.searchIntent.send(
+//                    SearchIntent.SearchProduct(word)
+//
+//
+//            )
+//        }
     }
 
 
@@ -188,11 +179,11 @@ class SearchActivity : BaseActivity() {
                 if (::adapter.isInitialized) {
                     adapter.setData(emptyList(), false, flag)
                 }
-                lifecycleScope.launch {
-                    searchViewModel.searchIntent.send(
-                        SearchIntent.SearchProduct(searchWord, categoryId)
-                    )
-                }
+//                lifecycleScope.launch {
+//                    searchViewModel.searchIntent.send(
+//                        SearchIntent.SearchProduct(searchWord, categoryId)
+//                    )
+//                }
             },
             categories = emptyList()
         )

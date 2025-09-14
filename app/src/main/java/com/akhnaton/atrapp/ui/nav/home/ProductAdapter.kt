@@ -11,7 +11,6 @@ import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
-import com.bumptech.glide.Glide
 
 class ProductAdapter(
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit

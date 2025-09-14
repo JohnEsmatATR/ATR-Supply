@@ -6,7 +6,6 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.NotificationModel
 import com.akhnaton.atrapp.databinding.ActivityNotificationsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
-import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewDetailsAdapter
 
 class NotificationsActivity : BaseActivity() {
     lateinit var binding: ActivityNotificationsBinding

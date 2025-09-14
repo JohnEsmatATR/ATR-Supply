@@ -1,8 +1,6 @@
 package com.akhnaton.atrapp.data.statuesValue.nav.home.reviews
 
-import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
-import com.akhnaton.atrapp.data.model.auth.ErrorModel
 import com.akhnaton.atrapp.data.model.review.ReviewModel
 
 sealed class ReviewsStatus {

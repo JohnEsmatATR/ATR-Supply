@@ -2,7 +2,6 @@ package com.akhnaton.atrapp.ui.auth.signUp.info
 
 import android.content.Intent
 import android.os.Bundle
-import com.akhnaton.atrapp.ui.auth.signUp.pdf.SignUpPdfActivity
 import com.akhnaton.atrapp.databinding.ActivitySignUpInfoBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.ui.auth.signUp.map.SignUpMapsActivity

@@ -1,6 +1,5 @@
 package com.akhnaton.atrapp.data.statuesValue.nav.home.address
 
-import com.akhnaton.atrapp.data.model.AddNewAddressModel
 import com.akhnaton.atrapp.data.model.AddressModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 

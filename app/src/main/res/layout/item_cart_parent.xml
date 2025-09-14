@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:layout_marginHorizontal="@dimen/_12sdp"
-            android:text="@{cartResponse.order_type_txt}"
+            android:text="@{cartResponse.orderType}"
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:textSize="18sp"

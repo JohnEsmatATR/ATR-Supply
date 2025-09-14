@@ -1,6 +1,5 @@
 package com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.changePassword
 
-import com.akhnaton.atrapp.data.model.auth.forgetPassword.SendOtpModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 
 sealed class ChangePasswordStatus {

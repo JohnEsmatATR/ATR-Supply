@@ -2,16 +2,17 @@ package com.akhnaton.atrapp.ui.nav.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
-import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.auth.onBoarding.OnBoardingActivity
 import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderHistoryActivity
+import java.util.Locale
 
 
 class ProfileFragment : BaseFragment(), View.OnClickListener {
@@ -29,6 +30,12 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.aboutLayout.setOnClickListener(this)
         binding.contactLayout.setOnClickListener(this)
         binding.logoutLayout.setOnClickListener(this)
+        if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL) {
+            binding.imageView12.setImageResource(R.drawable.ic_chevron_right)
+        } else {
+            binding.imageView12.setImageResource(R.drawable.ic_chevron_right)
+        }
+
         return binding.root
     }
 
