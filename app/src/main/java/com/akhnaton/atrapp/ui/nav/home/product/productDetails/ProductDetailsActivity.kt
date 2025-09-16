@@ -29,6 +29,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDeta
 import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
@@ -70,12 +71,18 @@ class ProductDetailsActivity : BaseActivity() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun init() {
+        val lan = SharedPreferenceHelper.language ?: "en"
+        if (lan == "ar"){
+            binding.ar.visibility = View.VISIBLE
+            binding.en.visibility = View.GONE
+        }else{
+            binding.ar.visibility = View.GONE
+            binding.en.visibility = View.VISIBLE
+        }
         setupQuantityEditText()
 
         flag = intent.getStringExtra("flag") ?: ""
 
-        binding.txtOldPrice.paintFlags =
-            binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         binding.layoutReviews.visibility = View.GONE
         binding.txtYouMightAlsoLike.visibility = View.GONE
 
@@ -99,8 +106,14 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun initBonusRecycler() {
-        bonusAdapter = BonusAdapter()
+        val lan = SharedPreferenceHelper.language ?: "en"
+        bonusAdapter = BonusAdapter(lan)
         binding.bonusRecycler.apply {
+            adapter = bonusAdapter
+            layoutManager = LinearLayoutManager(this@ProductDetailsActivity)
+
+        }
+        binding.bonusRecyclerAr.apply {
             adapter = bonusAdapter
             layoutManager = LinearLayoutManager(this@ProductDetailsActivity)
 
@@ -123,10 +136,9 @@ class ProductDetailsActivity : BaseActivity() {
                             val productData = it.data.data?.firstOrNull()
 
                             if (productData != null) {
-
+                                // en
                                 binding.txtItemName.text = productData.TITLE
                                 binding.txtPrice.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
-                                binding.txtOldPrice.text = "${productData.PRICE_WITH_TAX} LE"
                                 binding.txtSize.text = productData.WEIGHT
                                 binding.txtDescription.text = productData.DESCRIPTION
                                 productQuantity = productData.QUANTITY
@@ -151,6 +163,37 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.bonusRecycler.visibility = View.GONE
                                 }
 
+
+
+                                binding.nestedScrollView.visibility = View.VISIBLE
+                                binding.productNotFound.visibility = View.GONE
+
+                                // ar
+                                binding.txtItemNameAr.text = productData.TITLE
+                                binding.txtPriceAr.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
+                                binding.txtSizeAr.text = productData.WEIGHT
+                                binding.txtDescriptionAr.text = productData.DESCRIPTION
+                                productQuantity = productData.QUANTITY
+                                Log.d("TAG", "observeProduct productQuantity : $productQuantity")
+
+
+                                binding.isStockAr.text = if (productData.IN_STOCK) "In Stock" else "Out of Stock"
+                                binding.isStockAr.setTextColor(
+                                    ContextCompat.getColor(
+                                        binding.root.context,
+                                        if (productData.IN_STOCK) R.color.snack_green else R.color.snack_red
+                                    )
+                                )
+                                binding.txtQuantityAr.isEnabled=productData.IN_STOCK
+
+
+                                val bonusListAr = productData.BONUS_DATA
+                                if (!bonusListAr.isNullOrEmpty()) {
+                                    binding.bonusRecyclerAr.visibility = View.VISIBLE
+                                    bonusAdapter.setData(bonusListAr)
+                                } else {
+                                    binding.bonusRecyclerAr.visibility = View.GONE
+                                }
 
 
                                 binding.nestedScrollView.visibility = View.VISIBLE
@@ -210,6 +253,24 @@ class ProductDetailsActivity : BaseActivity() {
                 quantity--
                 binding.txtQuantity.setText(quantity.toString())
             }
+        }
+
+        binding.btnPlusAr.setOnClickListener {
+            if (validateIncreaseQuantity(quantity, productQuantity)) {
+                quantity++
+                Log.d("TAG", "onClick QUANTITY :${productQuantity} ")
+                binding.txtQuantityAr.setText(quantity.toString())
+
+            }
+        }
+        binding.btnMinusAr.setOnClickListener {
+            if (validateDecreaseQuantity(quantity)) {
+                quantity--
+                binding.txtQuantityAr.setText(quantity.toString())
+            }
+        }
+        binding.btnAddToCartAr.setOnClickListener {
+            addProductToCartAr()
         }
 
     }
@@ -308,6 +369,19 @@ class ProductDetailsActivity : BaseActivity() {
         }
 
     }
+    private fun addProductToCartAr() {
+        val valiablity = binding.isStock.text.toString()
+        val quantity = binding.txtQuantityAr.text.toString().trim()
+        if (valiablity == "In Stock"){
+            lifecycleScope.launch {
+                addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity.toInt(),flag))
+            }
+        }else {
+            showToastSnack("Product Out Of Stock", true)
+        }
+
+    }
+
 
     @SuppressLint("SetTextI18n")
     private fun setupQuantityEditText() {
@@ -347,7 +421,46 @@ class ProductDetailsActivity : BaseActivity() {
                 }
             }
         }
+
+        binding.txtQuantityAr.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
+
+        // أثناء الكتابة
+        binding.txtQuantityAr.doOnTextChanged { text, _, _, _ ->
+            val value = text.toString().toIntOrNull()
+
+            if (value != null) {
+                when {
+                    value < 1 -> {
+                        quantity = 1
+                        binding.txtQuantityAr.setText("1")
+                        binding.txtQuantityAr.setSelection(binding.txtQuantityAr.text!!.length)
+                    }
+                    value > productQuantity -> {
+                        quantity = productQuantity
+                        binding.txtQuantityAr.setText(productQuantity.toString())
+                        binding.txtQuantityAr.setSelection(binding.txtQuantityAr.text!!.length)
+                    }
+                    else -> {
+                        quantity = value
+                    }
+                }
+            } else {
+                quantity = 0
+            }
+        }
+
+
+        binding.txtQuantityAr.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                if (binding.txtQuantityAr.text.isNullOrEmpty()) {
+                    quantity = 1
+                    binding.txtQuantityAr.setText("1")
+                }
+            }
+        }
     }
+
+
 
 
 }

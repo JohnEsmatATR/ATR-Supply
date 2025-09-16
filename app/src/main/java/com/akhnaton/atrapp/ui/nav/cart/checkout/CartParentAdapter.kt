@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.databinding.ItemCartParentBinding
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.CartAdapter
 
 class CartParentAdapter(
@@ -29,15 +30,18 @@ class CartParentAdapter(
 
         fun bind(item: CartResponse) {
             binding.cartResponse = item
+            val lan = SharedPreferenceHelper.language ?: "en"
 
 
 
 
             val childAdapter = CartAdapter(
+                lan,
                 onClick,
                 onPlusClick,
                 onMinusClick,
-                onDeleteClick
+                onDeleteClick,
+
             )
             binding.recyclerProducts.apply {
                 layoutManager = LinearLayoutManager(context)

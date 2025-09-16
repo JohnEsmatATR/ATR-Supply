@@ -49,101 +49,106 @@
         tools:itemCount="2"
         tools:listitem="@layout/item_cart_parent" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_cart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/layout_item_total"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="30sp"
             android:layout_marginHorizontal="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_3sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_search">
-
+            app:layout_constraintTop_toTopOf="parent">
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/txt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/item_total"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/layout_item_total"
+            app:layout_constraintStart_toStartOf="@+id/layout_item_total"
+            app:layout_constraintTop_toTopOf="@+id/layout_item_total">
 
             <TextView
                 android:id="@+id/txt_item_total"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/_3sdp"
-                android:gravity="end|center_vertical"
+                android:gravity="end"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_discount"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="30sp"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_3sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_search">
+            app:layout_constraintTop_toBottomOf="@id/layout_item_total">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/txt_discount_label"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/discount"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/txt_discount"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txt_discount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/_3sdp"
-                android:gravity="end|center_vertical"
+                android:gravity="end"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_delivery_free"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="30sp"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_search">
+            app:layout_constraintTop_toBottomOf="@id/layout_discount">
 
             <TextView
+                android:id="@+id/txt_delivery_free_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
@@ -158,8 +163,6 @@
                 android:id="@+id/txt_delivery_free"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginVertical="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:gravity="end|center_vertical"
                 android:text="Free"
@@ -168,51 +171,48 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_grand_total"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="30sp"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_3sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_search">
+            app:layout_constraintTop_toBottomOf="@id/layout_delivery_free">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/txt_grand_total_label"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/grand_total"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txt_grand_total"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:gravity="end|center_vertical"
-
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txt_grand_total_label"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_checkout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="5dp"
@@ -225,9 +225,10 @@
             app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_description" />
+            app:layout_constraintTop_toBottomOf="@id/layout_grand_total" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_address"

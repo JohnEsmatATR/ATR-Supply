@@ -1,9 +1,9 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +28,8 @@ import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CartParentAdapter
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
 import kotlinx.coroutines.launch
-import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.Locale
 
 class CartFragment : BaseFragment() {
 
@@ -226,23 +226,40 @@ class CartFragment : BaseFragment() {
     }
 
     private fun updateCartSummaryUI() {
+        val context = binding.root.context
+        val appLocaleCode = SharedPreferenceHelper.language ?: "en"
+        val appLocale = Locale(appLocaleCode)
+
         if (cartData.isEmpty()) {
-            binding.txtItemTotal.text = "0.0"
-            binding.txtDiscount.text = "0.0"
-            binding.txtDeliveryFree.text = "0.0"
-            binding.txtGrandTotal.text = "0.0"
+            binding.txtItemTotal.text = formatNumber(0.0, appLocale)
+            binding.txtDiscount.text = formatNumber(0.0, appLocale)
+            binding.txtGrandTotal.text = formatNumber(0.0, appLocale)
             return
         }
 
-
         val allProducts = cartData.flatMap { it.items.products }
         val totals = cartViewModel.calculateCartTotals(allProducts)
-        val decimalFormat = DecimalFormat("#0.0")
-        binding.txtItemTotal.text = decimalFormat.format(totals.totalBeforeDiscount)
-        binding.txtDiscount.text = decimalFormat.format(totals.discount)
-        binding.txtDeliveryFree.text = "Free Delivery"
-        binding.txtGrandTotal.text = decimalFormat.format(totals.grandTotal)
+        if(appLocaleCode == "ar"){
+            binding.txtItemTotal.gravity= Gravity.START
+            binding.txtDiscount.gravity= Gravity.START
+            binding.txtGrandTotal.gravity= Gravity.START
+        }
+
+        binding.txtItemTotal.text = formatNumber(totals.totalBeforeDiscount, appLocale)
+        binding.txtDiscount.text = formatNumber(totals.discount, appLocale)
+        binding.txtGrandTotal.text = formatNumber(totals.grandTotal, appLocale)
     }
+
+
+    fun formatNumber(value: Double, locale: Locale): String {
+        val formatter = NumberFormat.getInstance(locale)
+        formatter.maximumFractionDigits = 1 // زي #0.0
+        formatter.minimumFractionDigits = 1
+        return formatter.format(value)
+    }
+
+
+
 
     private fun deleteProductFromCart(product: CartProduct) {
         lifecycleScope.launch {
@@ -287,11 +304,7 @@ class CartFragment : BaseFragment() {
         updateCartSummaryUI()
     }
 
-    fun formatNumber(value: Double, context: Context): String {
-        val currentLocale = context.resources.configuration.locales[0] // أو locale من إعداداتك
-        val formatter = NumberFormat.getInstance(currentLocale)
-        return formatter.format(value)
-    }
+
 
 }
 

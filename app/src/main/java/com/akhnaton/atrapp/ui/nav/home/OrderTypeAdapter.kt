@@ -1,12 +1,14 @@
 package com.akhnaton.atrapp.ui.nav.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.OrderTypeModel
 import com.akhnaton.atrapp.databinding.LayoutOrderTypeItemBinding
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 
 class OrderTypeAdapter(
     private val onCategoryClick: (category: CategoriesModel, orderType: String, position: Int) -> Unit
@@ -31,12 +33,21 @@ class OrderTypeAdapter(
         }
 
         init {
+            val isArabic = SharedPreferenceHelper.language == "ar"
+
             binding.recyclerCategories.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.HORIZONTAL,
+                    isArabic
+                )
+
                 adapter = categoryAdapter
                 setHasFixedSize(true)
             }
         }
+
+
 
         fun bind(item: OrderTypeModel) {
             currentOrderType = item

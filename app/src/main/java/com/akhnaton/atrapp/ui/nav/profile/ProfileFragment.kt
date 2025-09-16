@@ -30,13 +30,71 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.aboutLayout.setOnClickListener(this)
         binding.contactLayout.setOnClickListener(this)
         binding.logoutLayout.setOnClickListener(this)
-        if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL) {
-            binding.imageView12.setImageResource(R.drawable.ic_chevron_right)
-        } else {
-            binding.imageView12.setImageResource(R.drawable.ic_chevron_right)
-        }
+
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
+            ?: Locale.getDefault().language
+
+        if (lang == "ar") {
+            binding.imageView6.setImageResource(R.drawable.ic_profile)
+            binding.icProfile.setImageResource(R.drawable.ic_chevron_left)
+
+            // order layout
+            binding.imageView12.setImageResource(R.drawable.ic_clock)
+            binding.icClock.setImageResource(R.drawable.ic_chevron_left)
+
+            // rate layout
+            binding.imageView11.setImageResource(R.drawable.ic_star)
+            binding.icStar.setImageResource(R.drawable.ic_chevron_left)
+
+            binding.imageView10.setImageResource(R.drawable.ic_world)
+            binding.icWorld.setImageResource(R.drawable.ic_chevron_left)
+
+            binding.imageView9.setImageResource(R.drawable.ic_privacy)
+            binding.icPrivacy.setImageResource(R.drawable.ic_chevron_left)
+
+            binding.imageView8.setImageResource(R.drawable.ic_about)
+            binding.icAbout.setImageResource(R.drawable.ic_chevron_left)
+
+            binding.imageView7.setImageResource(R.drawable.ic_phone)
+            binding.icContact.setImageResource(R.drawable.ic_chevron_left)
+
+            binding.imageView13.setImageResource(R.drawable.ic_logout)
+            binding.icLogout.setImageResource(R.drawable.ic_chevron_left)
+        } else {
+            binding.imageView6.setImageResource(R.drawable.ic_chevron_right)
+            binding.icProfile.setImageResource(R.drawable.ic_profile)
+
+
+            // order layout
+            binding.imageView12.setImageResource(R.drawable.ic_chevron_right)
+            binding.icClock.setImageResource(R.drawable.ic_clock)
+
+            // rate layout
+            binding.imageView11.setImageResource(R.drawable.ic_chevron_right)
+            binding.icStar.setImageResource(R.drawable.ic_star)
+
+            binding.imageView10.setImageResource(R.drawable.ic_chevron_right)
+            binding.icWorld.setImageResource(R.drawable.ic_world)
+
+            binding.imageView9.setImageResource(R.drawable.ic_chevron_right)
+            binding.icPrivacy.setImageResource(R.drawable.ic_privacy)
+
+            binding.imageView8.setImageResource(R.drawable.ic_chevron_right)
+            binding.icAbout.setImageResource(R.drawable.ic_about)
+
+            binding.imageView7.setImageResource(R.drawable.ic_chevron_right)
+            binding.icContact.setImageResource(R.drawable.ic_phone)
+
+            binding.imageView13.setImageResource(R.drawable.ic_chevron_right)
+            binding.icLogout.setImageResource(R.drawable.ic_logout)
+
+        }
     }
 
     override fun onClick(v: View) {

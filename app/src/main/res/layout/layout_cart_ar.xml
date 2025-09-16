@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="cart"
+            type="com.akhnaton.atrapp.data.model.CartProduct" />
+        <variable
+            name="quantity"
+            type="Integer" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_marginHorizontal="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_2sdp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="16dp"
+        app:strokeColor="@color/gray"
+        app:strokeWidth="1dp"
+        android:backgroundTint="@android:color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_8sdp">
+
+            <!-- Image Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_image"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_100sdp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/im_item"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Data Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_data"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_item_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:text="@{cart.title}"
+                    android:textColor="@color/black"
+                    android:gravity="end"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Eva Skin Clinic Collagen Deep Lines Filler 50 ML" />
+
+                <!-- Size Row -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_item_name">
+
+                    <TextView
+                        android:id="@+id/txt_size_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity=""
+                        android:text="الحجم :  "
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{cart.weight}"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/txt_size_text"
+                        app:layout_constraintEnd_toStartOf="@+id/txt_size_text"
+                        app:layout_constraintTop_toTopOf="@+id/txt_size_text" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Price Row -->
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="السعر : "
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+
+                <TextView
+                    android:id="@+id/txt_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{cart.priceWithoutTax + ``}"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/price"
+
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+
+                <!-- Quantity & Delete Row -->
+                <LinearLayout
+                    android:id="@+id/layout_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/price">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_minus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardBackgroundColor="@color/mid_gray_1"
+                        app:cardCornerRadius="4dp"
+                        app:cardElevation="1dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:text="@string/minus"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+                    </androidx.cardview.widget.CardView>
+
+                    <EditText
+                        android:id="@+id/txt_quantity"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:text="@{cart.myQuantity + ``}"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_plus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardBackgroundColor="@color/orange"
+                        app:cardCornerRadius="4dp"
+                        app:cardElevation="1dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:text="@string/plus"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/delete_item"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/trush_bin"
+                    app:layout_constraintBottom_toBottomOf="@id/layout_quantity"
+
+                    app:layout_constraintStart_toEndOf="@id/layout_quantity"
+                    app:layout_constraintTop_toTopOf="@id/layout_quantity" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/gift"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/price"
+                    app:layout_constraintTop_toTopOf="@+id/layout_quantity" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" البونص : "
+                    android:textStyle="bold"
+                    android:textColor="@color/orange"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+                <TextView
+                    android:id="@+id/txtbonus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textColor="@color/orange"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                    app:layout_constraintEnd_toStartOf="@+id/textView3"
+
+                    app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

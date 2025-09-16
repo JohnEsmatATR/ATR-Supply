@@ -20,6 +20,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerState
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
@@ -71,6 +72,8 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupRecycler() {
+
+
         orderTypeAdapter = OrderTypeAdapter { category, orderTypeIndex, _ ->
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", orderTypeIndex)

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityLanguageBinding
@@ -49,7 +50,7 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
         SharedPreferenceHelper.setLocale(this, langCode)
 
 
-        val intent = Intent(this, SplashActivity::class.java) // أو MainActivity
+        val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finish()
@@ -64,10 +65,17 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
 
 
         if (selectedLang == "en") {
-            binding.layoutEnglish.findViewById<ImageView>(R.id.ic_checkmark).visibility = View.VISIBLE
+
+            binding.layoutEnglish.strokeColor = ContextCompat.getColor(this, R.color.orange)
+            binding.layoutEnglish.strokeWidth = 3
+            binding.layoutArabic.strokeWidth = 3
         } else {
-            binding.layoutArabic.findViewById<ImageView>(R.id.ic_checkmark2).visibility = View.VISIBLE
+
+            binding.layoutArabic.strokeColor = ContextCompat.getColor(this, R.color.orange)
+            binding.layoutArabic.strokeWidth = 3
+            binding.layoutEnglish.strokeWidth = 3
         }
+
     }
 }
 

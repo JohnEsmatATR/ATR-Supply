@@ -133,6 +133,7 @@
             android:layout_marginHorizontal="10dp"
             android:gravity="start"
             android:numStars="5"
+            android:visibility="gone"
             android:progressBackgroundTint="@color/gray"
             android:progressTint="@color/quantum_yellow"
             android:rating="4"

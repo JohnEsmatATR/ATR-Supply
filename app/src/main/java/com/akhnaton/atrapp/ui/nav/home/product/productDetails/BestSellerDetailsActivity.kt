@@ -24,6 +24,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDeta
 import com.akhnaton.atrapp.databinding.ActivityBestSallerDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
@@ -89,7 +90,8 @@ class BestSellerDetailsActivity : BaseActivity() {
     }
 
     private fun initBonusRecycler() {
-        bonusAdapter = BonusAdapter()
+        val lan = SharedPreferenceHelper.language ?: "en"
+        bonusAdapter = BonusAdapter(lan)
         binding.bonusRecycler.apply {
             adapter = bonusAdapter
             layoutManager = LinearLayoutManager(this@BestSellerDetailsActivity)
