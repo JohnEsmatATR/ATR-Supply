@@ -65,7 +65,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="الكميه :"
-                android:layout_marginTop="@dimen/_5sdp"
                 app:layout_constraintBottom_toTopOf="@+id/priceLayout"
                 app:layout_constraintEnd_toEndOf="@+id/productName"
                 app:layout_constraintTop_toBottomOf="@+id/productName" />
@@ -75,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantity :"
+                android:layout_marginTop="@dimen/_20sdp"
                 app:layout_constraintBottom_toTopOf="@+id/priceLayout"
                 app:layout_constraintStart_toStartOf="@+id/productName"
                 app:layout_constraintTop_toBottomOf="@+id/productName" />
@@ -104,10 +104,9 @@
                 android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
                 android:text="@{String.valueOf(data.quantity)}"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/priceLayout"
+                app:layout_constraintTop_toTopOf="@+id/textView2"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@id/productName"
                 tootls:text=" 4" />
@@ -133,7 +132,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/cardImg"
                 app:layout_constraintStart_toEndOf="@+id/cardImg"
-                app:layout_constraintTop_toBottomOf="@id/quantity">
+                app:layout_constraintTop_toBottomOf="@id/textView2">
 
                 <TextView
                     android:id="@+id/priceTxt"
