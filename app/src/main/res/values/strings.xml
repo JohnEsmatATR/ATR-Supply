@@ -293,5 +293,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="error_password_empty">Enter password</string>
     <string name="error_password_mismatch">Passwords do not match</string>
     <string name="error_password_weak">Weak password! Must contain at least 8 characters, uppercase, lowercase, number, and special symbol.</string>
-
+    <string name="in_stock">In Stock</string>
+    <string name="out_of_stock">Out of Stock</string>
 </resources>

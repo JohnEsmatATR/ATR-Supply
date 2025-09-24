@@ -25,7 +25,7 @@ class ContactUsActivity : AppCompatActivity() {
     private fun setupListeners() {
 
         binding.whatsAppCard.setOnClickListener {
-            val phone = "17125"
+            val phone = "+20 217125"
             val url = "https://wa.me/$phone"
             openLink(url)
         }

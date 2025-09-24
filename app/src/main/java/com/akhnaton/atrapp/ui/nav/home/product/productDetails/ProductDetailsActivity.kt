@@ -44,6 +44,7 @@ class ProductDetailsActivity : BaseActivity() {
     var quantity: Int = 1
     private var productQuantity : Int=0
     private lateinit var flag: String
+    private var inStoke : Boolean = false
     private lateinit var bonusAdapter: BonusAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,9 +144,22 @@ class ProductDetailsActivity : BaseActivity() {
                                 binding.txtDescription.text = productData.DESCRIPTION
                                 productQuantity = productData.QUANTITY
                                 Log.d("TAG", "observeProduct productQuantity : $productQuantity")
+                                if (productData.MY_QUANTITY != 0){
+                                    binding.txtQuantity.setText(productData.MY_QUANTITY.toString())
+                                    binding.txtQuantityAr.setText(productData.MY_QUANTITY.toString())
+                                }else{
+                                    binding.txtQuantity.setText("1")
+                                    binding.txtQuantityAr.setText("1")
+                                }
+                                inStoke = productData.IN_STOCK
 
 
-                                binding.isStock.text = if (productData.IN_STOCK) "In Stock" else "Out of Stock"
+                                binding.isStock.text = if (productData.IN_STOCK) {
+                                    getString(R.string.in_stock)
+                                } else {
+                                    getString(R.string.out_of_stock)
+                                }
+
                                 binding.isStock.setTextColor(
                                     ContextCompat.getColor(
                                         binding.root.context,
@@ -359,8 +373,7 @@ class ProductDetailsActivity : BaseActivity() {
 
 
     private fun addProductToCart() {
-        val valiablity = binding.isStock.text.toString()
-        if (valiablity == "In Stock"){
+        if (inStoke){
             lifecycleScope.launch {
                 addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity,flag))
             }
@@ -370,9 +383,7 @@ class ProductDetailsActivity : BaseActivity() {
 
     }
     private fun addProductToCartAr() {
-        val valiablity = binding.isStock.text.toString()
-        val quantity = binding.txtQuantityAr.text.toString().trim()
-        if (valiablity == "In Stock"){
+        if (inStoke){
             lifecycleScope.launch {
                 addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity.toInt(),flag))
             }
@@ -390,7 +401,6 @@ class ProductDetailsActivity : BaseActivity() {
         // أثناء الكتابة
         binding.txtQuantity.doOnTextChanged { text, _, _, _ ->
             val value = text.toString().toIntOrNull()
-
             if (value != null) {
                 when {
                     value < 1 -> {

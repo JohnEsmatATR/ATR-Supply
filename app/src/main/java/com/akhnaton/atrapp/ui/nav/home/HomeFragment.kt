@@ -206,8 +206,8 @@ class HomeFragment : BaseFragment() {
 
                     is PannerState.Error -> {
 
-                        showToastSnack(state.message, true)
-                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                      //  showToastSnack(state.message, true)
+                       // Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -224,7 +224,7 @@ class HomeFragment : BaseFragment() {
 
         sliderJob = lifecycleScope.launch(Dispatchers.Main) {
             while (true) {
-                delay(1500)
+                delay(3000)
 
                 if (bannersSize > 1) {
                     currentPage += direction

@@ -219,7 +219,7 @@
     <string name="cart_bonus_message">تهانينا! لقد حصلت على %d كبونص 🎉</string>
 
     <string name="continue_shopping">متابعة التسوق</string>
-    <string name="go_to_cart">الذهاب إلى الكارت</string>
+    <string name="go_to_cart">الذهاب إلى سله</string>
     <string name="you_are_eligible_for">You are eligible for</string>
     <string name="bonus">البونص :</string>
 
@@ -237,5 +237,6 @@
     <string name="error_password_empty">ادخل كلمة المرور</string>
     <string name="error_password_mismatch">كلمة المرور غير متطابقة</string>
     <string name="error_password_weak">كلمة المرور ضعيفة! يجب أن تحتوي على 8 حروف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص.</string>
-
+    <string name="in_stock">متاح</string>
+    <string name="out_of_stock">غير متاح</string>
 </resources>

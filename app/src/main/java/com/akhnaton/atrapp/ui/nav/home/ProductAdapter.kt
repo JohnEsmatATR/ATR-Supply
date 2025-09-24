@@ -52,12 +52,22 @@ class ProductAdapter(
 
         fun bind(item: ProductModel, position: Int) {
             isFavorite = item.IS_LIKED
-            val offer = item.PRICE_DISCOUNT_PERCENTAGE.toString()
+            val offer = item.PRICE_DISCOUNT_PERCENTAGE
             if (offer == "0%"){
                 binding.imDiscount.visibility= View.GONE
+                binding.txtStock.visibility=View.GONE
             }else{
                 binding.imDiscount.visibility= View.VISIBLE
+                binding.txtStock.visibility=View.VISIBLE
             }
+            if (item.PRICE_AFTER_DISCOUNT == 0.0){
+                binding.txtPrice.visibility = View.GONE
+            }else{
+                binding.txtPrice.visibility = View.VISIBLE
+            }
+
+
+
             changeFavoriteButton()
 
             binding.productModel = item
