@@ -75,7 +75,7 @@ class ProductsActivity : BaseActivity() {
                 searchJob = lifecycleScope.launch {
                     delay(1000)
                     if (qString.isNotEmpty()) {
-                        searchProduct(qString, flag)
+                        searchProduct(qString, flag, categoryId)
                     }else{
                         getProductsBasedOnCategory(categoryId, category = flag)
                     }
@@ -86,7 +86,7 @@ class ProductsActivity : BaseActivity() {
 
             override fun onQueryTextSubmit(qString: String): Boolean {
                 if (qString.isNotEmpty()) {
-                    searchProduct(qString, flag)
+                    searchProduct(qString, flag, categoryId)
                 }else{
                     getProductsBasedOnCategory(categoryId, category = flag)
                 }
@@ -153,10 +153,10 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
-    private fun searchProduct(word: String, orderType : String) {
+    private fun searchProduct(word: String, orderType : String , category: Int) {
         lifecycleScope.launch {
             searchViewModel.searchIntent.send(
-                    SearchIntent.SearchProduct(word,orderType)
+                    SearchIntent.SearchProduct(word,orderType, category)
 
 
             )

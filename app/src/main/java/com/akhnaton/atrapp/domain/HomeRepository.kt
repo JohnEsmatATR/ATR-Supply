@@ -22,8 +22,8 @@ class HomeRepository {
         1,
     )
 
-    suspend fun searchProduct(word: String?="",categoryId: String) = retrofit.searchProduct(
-        word,categoryId
+    suspend fun searchProduct(word: String?="",categoryId: String, categories: Int) = retrofit.searchProduct(
+        word,categoryId ,categories
     )
     suspend fun getProductsByPagination(categoryId: Int, page: Int, limit: Int,categories : String) =
         retrofit.getProductsByPagination(categoryId, page, limit,categories)

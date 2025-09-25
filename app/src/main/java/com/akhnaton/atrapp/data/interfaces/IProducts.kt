@@ -41,7 +41,8 @@ interface IProducts {
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun searchProduct(
         @Field("search") search: String? = "",
-        @Field("order_type") categoryId: String
+        @Field("order_type") categoryId: String,
+        @Field("category_id") categories: Int
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded

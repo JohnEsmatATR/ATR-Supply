@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -19,6 +20,7 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         binding.btnBack.setOnClickListener(this)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun init() {
         binding.layoutPdf.visibility = View.GONE
         binding.passwordLayout.visibility = View.GONE
@@ -30,15 +32,11 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         binding.addressED.isEnabled = false
 
 
-        val fullName =
-            "${SharedPreferenceHelper.userObj!!.first_name} ${SharedPreferenceHelper.userObj!!.last_name}"
+        val fullName = "${SharedPreferenceHelper.userObj!!.first_name} ${SharedPreferenceHelper.userObj!!.last_name}"
         val phone = "${SharedPreferenceHelper.userObj!!.phone}"
         val email = "${SharedPreferenceHelper!!.userObj!!.email}"
-        try {
-            val address = "${SharedPreferenceHelper!!.userObj!!.address.ADDRESS}"
-            binding.addressED.setText(address)
-        } catch (e: Exception) {
-        }
+        val address = "${SharedPreferenceHelper!!.userObj!!.address.ADDRESS}"
+        binding.addressED.setText(address)
         binding.nameED.setText(fullName)
         binding.phoneED.setText(phone)
         binding.emailED.setText(email)
