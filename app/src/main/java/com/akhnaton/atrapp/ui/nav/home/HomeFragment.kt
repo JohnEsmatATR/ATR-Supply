@@ -2,6 +2,8 @@ package com.akhnaton.atrapp.ui.nav.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,16 +22,12 @@ import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerState
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
-import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.PannerViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -43,8 +41,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var viewPager: ViewPager
     private var currentPage = 0
     private var direction = 1
-    private var sliderJob: Job? = null
-
+    private var sliderHandler: Handler? = null
+    private var sliderRunnable: Runnable? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -110,7 +108,7 @@ class HomeFragment : BaseFragment() {
                     is CategoryStatus.Error -> {
                         hideProgressDialog(binding.progressLoading)
                         binding.recyclerPharma.visibility = View.VISIBLE
-                        Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
+                     //   Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -120,17 +118,17 @@ class HomeFragment : BaseFragment() {
     private fun observeAddress() {
         lifecycleScope.launch {
             viewModel.state.collect {
-                Log.d("DEBUGGGGG", "Received state: $it")
+              //  Log.d("DEBUGGGGG", "Received state: $it")
                 when (it) {
                     is AddressStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idleeeee")
                     is AddressStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                       // showProgressDialog(binding.progressLoading)
                     }
 
                     is AddressStatus.GetMyAddresses -> {
                         if (it.result.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                         //   hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "Received: GetProducts")
 
                             val addresses = it.result.data ?: emptyList()
@@ -150,7 +148,7 @@ class HomeFragment : BaseFragment() {
                             }
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                         //   hideProgressDialog(binding.progressLoading)
                         }
                     }
 
@@ -198,16 +196,13 @@ class HomeFragment : BaseFragment() {
                             }
                         }
                         else {
-                            showToastSnack(state.data.message, true)
+                          //  showToastSnack(state.data.message, true)
                         }
 
                     }
 
 
                     is PannerState.Error -> {
-
-                      //  showToastSnack(state.message, true)
-                       // Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -219,33 +214,34 @@ class HomeFragment : BaseFragment() {
 
 
     private fun startAutoSlider(bannersSize: Int) {
+        if (bannersSize <= 1) return
 
-        sliderJob?.cancel()
+        sliderHandler = Handler(Looper.getMainLooper())
 
-        sliderJob = lifecycleScope.launch(Dispatchers.Main) {
-            while (true) {
-                delay(3000)
+        sliderRunnable = object : Runnable {
+            override fun run() {
+                currentPage += direction
 
-                if (bannersSize > 1) {
-                    currentPage += direction
-
-
-                    if (currentPage == bannersSize - 1) {
-                        direction = -1
-                    }
-
-                    else if (currentPage == 0) {
-                        direction = 1
-                    }
-
-                    viewPager.setCurrentItem(currentPage, true)
+                if (currentPage == bannersSize - 1) {
+                    direction = -1
+                } else if (currentPage == 0) {
+                    direction = 1
                 }
+
+                viewPager.setCurrentItem(currentPage, true)
+
+                sliderHandler?.postDelayed(this, 3000)
             }
         }
+
+        sliderHandler?.postDelayed(sliderRunnable!!, 3000)
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        sliderJob?.cancel()
+        sliderHandler?.removeCallbacks(sliderRunnable!!)
+        sliderHandler = null
+        sliderRunnable = null
     }
 }
 

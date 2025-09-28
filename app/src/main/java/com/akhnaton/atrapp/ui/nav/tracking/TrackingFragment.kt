@@ -171,8 +171,8 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
 
                     is MyOrdersStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                       // hideProgressDialog(binding.progressLoading)
+                       // showToastSnack(it.error.toString(), true)
                     }
                 }
             }
