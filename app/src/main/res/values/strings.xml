@@ -295,4 +295,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="error_password_weak">Weak password! Must contain at least 8 characters, uppercase, lowercase, number, and special symbol.</string>
     <string name="in_stock">In Stock</string>
     <string name="out_of_stock">Out of Stock</string>
+    <string name="addressss">9 Al Sharikat ST., Al Fawalah</string>
+    <string name="address_abdeen">Abdeen, Cairo, Egypt</string>
 </resources>

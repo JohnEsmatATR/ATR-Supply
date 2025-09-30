@@ -239,4 +239,6 @@
     <string name="error_password_weak">كلمة المرور ضعيفة! يجب أن تحتوي على 8 حروف على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص.</string>
     <string name="in_stock">متاح</string>
     <string name="out_of_stock">غير متاح</string>
+    <string name="addressss">٩ شارع الشركات، الفوالة</string>
+    <string name="address_abdeen">عابدين، القاهرة، مصر</string>
 </resources>

@@ -397,21 +397,30 @@ class ProductDetailsActivity : BaseActivity() {
     @SuppressLint("SetTextI18n")
     private fun setupQuantityEditText() {
         binding.txtQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
+        binding.txtQuantityAr.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
 
-        // أثناء الكتابة
+        var isUpdating = false
+
+        // txtQuantity
         binding.txtQuantity.doOnTextChanged { text, _, _, _ ->
+            if (isUpdating) return@doOnTextChanged
+
             val value = text.toString().toIntOrNull()
             if (value != null) {
                 when {
                     value < 1 -> {
+                        isUpdating = true
                         quantity = 1
                         binding.txtQuantity.setText("1")
                         binding.txtQuantity.setSelection(binding.txtQuantity.text!!.length)
+                        isUpdating = false
                     }
                     value > productQuantity -> {
+                        isUpdating = true
                         quantity = productQuantity
                         binding.txtQuantity.setText(productQuantity.toString())
                         binding.txtQuantity.setSelection(binding.txtQuantity.text!!.length)
+                        isUpdating = false
                     }
                     else -> {
                         quantity = value
@@ -422,33 +431,35 @@ class ProductDetailsActivity : BaseActivity() {
             }
         }
 
-
         binding.txtQuantity.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (binding.txtQuantity.text.isNullOrEmpty()) {
-                    quantity = 1
-                    binding.txtQuantity.setText("1")
-                }
+            if (!hasFocus && binding.txtQuantity.text.isNullOrEmpty()) {
+                isUpdating = true
+                quantity = 1
+                binding.txtQuantity.setText("1")
+                isUpdating = false
             }
         }
 
-        binding.txtQuantityAr.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
-
-        // أثناء الكتابة
+        // txtQuantityAr
         binding.txtQuantityAr.doOnTextChanged { text, _, _, _ ->
-            val value = text.toString().toIntOrNull()
+            if (isUpdating) return@doOnTextChanged
 
+            val value = text.toString().toIntOrNull()
             if (value != null) {
                 when {
                     value < 1 -> {
+                        isUpdating = true
                         quantity = 1
                         binding.txtQuantityAr.setText("1")
                         binding.txtQuantityAr.setSelection(binding.txtQuantityAr.text!!.length)
+                        isUpdating = false
                     }
                     value > productQuantity -> {
+                        isUpdating = true
                         quantity = productQuantity
                         binding.txtQuantityAr.setText(productQuantity.toString())
                         binding.txtQuantityAr.setSelection(binding.txtQuantityAr.text!!.length)
+                        isUpdating = false
                     }
                     else -> {
                         quantity = value
@@ -459,16 +470,16 @@ class ProductDetailsActivity : BaseActivity() {
             }
         }
 
-
         binding.txtQuantityAr.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (binding.txtQuantityAr.text.isNullOrEmpty()) {
-                    quantity = 1
-                    binding.txtQuantityAr.setText("1")
-                }
+            if (!hasFocus && binding.txtQuantityAr.text.isNullOrEmpty()) {
+                isUpdating = true
+                quantity = 1
+                binding.txtQuantityAr.setText("1")
+                isUpdating = false
             }
         }
     }
+
 
 
 

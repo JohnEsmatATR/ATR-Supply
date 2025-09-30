@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:hint="@string/address"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>

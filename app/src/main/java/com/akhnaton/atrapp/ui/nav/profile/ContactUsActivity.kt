@@ -37,7 +37,7 @@ class ContactUsActivity : AppCompatActivity() {
 
 
         binding.linkedinCard.setOnClickListener {
-            openLink("https://www.linkedin.com/in/jonathan-ehab-1a818b223/")
+            openLink("https://www.linkedin.com/company/akhnaton-trading-and-distribution/posts/?feedView=all")
         }
 
 

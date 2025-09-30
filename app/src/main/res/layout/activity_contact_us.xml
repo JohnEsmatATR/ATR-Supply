@@ -81,22 +81,36 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:gravity="center"
-            android:text="@string/company_address"
+            android:text="@string/addressss"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/address" />
 
         <TextView
-            android:id="@+id/callServiceTxt"
+            android:id="@+id/companyAddresss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_14sdp"
-            android:text="@string/call_service"
+            android:gravity="center"
+            android:text="@string/address_abdeen"
+            android:textAlignment="center"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/companyAddress" />
+
+        <TextView
+            android:id="@+id/callServiceTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/call_service"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/companyAddresss" />
 
         <TextView
             android:id="@+id/callServiceNumber"

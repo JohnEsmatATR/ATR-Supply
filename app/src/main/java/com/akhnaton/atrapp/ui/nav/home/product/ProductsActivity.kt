@@ -124,8 +124,10 @@ class ProductsActivity : BaseActivity() {
                             if (it.data.data!!.isNotEmpty()) {
                                 setupProductsRecycler(it.data.data!!)
                                 binding.txtNoProducts.visibility = View.GONE
+                                binding.recycler.visibility = View.VISIBLE
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
+                                binding.recycler.visibility = View.GONE
                             }
 
 
