@@ -171,7 +171,7 @@ class BestSellerActivity : BaseActivity() {
 
     private fun handleBackPress() {
         onBackPressedDispatcher.addCallback(this) {
-            startActivity(Intent(applicationContext, HomeActivity::class.java))
+        finish()
         }
     }
 }

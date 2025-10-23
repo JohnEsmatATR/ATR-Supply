@@ -30,7 +30,7 @@ class CartParentAdapter(
 
         fun bind(item: CartResponse) {
             binding.cartResponse = item
-            val lan = SharedPreferenceHelper.language ?: "en"
+            val lan = SharedPreferenceHelper.language ?: "ar"
 
 
 

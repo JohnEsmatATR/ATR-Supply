@@ -33,7 +33,6 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     }
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_details)
-//        binding.returnItemsLayout.setOnClickListener(this)
 
         binding.btnBack.setOnClickListener(this)
         binding.productRecycler.apply {
@@ -56,10 +55,6 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
 
 
     override fun onClick(v: View) {
-//        if (v.id == binding.returnItemsLayout.id) {
-//            val intent = Intent(this@OrderDetailsActivity, OrderReturnActivity::class.java)
-//            startActivity(intent)
-//        }
 
         if (v.id == binding.btnBack.id) {
             finish()
@@ -101,7 +96,6 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
-
     private fun getOrderDetails(orgSysId: String) {
         lifecycleScope.launch {
             orderDetailsViewModel.orderDetailsIntent.send(
@@ -109,7 +103,6 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
             )
         }
     }
-
     private fun getOrderStates(orgSysId: String) {
         viewModel.handleIntent(OrderStatesIntent.GetOrderState, orgSysId)
     }

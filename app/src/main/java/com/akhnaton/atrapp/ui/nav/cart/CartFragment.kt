@@ -193,7 +193,7 @@ class CartFragment : BaseFragment() {
 
     private fun getMyCart() {
         lifecycleScope.launch {
-            val lang = SharedPreferenceHelper.language ?: "en"
+            val lang = SharedPreferenceHelper.language ?: "ar"
             cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
         }
     }
@@ -227,7 +227,7 @@ class CartFragment : BaseFragment() {
 
     private fun updateCartSummaryUI() {
         val context = binding.root.context
-        val appLocaleCode = SharedPreferenceHelper.language ?: "en"
+        val appLocaleCode = SharedPreferenceHelper.language ?: "ar"
         val appLocale = Locale(appLocaleCode)
 
         if (cartData.isEmpty()) {

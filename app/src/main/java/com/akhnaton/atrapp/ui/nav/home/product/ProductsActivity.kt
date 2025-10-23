@@ -36,7 +36,6 @@ import java.util.Locale
 class ProductsActivity : BaseActivity() {
     lateinit var binding: ActivityProductsBinding
     private val viewModel: ProductsViewModel by viewModels()
-    private val bestSellerViewModel: BestSellerViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
     private var products: MutableList<ProductModel> = ArrayList()
@@ -57,7 +56,7 @@ class ProductsActivity : BaseActivity() {
         setContentView(binding.root)
         init()
         onClick()
-        search()
+
         currentPage = intent.getIntExtra("saved_page", 1)
     }
 
@@ -338,34 +337,5 @@ class ProductsActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-
-
-
-    private fun search() {
-//        binding.txtSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(txt: String?): Boolean {
-//                val query = txt?.lowercase(Locale.getDefault())?.trim() ?: ""
-//                val filteredList = if (query.isEmpty()) {
-//                    products
-//                } else {
-//                    products.filter { product ->
-//                        product.TITLE.lowercase(Locale.getDefault()).contains(query) ||
-//                                product.DESCRIPTION.lowercase(Locale.getDefault()).contains(query)
-//                    }
-//                }
-//
-//                if (::adapter.isInitialized) {
-//                    adapter.updateList(filteredList)
-//                }
-//
-//                return true
-//            }
-//        })
     }
 }

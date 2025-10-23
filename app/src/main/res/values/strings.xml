@@ -297,4 +297,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="out_of_stock">Out of Stock</string>
     <string name="addressss">9 Al Sharikat ST., Al Fawalah</string>
     <string name="address_abdeen">Abdeen, Cairo, Egypt</string>
+    <string name="the_request_was_created_successfully">The request was created successfully</string>
+    <string name="your_order_number_s">Your order number(s):</string>
 </resources>

@@ -39,7 +39,7 @@ object SharedPreferenceHelper {
             editor.putString(mySharedPreference_firebaseToken, token).apply()
         }
     var language: String?
-        get() = sharedPreferences.getString(mySharedPreference_language, "en")
+        get() = sharedPreferences.getString(mySharedPreference_language, "ar")
         set(language) {
             val editor = sharedPreferences.edit()
             editor.putString(mySharedPreference_language, language).apply()

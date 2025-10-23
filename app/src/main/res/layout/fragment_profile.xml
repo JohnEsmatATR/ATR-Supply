@@ -152,6 +152,7 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_32sdp"
             android:background="@color/offGray"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderLayout" />
@@ -160,6 +161,7 @@
             android:id="@+id/rateLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_margin="@dimen/_16sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

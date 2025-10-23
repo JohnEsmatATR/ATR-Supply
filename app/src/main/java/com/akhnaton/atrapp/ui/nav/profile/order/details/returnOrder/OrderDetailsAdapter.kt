@@ -22,7 +22,7 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
     inner class ViewHolder(private val binding: LayoutOrderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OrderDetailsModel) {
-            val lang = SharedPreferenceHelper.language ?: "en"
+            val lang = SharedPreferenceHelper.language ?: "ar"
             if (lang == "ar"){
                 binding.priceLayout.visibility = View.GONE
                 binding.textView2.visibility = View.GONE

@@ -20,7 +20,7 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
 
-        SharedPreferenceHelper.setLocale(this, SharedPreferenceHelper.language ?: "en")
+        SharedPreferenceHelper.setLocale(this, SharedPreferenceHelper.language ?: "ar")
 
         setupBinding()
         setupListeners()
@@ -47,17 +47,17 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun changeLanguage(langCode: String) {
         SharedPreferenceHelper.language = langCode
-        SharedPreferenceHelper.setLocale(this, langCode)
 
-
-        val intent = Intent(this, SplashActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intent = baseContext.packageManager
+            .getLaunchIntentForPackage(baseContext.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-        finish()
+        finishAffinity()
     }
 
     private fun updateSelectedLanguageUI() {
-        val selectedLang = SharedPreferenceHelper.language ?: "en"
+        val selectedLang = SharedPreferenceHelper.language ?: "ar"
 
 
         binding.layoutEnglish.findViewById<ImageView>(R.id.ic_checkmark).visibility = View.GONE

@@ -30,7 +30,6 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         dp = resources.displayMetrics.density
 
-        setAppLocale(this@BaseActivity,"en")
     }
 
 
@@ -109,27 +108,6 @@ open class BaseActivity : AppCompatActivity() {
         return (qty > 1)
     }
 
-//    fun onTokenExpired(message: String) {
-//        showDialog("Warning!", message, true)
-//            .setPositiveButton("Ok") { dialog: DialogInterface, i: Int ->
-//                SharedPreferenceHelper.let { sharedPref ->
-//                    SharedPreferenceHelper.isLogged = false
-//                    SharedPreferenceHelper.isWelcomeShowed = false
-//                    SharedPreferenceHelper.userObj = null
-//                    SharedPreferenceHelper.membership = 0
-//                    SharedPreferenceHelper.userToken = ""
-//                }
-//                startActivity(
-//                    Intent(
-//                        baseContext,
-//                        AuthActivity::class.java
-//                    )
-//                )
-//                finish()
-//                dialog.dismiss()
-//            }.create().show()
-//
-//    }
 
 
     fun showProgressDialog(view: View) {
@@ -145,46 +123,19 @@ open class BaseActivity : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
+
+
     override fun attachBaseContext(newBase: Context) {
-        val lang = SharedPreferenceHelper.language ?: "en"
-        val context = setAppLocale(newBase, lang)
-        super.attachBaseContext(context)
-    }
-
-    private fun setAppLocale(context: Context, lang: String): Context {
+        SharedPreferenceHelper.init(newBase)
+        val lang = SharedPreferenceHelper.language ?: "ar"
         val locale = Locale(lang)
-        Locale.setDefault(locale)
-
-        val config = Configuration()
+        val config = Configuration(newBase.resources.configuration)
         config.setLocale(locale)
+        val context = newBase.createConfigurationContext(config)
 
-        return context.createConfigurationContext(config)
-    }
+        android.util.Log.d("DEBUGGGGG", "Current language: $lang")
 
-
-
-
-//    fun getVersion(): String {
-//        val pInfo: PackageInfo =
-//            baseContext.packageManager.getPackageInfo(baseContext.packageName, 0)
-//        return pInfo.versionName
-//    }
-
-    open fun isNetworkAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork ?: return false
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-        } else {
-            @Suppress("DEPRECATION")
-            val networkInfo = connectivityManager.activeNetworkInfo
-            @Suppress("DEPRECATION")
-            networkInfo != null && networkInfo.isConnected
-        }
+        super.attachBaseContext(context)
     }
 
 

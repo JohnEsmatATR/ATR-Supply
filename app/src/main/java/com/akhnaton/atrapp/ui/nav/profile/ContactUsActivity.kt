@@ -42,7 +42,7 @@ class ContactUsActivity : AppCompatActivity() {
 
 
         binding.linkedasdinCard.setOnClickListener {
-            openLink("https://youtube.com/@evapharma?si=ixHSkpWzAkf9cY7B")
+            openLink("https://youtube.com/@atr-akhnatontradinganddist9112")
         }
 
 

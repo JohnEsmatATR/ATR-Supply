@@ -49,9 +49,11 @@ class ProductAdapter(
     inner class ViewHolder(private val binding: LayoutProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isFavorite = false
+        private var hasBones = false
 
         fun bind(item: ProductModel, position: Int) {
             isFavorite = item.IS_LIKED
+            hasBones = item.HAS_BONUS
             val offer = item.PRICE_DISCOUNT_PERCENTAGE
             if (offer == "0%"){
                 binding.imDiscount.visibility= View.GONE
@@ -64,6 +66,11 @@ class ProductAdapter(
                 binding.txtPrice.visibility = View.GONE
             }else{
                 binding.txtPrice.visibility = View.VISIBLE
+            }
+            if (hasBones){
+                binding.imageView.visibility = View.VISIBLE
+            }else {
+                binding.imageView.visibility = View.GONE
             }
 
 

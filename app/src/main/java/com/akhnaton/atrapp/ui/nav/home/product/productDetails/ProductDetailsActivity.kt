@@ -107,7 +107,7 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun initBonusRecycler() {
-        val lan = SharedPreferenceHelper.language ?: "en"
+        val lan = SharedPreferenceHelper.language ?: "ar"
         bonusAdapter = BonusAdapter(lan)
         binding.bonusRecycler.apply {
             adapter = bonusAdapter

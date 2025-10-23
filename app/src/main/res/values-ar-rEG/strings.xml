@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ATR Supply</string>
-    <string name="sign_up">عميل حالي</string>
+    <string name="sign_up">عميل جديد</string>
     <string name="or">أو</string>
-    <string name="login">عميل جديد</string>
+    <string name="login">عميل حالي</string>
     <string name="continue_as">المتابعة كـ</string>
     <string name="guest">زائر</string>
     <string name="get_started">ابدأ الآن</string>
@@ -241,4 +241,6 @@
     <string name="out_of_stock">غير متاح</string>
     <string name="addressss">٩ شارع الشركات، الفوالة</string>
     <string name="address_abdeen">عابدين، القاهرة، مصر</string>
+    <string name="the_request_was_created_successfully">تم إنشاء الطلب بنجاح</string>
+    <string name="your_order_number_s">رقم/أرقام الطلب الخاصة بك:</string>
 </resources>

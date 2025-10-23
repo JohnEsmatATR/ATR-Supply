@@ -5,7 +5,7 @@ import android.util.Log
 import com.akhnaton.atrapp.databinding.ActivityFawryBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 
-class FawryActivity : BaseActivity() {
+class OrderNumberActivity : BaseActivity() {
     lateinit var binding: ActivityFawryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

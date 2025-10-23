@@ -16,7 +16,7 @@ import com.akhnaton.atrapp.databinding.ActivityChackoutBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.CustomDialog
-import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.FawryActivity
+import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.OrderNumberActivity
 import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.PayenTypeViewModel
 import com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod.PaymentAdapter
 import kotlinx.coroutines.launch
@@ -69,7 +69,7 @@ class CheckoutActivity : BaseActivity() {
                             val msg = it.data.data?.msg?.toString()
                             Log.d("TAG", "cartObserve orderNumbers :${orderNumbers} ")
 
-                            val intent = Intent(this@CheckoutActivity, FawryActivity::class.java).apply {
+                            val intent = Intent(this@CheckoutActivity, OrderNumberActivity::class.java).apply {
                                 putExtra("order_numbers", orderNumbers)
                                 putExtra("msg", msg)
 

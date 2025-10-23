@@ -70,7 +70,7 @@ class SetupHttpClient {
                 addInterceptor(
                     Interceptor { chain ->
                         val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
-                            ?: Locale.getDefault().language
+                            ?: "ar"
                         val originalRequest = chain.request()
                         val requestBuilder = originalRequest.newBuilder()
                             .addHeader(
