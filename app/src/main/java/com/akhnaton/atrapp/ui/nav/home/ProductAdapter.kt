@@ -11,6 +11,7 @@ import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
+import com.bumptech.glide.Glide
 
 class ProductAdapter(
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit
@@ -79,9 +80,9 @@ class ProductAdapter(
 
             binding.productModel = item
 //
-//            Glide.with(binding.root.context)
-//                .load(item.IMAGE_URL)
-//                .into(binding.imItem)
+            Glide.with(binding.root.context)
+                .load(item.IMAGE_URL)
+                .into(binding.imItem)
 
             binding.imFavorite.setOnClickListener {
                 isFavorite = !isFavorite

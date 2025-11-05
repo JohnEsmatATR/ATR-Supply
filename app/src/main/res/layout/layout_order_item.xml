@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tootls="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -28,7 +28,6 @@
                 android:layout_height="@dimen/_80sdp"
                 android:layout_marginStart="@dimen/_12sdp"
                 app:cardBackgroundColor="@color/white"
-                android:visibility="gone"
                 app:cardElevation="@dimen/_2sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
+                    tools:src="@drawable/im_category"
                     />
 
             </com.google.android.material.card.MaterialCardView>
@@ -58,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardImg"
                 app:layout_constraintTop_toTopOf="parent"
-                tootls:text="Eva Hand soap royal Deep Lines Filler 50 ML" />
+                tools:text="Eva Hand soap royal Deep Lines Filler 50 ML" />
 
             <TextView
                 android:id="@+id/textView4"
