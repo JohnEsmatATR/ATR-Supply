@@ -14,7 +14,7 @@ data class ProductModel(
     val WEIGHT: String = "",
     val QOUTA: Int = 0,
     val TAX: Double = 0.0,
-    val ITEM_TYPE : String ="",
+    val ITEM_TYPE: String = "",
     val IS_BEST_SELLER: Boolean = false,
     var IS_LIKED: Boolean = false,
     val PRICE_WITHOUT_TAX: Double = 0.0,
@@ -22,12 +22,14 @@ data class ProductModel(
     val PRICE_DISCOUNT_PERCENTAGE: String = "",
     val PRICE_AFTER_DISCOUNT: Double = 0.0,
     val PRICE_WITH_TAX: Double = 0.0,
-    val BONUS_DATA : List<BonusData>?= emptyList(),
+    val BONUS_DATA: List<BonusData>? = emptyList(),
     val MY_QUANTITY_TOTAL_PRICE: Double = 0.0,
     val RATE: String = "",
     val REVIEWS: ReviewModel = ReviewModel(),
     val IN_STOCK: Boolean = false,
-    val HAS_BONUS : Boolean = false,
+    val HAS_BONUS: Boolean = false,
     @SerializedName("order_numbers")
-    val orderNumbers: List<String> = emptyList()
-): Serializable
+    val orderNumbers: List<String> = emptyList(),
+    @SerializedName("CATEGORY")
+    val category: CategoriesModel = CategoriesModel(),
+) : Serializable

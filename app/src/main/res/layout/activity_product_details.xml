@@ -106,6 +106,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/txt_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:textColor="@color/mid_gray_2"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_share"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_item_name" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/bonus_recycler"
                     android:layout_width="0dp"
@@ -116,7 +129,7 @@
                     android:textSize="14dp"
                     app:layout_constraintEnd_toStartOf="@id/btn_share"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_item_name"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_category"
                     tools:itemCount="2"
                     tools:listitem="@layout/bonus_item" />
 
@@ -567,6 +580,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/txt_category_ar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:textColor="@color/mid_gray_2"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_share_ar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_item_name_ar" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/bonus_recycler_ar"
                     android:layout_width="0dp"
@@ -576,7 +602,7 @@
                     android:textSize="14dp"
                     app:layout_constraintEnd_toStartOf="@id/btn_share_ar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_item_name_ar"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_category_ar"
                     tools:itemCount="2"
                     tools:listitem="@layout/bonus_item" />
 

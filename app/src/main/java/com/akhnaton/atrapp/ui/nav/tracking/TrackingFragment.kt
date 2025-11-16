@@ -54,6 +54,7 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
         }
         return binding.root
     }
+
     private fun observeAddress() {
         lifecycleScope.launch {
             viewModel.state.collect {

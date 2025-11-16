@@ -50,6 +50,10 @@ class AddToCartViewModel : ViewModel() {
     }
 
 
+    fun resetState() {
+        _state.value = AddToCartStatus.Idle
+    }
+
     private fun addProductToCart(
         productId: Int?,
         quantity: Int?,

@@ -139,6 +139,7 @@ class ProductDetailsActivity : BaseActivity() {
                             if (productData != null) {
                                 // en
                                 binding.txtItemName.text = productData.TITLE
+                                binding.txtCategory.text = productData.category?.TITLE ?: ""
                                 binding.txtPrice.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
                                 binding.txtSize.text = productData.WEIGHT
                                 binding.txtDescription.text = productData.DESCRIPTION
@@ -184,6 +185,7 @@ class ProductDetailsActivity : BaseActivity() {
 
                                 // ar
                                 binding.txtItemNameAr.text = productData.TITLE
+                                binding.txtCategoryAr.text = productData.category?.TITLE ?: ""
                                 binding.txtPriceAr.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
                                 binding.txtSizeAr.text = productData.WEIGHT
                                 binding.txtDescriptionAr.text = productData.DESCRIPTION

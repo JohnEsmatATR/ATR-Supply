@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "613699554978",
+    "project_id": "atr-supply",
+    "storage_bucket": "atr-supply.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613699554978:android:313eba61cefd36e0b091fb",
+        "android_client_info": {
+          "package_name": "com.akhnaton.atrapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAka7uEPSN5Xueaxp4NKt5Di7KofT2-AE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

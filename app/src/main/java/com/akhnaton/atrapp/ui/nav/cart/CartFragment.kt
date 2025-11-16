@@ -66,6 +66,7 @@ class CartFragment : BaseFragment() {
         return binding.root
     }
 
+
     override fun onResume() {
         super.onResume()
         initCart()

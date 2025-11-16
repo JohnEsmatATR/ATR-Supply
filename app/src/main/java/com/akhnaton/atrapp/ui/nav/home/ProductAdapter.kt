@@ -14,9 +14,9 @@ import com.akhnaton.atrapp.databinding.LayoutProductBinding
 import com.bumptech.glide.Glide
 
 class ProductAdapter(
-    private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit
-    ,
-    private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit
+    private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
+    private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
+    private val onAddToCartClick: (product: ProductModel) -> Unit = {}
 ) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
@@ -26,6 +26,7 @@ class ProductAdapter(
 
     // في ProductAdapter
     fun setData(newList: List<ProductModel>, isAppend: Boolean, flag: String) {
+        this.flag = flag
         if (!isAppend) {
             productsList.clear()
         }
@@ -88,6 +89,10 @@ class ProductAdapter(
                 isFavorite = !isFavorite
                 changeFavoriteButton()
                 onFavoriteClick(item, position, isFavorite)
+            }
+
+            binding.btnAddToCart.setOnClickListener {
+                onAddToCartClick(item)
             }
 
             itemView.setOnClickListener {

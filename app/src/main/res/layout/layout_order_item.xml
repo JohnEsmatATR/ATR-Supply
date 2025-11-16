@@ -101,7 +101,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/priceTxtar"
                 app:layout_constraintEnd_toStartOf="@+id/priceTxtar"
                 app:layout_constraintTop_toTopOf="@+id/priceTxtar"
-                tootls:text="345 EGP" />
+                tools:text="345 EGP" />
 
             <TextView
                 android:id="@+id/quantity"
@@ -112,7 +112,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textView2"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@id/productName"
-                tootls:text=" 4" />
+                tools:text=" 4" />
 
             <TextView
                 android:id="@+id/quantityar"
@@ -125,7 +125,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
                 app:layout_constraintEnd_toStartOf="@+id/textView4"
                 app:layout_constraintTop_toTopOf="@+id/textView4"
-                tootls:text=" 4" />
+                tools:text=" 4" />
 
             <LinearLayout
                 android:id="@+id/priceLayout"
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:text="@{String.valueOf(data.price) +` EGP`}"
-                    tootls:text="345 EGP"
+                    tools:text="345 EGP"
                     android:textColor="@color/black" />
 
             </LinearLayout>

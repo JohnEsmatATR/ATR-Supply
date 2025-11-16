@@ -65,8 +65,8 @@ class HomeFragment : BaseFragment() {
             startActivity(intent)
         }
         return binding.root
-
     }
+
 
     private fun setupRecycler() {
 

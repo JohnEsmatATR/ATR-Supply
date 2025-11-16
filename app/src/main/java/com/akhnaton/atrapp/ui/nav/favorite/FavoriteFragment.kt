@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.databinding.FragmentFavoriteBinding
@@ -21,6 +25,7 @@ import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.shared.ShimmerAdapter
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
+import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -29,6 +34,7 @@ class FavoriteFragment : BaseFragment() {
     lateinit var adapter: ProductAdapter
     private var flag = ""
     private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private val addCartViewModel: AddToCartViewModel by viewModels()
     private var productList = mutableListOf<ProductModel>()
     private lateinit var shimmerAdapter: ShimmerAdapter
 
@@ -43,6 +49,11 @@ class FavoriteFragment : BaseFragment() {
         init()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeAddToCart()
     }
 
     private fun setupProductsRecycler(list: List<ProductModel>) {
@@ -72,11 +83,70 @@ class FavoriteFragment : BaseFragment() {
                 } else {
                     deleteProductToFavorite(product.ID, isFavorite)
                 }
+            },
+            onAddToCartClick = { product ->
+                handleAddToCart(product)
             }
         )
         adapter.setData(productList, false, flag)
         binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
+    }
+
+    private fun observeAddToCart() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addCartViewModel.state.collect { state ->
+                    when (state) {
+                        is AddToCartStatus.Idle -> Unit
+                        is AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
+                        is AddToCartStatus.AddToCart -> {
+                            hideProgressDialog(binding.progressLoading)
+                            if (state.data.status == 200) {
+                                showToastSnack(state.data.message ?: "", false)
+                            } else {
+                                showToastSnack(state.data.message ?: "", true)
+                            }
+                            addCartViewModel.resetState()
+                        }
+
+                        is AddToCartStatus.Error -> {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(state.error ?: "", true)
+                            addCartViewModel.resetState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleAddToCart(product: ProductModel) {
+        if (!product.IN_STOCK) {
+            showToastSnack("Product Out Of Stock", true)
+            return
+        }
+
+        val categoryForRequest = when {
+            product.ITEM_TYPE.isNotEmpty() -> product.ITEM_TYPE
+            flag.isNotEmpty() -> flag
+            else -> null
+        }
+
+        if (categoryForRequest == null) {
+            showToastSnack("Unable to add product to cart", true)
+            return
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            addCartViewModel.addToCartIntent.send(
+                AddToCartIntent.AddProductToCart(
+                    productId = product.ID,
+                    quantity = 1,
+                    category = categoryForRequest
+                )
+            )
+        }
     }
 
 

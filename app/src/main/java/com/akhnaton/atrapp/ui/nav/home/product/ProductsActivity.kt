@@ -7,11 +7,17 @@ import android.view.View
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.data.model.CategoryModel
 import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
@@ -28,6 +34,7 @@ import com.akhnaton.atrapp.ui.nav.home.BestSellerViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.home.search.SearchViewModel
+import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -38,6 +45,7 @@ class ProductsActivity : BaseActivity() {
     private val viewModel: ProductsViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
+    private val addCartViewModel: AddToCartViewModel by viewModels()
     private var products: MutableList<ProductModel> = ArrayList()
     lateinit var adapter: ProductAdapter
     private var searchWord = ""
@@ -54,10 +62,25 @@ class ProductsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupWindowInsets()
         init()
         onClick()
+        observeAddToCart()
 
         currentPage = intent.getIntExtra("saved_page", 1)
+    }
+    
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                systemBars.top,
+                view.paddingRight,
+                view.paddingBottom
+            )
+            insets
+        }
     }
 
 
@@ -169,6 +192,34 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
+    private fun observeAddToCart() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addCartViewModel.state.collect { state ->
+                    when (state) {
+                        is AddToCartStatus.Idle -> Unit
+                        is AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
+                        is AddToCartStatus.AddToCart -> {
+                            hideProgressDialog(binding.progressLoading)
+                            if (state.data.status == 200) {
+                                showToastSnack(state.data.message ?: "", false)
+                            } else {
+                                showToastSnack(state.data.message ?: "", true)
+                            }
+                            addCartViewModel.resetState()
+                        }
+
+                        is AddToCartStatus.Error -> {
+                            hideProgressDialog(binding.progressLoading)
+                            showToastSnack(state.error ?: "", true)
+                            addCartViewModel.resetState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     private fun productsObserve() {
@@ -262,6 +313,34 @@ class ProductsActivity : BaseActivity() {
 
 
 
+    private fun handleAddToCart(product: ProductModel) {
+        if (!product.IN_STOCK) {
+            showToastSnack("Product Out Of Stock", true)
+            return
+        }
+
+        val categoryForRequest = when {
+            flag.isNotEmpty() -> flag
+            product.ITEM_TYPE.isNotEmpty() -> product.ITEM_TYPE
+            else -> null
+        }
+
+        if (categoryForRequest == null) {
+            showToastSnack("Unable to add product to cart", true)
+            return
+        }
+
+        lifecycleScope.launch {
+            addCartViewModel.addToCartIntent.send(
+                AddToCartIntent.AddProductToCart(
+                    productId = product.ID,
+                    quantity = 1,
+                    category = categoryForRequest
+                )
+            )
+        }
+    }
+
     private fun setupProductsRecycler(list: List<ProductModel>) {
         if (!::adapter.isInitialized) {
             val layoutManager = GridLayoutManager(this, 2)
@@ -287,6 +366,9 @@ class ProductsActivity : BaseActivity() {
                     } else {
                         deleteProductToFavorite(product.ID, isFavorite)
                     }
+                },
+                onAddToCartClick = { product ->
+                    handleAddToCart(product)
                 }
             )
 
