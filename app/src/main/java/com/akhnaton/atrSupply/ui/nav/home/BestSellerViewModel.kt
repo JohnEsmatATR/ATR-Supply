@@ -1,0 +1,58 @@
+package com.akhnaton.atrSupply.ui.nav.home
+
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.akhnaton.atrSupply.data.statuesValue.nav.home.bestSeller.BestSellerIntent
+import com.akhnaton.atrSupply.data.statuesValue.nav.home.bestSeller.BestSellerStatus
+import com.akhnaton.atrSupply.domain.HomeRepository
+import com.akhnaton.atrSupply.shared.Common
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
+
+class BestSellerViewModel : ViewModel() {
+
+    val homeIntent = Channel<BestSellerIntent>(Channel.UNLIMITED)
+
+    private val _state = MutableStateFlow<BestSellerStatus>(BestSellerStatus.Idle)
+
+    val state: StateFlow<BestSellerStatus> get() = _state
+
+    init {
+        makeHomeObserve()
+    }
+
+    private fun makeHomeObserve() {
+        viewModelScope.launch {
+            homeIntent.consumeAsFlow().collect {
+                when (it) {
+                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo(1)
+
+                }
+            }
+        }
+    }
+
+    private fun getBestsellerRepo(bestSeller: Int) {
+        viewModelScope.launch {
+            _state.value = BestSellerStatus.Loading
+            _state.value = try {
+                val response = HomeRepository().getBestSeller(bestSeller)
+                if (response.code() == 200) {
+                    Log.d(Common.KeroDebug, "getBestsellerRepo ${response.body()!!}")
+                    BestSellerStatus.GetBestSeller(response.body()!!)
+
+                } else {
+                    BestSellerStatus.Error(response.body()!!.message)
+                }
+            } catch (e: Exception) {
+                BestSellerStatus.Error(e.message)
+            }
+        }
+    }
+
+}
+

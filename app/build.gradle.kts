@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.akhnaton.atrapp"
-    compileSdk = 35
+    namespace = "com.akhnaton.atrSupply"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.akhnaton.atrapp"
+        applicationId = "com.akhnaton.atrSupply"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 15
         versionName = "1.5"
 
@@ -61,6 +61,7 @@ dependencies {
     implementation("androidx.activity:activity:1.10.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-android:2.9.2")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
+    implementation("com.google.firebase:firebase-messaging:25.0.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -121,9 +122,7 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
-    //firebase
-    implementation (platform("com.google.firebase:firebase-bom:32.7.4"))
-    implementation ("com.google.firebase:firebase-messaging-ktx")
-
+    // Firebase
+    implementation ("com.google.firebase:firebase-messaging:25.0.1")
 
 }

@@ -1,0 +1,76 @@
+package com.akhnaton.atrSupply.ui.nav.home.product
+
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.akhnaton.atrSupply.data.statuesValue.nav.home.products.ProductsIntent
+import com.akhnaton.atrSupply.data.statuesValue.nav.home.products.ProductsStatus
+import com.akhnaton.atrSupply.domain.HomeRepository
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
+
+class ProductsViewModel : ViewModel() {
+
+    val homeIntent = Channel<ProductsIntent>(Channel.UNLIMITED)
+
+    private val _state = MutableStateFlow<ProductsStatus>(ProductsStatus.Idle)
+    val state: StateFlow<ProductsStatus> get() = _state
+
+    // pagination values
+    var currentPage = 1
+    private val limit = 70
+    private var isLoading = false
+    private var isLastPage = false
+
+    init {
+        makeProductsObserve()
+    }
+    private fun makeProductsObserve() {
+        viewModelScope.launch {
+            homeIntent.consumeAsFlow().collect {
+                when (it) {
+                    is ProductsIntent.GetProducts -> getProductsBasedOnCategoryRepo(it.categoryId, it.categoriesName)
+                }
+            }
+        }
+    }
+
+
+
+    private fun getProductsBasedOnCategoryRepo(categoryId: Int, categoryName: String) {
+        viewModelScope.launch {
+            isLoading = true
+            _state.value = ProductsStatus.Loading
+            _state.value = try {
+                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit, categoryName)
+                if (response.code() == 200) {
+                    val data = response.body()!!
+                    val products = data.data ?: emptyList()
+
+
+                    Log.d("TAG", "getProductsBasedOnCategoryRepo size:${products.size} ")
+                    if (products.size < limit) {
+                        isLastPage = true
+                    } else {
+                        // نزود الصفحة بس لو جاب 99 عنصر بالظبط
+                        currentPage++
+                    }
+
+                    ProductsStatus.GetProducts(data)
+                } else {
+                    ProductsStatus.Error(response.message())
+                }
+            } catch (e: Exception) {
+                ProductsStatus.Error(e.message)
+            }
+            isLoading = false
+        }
+    }
+
+
+}
+
+

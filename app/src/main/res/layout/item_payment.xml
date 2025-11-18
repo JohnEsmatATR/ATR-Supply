@@ -5,7 +5,7 @@
     <data>
         <variable
             name="paymentType"
-            type="com.akhnaton.atrapp.data.model.PaymentModel" />
+            type="com.akhnaton.atrSupply.data.model.PaymentModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

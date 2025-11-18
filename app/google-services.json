@@ -7,9 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:613699554978:android:313eba61cefd36e0b091fb",
+        "mobilesdk_app_id": "1:613699554978:android:1d2154d65c11e890b091fb",
         "android_client_info": {
-          "package_name": "com.akhnaton.atrapp"
+          "package_name": "com.akhnaton.atrSupply"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAka7uEPSN5Xueaxp4NKt5Di7KofT2-AE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613699554978:android:b380a8cf8ae8352eb091fb",
+        "android_client_info": {
+          "package_name": "com.example.fcmtest"
         }
       },
       "oauth_client": [],

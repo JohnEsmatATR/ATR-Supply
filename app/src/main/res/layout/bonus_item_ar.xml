@@ -65,7 +65,7 @@
     <data>
         <variable
             name="BonusData"
-            type="com.akhnaton.atrapp.data.model.BonusData" />
+            type="com.akhnaton.atrSupply.data.model.BonusData" />
     </data>
 
 </layout>
