@@ -1,0 +1,96 @@
+package com.akhnaton.atrapp.ui.nav.cart.addresses
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.akhnaton.atrapp.data.model.AddressModel
+import com.akhnaton.atrapp.data.model.common.BaseModel
+import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
+import com.akhnaton.atrapp.domain.AddressRepository
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
+
+class AddressesViewModel : ViewModel()  {
+    val addressIntent = Channel<AddressIntent>(Channel.UNLIMITED)
+
+    private val _state = MutableStateFlow<AddressStatus>(AddressStatus.Idle)
+
+    val state: StateFlow<AddressStatus> get() = _state
+
+    init {
+        makeHomeObserve()
+    }
+
+    private fun makeHomeObserve() {
+        viewModelScope.launch {
+            addressIntent.consumeAsFlow().collect {
+                when (it) {
+                    is AddressIntent.GetMyAddresses -> getAddresses()
+
+                    is AddressIntent.MakeAddressPrime ->makeAddressPrime(it.partySiteId)
+
+                }
+            }
+        }
+    }
+
+
+
+    private fun getAddresses() {
+        viewModelScope.launch {
+            _state.value = AddressStatus.Loading
+
+            val resultStatus = try {
+                val response = AddressRepository().getMyAddresses()
+
+                if (response.isSuccessful && response.body() != null) {
+                    AddressStatus.GetMyAddresses(response.body()!!)
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val parsedError: BaseModel<List<AddressModel>> = GsonBuilder().create().fromJson(
+                        errorBody,
+                        object : TypeToken<BaseModel<List<AddressModel>>>() {}.type
+                    )
+                    AddressStatus.GetMyAddresses(parsedError)
+                }
+            } catch (e: Exception) {
+                AddressStatus.Error(e.message)
+            }
+
+            _state.value = resultStatus
+        }
+    }
+
+
+    private fun makeAddressPrime(partySiteId: String) {
+        viewModelScope.launch {
+            _state.value = AddressStatus.Loading
+
+            val resultStatus = try {
+                val response = AddressRepository().changeDefaultSite(partySiteId)
+
+                if (response.isSuccessful && response.body() != null) {
+                    AddressStatus.MakeAddressPrime(response.body()!!)
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val parsedError: BaseModel<List<AddressModel>> = GsonBuilder().create().fromJson(
+                        errorBody,
+                        object : TypeToken<BaseModel<AddressModel>>() {}.type
+                    )
+                    AddressStatus.MakeAddressPrime(parsedError)
+                }
+            } catch (e: Exception) {
+                AddressStatus.Error(e.message)
+            }
+
+            _state.value = resultStatus
+        }
+    }
+
+
+}

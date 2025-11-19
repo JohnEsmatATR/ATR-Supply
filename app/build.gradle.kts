@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.akhnaton.atrSupply"
+    namespace = "com.akhnaton.atrapp"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.akhnaton.atrSupply"
+        applicationId = "com.akhnaton.atrapp"
         minSdk = 24
         targetSdk = 36
         versionCode = 15

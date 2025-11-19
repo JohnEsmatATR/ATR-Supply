@@ -6,7 +6,7 @@
     <data>
         <variable
             name="cart"
-            type="com.akhnaton.atrSupply.data.model.CartProduct" />
+            type="com.akhnaton.atrapp.data.model.CartProduct" />
         <variable
             name="quantity"
             type="Integer" />

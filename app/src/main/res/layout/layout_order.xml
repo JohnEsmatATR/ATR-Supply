@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.akhnaton.atrSupply.data.model.orderHistory.OrderHistoryModel" />
+            type="com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
