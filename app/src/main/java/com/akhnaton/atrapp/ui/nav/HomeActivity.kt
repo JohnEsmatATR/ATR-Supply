@@ -53,6 +53,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun setupWindowInsets() {
+        // Apply top padding to fragment container for status bar
         ViewCompat.setOnApplyWindowInsetsListener(binding.flFragment) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.setPadding(
@@ -61,6 +62,25 @@ class HomeActivity : BaseActivity() {
                 view.paddingRight,
                 view.paddingBottom
             )
+            insets
+        }
+
+        // Apply bottom margin to bottom navigation for system navigation bars
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationView) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val layoutParams = view.layoutParams as? androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+            layoutParams?.bottomMargin = systemBars.bottom
+            view.layoutParams = layoutParams
+            insets
+        }
+
+        // Apply bottom margin to floating button for system navigation bars
+        ViewCompat.setOnApplyWindowInsetsListener(binding.btnTracking) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val originalMargin = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._35sdp)
+            val layoutParams = view.layoutParams as? androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+            layoutParams?.bottomMargin = originalMargin + systemBars.bottom
+            view.layoutParams = layoutParams
             insets
         }
     }
