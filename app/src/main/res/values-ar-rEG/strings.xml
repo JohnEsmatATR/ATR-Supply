@@ -80,6 +80,7 @@
     <string name="cash_on_delivery">الدفع عند الاستلام</string>
     <string name="fawry">فوري</string>
     <string name="confirm">تأكيد</string>
+    <string name="confirm_order">تآكيد الاوردر</string>
     <string name="choose_area">اختر المنطقة</string>
     <string name="choose_city">اختر المدينة</string>
     <string name="add">إضافة</string>
@@ -171,7 +172,7 @@
     <string name="choose_your_language">اختر لغتك</string>
     <string name="order_number_53453">رقم الطلب 53453</string>
     <string name="price">السعر:</string>
-    <string name="order_number">رقم الطلب 53453</string>
+    <string name="order_number">رقم الطلب</string>
     <string name="pricee">السعر:</string>
     <string name="quantity">الكمية:</string>
     <string name="privacy_and_terms">الخصوصية والشروط</string>

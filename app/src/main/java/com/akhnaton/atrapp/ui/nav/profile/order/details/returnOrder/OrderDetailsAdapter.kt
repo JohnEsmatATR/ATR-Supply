@@ -23,6 +23,15 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OrderDetailsModel) {
             val lang = SharedPreferenceHelper.language ?: "ar"
+            
+            // Calculate unit price
+            val unitPrice = if (item.quantity > 0) {
+                String.format("%.2f", item.price / item.quantity)
+            } else {
+                "0.00"
+            }
+            val unitPriceText = "$unitPrice EGP"
+            
             if (lang == "ar"){
                 binding.priceLayout.visibility = View.GONE
                 binding.textView2.visibility = View.GONE
@@ -30,6 +39,11 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
                 binding.pricerAr.visibility = View.VISIBLE
                 binding.priceTxtar.visibility= View.VISIBLE
                 binding.quantity.visibility = View.GONE
+                binding.unitPriceLabel.visibility = View.GONE
+                binding.unitPrice.visibility = View.GONE
+                binding.unitPriceLabelAr.visibility = View.VISIBLE
+                binding.unitPriceAr.visibility = View.VISIBLE
+                binding.unitPriceAr.text = unitPriceText
             }else{
                 binding.priceLayout.visibility = View.VISIBLE
                 binding.textView2.visibility = View.VISIBLE
@@ -38,6 +52,11 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
                 binding.quantityar.visibility = View.GONE
                 binding.priceTxtar.visibility= View.GONE
                 binding.quantity.visibility = View.VISIBLE
+                binding.unitPriceLabel.visibility = View.VISIBLE
+                binding.unitPrice.visibility = View.VISIBLE
+                binding.unitPriceLabelAr.visibility = View.GONE
+                binding.unitPriceAr.visibility = View.GONE
+                binding.unitPrice.text = unitPriceText
             }
             binding.data = item
             binding.imgProduct.load(item.img) {

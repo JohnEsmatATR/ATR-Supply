@@ -7,8 +7,6 @@ import android.view.View
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -57,25 +55,12 @@ class ProductsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupWindowInsets()
+        // Window insets are now handled automatically by BaseActivity
         init()
         onClick()
         observeAddToCart()
 
         currentPage = intent.getIntExtra("saved_page", 1)
-    }
-    
-    private fun setupWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(
-                view.paddingLeft,
-                systemBars.top,
-                view.paddingRight,
-                view.paddingBottom
-            )
-            insets
-        }
     }
 
 

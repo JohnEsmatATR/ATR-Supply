@@ -96,12 +96,18 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun postLogin() {
-        val email = binding.layoutEmail.editText?.text?.toString()?.trim()?.lowercase() ?: ""
+        val email = binding.layoutEmail.editText?.text?.toString()?.trim() ?: ""
         val password = binding.layoutPassword.editText?.text?.toString()?.trim() ?: ""
 
 
         if (email.isEmpty()) {
-            Toast.makeText(this, getString(R.string.error_password_empty), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter your email or phone number", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Validate email format if input contains @ (looks like email)
+        if (email.contains("@") && !isValidEmail(email.lowercase())) {
+            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -119,10 +125,13 @@ class LoginActivity : BaseActivity() {
             val fbToken = task.result ?: ""
             Log.d("FCM", "Token: $fbToken")
 
+            // Lowercase email only if it's an email (contains @), otherwise keep as is (phone number)
+            val loginIdentifier = if (email.contains("@")) email.lowercase() else email
+
             lifecycleScope.launch {
                 viewModel.loginIntent.send(
                     LoginIntent.Login(
-                        email,
+                        loginIdentifier,
                         password,
                         fbToken
                     )
@@ -131,5 +140,9 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}"
+        return email.matches(Regex(emailPattern))
+    }
 
 }

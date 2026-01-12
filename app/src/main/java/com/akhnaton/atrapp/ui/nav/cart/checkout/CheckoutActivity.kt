@@ -28,6 +28,7 @@ class CheckoutActivity : BaseActivity() {
     val checkoutViewModel: CheckoutViewModel by viewModels()
     private val paymentTypeViewModel: PayenTypeViewModel by viewModels()
     private lateinit var paymentAdapter: PaymentAdapter
+    private var selectedPaymentId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,11 @@ class CheckoutActivity : BaseActivity() {
         cartObserve()
         binding.imBack.setOnClickListener {
             finish()
+        }
+        binding.btnConfirmOrder.setOnClickListener {
+            selectedPaymentId?.let { paymentId ->
+                checkOut(paymentId)
+            }
         }
     }
 
@@ -107,9 +113,10 @@ class CheckoutActivity : BaseActivity() {
 
     private fun setupPaymentRecycler() {
         paymentAdapter = PaymentAdapter { selectedPayment, position ->
-            // Example: Store selected type in ViewModel or local variable
-            val paymentId= selectedPayment.paymentId
-            checkOut(paymentId)
+            // Store selected payment ID
+            selectedPaymentId = selectedPayment.paymentId
+            // Enable the confirm order button
+            binding.btnConfirmOrder.isEnabled = true
            // Toast.makeText(this, "Selected: ${selectedPayment.paymentName}", Toast.LENGTH_SHORT).show()
         }
 

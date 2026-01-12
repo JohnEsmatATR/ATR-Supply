@@ -23,13 +23,16 @@
         tools:targetApi="33">
         <activity
             android:name=".ui.auth.customer_code.login.LoginWithCodeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.customer_code.code.CustomerInvoiceCodeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.customer_code.otp.OTPCustomerCodeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.home.product.productDetails.BestSellerDetailsActivity"
             android:exported="false"
@@ -48,7 +51,8 @@
             android:name=".ui.nav.cart.checkout.paymentMethod.AddCardActivity"
             android:exported="false"
             android:label="@string/title_activity_add_fawry"
-            android:theme="@style/Theme.ATRAPP" />
+            android:theme="@style/Theme.ATRAPP"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.cart.checkout.paymentMethod.OrderNumberActivity"
             android:exported="false" />
@@ -86,7 +90,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.nav.profile.AccountDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.home.categories.CategoryActivity"
             android:exported="false" />
@@ -160,7 +165,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.nav.cart.addresses.AddNewAddressActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

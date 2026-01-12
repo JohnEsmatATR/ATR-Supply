@@ -127,6 +127,48 @@
                 app:layout_constraintTop_toTopOf="@+id/textView4"
                 tools:text=" 4" />
 
+            <TextView
+                android:id="@+id/unitPriceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unit Price :"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_4sdp"
+                app:layout_constraintStart_toStartOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <TextView
+                android:id="@+id/unitPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginStart="@dimen/_4sdp"
+                app:layout_constraintStart_toEndOf="@+id/unitPriceLabel"
+                app:layout_constraintTop_toTopOf="@+id/unitPriceLabel"
+                tools:text="86.25 EGP" />
+
+            <TextView
+                android:id="@+id/unitPriceLabelAr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="سعر الوحدة :"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_4sdp"
+                app:layout_constraintEnd_toEndOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/unitPriceAr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:layout_marginEnd="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="@+id/unitPriceLabelAr"
+                app:layout_constraintTop_toTopOf="@+id/unitPriceLabelAr"
+                tools:text="86.25 EGP" />
+
             <LinearLayout
                 android:id="@+id/priceLayout"
                 android:layout_width="wrap_content"
@@ -136,7 +178,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/cardImg"
                 app:layout_constraintStart_toEndOf="@+id/cardImg"
-                app:layout_constraintTop_toBottomOf="@id/textView2">
+                app:layout_constraintTop_toBottomOf="@+id/unitPriceLabel">
 
                 <TextView
                     android:id="@+id/priceTxt"

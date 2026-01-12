@@ -14,7 +14,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.akhnaton.atrapp.R
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -34,6 +36,139 @@ open class BaseActivity : AppCompatActivity() {
         // Set up window insets controller
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.isAppearanceLightStatusBars = true
+    }
+
+    override fun setContentView(layoutResID: Int) {
+        super.setContentView(layoutResID)
+        setupSafeAreaInsets()
+    }
+
+    override fun setContentView(view: View?) {
+        super.setContentView(view)
+        setupSafeAreaInsets()
+    }
+
+    override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {
+        super.setContentView(view, params)
+        setupSafeAreaInsets()
+    }
+
+    /**
+     * Automatically sets up window insets for common views (app_bar, bottom navigation, etc.)
+     * This ensures all screens respect the safe area
+     */
+    private fun setupSafeAreaInsets() {
+        val rootView = findViewById<View>(android.R.id.content)
+        if (rootView != null) {
+            // Post to ensure view hierarchy is ready and views are measured
+            rootView.post {
+                // Find and setup app_bar
+                val appBar = rootView.findViewById<View>(R.id.app_bar)
+                if (appBar != null) {
+                    setupWindowInsetsTop(appBar)
+                }
+
+                // Find and setup bottom navigation
+                val bottomNav = rootView.findViewById<View>(R.id.bottomNavigationView)
+                if (bottomNav != null) {
+                    setupWindowInsetsBottom(bottomNav)
+                }
+
+                // Find and setup RecyclerViews to respect bottom navigation bar
+                setupRecyclerViewInsets(rootView)
+                
+                // Find and setup NestedScrollViews to respect bottom navigation bar
+                setupScrollViewInsets(rootView)
+                
+                // Force apply window insets to ensure they're processed
+                ViewCompat.requestApplyInsets(rootView)
+            }
+        }
+    }
+
+    /**
+     * Recursively finds all RecyclerViews and applies bottom insets
+     */
+    private fun setupRecyclerViewInsets(rootView: View) {
+        val recyclerViews = mutableListOf<androidx.recyclerview.widget.RecyclerView>()
+        findViewsByType(rootView, androidx.recyclerview.widget.RecyclerView::class.java, recyclerViews)
+        
+        recyclerViews.forEach { recyclerView ->
+            // Store original padding values before setting listener
+            val originalPaddingLeft = recyclerView.paddingLeft
+            val originalPaddingTop = recyclerView.paddingTop
+            val originalPaddingRight = recyclerView.paddingRight
+            val originalPaddingBottom = recyclerView.paddingBottom
+            
+            // Ensure padding is respected
+            recyclerView.clipToPadding = false
+            
+            ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { view, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                // Use original padding values, or current if original was 0
+                val paddingLeft = originalPaddingLeft.takeIf { it > 0 } ?: view.paddingLeft
+                val paddingTop = originalPaddingTop.takeIf { it > 0 } ?: view.paddingTop
+                val paddingRight = originalPaddingRight.takeIf { it > 0 } ?: view.paddingRight
+                
+                view.setPadding(
+                    paddingLeft,
+                    paddingTop,
+                    paddingRight,
+                    systemBars.bottom
+                )
+                insets
+            }
+        }
+    }
+
+    /**
+     * Recursively finds all NestedScrollViews and ScrollViews and applies bottom insets
+     */
+    private fun setupScrollViewInsets(rootView: View) {
+        val nestedScrollViews = mutableListOf<androidx.core.widget.NestedScrollView>()
+        val scrollViews = mutableListOf<android.widget.ScrollView>()
+        findViewsByType(rootView, androidx.core.widget.NestedScrollView::class.java, nestedScrollViews)
+        findViewsByType(rootView, android.widget.ScrollView::class.java, scrollViews)
+        
+        nestedScrollViews.forEach { scrollView ->
+            ViewCompat.setOnApplyWindowInsetsListener(scrollView) { view, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(
+                    view.paddingLeft,
+                    view.paddingTop,
+                    view.paddingRight,
+                    systemBars.bottom
+                )
+                insets
+            }
+        }
+        
+        scrollViews.forEach { scrollView ->
+            ViewCompat.setOnApplyWindowInsetsListener(scrollView) { view, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(
+                    view.paddingLeft,
+                    view.paddingTop,
+                    view.paddingRight,
+                    systemBars.bottom
+                )
+                insets
+            }
+        }
+    }
+
+    /**
+     * Recursively finds all views of a specific type
+     */
+    private fun <T : View> findViewsByType(view: View, type: Class<T>, result: MutableList<T>) {
+        if (type.isInstance(view)) {
+            result.add(type.cast(view)!!)
+        }
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                findViewsByType(view.getChildAt(i), type, result)
+            }
+        }
     }
 
 
@@ -127,7 +262,54 @@ open class BaseActivity : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
+    /**
+     * Helper function to apply window insets to a view (typically app_bar)
+     * This ensures the view respects the status bar and safe area at the top
+     */
+    protected fun setupWindowInsetsTop(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(
+                v.paddingLeft,
+                systemBars.top,
+                v.paddingRight,
+                v.paddingBottom
+            )
+            insets
+        }
+    }
 
+    /**
+     * Helper function to apply window insets to a view at the bottom
+     * This ensures the view respects the navigation bar and safe area at the bottom
+     */
+    protected fun setupWindowInsetsBottom(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val layoutParams = v.layoutParams
+            if (layoutParams is ViewGroup.MarginLayoutParams) {
+                layoutParams.bottomMargin = systemBars.bottom
+                v.layoutParams = layoutParams
+            }
+            insets
+        }
+    }
+
+    /**
+     * Helper function to apply window insets to both top and bottom of a view
+     */
+    protected fun setupWindowInsets(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(
+                v.paddingLeft,
+                systemBars.top,
+                v.paddingRight,
+                systemBars.bottom
+            )
+            insets
+        }
+    }
 
     override fun attachBaseContext(newBase: Context) {
         SharedPreferenceHelper.init(newBase)

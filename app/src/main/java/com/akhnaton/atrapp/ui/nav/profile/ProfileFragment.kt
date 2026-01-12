@@ -36,6 +36,19 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        // Display username
+        val user = SharedPreferenceHelper.userObj
+        if (user != null) {
+            val userName = "${user.first_name} ${user.last_name}".trim()
+            if (userName.isNotEmpty()) {
+                binding.txtUserName.text = userName
+            } else {
+                // Fallback to email or phone if name is empty
+                binding.txtUserName.text = user.email.takeIf { it.isNotEmpty() } ?: user.phone
+            }
+        }
+        
         val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
             ?: Locale.getDefault().language
 

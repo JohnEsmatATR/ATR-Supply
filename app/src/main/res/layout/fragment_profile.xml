@@ -40,6 +40,19 @@
             app:layout_constraintTop_toBottomOf="@+id/profileTxt"
             app:shapeAppearanceOverlay="@style/circleImageView" />
 
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userImg" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/accountLayout"
             android:layout_width="match_parent"
@@ -50,7 +63,7 @@
             android:layoutDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userImg">
+            app:layout_constraintTop_toBottomOf="@+id/txtUserName">
 
             <ImageView
                 android:id="@+id/icProfile"

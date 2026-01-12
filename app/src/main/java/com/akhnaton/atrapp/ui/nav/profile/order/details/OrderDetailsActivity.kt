@@ -46,7 +46,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
 
         val orgSysId = intent.getStringExtra("orgSysId")?:""
 
-        binding.orderNumber.text = "Order Number ${orgSysId}"
+        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${orgSysId}"
 
         observe()
         getOrderDetails(orgSysId)

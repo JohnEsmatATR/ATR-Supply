@@ -34,6 +34,9 @@ class LoginWithCodeActivity : BaseActivity() {
         invoiceCode = intent.getStringExtra("invoice_code").toString()
         phoneNumber = intent.getStringExtra("phone_number").toString()
 
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
         lifecycleScope.launch {
             viewModel.state.collectLatest { state ->
@@ -80,6 +83,10 @@ class LoginWithCodeActivity : BaseActivity() {
                     Toast.makeText(this, getString(R.string.error_email), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+                !isValidEmail(email) -> {
+                    Toast.makeText(this, "Please enter a valid email address.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 password.isEmpty() || confirmPassword.isEmpty() -> {
                     Toast.makeText(this, getString(R.string.error_password_empty), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
@@ -123,9 +130,12 @@ class LoginWithCodeActivity : BaseActivity() {
                         )
                     )
                 }
+                }
             }
         }
 
-
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}"
+        return email.matches(Regex(emailPattern))
     }
 }

@@ -76,6 +76,7 @@
     <string name="cash_on_delivery">Cash on delivery</string>
     <string name="fawry">Fawry</string>
     <string name="confirm">Confirm</string>
+    <string name="confirm_order">Confirm Order</string>
     <string name="choose_area">Choose area</string>
     <string name="choose_city">Choose city</string>
     <string name="add">Add</string>
@@ -233,7 +234,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="choose_your_language">Choose Your Language</string>
     <string name="order_number_53453">Order Number 53453</string>
     <string name="price">Price:</string>
-    <string name="order_number">Order Number 53453</string>
+    <string name="order_number">Order Number</string>
     <string name="pricee">Price:</string>
     <string name="quantity">Quantity:</string>
     <string name="privacy_and_terms">Privacy and Terms</string>

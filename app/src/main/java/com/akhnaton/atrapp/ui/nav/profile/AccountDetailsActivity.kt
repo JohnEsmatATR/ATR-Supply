@@ -31,15 +31,21 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         binding.emailED.isEnabled = false
         binding.addressED.isEnabled = false
 
+        // Ensure phone layout is visible
+        binding.phoneLayout.visibility = View.VISIBLE
 
-        val fullName = "${SharedPreferenceHelper.userObj!!.first_name} ${SharedPreferenceHelper.userObj!!.last_name}"
-        val phone = "${SharedPreferenceHelper.userObj!!.phone}"
-        val email = "${SharedPreferenceHelper!!.userObj!!.email}"
-        val address = "${SharedPreferenceHelper!!.userObj!!.address.ADDRESS}"
-        binding.addressED.setText(address)
-        binding.nameED.setText(fullName)
-        binding.phoneED.setText(phone)
-        binding.emailED.setText(email)
+        val user = SharedPreferenceHelper.userObj
+        if (user != null) {
+            val fullName = "${user.first_name} ${user.last_name}".trim()
+            val phone = user.phone?.takeIf { it.isNotEmpty() } ?: ""
+            val email = user.email?.takeIf { it.isNotEmpty() } ?: ""
+            val address = user.address?.ADDRESS?.takeIf { it.isNotEmpty() } ?: ""
+            
+            binding.nameED.setText(fullName.ifEmpty { "-" })
+            binding.phoneED.setText(phone.ifEmpty { "-" })
+            binding.emailED.setText(email.ifEmpty { "-" })
+            binding.addressED.setText(address.ifEmpty { "-" })
+        }
     }
 
     override fun onClick(v: View) {

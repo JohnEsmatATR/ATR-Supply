@@ -21,13 +21,19 @@
 
 
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="@dimen/_25sdp"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/map">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
         <TextView
@@ -66,9 +72,8 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <ImageView
         android:id="@+id/marker"

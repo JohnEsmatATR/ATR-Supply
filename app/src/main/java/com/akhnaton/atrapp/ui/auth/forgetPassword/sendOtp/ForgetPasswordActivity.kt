@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.auth.forgetPassword.sendOtp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.sendOtp.SendOtpIntent
@@ -35,10 +36,26 @@ class ForgetPasswordActivity : BaseActivity() {
             finish()
         }
         binding.btnNext.setOnClickListener {
+            clearErrors()
             if (isVerify()) {
                 fetchSendOtp()
             }
         }
+        
+        // Clear error when user starts typing
+        binding.txtEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.layoutEmail.error = null
+            }
+        }
+        
+        binding.txtEmail.setOnClickListener {
+            binding.layoutEmail.error = null
+        }
+    }
+    
+    private fun clearErrors() {
+        binding.layoutEmail.error = null
     }
 
     private fun observeSendOtp() {
@@ -79,18 +96,53 @@ class ForgetPasswordActivity : BaseActivity() {
     }
 
     private fun fetchSendOtp() {
+        val email = binding.txtEmail.text.toString().trim()
+        
+        // Lowercase email only if it's an email (contains @), otherwise keep as is (phone number)
+        val loginIdentifier = if (email.contains("@")) email.lowercase() else email
+        
         lifecycleScope.launch {
             viewModel.sendOtpIntent.send(
                 SendOtpIntent.SendOtp(
-                    binding.layoutEmail.editText!!.text.toString().lowercase().trim(),
+                    loginIdentifier
                 )
             )
         }
-
     }
 
     private fun isVerify(): Boolean {
-        val email = binding.txtEmail.text.toString()
-        return email.isNotEmpty()
+        val email = binding.txtEmail.text.toString().trim()
+        
+        if (email.isEmpty()) {
+            binding.layoutEmail.error = "Please enter your email or phone number"
+            return false
+        }
+        
+        // Validate email format if input contains @ (looks like email)
+        if (email.contains("@")) {
+            if (!isValidEmail(email.lowercase())) {
+                binding.layoutEmail.error = "Please enter a valid email address"
+                return false
+            }
+        } else {
+            // Validate phone number if it doesn't contain @ (looks like phone number)
+            if (!isValidPhoneNumber(email)) {
+                binding.layoutEmail.error = "Please enter a valid phone number"
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    private fun isValidEmail(email: String): Boolean {
+        // More comprehensive email validation pattern
+        val emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        return email.matches(Regex(emailPattern, RegexOption.IGNORE_CASE))
+    }
+    
+    private fun isValidPhoneNumber(phone: String): Boolean {
+        // Phone number should be digits only and typically 10-15 digits
+        return phone.all { it.isDigit() } && phone.length >= 10 && phone.length <= 15
     }
 }
