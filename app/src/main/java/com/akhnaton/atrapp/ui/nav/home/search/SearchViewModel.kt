@@ -19,6 +19,9 @@ class SearchViewModel : ViewModel() {
 
     val state: StateFlow<SearchStatus> get() = _state
 
+//    var currentPage = 1
+    private val limit = 10
+
     init {
         observe()
     }
@@ -28,9 +31,11 @@ class SearchViewModel : ViewModel() {
             searchIntent.consumeAsFlow().collect {
                 when (it) {
                     is SearchIntent.SearchProduct -> searchProduct(
-                        it.word,it.categoryId , it.categories
+                        it.word,
+                        it.categoryId,
+                        it.categories,
+                        it.page
                     )
-
 
                 }
             }
@@ -39,24 +44,25 @@ class SearchViewModel : ViewModel() {
 
 
     private fun searchProduct(
-        word:String?="",
-        categoryId : String,
-        categories: Int
+        word: String?,
+        categoryId: String,
+        categories: Int,
+        page: Int
     ) {
         viewModelScope.launch {
             _state.value = SearchStatus.Loading
-            _state.value = try {
-                val response = HomeRepository().searchProduct(word,categoryId, categories)
-                if (response.code() == 200) {
-                    SearchStatus.SearchProduct(response.body()!!)
-                } else {
-                    SearchStatus.Error(response.body()!!.message)
-                }
-
+            try {
+                val response = HomeRepository().searchProduct(
+                    word,
+                    categoryId,
+                    categories,
+                    page,
+                    limit
+                )
+                _state.value = SearchStatus.SearchProduct(response.body()!!)
             } catch (e: Exception) {
-                SearchStatus.Error(e.message)
+                _state.value = SearchStatus.Error(e.message)
             }
-
         }
     }
 

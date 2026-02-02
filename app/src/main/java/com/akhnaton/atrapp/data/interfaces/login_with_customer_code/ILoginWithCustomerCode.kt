@@ -15,7 +15,8 @@ interface ILoginWithCustomerCode {
     @FormUrlEncoded
     suspend fun sentOtp(
         @Field("customer_code") code : String,
-        @Field("phone_number") phone : String
+        @Field("phone_number") phone : String,
+        @Field("email") email : String
     ): Response<BaseModel<Any>>
 
     @POST(ConstantLinks.VALIDATE_OTP)

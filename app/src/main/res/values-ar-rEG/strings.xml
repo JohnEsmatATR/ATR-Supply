@@ -230,8 +230,8 @@
     <string name="enter">دخال</string>
     <string name="register">تسجيل</string>
     <string name="verification">تحقق</string>
-    <string name="verificationcode">تم ارسال رقم التحقق الي الرقم</string>
-    <string name="find_code_in_invoice">عرض رقم الفتوره</string>
+    <string name="verificationcode">تم ارسال رقم التحقق الي البريد الالكتروني</string>
+    <string name="find_code_in_invoice">عرض كود العميل</string>
     <string name="error_first_name">ادخل الاسم الأول</string>
     <string name="error_last_name">ادخل الاسم الأخير</string>
     <string name="error_email">ادخل البريد الإلكتروني</string>
@@ -244,4 +244,5 @@
     <string name="address_abdeen">عابدين، القاهرة، مصر</string>
     <string name="the_request_was_created_successfully">تم إنشاء الطلب بنجاح</string>
     <string name="your_order_number_s">رقم/أرقام الطلب الخاصة بك:</string>
+    <string name="currency">ج.م</string>
 </resources>

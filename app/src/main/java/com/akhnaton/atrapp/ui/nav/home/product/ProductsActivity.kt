@@ -45,6 +45,7 @@ class ProductsActivity : BaseActivity() {
     private var isLoading = false
     private var isLastPage = false
     private var categoryId: Int = 0
+
     // this just flag not pagination values
     private var currentPage = 1
     private var pageSize = 10
@@ -66,7 +67,7 @@ class ProductsActivity : BaseActivity() {
 
     private fun init() {
         flag = intent.getStringExtra("flag") ?: ""
-        val categoryId: Int = intent.getIntExtra("categoryId", 0)
+        categoryId = intent.getIntExtra("categoryId", 0)
 
 
         binding.txtSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -75,11 +76,22 @@ class ProductsActivity : BaseActivity() {
                 searchJob?.cancel()
 
                 searchJob = lifecycleScope.launch {
-                    delay(1000)
+                    delay(500)
+
                     if (qString.isNotEmpty()) {
+                        // 🔍 New search
+                        isSearchMode = true
+                        currentPage = 1
+                        isLastPage = false
+
+                        if (::adapter.isInitialized) {
+                            adapter.clear()
+                        }
+
                         searchProduct(qString, flag, categoryId)
-                    }else{
-                        getProductsBasedOnCategory(categoryId, category = flag)
+                    } else {
+                        // ❌ Search cleared
+                        resetToNormalProducts()
                     }
                 }
 
@@ -88,8 +100,9 @@ class ProductsActivity : BaseActivity() {
 
             override fun onQueryTextSubmit(qString: String): Boolean {
                 if (qString.isNotEmpty()) {
-                    searchProduct(qString, flag, categoryId)
-                }else{
+//                    searchProduct(qString, flag, categoryId)
+                    startNewSearch(qString)
+                } else {
                     getProductsBasedOnCategory(categoryId, category = flag)
                 }
                 return true
@@ -107,6 +120,7 @@ class ProductsActivity : BaseActivity() {
         Log.d("TAG", "init categoryId: ${categoryId}")
         getProductsBasedOnCategory(categoryId, category = flag)
     }
+
     private fun searchObserve() {
         lifecycleScope.launch {
             searchViewModel.state.collect {
@@ -115,7 +129,7 @@ class ProductsActivity : BaseActivity() {
                     is SearchStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         showProgressDialog(binding.progressLoading)
-                        binding.txtNoProducts.visibility=View.GONE
+                        binding.txtNoProducts.visibility = View.GONE
                     }
 
                     is SearchStatus.SearchProduct -> {
@@ -131,7 +145,6 @@ class ProductsActivity : BaseActivity() {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                                 binding.recycler.visibility = View.GONE
                             }
-
 
 
                         } else if (it.data.status == 401) {
@@ -157,15 +170,20 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
-    private fun searchProduct(word: String, orderType : String , category: Int) {
+    private fun searchProduct(word: String, orderType: String, category: Int) {
         lifecycleScope.launch {
             searchViewModel.searchIntent.send(
-                    SearchIntent.SearchProduct(word,orderType, category)
-
-
+                SearchIntent.SearchProduct(
+                    word,
+                    orderType,
+                    category,
+                    currentPage
+                )
             )
         }
     }
+
+
     private fun onClick() {
         binding.btnBack.setOnClickListener {
             finish()
@@ -201,7 +219,6 @@ class ProductsActivity : BaseActivity() {
     }
 
 
-
     private fun productsObserve() {
         lifecycleScope.launch {
             viewModel.state.collect { state ->
@@ -210,12 +227,14 @@ class ProductsActivity : BaseActivity() {
                         Log.d(Common.KeroDebug, "Pagination Log: State = Idle")
                         binding.txtNoProducts.visibility = View.GONE
                     }
+
                     is ProductsStatus.Loading -> {
                         isLoading = true
                         Log.d(Common.KeroDebug, "Pagination Log: Loading page $currentPage")
                         showProgressDialog(binding.progressLoading)
                         binding.txtNoProducts.visibility = View.GONE
                     }
+
                     is ProductsStatus.GetProducts -> {
                         isLoading = false
                         hideProgressDialog(binding.progressLoading)
@@ -252,7 +271,7 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
-    private fun addProductToFavorite(productId: Int, add: Boolean, ) {
+    private fun addProductToFavorite(productId: Int, add: Boolean) {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(
                 FavoriteIntent.AddProductToFavourites(
@@ -264,7 +283,8 @@ class ProductsActivity : BaseActivity() {
             )
         }
     }
-    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+
+    private fun deleteProductToFavorite(productId: Int, add: Boolean) {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(
                 FavoriteIntent.DeleteFromFavourites(
@@ -278,7 +298,7 @@ class ProductsActivity : BaseActivity() {
     }
 
 
-    private fun getProductsBasedOnCategory(categoryId: Int, page: Int = 1,category: String) {
+    private fun getProductsBasedOnCategory(categoryId: Int, page: Int = 1, category: String) {
         lifecycleScope.launch {
             viewModel.homeIntent.send(
                 ProductsIntent.GetProducts(
@@ -289,8 +309,6 @@ class ProductsActivity : BaseActivity() {
             )
         }
     }
-
-
 
 
     private fun handleAddToCart(product: ProductModel) {
@@ -326,11 +344,12 @@ class ProductsActivity : BaseActivity() {
             val layoutManager = GridLayoutManager(this, 2)
             adapter = ProductAdapter(
                 onClick = { product, position, sharedView, transitionName ->
-                    val intent = Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
-                        putExtra("flag", flag)
-                        putExtra("product", product)
-                        putExtra("transitionName", transitionName)
-                    }
+                    val intent =
+                        Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
+                            putExtra("flag", flag)
+                            putExtra("product", product)
+                            putExtra("transitionName", transitionName)
+                        }
 
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ProductsActivity,
@@ -352,26 +371,44 @@ class ProductsActivity : BaseActivity() {
                 }
             )
 
-            adapter.setData(list, false, flag)
+//            adapter.setData(list, false, flag)
+
+//            adapter.addData(list)
+            if (currentPage == 1) {
+                adapter.setData(list, false, flag)
+            } else {
+                adapter.addData(list)
+            }
+            if (list.size < pageSize) {
+                isLastPage = true
+            }
+
             binding.recycler.layoutManager = layoutManager
             binding.recycler.adapter = adapter
 
-            if (!isSearchMode) {
-                if (list.size < 70) {
-                    isLastPage = true
-                }
+            if (list.size < pageSize) {
+                isLastPage = true
+            }
 
-                binding.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        if (dy > 0 && !isSearchMode) {
-                            val visibleItemCount = layoutManager.childCount
-                            val totalItemCount = layoutManager.itemCount
-                            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            binding.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) {
+                        val visibleItemCount = layoutManager.childCount
+                        val totalItemCount = layoutManager.itemCount
+                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-                            if (!isLoading && !isLastPage) {
-                                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 3) {
-                                    Log.d(Common.KeroDebug, "Pagination Log: Triggering load for page $currentPage")
-                                    lifecycleScope.launch {
+                        if (!isLoading && !isLastPage) {
+                            if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 3) {
+                                Log.d(
+                                    Common.KeroDebug,
+                                    "Pagination Log: Triggering load for page $currentPage"
+                                )
+                                lifecycleScope.launch {
+                                    currentPage++
+
+                                    if (isSearchMode) {
+                                        searchProduct(searchWord, flag, categoryId)
+                                    } else {
                                         viewModel.homeIntent.send(
                                             ProductsIntent.GetProducts(
                                                 categoryId,
@@ -380,24 +417,74 @@ class ProductsActivity : BaseActivity() {
                                             )
                                         )
                                     }
+
                                 }
                             }
                         }
                     }
-                })
-            }
+                }
+            })
+
 
         } else {
             if (isSearchMode) {
 
-                adapter.setData(list, false, flag)
+//                adapter.setData(list, false, flag)
+//                adapter.addData(list)
+                adapter.addData(list)
+                if (currentPage == 1) {
+                    adapter.setData(list, false, flag)
+                } else {
+                    adapter.addData(list)
+                }
+                if (list.size < pageSize) {
+                    isLastPage = true
+                }
             } else {
 
+//                adapter.addData(list)
                 adapter.addData(list)
-                if (list.size < 70) {
+                if (currentPage == 1) {
+                    adapter.setData(list, false, flag)
+                } else {
+                    adapter.addData(list)
+                }
+                if (list.size < pageSize) {
+                    isLastPage = true
+                }
+                if (list.size < pageSize) {
                     isLastPage = true
                 }
             }
         }
     }
+
+    private fun startNewSearch(word: String) {
+        isSearchMode = true
+        currentPage = 1
+        isLastPage = false
+        products.clear()
+        adapter.clear()
+
+        searchProduct(word, flag, categoryId)
+    }
+
+    private fun resetToNormalProducts() {
+        isSearchMode = false
+        currentPage = 1
+        isLastPage = false
+
+        products.clear()
+
+        if (::adapter.isInitialized) {
+            adapter.clear()
+        }
+
+        getProductsBasedOnCategory(
+            categoryId = categoryId,
+            page = 1,
+            category = flag
+        )
+    }
+
 }

@@ -42,7 +42,9 @@ interface IProducts {
     suspend fun searchProduct(
         @Field("search") search: String? = "",
         @Field("order_type") categoryId: String,
-        @Field("category_id") categories: Int
+        @Field("category_id") categories: Int,
+        @Field("page") page: Int,
+        @Field("per_page") limit: Int
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded

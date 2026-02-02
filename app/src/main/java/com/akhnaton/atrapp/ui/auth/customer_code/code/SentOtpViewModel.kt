@@ -26,17 +26,17 @@ class SentOtpViewModel() : ViewModel() {
         viewModelScope.launch {
             otpIntent.consumeAsFlow().collect { intent ->
                 when (intent) {
-                    is SentOtpIntent.SentCode -> sendOtp(intent.code, intent.phone)
+                    is SentOtpIntent.SentCode -> sendOtp(intent.code, intent.phone, intent.email)
                 }
             }
         }
     }
 
-    private fun sendOtp(code: String, phone: String) {
+    private fun sendOtp(code: String, phone: String, email: String) {
         viewModelScope.launch {
             _state.value = SentOtpState.Loading
             try {
-                val response = SentOtpRepository().sentOtp(code, phone)
+                val response = SentOtpRepository().sentOtp(code, phone, email)
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body?.status == 200) {

@@ -48,13 +48,11 @@ class HomeFragment : BaseFragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
 
-
         setupRecycler()
         observeViewModel()
         setPlannerView()
         getAddress()
         observeAddress()
-
 
         lifecycleScope.launch {
             categoryViewModel.categoryIntent.send(CategoryIntent.GetCategories)
@@ -70,7 +68,6 @@ class HomeFragment : BaseFragment() {
 
 
     private fun setupRecycler() {
-
 
         orderTypeAdapter = OrderTypeAdapter { category, orderTypeIndex, _ ->
             val intent = Intent(requireContext(), ProductsActivity::class.java)

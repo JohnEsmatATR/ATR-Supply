@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.model.CartResponse
+import com.akhnaton.atrapp.data.model.TotalCartsData
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
@@ -42,6 +43,7 @@ class CartFragment : BaseFragment() {
     private val viewModel: AddressesViewModel by viewModels()
 
     private var cartData: List<CartResponse> = emptyList()
+    private var cartSummary: TotalCartsData = TotalCartsData(cartTotal = 0.0, totalDiscount = 0.0)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +73,7 @@ class CartFragment : BaseFragment() {
         super.onResume()
         initCart()
     }
+
     private fun observeAddress() {
         lifecycleScope.launch {
             viewModel.state.collect {
@@ -93,7 +96,7 @@ class CartFragment : BaseFragment() {
                             addresses.forEach { address ->
                                 if (address.prime == 1) {
                                     Log.d("DEBUG_ADDRESS", "Prime address found: $address")
-                                    binding.defaultAddress.text=address.TITLE
+                                    binding.defaultAddress.text = address.TITLE
                                 }
                             }
 
@@ -109,7 +112,6 @@ class CartFragment : BaseFragment() {
                     }
 
 
-
                     is AddressStatus.MakeAddressPrime -> {}
 
                     is AddressStatus.Error -> {
@@ -120,6 +122,7 @@ class CartFragment : BaseFragment() {
             }
         }
     }
+
     private fun getAddress() {
         lifecycleScope.launch {
             viewModel.addressIntent.send(
@@ -152,9 +155,15 @@ class CartFragment : BaseFragment() {
                     is CartStatus.Loading -> {
                         showProgressDialog(binding.progressLoading)
                     }
+
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
                         cartData = state.data.data.firstOrNull()?.carts ?: emptyList()
+                        cartSummary =
+                            state.data.data.firstOrNull()?.totalCartsData ?: TotalCartsData(
+                                0.0,
+                                0.0
+                            )
                         if (cartData.isNotEmpty()) {
                             setupParentRecycler(cartData)
                             updateCartSummaryUI()
@@ -162,6 +171,7 @@ class CartFragment : BaseFragment() {
                             showEmptyState()
                         }
                     }
+
                     is CartStatus.Error -> {
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
                         showToastSnack(state.error.toString(), true)
@@ -180,11 +190,13 @@ class CartFragment : BaseFragment() {
                         getMyCart()
                         hideProgressDialog(binding.progressLoading)
                     }
+
                     is AddToCartStatus.Error -> {
                         Log.e(Common.KeroDebug, "Cart Error: ${state.error}")
                         showToastSnack(state.error.toString(), true)
                         hideProgressDialog(binding.progressLoading)
                     }
+
                     AddToCartStatus.Idle -> hideProgressDialog(binding.progressLoading)
                     AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
                 }
@@ -205,13 +217,13 @@ class CartFragment : BaseFragment() {
             onPlusClick = { product, _, quantity ->
                 lifecycleScope.launch {
                     addProductToCart(product.id, quantity, product)
-                //    updateCartSummaryUI()
+                    //    updateCartSummaryUI()
                 }
             },
             onMinusClick = { product, _, quantity ->
                 lifecycleScope.launch {
                     addProductToCart(product.id, quantity, product)
-                  //  updateCartSummaryUI()
+                    //  updateCartSummaryUI()
                 }
             },
             onDeleteClick = { product, _ ->
@@ -239,16 +251,18 @@ class CartFragment : BaseFragment() {
         }
 
         val allProducts = cartData.flatMap { it.items.products }
-        val totals = cartViewModel.calculateCartTotals(allProducts)
-        if(appLocaleCode == "ar"){
-            binding.txtItemTotal.gravity= Gravity.START
-            binding.txtDiscount.gravity= Gravity.START
-            binding.txtGrandTotal.gravity= Gravity.START
+//        val totals = cartViewModel.calculateCartTotals(allProducts)
+        val totals = cartSummary
+        val totalBeforeDiscount = totals.cartTotal + totals.totalDiscount
+        if (appLocaleCode == "ar") {
+            binding.txtItemTotal.gravity = Gravity.START
+            binding.txtDiscount.gravity = Gravity.START
+            binding.txtGrandTotal.gravity = Gravity.START
         }
 
-        binding.txtItemTotal.text = formatNumber(totals.totalBeforeDiscount, appLocale)
-        binding.txtDiscount.text = formatNumber(totals.discount, appLocale)
-        binding.txtGrandTotal.text = formatNumber(totals.grandTotal, appLocale)
+        binding.txtItemTotal.text = formatNumber(totalBeforeDiscount, appLocale)
+        binding.txtDiscount.text = formatNumber(totals.totalDiscount, appLocale)
+        binding.txtGrandTotal.text = formatNumber(totals.cartTotal, appLocale)
     }
 
 
@@ -258,8 +272,6 @@ class CartFragment : BaseFragment() {
         formatter.minimumFractionDigits = 1
         return formatter.format(value)
     }
-
-
 
 
     private fun deleteProductFromCart(product: CartProduct) {
@@ -304,7 +316,6 @@ class CartFragment : BaseFragment() {
         binding.txtNoProducts.visibility = View.VISIBLE
         updateCartSummaryUI()
     }
-
 
 
 }

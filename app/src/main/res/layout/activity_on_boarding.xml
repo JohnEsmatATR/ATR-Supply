@@ -22,8 +22,8 @@
         android:id="@+id/im_logo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginHorizontal="80dp"
+        android:layout_marginTop="50dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_logo_white"
         android:visibility="gone"
@@ -82,27 +82,30 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:backgroundTint="@null" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/goToCustomerCodeLogin"
                 android:layout_width="match_parent"
-                app:strokeWidth="1dp"
-                android:visibility="visible"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:clickable="true"
-                app:strokeColor="@color/orange"
-                android:backgroundTint="@android:color/transparent"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_marginHorizontal="@dimen/_9sdp"
-                android:layout_height="@dimen/_40sdp">
+                android:layout_marginTop="@dimen/_10sdp"
+                android:backgroundTint="@android:color/transparent"
+                android:clickable="true"
+                android:visibility="visible"
+                app:strokeColor="@color/orange"
+                app:strokeWidth="1dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <TextView
-                        android:text="@string/login_with_customer_code"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:gravity="center"
+                        android:text="@string/login_with_customer_code"
                         android:textColor="@color/orange"
-                        android:textStyle="bold"
-                        android:layout_height="match_parent"/>
+                        android:textStyle="bold" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -112,8 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
-                android:visibility="gone"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:weightSum="11">
 
                 <View
@@ -149,8 +152,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

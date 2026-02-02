@@ -7,4 +7,3 @@ data class CheckoutResponse(
     val orderNumbers: List<String>,
     val msg : String
 )
-

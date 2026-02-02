@@ -2,6 +2,7 @@ package com.akhnaton.atrapp.ui.auth.customer_code.code
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -41,24 +42,26 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
         binding.btnEnterInvoice.setOnClickListener {
             val invoiceCode = binding.txtCustomerInvoiceCode.text.toString().trim()
             val phoneNumber = binding.txtCustomerPhoneNumber.text.toString().trim()
+            val email = binding.txtCustomerEmail.text.toString().trim()
 
-            if (!validateInputs(invoiceCode, phoneNumber)) return@setOnClickListener
+            if (!validateInputs(invoiceCode, phoneNumber, email)) return@setOnClickListener
 
+            binding.btnEnterInvoice.setEnabled(false)
             lifecycleScope.launch {
                 viewModel.otpIntent.send(
                     SentOtpIntent.SentCode(
                         code = invoiceCode,
-                        phone = phoneNumber
+                        phone = phoneNumber,
+                        email = email
                     )
                 )
             }
         }
 
 
-
     }
 
-    private fun validateInputs(invoiceCode: String, phone: String): Boolean {
+    private fun validateInputs(invoiceCode: String, phone: String, email: String): Boolean {
         return when {
             invoiceCode.isEmpty() -> {
                 binding.txtCustomerInvoiceCode.error = "ادخل كود العميل"
@@ -75,25 +78,33 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                 false
             }
 
+            email.isEmpty() -> {
+                binding.txtCustomerEmail.error = "ادخل البريد الالكتروني"
+                false
+            }
+
             else -> true
         }
     }
-    private fun observer(){
+
+    private fun observer() {
         lifecycleScope.launch {
             viewModel.state.collect { state ->
                 when (state) {
                     is SentOtpState.Idle -> Unit
                     is SentOtpState.Loading -> {
-                            showProgressDialog(binding.progressLoading)
+                        showProgressDialog(binding.progressLoading)
 
                     }
+
                     is SentOtpState.Success -> {
                         hideProgressDialog(binding.progressLoading)
-                        if (state.state == 200){
+                        if (state.state == 200) {
                             showToastSnack(state.message, false)
                             delay(500)
                             val invoiceCode = binding.txtCustomerInvoiceCode.text.toString().trim()
                             val phoneNumber = binding.txtCustomerPhoneNumber.text.toString().trim()
+                            val email = binding.txtCustomerEmail.text.toString().trim()
 
                             val intent = Intent(
                                 this@CustomerInvoiceCodeActivity,
@@ -101,10 +112,11 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                             ).apply {
                                 putExtra("invoice_code", invoiceCode)
                                 putExtra("phone_number", phoneNumber)
+                                putExtra("email", email)
                             }
 
                             startActivity(intent)
-                        }else{
+                        } else {
                             showToastSnack(state.message, false)
                         }
 
@@ -112,13 +124,14 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
 
 
                     is SentOtpState.Error -> {
-                            hideProgressDialog(binding.progressLoading)
+                        hideProgressDialog(binding.progressLoading)
                         showToastSnack(state.error, true)
                     }
                 }
             }
         }
     }
+
     private fun observerAppSetting() {
         lifecycleScope.launch {
             appSettingViewModel.state.collect { state ->
@@ -130,7 +143,7 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
 
                     is AppSettingState.Success -> {
                         hideProgressDialog(binding.progressLoading)
-                        if (state.data.status ==200 ){
+                        if (state.data.status == 200) {
                             val imageUrl = state.data.data?.customer_code_help_image
                             if (!imageUrl.isNullOrEmpty()) {
 
@@ -138,7 +151,7 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                                     .load(imageUrl)
                                     .into(binding.invoiceImage)
                             }
-                        }else{
+                        } else {
                             showToastSnack(state.data.message, true)
                         }
 

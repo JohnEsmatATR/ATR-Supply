@@ -164,6 +164,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="12dp"
                         android:hint="@string/email"
+                        android:enabled="false"
                         android:inputType="textEmailAddress"
                         android:textSize="14sp" />
 

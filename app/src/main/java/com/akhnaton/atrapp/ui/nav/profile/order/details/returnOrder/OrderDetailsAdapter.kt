@@ -9,6 +9,8 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
 import com.akhnaton.atrapp.databinding.LayoutOrderItemBinding
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.util.formatPrice
+import java.util.Locale
 
 class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>() {
 
@@ -22,35 +24,37 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
     inner class ViewHolder(private val binding: LayoutOrderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OrderDetailsModel) {
+            val context = binding.root.context
             val lang = SharedPreferenceHelper.language ?: "ar"
-            
+
             // Calculate unit price
             val unitPrice = if (item.quantity > 0) {
-                String.format("%.2f", item.price / item.quantity)
+                formatPrice(item.price / item.quantity, 2, Locale(lang))
             } else {
-                "0.00"
+                formatPrice(0.0)
             }
-            val unitPriceText = "$unitPrice EGP"
-            
-            if (lang == "ar"){
+
+            val unitPriceText = "$unitPrice ${context.getString(R.string.currency)}"
+
+            if (lang == "ar") {
                 binding.priceLayout.visibility = View.GONE
                 binding.textView2.visibility = View.GONE
                 binding.textView4.visibility = View.VISIBLE
                 binding.pricerAr.visibility = View.VISIBLE
-                binding.priceTxtar.visibility= View.VISIBLE
+                binding.priceTxtar.visibility = View.VISIBLE
                 binding.quantity.visibility = View.GONE
                 binding.unitPriceLabel.visibility = View.GONE
                 binding.unitPrice.visibility = View.GONE
                 binding.unitPriceLabelAr.visibility = View.VISIBLE
                 binding.unitPriceAr.visibility = View.VISIBLE
                 binding.unitPriceAr.text = unitPriceText
-            }else{
+            } else {
                 binding.priceLayout.visibility = View.VISIBLE
                 binding.textView2.visibility = View.VISIBLE
                 binding.textView4.visibility = View.GONE
                 binding.pricerAr.visibility = View.GONE
                 binding.quantityar.visibility = View.GONE
-                binding.priceTxtar.visibility= View.GONE
+                binding.priceTxtar.visibility = View.GONE
                 binding.quantity.visibility = View.VISIBLE
                 binding.unitPriceLabel.visibility = View.VISIBLE
                 binding.unitPrice.visibility = View.VISIBLE

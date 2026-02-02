@@ -6,7 +6,8 @@ import com.akhnaton.atrapp.shared.RetrofitClient
 class SentOtpRepository {
     private val retrofit = RetrofitClient.getInstance(ILoginWithCustomerCode::class.java)
 
-    suspend fun sentOtp(code: String, phone: String) = retrofit.sentOtp(code, phone)
+    suspend fun sentOtp(code: String, phone: String, email: String) =
+        retrofit.sentOtp(code, phone, email)
 
 
     suspend fun validateOtp(code: String, phone: String, otp: String) =

@@ -21,7 +21,8 @@ class LoginWithCodeActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginWithCodeBinding
     private lateinit var invoiceCode: String
     private lateinit var phoneNumber: String
-    private lateinit var otp : String
+    private lateinit var email: String
+    private lateinit var otp: String
 
     private val viewModel: RegisterFromLineViewModel by viewModels()
 
@@ -33,7 +34,9 @@ class LoginWithCodeActivity : BaseActivity() {
 
         invoiceCode = intent.getStringExtra("invoice_code").toString()
         phoneNumber = intent.getStringExtra("phone_number").toString()
+        email = intent.getStringExtra("email").toString()
 
+        binding.txtEmail.setText(email)
         binding.btnBack.setOnClickListener {
             finish()
         }
@@ -45,16 +48,23 @@ class LoginWithCodeActivity : BaseActivity() {
                         hideProgressDialog(binding.progressLoading)
                         showToastSnack(state.error, true)
                     }
+
                     RegisterFromLineState.Idle -> Unit
                     RegisterFromLineState.Loading -> {
                         showProgressDialog(binding.progressLoading)
                     }
+
                     is RegisterFromLineState.Success -> {
                         hideProgressDialog(binding.progressLoading)
-                        if (state.state == 200){
+                        if (state.state == 200) {
                             showToastSnack(state.message, false)
                             delay(500)
-                            startActivity(Intent(this@LoginWithCodeActivity , LoginActivity::class.java))
+                            startActivity(
+                                Intent(
+                                    this@LoginWithCodeActivity,
+                                    LoginActivity::class.java
+                                )
+                            )
                             finishAffinity()
                         }
                     }
@@ -72,29 +82,44 @@ class LoginWithCodeActivity : BaseActivity() {
 
             when {
                 firstName.isEmpty() -> {
-                    Toast.makeText(this, getString(R.string.error_first_name), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.error_first_name), Toast.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
+
                 lastName.isEmpty() -> {
-                    Toast.makeText(this, getString(R.string.error_last_name), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.error_last_name), Toast.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
+
                 email.isEmpty() -> {
                     Toast.makeText(this, getString(R.string.error_email), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+
                 !isValidEmail(email) -> {
-                    Toast.makeText(this, "Please enter a valid email address.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Please enter a valid email address.", Toast.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
+
                 password.isEmpty() || confirmPassword.isEmpty() -> {
-                    Toast.makeText(this, getString(R.string.error_password_empty), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.error_password_empty),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@setOnClickListener
                 }
             }
 
             if (password != confirmPassword) {
-                Toast.makeText(this, getString(R.string.error_password_mismatch), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.error_password_mismatch),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -103,7 +128,8 @@ class LoginWithCodeActivity : BaseActivity() {
                 Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=!])(?=\\S+\$).{8,}\$")
 
             if (!password.matches(passwordPattern)) {
-                Toast.makeText(this, getString(R.string.error_password_weak), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.error_password_weak), Toast.LENGTH_LONG)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -130,9 +156,9 @@ class LoginWithCodeActivity : BaseActivity() {
                         )
                     )
                 }
-                }
             }
         }
+    }
 
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}"

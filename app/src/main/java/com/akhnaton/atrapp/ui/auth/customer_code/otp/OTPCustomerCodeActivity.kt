@@ -29,6 +29,7 @@ class OTPCustomerCodeActivity : BaseActivity() {
     private val validateOtpViewModel: ValidateOtpViewModel by viewModels()
     private lateinit var invoiceCode : String
     private lateinit var phoneNumber : String
+    private lateinit var email : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +37,12 @@ class OTPCustomerCodeActivity : BaseActivity() {
         setContentView(binding.root)
          invoiceCode = intent.getStringExtra("invoice_code").toString()
          phoneNumber = intent.getStringExtra("phone_number").toString()
+        email = intent.getStringExtra("email").toString()
 
         observer()
         Log.d("OTP", "Invoice Code: $invoiceCode, Phone: $phoneNumber")
-        binding.phoneNumber.text = phoneNumber
+//        binding.phoneNumber.text = phoneNumber
+        binding.email.text = email
         val editTexts = listOf(
             binding.et1, binding.et2, binding.et3,
             binding.et4, binding.et5, binding.et6
@@ -137,6 +140,7 @@ class OTPCustomerCodeActivity : BaseActivity() {
                             ).apply {
                                 putExtra("invoice_code", invoiceCode)
                                 putExtra("phone_number", phoneNumber)
+                                putExtra("email", email)
                             }
                             startActivity(intent)
                         }

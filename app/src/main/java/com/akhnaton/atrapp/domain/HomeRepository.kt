@@ -6,9 +6,10 @@ import com.akhnaton.atrapp.shared.RetrofitClient
 class HomeRepository {
     private val retrofit = RetrofitClient.getInstance(IProducts::class.java)
 
-    suspend fun getCategory( categories: String) = retrofit.getCategories(categories)
+    suspend fun getCategory(categories: String) = retrofit.getCategories(categories)
 
-    suspend fun filterProduct(search : String? = "" , categoryId: Int) = retrofit.filterProduct(search, categoryId)
+    suspend fun filterProduct(search: String? = "", categoryId: Int) =
+        retrofit.filterProduct(search, categoryId)
 
     suspend fun getBestSeller(bestSeller: Int) = retrofit.getBestSeller(bestSeller)
 
@@ -22,11 +23,23 @@ class HomeRepository {
         1,
     )
 
-    suspend fun searchProduct(word: String?="",categoryId: String, categories: Int) = retrofit.searchProduct(
-        word,categoryId ,categories
+    suspend fun searchProduct(
+        word: String? = "",
+        categoryId: String,
+        categories: Int,
+        page: Int,
+        limit: Int
+    ) = retrofit.searchProduct(
+        word, categoryId, categories, page, limit
     )
-    suspend fun getProductsByPagination(categoryId: Int, page: Int, limit: Int,categories : String) =
-        retrofit.getProductsByPagination(categoryId, page, limit,categories)
+
+    suspend fun getProductsByPagination(
+        categoryId: Int,
+        page: Int,
+        limit: Int,
+        categories: String
+    ) =
+        retrofit.getProductsByPagination(categoryId, page, limit, categories)
 
 
     suspend fun getProductDetails(
@@ -37,10 +50,18 @@ class HomeRepository {
         categories
     )
 
-    suspend fun addProductToFavorites(token: String, productId: Int, add: Boolean, categories: String)
-    = retrofit.addFavoriteProduct(token, productId,add,categories)
+    suspend fun addProductToFavorites(
+        token: String,
+        productId: Int,
+        add: Boolean,
+        categories: String
+    ) = retrofit.addFavoriteProduct(token, productId, add, categories)
 
-    suspend fun deleteProductToFavorites(token: String, productId: Int, add: Boolean,categories: String)
-            = retrofit.deleteFromFav(token, productId,add,categories)
+    suspend fun deleteProductToFavorites(
+        token: String,
+        productId: Int,
+        add: Boolean,
+        categories: String
+    ) = retrofit.deleteFromFav(token, productId, add, categories)
 
 }

@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,7 +43,7 @@ class CartViewModel : ViewModel() {
     }
 
 
-    private fun getMyCart(language : String) {
+    private fun getMyCart(language: String) {
         viewModelScope.launch {
             _state.value = CartStatus.Loading
             _state.value = try {

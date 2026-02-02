@@ -138,4 +138,9 @@ class ProductAdapter(
         return productsList.size
     }
 
+    fun clear() {
+        productsList.clear()
+        notifyDataSetChanged()
+    }
+
 }

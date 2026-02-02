@@ -286,7 +286,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="enter">Enter</string>
     <string name="register">Register</string>
     <string name="verification">verification</string>
-    <string name="verificationcode">The verification code has been sent to your number.</string>
+    <string name="verificationcode">The verification code has been sent to your email.</string>
     <string name="find_code_in_invoice">Find Code in Invoice</string>
     <string name="error_first_name">Enter first name</string>
     <string name="error_last_name">Enter last name</string>
@@ -300,4 +300,5 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="address_abdeen">Abdeen, Cairo, Egypt</string>
     <string name="the_request_was_created_successfully">The request was created successfully</string>
     <string name="your_order_number_s">Your order number(s):</string>
+    <string name="currency">EGP</string>
 </resources>
