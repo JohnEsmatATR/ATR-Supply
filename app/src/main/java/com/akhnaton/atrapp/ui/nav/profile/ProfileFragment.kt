@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.onBoarding.OnBoardingActivity
 import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderHistoryActivity
+import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import java.util.Locale
 
 
@@ -116,9 +118,12 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         }
 
         if (v.id == binding.orderLayout.id) {
-            val intent = Intent(requireContext(), OrderHistoryActivity::class.java)
-            startActivity(intent)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.flFragment, TrackingFragment())
+                .addToBackStack(null)
+                .commit()
         }
+
 
         if (v.id == binding.languagesLayout.id) {
             val intent = Intent(requireContext(), LanguageActivity::class.java)

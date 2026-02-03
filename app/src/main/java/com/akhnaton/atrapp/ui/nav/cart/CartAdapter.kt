@@ -119,16 +119,17 @@ class CartAdapter(
         }
 
         private fun setBonus(txtBonus: View, image: View, textView: View, item: CartProduct) {
-            if (item.bonusQuantity.toInt() == 0) {
-                txtBonus.visibility = View.GONE
-                image.visibility = View.GONE
-                textView.visibility = View.GONE
-            } else {
-                txtBonus.visibility = View.VISIBLE
-                image.visibility = View.VISIBLE
-                textView.visibility = View.VISIBLE
-                if (txtBonus is TextView) txtBonus.text = item.bonusQuantity
-            }
+            image.visibility = View.VISIBLE
+//            if (item.bonusQuantity.toInt() == 0) {
+//                txtBonus.visibility = View.GONE
+//                image.visibility = View.GONE
+//                textView.visibility = View.GONE
+//            } else {
+//                txtBonus.visibility = View.VISIBLE
+//                image.visibility = View.VISIBLE
+//                textView.visibility = View.VISIBLE
+//                if (txtBonus is TextView) txtBonus.text = item.bonusQuantity
+//            }
         }
 
         private fun handleQuantity(editQuantity: EditText, item: CartProduct) {

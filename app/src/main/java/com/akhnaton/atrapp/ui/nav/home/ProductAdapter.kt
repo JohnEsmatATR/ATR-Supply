@@ -75,8 +75,6 @@ class ProductAdapter(
                 binding.imageView.visibility = View.GONE
             }
 
-
-
             changeFavoriteButton()
 
             binding.productModel = item

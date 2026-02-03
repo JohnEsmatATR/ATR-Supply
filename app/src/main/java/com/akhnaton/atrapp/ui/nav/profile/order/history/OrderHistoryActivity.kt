@@ -39,7 +39,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
         super.onCreate(savedInstanceState)
         setupBinding()
         observe()
-        getMyOrders()
+//        getMyOrders()
         getAddress()
         observeAddress()
         binding.cardAddress.setOnClickListener {
@@ -47,6 +47,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
             startActivity(intent)
         }
     }
+
     private fun observeAddress() {
         lifecycleScope.launch {
             viewModel.state.collect {
@@ -69,13 +70,14 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
                             addresses.forEach { address ->
                                 if (address.prime == 1) {
                                     Log.d("DEBUG_ADDRESS", "Prime address found: $address")
-                                    binding.defaultAddress.text=address.TITLE
+                                    binding.defaultAddress.text = address.TITLE
                                 }
                             }
 
                             val hasDefault = addresses.any { address -> address.prime == 1 }
                             if (!hasDefault) {
-                                val intent = Intent(applicationContext, AddressesActivity::class.java)
+                                val intent =
+                                    Intent(applicationContext, AddressesActivity::class.java)
                                 startActivity(intent)
                             }
 
@@ -83,7 +85,6 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
                             hideProgressDialog(binding.progressLoading)
                         }
                     }
-
 
 
                     is AddressStatus.MakeAddressPrime -> {}
@@ -96,6 +97,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
             }
         }
     }
+
     private fun getAddress() {
         lifecycleScope.launch {
             viewModel.addressIntent.send(
@@ -172,8 +174,8 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
                     }
 
                     is MyOrdersStatus.GetMyOrders -> {
+                        hideProgressDialog(binding.progressLoading)
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
                             mList.addAll(it.data.data!!)
