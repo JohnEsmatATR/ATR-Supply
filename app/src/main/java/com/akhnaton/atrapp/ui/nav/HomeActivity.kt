@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityHomeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.CartFragment
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteFragment
 import com.akhnaton.atrapp.ui.nav.home.HomeFragment
@@ -28,6 +30,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
+import java.util.Locale
 
 class HomeActivity : BaseActivity() {
     lateinit var binding: ActivityHomeBinding
@@ -37,6 +40,7 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setLayoutDirection()
         setupWindowInsets()
         init()
         onClick()
@@ -44,11 +48,16 @@ class HomeActivity : BaseActivity() {
         checkForAppUpdate()
         binding.btnTracking.setOnClickListener {
             setCurrentFragment(TrackingFragment())
-            binding.bottomNavigationView.menu[0].icon = ContextCompat.getDrawable(this,R.drawable.ic_home)
-            binding.bottomNavigationView.menu[1].icon = ContextCompat.getDrawable(this,R.drawable.ic_favorite)
-            binding.bottomNavigationView.menu[3].icon = ContextCompat.getDrawable(this,R.drawable.ic_cart)
-            binding.bottomNavigationView.menu[4].icon = ContextCompat.getDrawable(this,R.drawable.ic_profile)
+            binding.bottomNavigationView.menu.findItem(R.id.home)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+            binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+            binding.bottomNavigationView.menu.findItem(R.id.cart)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+            binding.bottomNavigationView.menu.findItem(R.id.profile)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
         }
+
         askNotificationPermission()
     }
 
@@ -120,19 +129,23 @@ class HomeActivity : BaseActivity() {
 
 
     private fun initNavBottom() {
-        setItemSelected(R.id.home)
+//        setItemSelected(R.id.home)
         binding.bottomNavigationView.menu[2].isEnabled = false
 
 
         binding.btnTracking.setOnClickListener {
             setCurrentFragment(TrackingFragment())
-            binding.bottomNavigationView.menu[2].isChecked = true
+            binding.bottomNavigationView.selectedItemId = R.id.nothig
 
 
-            binding.bottomNavigationView.menu[0].icon = ContextCompat.getDrawable(this,R.drawable.ic_home)
-            binding.bottomNavigationView.menu[1].icon = ContextCompat.getDrawable(this,R.drawable.ic_favorite)
-            binding.bottomNavigationView.menu[3].icon = ContextCompat.getDrawable(this,R.drawable.ic_cart)
-            binding.bottomNavigationView.menu[4].icon = ContextCompat.getDrawable(this,R.drawable.ic_profile)
+            binding.bottomNavigationView.menu.findItem(R.id.home)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+            binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+            binding.bottomNavigationView.menu.findItem(R.id.cart)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+            binding.bottomNavigationView.menu.findItem(R.id.profile)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
         }
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -145,6 +158,8 @@ class HomeActivity : BaseActivity() {
             }
             true
         }
+        binding.bottomNavigationView.selectedItemId = R.id.home
+        setItemSelected(R.id.home)
     }
 
 
@@ -163,57 +178,81 @@ class HomeActivity : BaseActivity() {
 
         binding.btnTracking.setOnClickListener {
             setCurrentFragment(TrackingFragment())
-            binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
-            binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
-            binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
-            binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
-            binding.bottomNavigationView.menu[2].isChecked = true
+            binding.bottomNavigationView.menu.findItem(R.id.home)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+            binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+            binding.bottomNavigationView.menu.findItem(R.id.cart)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+            binding.bottomNavigationView.menu.findItem(R.id.profile)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
+            binding.bottomNavigationView.selectedItemId = R.id.nothig
 
         }
 
         when (item) {
             R.id.home -> {
                 setCurrentFragment(homeFragment)
-                binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home_fill)
-                binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
-                binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
-                binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
+                binding.bottomNavigationView.menu.findItem(R.id.home)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+                binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+                binding.bottomNavigationView.menu.findItem(R.id.cart)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.profile)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
             }
 
             R.id.cart -> {
                 setCurrentFragment(cartFragment)
-                binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
-                binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
-                binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart_fill)
-                binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
+                binding.bottomNavigationView.menu.findItem(R.id.home)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+                binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+                binding.bottomNavigationView.menu.findItem(R.id.cart)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.profile)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
 
             }
 
             R.id.favorite -> {
                 setCurrentFragment(favoriteFragment)
-                binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
-                binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite_fill)
-                binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
-                binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
+                binding.bottomNavigationView.menu.findItem(R.id.home)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+                binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+                binding.bottomNavigationView.menu.findItem(R.id.cart)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.profile)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
 
             }
 
             R.id.profile -> {
                 setCurrentFragment(profileFragment)
-                binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home)
-                binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
-                binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
-                binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile_fill)
+                binding.bottomNavigationView.menu.findItem(R.id.home)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+                binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+                binding.bottomNavigationView.menu.findItem(R.id.cart)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.profile)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
 
 
             }
 
             else -> {
                 setCurrentFragment(homeFragment)
-                binding.bottomNavigationView.menu[0].icon = getDrawable(R.drawable.ic_home_fill)
-                binding.bottomNavigationView.menu[1].icon = getDrawable(R.drawable.ic_favorite)
-                binding.bottomNavigationView.menu[3].icon = getDrawable(R.drawable.ic_cart)
-                binding.bottomNavigationView.menu[4].icon = getDrawable(R.drawable.ic_profile)
+                binding.bottomNavigationView.menu.findItem(R.id.home)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
+                binding.bottomNavigationView.menu.findItem(R.id.favorite)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+                binding.bottomNavigationView.menu.findItem(R.id.cart)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.profile)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
 
             }
         }
@@ -316,6 +355,29 @@ class HomeActivity : BaseActivity() {
                 }
 
             })
+        }
+    }
+
+    private fun setLayoutDirection() {
+        val lang = SharedPreferenceHelper.language ?: Locale.getDefault().language
+
+        if (lang == "ar") {
+            ViewCompat.setLayoutDirection(binding.bottomNavigationView, ViewCompat.LAYOUT_DIRECTION_RTL)
+            reverseBottomNavMenu(true)
+        } else {
+            ViewCompat.setLayoutDirection(binding.bottomNavigationView, ViewCompat.LAYOUT_DIRECTION_LTR)
+            reverseBottomNavMenu(false)
+        }
+    }
+
+    private fun reverseBottomNavMenu(isRtl: Boolean) {
+        val menu = binding.bottomNavigationView.menu
+        menu.clear()
+
+        if (isRtl) {
+            binding.bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu_ar)
+        } else {
+            binding.bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu)
         }
     }
 

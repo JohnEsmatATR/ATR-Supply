@@ -280,8 +280,8 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="go_to_cart">Go to Cart</string>
     <string name="you_are_eligible_for">You are eligible for</string>
     <string name="bonus">Bonus : </string>
-    <string name="login_with_customer_code">Login with Customer Code</string>
-    <string name="enter_otp">Enter OTP</string>
+    <string name="login_with_customer_code">Sign Up with Customer Code</string>
+    <string name="enter_otp">Enter the 6-digit verification code</string>
     <string name="customer_code_on_the_invoice">Customer code on the invoice</string>
     <string name="enter">Enter</string>
     <string name="register">Register</string>

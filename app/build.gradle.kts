@@ -8,11 +8,26 @@ android {
     namespace = "com.akhnaton.atrapp"
     compileSdk = 36
 
+    ndkVersion = "28.0.12674087"
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("../keyStore.jks")
+            storePassword = "Kk0100271274!"
+            keyAlias = "key1"
+            keyPassword = "Kk0100271274!"
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+            enableV4Signing = true
+        }
+    }
+
     defaultConfig {
         applicationId = "com.akhnaton.atrapp"
         minSdk = 24
         targetSdk = 36
-        versionCode = 15
+        versionCode = 17
         versionName = "1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

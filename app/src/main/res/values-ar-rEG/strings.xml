@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ATR Supply</string>
-    <string name="sign_up">عميل جديد</string>
+    <string name="sign_up">انشاء حساب</string>
     <string name="or">أو</string>
-    <string name="login">عميل حالي</string>
+    <string name="login">تسجيل دخول</string>
     <string name="continue_as">المتابعة كـ</string>
     <string name="guest">زائر</string>
     <string name="get_started">ابدأ الآن</string>
@@ -224,10 +224,10 @@
     <string name="you_are_eligible_for">You are eligible for</string>
     <string name="bonus">البونص :</string>
 
-    <string name="login_with_customer_code">تسجيل بكود عميل</string>
-    <string name="enter_otp">دخل رمز التحقق المكون من 6 ارقام</string>
+    <string name="login_with_customer_code">انشاء حساب بكود عميل</string>
+    <string name="enter_otp">ادخل رمز التحقق المكون من 6 ارقام</string>
     <string name="customer_code_on_the_invoice">كود العميل الموجود علي الفاتوره</string>
-    <string name="enter">دخال</string>
+    <string name="enter">ادخال</string>
     <string name="register">تسجيل</string>
     <string name="verification">تحقق</string>
     <string name="verificationcode">تم ارسال رقم التحقق الي البريد الالكتروني</string>

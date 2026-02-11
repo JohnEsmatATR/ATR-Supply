@@ -46,7 +46,6 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
 
             if (!validateInputs(invoiceCode, phoneNumber, email)) return@setOnClickListener
 
-            binding.btnEnterInvoice.setEnabled(false)
             lifecycleScope.launch {
                 viewModel.otpIntent.send(
                     SentOtpIntent.SentCode(
@@ -94,11 +93,12 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                     is SentOtpState.Idle -> Unit
                     is SentOtpState.Loading -> {
                         showProgressDialog(binding.progressLoading)
-
+                        binding.btnEnterInvoice.isEnabled = false
                     }
 
                     is SentOtpState.Success -> {
                         hideProgressDialog(binding.progressLoading)
+                        binding.btnEnterInvoice.isEnabled = true
                         if (state.state == 200) {
                             showToastSnack(state.message, false)
                             delay(500)
@@ -122,10 +122,10 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
 
                     }
 
-
                     is SentOtpState.Error -> {
                         hideProgressDialog(binding.progressLoading)
                         showToastSnack(state.error, true)
+                        binding.btnEnterInvoice.isEnabled = true
                     }
                 }
             }
