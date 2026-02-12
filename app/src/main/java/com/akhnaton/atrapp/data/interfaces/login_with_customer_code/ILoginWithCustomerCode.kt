@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.data.interfaces.login_with_customer_code
 
 import com.akhnaton.atrapp.data.model.AppSettingResponse
+import com.akhnaton.atrapp.data.model.auth.RegisterResponseData
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.shared.ConstantLinks
 import retrofit2.Response
@@ -37,7 +38,7 @@ interface ILoginWithCustomerCode {
         @Field("email")        email : String,
         @Field("fb_token")     fbToken : String,
         @Field("password")     password : String
-    ):Response<BaseModel<Any>>
+    ):Response<BaseModel<RegisterResponseData>>
 
     @GET(ConstantLinks.APP_SETTINGS)
     suspend fun getAppSetting(): Response<BaseModel<AppSettingResponse>>

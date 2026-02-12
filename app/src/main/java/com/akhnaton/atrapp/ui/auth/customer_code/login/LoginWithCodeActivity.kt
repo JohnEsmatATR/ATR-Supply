@@ -11,7 +11,9 @@ import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.Register
 import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.RegisterFromLineState
 import com.akhnaton.atrapp.databinding.ActivityLoginWithCodeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
+import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -59,10 +61,14 @@ class LoginWithCodeActivity : BaseActivity() {
                         if (state.state == 200) {
                             showToastSnack(state.message, false)
                             delay(500)
+
+                            val jwt = SharedPreferenceHelper.userToken
+                            Log.d("JWT", "Token saved: $jwt")
+
                             startActivity(
                                 Intent(
                                     this@LoginWithCodeActivity,
-                                    LoginActivity::class.java
+                                    HomeActivity::class.java
                                 )
                             )
                             finishAffinity()

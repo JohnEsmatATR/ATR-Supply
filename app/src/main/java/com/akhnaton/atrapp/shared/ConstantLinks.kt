@@ -3,13 +3,18 @@ package com.akhnaton.atrapp.shared
 object ConstantLinks {
     //in site company use http
 
-   const val BASE_URL = "http://10.42.151.27/customer_test/"          // test
+    const val BASE_URL = "http://10.42.151.27/customer_test/"          // test
 //    const val BASE_URL = "https://sales.atr-eg.com/customer/"     // Prod
+
+    fun isProd(): Boolean {
+        return BASE_URL.contains("sales.atr-eg.com")
+    }
 
     // Auth
     const val LOGIN = "user/login"
     const val REGISTER = "user/register?debug=1"
     const val SEND_OTP = "user/send_otp"
+
     // forget password
     const val CHECK_OTP = "user/check_otp"
     const val CHANGE_PASSWORD = "user/change_password"
@@ -38,13 +43,13 @@ object ConstantLinks {
 
     // get user address
     const val CUSTOMER_ADDRESS = "user/get_customer_sites"
-    const val CHANGE_DEFAULT_ADDRESS= "user/change_default_site"
+    const val CHANGE_DEFAULT_ADDRESS = "user/change_default_site"
 
     //home panner
-    const val PANNER ="home/banner"
+    const val PANNER = "home/banner"
 
     //order types and categories
-    const val ORDER_TYPES= "category/order_type_and_category_list"
+    const val ORDER_TYPES = "category/order_type_and_category_list"
 
 
     //REGISTER WITH CUSTOMER CODE
