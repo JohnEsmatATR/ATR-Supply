@@ -24,6 +24,7 @@ import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.shared.ShimmerAdapterCart
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CartParentAdapter
@@ -50,11 +51,15 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-        observeCart()
-        getAddress()
-        observeAddress()
-        observeCartQuantity()
-        setupClickListeners()
+        guestHandling()
+        if (SharedPreferenceHelper.isLogged!!) {
+            observeCart()
+            getAddress()
+            observeAddress()
+            observeCartQuantity()
+            setupClickListeners()
+        }
+
         binding.cardAddress.setOnClickListener {
             val intent = Intent(requireContext(), AddressesActivity::class.java)
             startActivity(intent)
@@ -66,6 +71,22 @@ class CartFragment : BaseFragment() {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_LTR
         }
         return binding.root
+    }
+
+    private fun guestHandling() {
+        if (SharedPreferenceHelper.isLogged == false) {
+            binding.txtNoProducts.visibility = View.GONE
+            binding.clGuest.visibility = View.VISIBLE
+            binding.recycler.visibility = View.GONE
+            binding.appBar.visibility = View.GONE
+            binding.layoutCart.visibility = View.GONE
+            binding.cardAddress.visibility = View.GONE
+        }
+
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 
@@ -305,7 +326,7 @@ class CartFragment : BaseFragment() {
     }
 
     private fun checkEmptyAfterDelete() {
-        if (cartData.isEmpty()) {
+        if (cartData.isEmpty() && SharedPreferenceHelper.isLogged == true) {
             showEmptyState()
         }
     }
@@ -314,6 +335,7 @@ class CartFragment : BaseFragment() {
         binding.recycler.visibility = View.GONE
         binding.layoutCart.visibility = View.GONE
         binding.txtNoProducts.visibility = View.VISIBLE
+        binding.clGuest.visibility = View.GONE
         updateCartSummaryUI()
     }
 

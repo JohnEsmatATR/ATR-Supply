@@ -131,13 +131,14 @@ dependencies {
     implementation("com.github.dhaval2404:imagepicker:2.1")
 
     //recyclerview
-    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
-    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Firebase
-    implementation ("com.google.firebase:firebase-messaging:25.0.1")
+    implementation("com.google.firebase:firebase-messaging:25.0.1")
 
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }

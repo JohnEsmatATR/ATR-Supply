@@ -21,6 +21,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerState
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
@@ -48,6 +49,7 @@ class HomeFragment : BaseFragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
 
+        guestHandling()
         setupRecycler()
         observeViewModel()
         setPlannerView()
@@ -64,6 +66,12 @@ class HomeFragment : BaseFragment() {
         }
 
         return binding.root
+    }
+
+    private fun guestHandling() {
+        if (SharedPreferenceHelper.isLogged == false) {
+            binding.cardAddress.visibility= View.GONE
+        }
     }
 
 
@@ -105,7 +113,7 @@ class HomeFragment : BaseFragment() {
                     is CategoryStatus.Error -> {
                         hideProgressDialog(binding.progressLoading)
                         binding.recyclerPharma.visibility = View.VISIBLE
-                     //   Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
+                        //   Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -115,17 +123,17 @@ class HomeFragment : BaseFragment() {
     private fun observeAddress() {
         lifecycleScope.launch {
             viewModel.state.collect {
-              //  Log.d("DEBUGGGGG", "Received state: $it")
+                //  Log.d("DEBUGGGGG", "Received state: $it")
                 when (it) {
                     is AddressStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idleeeee")
                     is AddressStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                       // showProgressDialog(binding.progressLoading)
+                        // showProgressDialog(binding.progressLoading)
                     }
 
                     is AddressStatus.GetMyAddresses -> {
                         if (it.result.status == 200) {
-                         //   hideProgressDialog(binding.progressLoading)
+                            //   hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "Received: GetProducts")
 
                             val addresses = it.result.data ?: emptyList()
@@ -134,7 +142,7 @@ class HomeFragment : BaseFragment() {
                             addresses.forEach { address ->
                                 if (address.prime == 1) {
                                     Log.d("DEBUG_ADDRESS", "Prime address found: $address")
-                                    binding.defaultAddress.text=address.TITLE
+                                    binding.defaultAddress.text = address.TITLE
                                 }
                             }
 
@@ -145,10 +153,9 @@ class HomeFragment : BaseFragment() {
                             }
 
                         } else {
-                         //   hideProgressDialog(binding.progressLoading)
+                            //   hideProgressDialog(binding.progressLoading)
                         }
                     }
-
 
 
                     is AddressStatus.MakeAddressPrime -> {}
@@ -161,6 +168,7 @@ class HomeFragment : BaseFragment() {
             }
         }
     }
+
     private fun getAddress() {
         lifecycleScope.launch {
             viewModel.addressIntent.send(
@@ -176,24 +184,25 @@ class HomeFragment : BaseFragment() {
                     is PannerState.Loading -> {
                         showProgressDialog(binding.progressLoading)
                     }
+
                     is PannerState.Success -> {
 
-                        if (state.data.status == 200){
+                        if (state.data.status == 200) {
                             val response = state.data.data
 
                             response?.let {
                                 val adapter = BannerAdapter(it.banners)
                                 viewPager = binding.slider
                                 viewPager.adapter = adapter
+                                binding.tabLayout.setupWithViewPager(viewPager)
                                 startAutoSlider(it.banners.size)
 
                                 Glide.with(requireContext())
                                     .load(it.customer_backgound_image)
                                     .into(binding.imgDeals)
                             }
-                        }
-                        else {
-                          //  showToastSnack(state.data.message, true)
+                        } else {
+                            //  showToastSnack(state.data.message, true)
                         }
 
                     }
@@ -207,7 +216,6 @@ class HomeFragment : BaseFragment() {
 
         pannerViewModel.handleIntent(PannerIntent.getPanners)
     }
-
 
 
     private fun startAutoSlider(bannersSize: Int) {

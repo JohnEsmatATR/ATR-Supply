@@ -1,9 +1,12 @@
 package com.akhnaton.atrapp.ui.nav.home.panner
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.PagerAdapter
+import com.akhnaton.atrapp.R
 import com.bumptech.glide.Glide
 
 class BannerAdapter(private val banners: List<String>) : PagerAdapter() {
@@ -15,20 +18,19 @@ class BannerAdapter(private val banners: List<String>) : PagerAdapter() {
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val imageView = ImageView(container.context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            scaleType = ImageView.ScaleType.FIT_CENTER
-        }
+
+        val view = LayoutInflater.from(container.context)
+            .inflate(R.layout.item_banner, container, false)
+
+        val imageView = view.findViewById<ImageView>(R.id.bannerImage)
 
         Glide.with(container.context)
             .load(banners[position])
             .into(imageView)
 
-        container.addView(imageView)
-        return imageView
+        container.addView(view)
+
+        return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {

@@ -3,8 +3,8 @@
     <string name="sign_up">Sign up</string>
     <string name="or">OR</string>
     <string name="login">Login</string>
-    <string name="continue_as">continue as </string>
-    <string name="guest">guest</string>
+    <string name="continue_as">Continue as a </string>
+    <string name="guest">Guest</string>
     <string name="get_started">Get Started</string>
     <string name="welcome_to_atr_app">Welcome\nto ATR App</string>
     <string name="welcome">Welcome</string>
@@ -301,4 +301,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="the_request_was_created_successfully">The request was created successfully</string>
     <string name="your_order_number_s">Your order number(s):</string>
     <string name="currency">EGP</string>
+    <string name="empty_cart">Empty Cart</string>
+    <string name="favourites">Favourites</string>
+    <string name="please_log_in_to_access_this_feature">Please log in to access this feature.</string>
 </resources>

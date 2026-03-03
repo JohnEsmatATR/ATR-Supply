@@ -10,7 +10,9 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.auth.onBoarding.OnBoardingActivity
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderHistoryActivity
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import java.util.Locale
@@ -24,6 +26,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
+        guestHandling()
         binding.accountLayout.setOnClickListener(this)
         binding.orderLayout.setOnClickListener(this)
         binding.languagesLayout.setOnClickListener(this)
@@ -31,14 +34,28 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.aboutLayout.setOnClickListener(this)
         binding.contactLayout.setOnClickListener(this)
         binding.logoutLayout.setOnClickListener(this)
+        binding.loginLayout.setOnClickListener(this)
 
 
         return binding.root
     }
 
+    private fun guestHandling() {
+        if (!SharedPreferenceHelper.isLogged!!) {
+            binding.txtUserName.text = resources.getString(R.string.guest)
+            binding.accountLayout.visibility = View.GONE
+            binding.v1.visibility = View.GONE
+            binding.orderLayout.visibility = View.GONE
+            binding.v2.visibility = View.GONE
+            binding.loginLayout.visibility = View.VISIBLE
+            binding.logoutLayout.visibility = View.GONE
+            binding.v7.visibility = View.GONE
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         // Display username
         val user = SharedPreferenceHelper.userObj
         if (user != null) {
@@ -50,7 +67,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                 binding.txtUserName.text = user.email.takeIf { it.isNotEmpty() } ?: user.phone
             }
         }
-        
+
         val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
             ?: Locale.getDefault().language
 
@@ -157,6 +174,11 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             requireActivity().finish()
+        }
+
+        if (v.id == binding.loginLayout.id) {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
         }
 
     }

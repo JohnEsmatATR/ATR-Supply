@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import com.akhnaton.atrapp.databinding.ActivityOnBoardingBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.customer_code.code.CustomerInvoiceCodeActivity
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.auth.signUp.info.SignUpInfoActivity
@@ -38,7 +39,10 @@ class OnBoardingActivity : BaseActivity() {
 
         }
         binding.guest.setOnClickListener {
-            startActivity(Intent(this@OnBoardingActivity,HomeActivity::class.java))
+            SharedPreferenceHelper.let { sharedPref ->
+                sharedPref.isLogged = false
+            }
+            startActivity(Intent(this@OnBoardingActivity, HomeActivity::class.java))
             finish()
         }
         binding.goToCustomerCodeLogin.setOnClickListener {

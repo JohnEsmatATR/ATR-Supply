@@ -10,8 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutDirection="locale"
         android:background="@color/white"
+        android:layoutDirection="locale"
         tools:context=".ui.nav.profile.ProfileFragment">
 
         <TextView
@@ -45,10 +45,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userImg" />
@@ -69,33 +69,33 @@
                 android:id="@+id/icProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_profile"
                 android:contentDescription="@string/account_detailss"
+                android:src="@drawable/ic_profile"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_16sdp"
+                android:gravity="start"
                 android:text="@string/account_detailss"
                 android:textColor="@color/black"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:gravity="start"
-                app:layout_constraintStart_toEndOf="@id/icProfile"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/imageView6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/icProfile"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_chevron_right"
                 android:contentDescription="@string/next"
+                android:src="@drawable/ic_chevron_right"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -135,8 +135,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_16sdp"
                 android:gravity="start"
                 android:text="@string/order_historyy"
                 android:textColor="@color/black"
@@ -156,7 +156,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
         <View
             android:id="@+id/v2"
             android:layout_width="match_parent"
@@ -165,7 +164,7 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_32sdp"
             android:background="@color/offGray"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderLayout" />
@@ -174,8 +173,8 @@
             android:id="@+id/rateLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_margin="@dimen/_16sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v2">
@@ -191,9 +190,9 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:gravity="start"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:text="@string/rate_the_app"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toStartOf="@+id/imageView11"
@@ -219,6 +218,7 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_32sdp"
             android:background="@color/offGray"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rateLayout" />
@@ -243,10 +243,10 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:gravity="start"
                 android:text="@string/languages"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView10"
@@ -296,11 +296,11 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:gravity="start"
                 android:text="@string/privacy_and_termss"
                 android:textColor="@color/black"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 app:layout_constraintEnd_toStartOf="@+id/imageView9"
                 app:layout_constraintStart_toEndOf="@+id/icPrivacy"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -348,11 +348,11 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:gravity="start"
                 android:text="@string/about_uss"
                 android:textColor="@color/black"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 app:layout_constraintEnd_toStartOf="@+id/imageView8"
                 app:layout_constraintStart_toEndOf="@+id/icAbout"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -400,11 +400,11 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:gravity="start"
                 android:text="@string/contact_uss"
                 android:textColor="@color/black"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 app:layout_constraintEnd_toStartOf="@+id/imageView7"
                 app:layout_constraintStart_toEndOf="@+id/icContact"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -452,10 +452,10 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:text="@string/logout"
                 android:textColor="@color/black"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 app:layout_constraintEnd_toStartOf="@+id/imageView13"
                 app:layout_constraintStart_toEndOf="@+id/icLogout"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -482,6 +482,57 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logoutLayout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v8">
+
+            <ImageView
+                android:id="@+id/icLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_logout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:text="@string/login"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/imageView14"
+                app:layout_constraintStart_toEndOf="@+id/icLogin"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:src="@drawable/ic_chevron_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/v9"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_32sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_32sdp"
+            android:background="@color/offGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

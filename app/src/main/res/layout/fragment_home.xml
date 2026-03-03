@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.nav.home.HomeFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
@@ -25,35 +27,61 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/app_bar">
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/slider"
-                    android:layout_marginTop="15dp"
-                    android:scaleType="fitXY"
+                <FrameLayout
+                    android:id="@+id/fl_slider"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="@dimen/_160sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/card_address" />
+                    app:layout_constraintTop_toBottomOf="@+id/card_address">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginTop="15dp"
+                        android:scaleType="fitXY" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_7sdp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/slider"
+                        app:tabBackground="@drawable/dot_selector"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabMaxWidth="0dp"
+                        app:tabMinWidth="0dp"
+                        app:tabPaddingEnd="@dimen/_6sdp"
+                        app:tabPaddingStart="@dimen/_6sdp"
+                        app:tabRippleColor="@null"
+                        tools:ignore="MissingConstraints" />
+
+                </FrameLayout>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_24sdp"
                     app:cardCornerRadius="@dimen/_5sdp"
                     app:cardElevation="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -68,11 +96,13 @@
                         android:orientation="horizontal"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp">
+
                         <ImageView
                             android:layout_width="14dp"
                             android:layout_height="14dp"
                             android:src="@drawable/im_location_background"
                             app:tint="#808080" />
+
                         <TextView
                             android:id="@+id/default_address"
                             android:layout_width="match_parent"
@@ -93,18 +123,16 @@
                     android:layout_height="50dp"
                     android:layout_marginHorizontal="15dp"
                     android:paddingTop="@dimen/_15sdp"
-                    app:cardCornerRadius="15dp"
                     android:visibility="gone"
+                    app:cardCornerRadius="15dp"
                     app:cardElevation="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/slider">
+                    app:layout_constraintTop_toBottomOf="@+id/fl_slider">
 
                     <LinearLayout
                         android:id="@+id/layout_search"
                         android:layout_width="match_parent"
-
-
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
@@ -134,12 +162,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_24sdp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/slider"
+                    app:layout_constraintTop_toBottomOf="@+id/fl_slider"
                     tools:itemCount="5"
                     tools:listitem="@layout/layout_order_type_item" />
 
@@ -148,18 +177,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:background="@color/orange"
                     android:layout_marginTop="@dimen/_25sdp"
+                    android:background="@color/orange"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/recycler_pharma" />
+
                 <LinearLayout
-                    android:paddingTop="@dimen/_10sdp"
                     android:id="@+id/layout_best_seller"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="@dimen/_5ssp"
                     android:orientation="horizontal"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view">
@@ -187,7 +218,6 @@
 
                 </LinearLayout>
 
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_best_seller"
                     android:layout_width="match_parent"
@@ -214,33 +244,49 @@
                     android:layout_marginTop="@dimen/_18sdp"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:visibility="gone"
                     android:text="@string/deals_made_for_you"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16ssp"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recycler_best_seller" />
 
-                <ImageView
-                    android:id="@+id/img_deals"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_170sdp"
+                    android:layout_height="@dimen/_160sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:contentDescription="@string/deals_made_for_you"
+                    app:cardCornerRadius="@dimen/_20sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_deals" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_deals">
+
+                    <ImageView
+                        android:id="@+id/img_deals"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:contentDescription="@string/deals_made_for_you" />
+
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    app:layout_constraintTop_toBottomOf="@id/cv"
+                    tools:ignore="MissingConstraints" />
 
                 <ImageView
                     android:id="@+id/im_notification"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_notification"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

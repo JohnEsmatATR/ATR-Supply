@@ -23,9 +23,11 @@ import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.shared.ShimmerAdapter
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -44,11 +46,27 @@ class FavoriteFragment : BaseFragment() {
     ): View? {
         binding = FragmentFavoriteBinding.inflate(inflater)
 
+        guestHandling()
         favoriteObserve()
         search()
         init()
 
         return binding.root
+    }
+
+    private fun guestHandling() {
+        if (!SharedPreferenceHelper.isLogged!!) {
+            binding.clGuest.visibility = View.VISIBLE
+            binding.recycler.visibility = View.GONE
+            binding.layoutCategory.visibility = View.GONE
+            binding.layoutFilter.visibility = View.GONE
+            binding.appBar.visibility = View.GONE
+        }
+
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -223,7 +241,7 @@ class FavoriteFragment : BaseFragment() {
                         } else if (it.data.status == 401) {
                             // onTokenExpired(it.data.errors!![0])
                         } else {
-                           // showToastSnack(it.data.message, true)
+                            // showToastSnack(it.data.message, true)
                         }
                     }
 
@@ -232,8 +250,6 @@ class FavoriteFragment : BaseFragment() {
             }
         }
     }
-
-
 
 
     private fun getMyFavorite() {
@@ -261,8 +277,7 @@ class FavoriteFragment : BaseFragment() {
     }
 
 
-
-    private fun deleteProductToFavorite(productId: Int, add: Boolean, ) {
+    private fun deleteProductToFavorite(productId: Int, add: Boolean) {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(
                 FavoriteIntent.DeleteFromFavourites(

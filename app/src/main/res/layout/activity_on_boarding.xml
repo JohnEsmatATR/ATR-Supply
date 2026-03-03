@@ -116,7 +116,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:weightSum="11">
 
                 <View
@@ -153,7 +153,7 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"

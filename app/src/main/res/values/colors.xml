@@ -12,6 +12,16 @@
     <color name="lightGray">#FCFCFC</color>
 
     <color name="orange">#EE7907</color>
+    <color name="orange_50">#FFF3E6</color>
+    <color name="orange_100">#FFE0BF</color>
+    <color name="orange_200">#FFCC99</color>
+    <color name="orange_300">#FFB266</color>
+    <color name="orange_400">#FFA347</color>
+    <color name="orange_500">#EE7907</color> <!-- Base -->
+    <color name="orange_600">#D86E06</color>
+    <color name="orange_700">#C26205</color>
+    <color name="orange_800">#964B03</color>
+    <color name="orange_900">#6A3302</color>
 
     <color name="snack_red">#FB5B5B</color>
     <color name="snack_green">#68BF7B</color>
@@ -19,5 +29,6 @@
     <color name="yellow">#FCE625</color>
 
     <color name="shimmer_background">#393838</color>
+    <color name="main_color_gold">#F8CB6C</color>
 
 </resources>
