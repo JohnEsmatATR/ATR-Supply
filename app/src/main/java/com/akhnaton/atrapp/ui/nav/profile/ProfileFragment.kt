@@ -2,6 +2,7 @@ package com.akhnaton.atrapp.ui.nav.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun guestHandling() {
-        if (!SharedPreferenceHelper.isLogged!!) {
+        Log.d("WHAT",SharedPreferenceHelper.isLogged.toString())
+        if (SharedPreferenceHelper.isLogged == false) {
             binding.txtUserName.text = resources.getString(R.string.guest)
             binding.accountLayout.visibility = View.GONE
             binding.v1.visibility = View.GONE
@@ -50,6 +52,14 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.loginLayout.visibility = View.VISIBLE
             binding.logoutLayout.visibility = View.GONE
             binding.v7.visibility = View.GONE
+        } else {
+            binding.accountLayout.visibility = View.VISIBLE
+            binding.v1.visibility = View.VISIBLE
+            binding.orderLayout.visibility = View.VISIBLE
+            binding.v2.visibility = View.VISIBLE
+            binding.loginLayout.visibility = View.GONE
+            binding.logoutLayout.visibility = View.VISIBLE
+            binding.v7.visibility = View.VISIBLE
         }
     }
 

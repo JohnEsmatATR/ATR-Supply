@@ -522,17 +522,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/v9"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/_32sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_32sdp"
-            android:background="@color/offGray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginLayout" />
+<!--        <View-->
+<!--            android:id="@+id/v9"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_marginStart="@dimen/_32sdp"-->
+<!--            android:layout_marginTop="@dimen/_12sdp"-->
+<!--            android:layout_marginEnd="@dimen/_32sdp"-->
+<!--            android:background="@color/offGray"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/loginLayout" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

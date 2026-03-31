@@ -331,10 +331,10 @@ class HomeActivity : BaseActivity() {
                 }
                 val token = task.result
 
-                Toast.makeText(baseContext, "token : $token", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(baseContext, "token : $token", Toast.LENGTH_SHORT).show()
             })
         } else {
-            askNotificationPermission()
+            Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
