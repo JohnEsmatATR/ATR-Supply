@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.model.CartResponse
 import com.akhnaton.atrapp.data.model.TotalCartsData
@@ -281,9 +282,18 @@ class CartFragment : BaseFragment() {
             binding.txtGrandTotal.gravity = Gravity.START
         }
 
-        binding.txtItemTotal.text = formatNumber(totalBeforeDiscount, appLocale)
-        binding.txtDiscount.text = formatNumber(totals.totalDiscount, appLocale)
-        binding.txtGrandTotal.text = formatNumber(totals.cartTotal, appLocale)
+        binding.txtItemTotal.text =
+            formatNumber(totalBeforeDiscount, appLocale) + " " + resources.getString(
+                R.string.currency
+            )
+        binding.txtDiscount.text =
+            formatNumber(totals.totalDiscount, appLocale) + " " + resources.getString(
+                R.string.currency
+            )
+        binding.txtGrandTotal.text =
+            formatNumber(totals.cartTotal, appLocale) + " " + resources.getString(
+                R.string.currency
+            )
     }
 
 

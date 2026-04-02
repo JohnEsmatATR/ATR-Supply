@@ -33,7 +33,7 @@
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_marginTop="@dimen/_26sdp"
-            android:src="@drawable/test_profile"
+            android:src="@drawable/profile_image_placeholder"
             app:contentPadding="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

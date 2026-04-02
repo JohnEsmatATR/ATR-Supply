@@ -19,6 +19,8 @@ import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.myOrders.M
 import com.akhnaton.atrapp.databinding.FragmentTrackingBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.profile.order.details.OrderDetailsActivity
@@ -29,7 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickListener,
+class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListener,
     View.OnClickListener {
     lateinit var binding: FragmentTrackingBinding
     private val ordersViewModel: MyOrdersViewModel by viewModels()
@@ -43,16 +45,34 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTrackingBinding.inflate(inflater)
-        observe()
-        setRecycler()
-        getMyOrders()
-        getAddress()
-        observeAddress()
-        binding.cardAddress.setOnClickListener {
-            val intent = Intent(requireContext(), AddressesActivity::class.java)
-            startActivity(intent)
+
+        guestHandling()
+        if (SharedPreferenceHelper.isLogged!!) {
+            observe()
+            setRecycler()
+            getMyOrders()
+            getAddress()
+            observeAddress()
+            binding.cardAddress.setOnClickListener {
+                val intent = Intent(requireContext(), AddressesActivity::class.java)
+                startActivity(intent)
+            }
         }
         return binding.root
+    }
+
+    private fun guestHandling() {
+        if (!SharedPreferenceHelper.isLogged!!) {
+            binding.clGuest.visibility = View.VISIBLE
+            binding.orderRecycler.visibility = View.GONE
+            binding.layoutAddress.visibility = View.GONE
+            binding.appBar.visibility = View.GONE
+        }
+
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun observeAddress() {
@@ -68,7 +88,7 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
 
                     is AddressStatus.GetMyAddresses -> {
                         if (it.result.status == 200) {
-                           // hideProgressDialog(binding.progressLoading)
+                            // hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "Received: GetProducts")
 
                             val addresses = it.result.data ?: emptyList()
@@ -77,7 +97,7 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
                             addresses.forEach { address ->
                                 if (address.prime == 1) {
                                     Log.d("DEBUG_ADDRESS", "Prime address found: $address")
-                                    binding.defaultAddress.text=address.TITLE
+                                    binding.defaultAddress.text = address.TITLE
                                 }
                             }
 
@@ -93,7 +113,6 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
                     }
 
 
-
                     is AddressStatus.MakeAddressPrime -> {}
 
                     is AddressStatus.Error -> {
@@ -104,6 +123,7 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
             }
         }
     }
+
     private fun getAddress() {
         lifecycleScope.launch {
             viewModel.addressIntent.send(
@@ -111,7 +131,8 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
             )
         }
     }
-    private fun setRecycler(){
+
+    private fun setRecycler() {
         binding.orderRecycler.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -119,9 +140,11 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
 
         binding.orderRecycler.adapter = mAdapter
     }
+
     override fun onClick(v: View) {
-            showDatePicker(v.id)
+        showDatePicker(v.id)
     }
+
     private fun showDatePicker(id: Int) {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
@@ -145,6 +168,7 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
         )
         datePickerDialog.show()
     }
+
     private fun observe() {
         lifecycleScope.launch {
             ordersViewModel.state.collect {
@@ -162,6 +186,9 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
 
                             mList.addAll(it.data.data!!)
                             mAdapter.setData(mList, this@TrackingFragment)
+                            if (mList.size == 0) {
+                                binding.txtNoTrackingHistory.visibility=View.VISIBLE
+                            }
 
                         } else {
                             hideProgressDialog(binding.progressLoading)
@@ -172,8 +199,8 @@ class TrackingFragment : BaseFragment()  , OrderHistoryAdapter.OnProductClickLis
 
                     is MyOrdersStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                       // hideProgressDialog(binding.progressLoading)
-                       // showToastSnack(it.error.toString(), true)
+                        // hideProgressDialog(binding.progressLoading)
+                        // showToastSnack(it.error.toString(), true)
                     }
                 }
             }

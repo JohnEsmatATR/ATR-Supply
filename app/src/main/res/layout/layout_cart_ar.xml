@@ -146,7 +146,6 @@
                         android:id="@+id/delete_item"
                         android:layout_width="@dimen/_18sdp"
                         android:layout_height="@dimen/_18sdp"
-                        android:layout_marginStart="@dimen/_12sdp"
                         android:src="@drawable/trush_bin" />
 
                     <View

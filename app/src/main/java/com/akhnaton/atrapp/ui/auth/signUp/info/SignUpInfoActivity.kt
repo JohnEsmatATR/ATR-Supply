@@ -2,8 +2,10 @@ package com.akhnaton.atrapp.ui.auth.signUp.info
 
 import android.content.Intent
 import android.os.Bundle
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivitySignUpInfoBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.signUp.map.SignUpMapsActivity
 
 class SignUpInfoActivity : BaseActivity() {
@@ -19,7 +21,9 @@ class SignUpInfoActivity : BaseActivity() {
     }
 
     private fun init() {
-
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
     }
 
     private fun onClick() {

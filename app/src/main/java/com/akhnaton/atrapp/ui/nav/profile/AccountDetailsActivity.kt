@@ -22,6 +22,11 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SuspiciousIndentation")
     private fun init() {
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
         binding.layoutPdf.visibility = View.GONE
         binding.passwordLayout.visibility = View.GONE
       //  binding.password.visibility = View.GONE

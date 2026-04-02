@@ -62,7 +62,10 @@
                     android:id="@+id/txt_item_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:gravity="start"
                     android:text="@{cart.title}"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     tools:text="Eva Skin Clinic Collagen Deep Lines Filler 50 ML" />
@@ -172,8 +175,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
                                 android:layout_gravity="center"
+                                android:gravity="center"
                                 android:text="@string/plus"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_14sdp"
@@ -183,7 +186,7 @@
                         <EditText
                             android:id="@+id/txt_quantity"
                             android:layout_width="60dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="@null"
                             android:gravity="center"
                             android:inputType="number"
@@ -205,8 +208,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
                                 android:layout_gravity="center"
+                                android:gravity="center"
                                 android:text="@string/minus"
                                 android:textColor="@color/white"
                                 android:textSize="22sp"
@@ -226,7 +229,6 @@
                         android:id="@+id/delete_item"
                         android:layout_width="@dimen/_18sdp"
                         android:layout_height="@dimen/_18sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
                         android:src="@drawable/trush_bin" />
                 </LinearLayout>
 

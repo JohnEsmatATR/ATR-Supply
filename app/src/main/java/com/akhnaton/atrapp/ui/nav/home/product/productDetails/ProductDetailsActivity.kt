@@ -71,14 +71,14 @@ class ProductDetailsActivity : BaseActivity() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun init() {
-        val lan = SharedPreferenceHelper.language ?: "en"
-        if (lan == "ar"){
-            binding.ar.visibility = View.VISIBLE
-            binding.en.visibility = View.GONE
-        }else{
-            binding.ar.visibility = View.GONE
-            binding.en.visibility = View.VISIBLE
-        }
+//        val lan = SharedPreferenceHelper.language ?: "ar"
+//        if (lan == "ar"){
+//            binding.ar.visibility = View.VISIBLE
+//            binding.en.visibility = View.GONE
+//        }else{
+//            binding.ar.visibility = View.GONE
+//            binding.en.visibility = View.VISIBLE
+//        }
         setupQuantityEditText()
 
         flag = intent.getStringExtra("flag") ?: ""
@@ -98,6 +98,10 @@ class ProductDetailsActivity : BaseActivity() {
             error(R.drawable.ic_logo)
         }
         val productId = product.ID.toInt()
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
 
         observeProduct()
         getProductDetails(productId,flag)

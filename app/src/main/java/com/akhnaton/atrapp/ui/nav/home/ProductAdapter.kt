@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.home
 
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +18,11 @@ class ProductAdapter(
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
     private val onAddToCartClick: (product: ProductModel) -> Unit = {}
-) :
-    RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     private var productsList = ArrayList<ProductModel>()
     private lateinit var flag: String
-     var isInHome: Boolean = false
+    var isInHome: Boolean = false
 
     // في ProductAdapter
     fun setData(newList: List<ProductModel>, isAppend: Boolean, flag: String) {
@@ -57,21 +57,28 @@ class ProductAdapter(
             isFavorite = item.IS_LIKED
             hasBones = item.HAS_BONUS
             val offer = item.PRICE_DISCOUNT_PERCENTAGE
-            if (offer == "0%"){
-                binding.imDiscount.visibility= View.GONE
-                binding.txtStock.visibility=View.GONE
-            }else{
-                binding.imDiscount.visibility= View.VISIBLE
-                binding.txtStock.visibility=View.VISIBLE
+            if (offer == "0%") {
+                binding.imDiscount.visibility = View.GONE
+                binding.txtStock.visibility = View.GONE
+            } else {
+                binding.imDiscount.visibility = View.VISIBLE
+                binding.txtStock.visibility = View.VISIBLE
             }
-            if (item.PRICE_AFTER_DISCOUNT == 0.0){
+            if (item.PRICE_AFTER_DISCOUNT == 0.0) {
                 binding.txtPrice.visibility = View.GONE
-            }else{
+            } else {
                 binding.txtPrice.visibility = View.VISIBLE
             }
-            if (hasBones){
+
+            Log.d("WHAT", item.PRICE_WITH_TAX.toString())
+            Log.d("WHAT", item.PRICE_AFTER_DISCOUNT.toString())
+
+            if (item.PRICE_WITH_TAX == item.PRICE_AFTER_DISCOUNT) {
+                binding.txtOldPrice.visibility = View.GONE
+            }
+            if (hasBones) {
                 binding.imageView.visibility = View.VISIBLE
-            }else {
+            } else {
                 binding.imageView.visibility = View.GONE
             }
 
@@ -79,9 +86,7 @@ class ProductAdapter(
 
             binding.productModel = item
 //
-            Glide.with(binding.root.context)
-                .load(item.IMAGE_URL)
-                .into(binding.imItem)
+            Glide.with(binding.root.context).load(item.IMAGE_URL).into(binding.imItem)
 
             binding.imFavorite.setOnClickListener {
                 isFavorite = !isFavorite
@@ -95,7 +100,8 @@ class ProductAdapter(
 
             itemView.setOnClickListener {
                 val sharedView = binding.txtItemName
-                val transitionName = ViewCompat.getTransitionName(sharedView) ?: "itemImageTransition"
+                val transitionName =
+                    ViewCompat.getTransitionName(sharedView) ?: "itemImageTransition"
                 onClick(item, position, sharedView, transitionName)
             }
 
@@ -111,7 +117,8 @@ class ProductAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         if (isInHome) {

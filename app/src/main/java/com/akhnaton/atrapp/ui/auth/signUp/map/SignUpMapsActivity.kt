@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivitySignUpMapsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.signUp.pdf.SignUpPdfActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -59,12 +60,15 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun init() {
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
         firstName = intent.getStringExtra("firstName")?:""
         lastName = intent.getStringExtra("lastName")?:""
         email = intent.getStringExtra("email")?:""
         password = intent.getStringExtra("password")?:""
         phone = intent.getStringExtra("phone")?:""
-
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -78,7 +82,6 @@ class SignUpMapsActivity : BaseActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         showCurrentLocation()
-
 
     }
 

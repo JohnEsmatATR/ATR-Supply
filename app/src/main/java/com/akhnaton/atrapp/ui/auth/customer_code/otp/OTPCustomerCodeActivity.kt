@@ -19,6 +19,7 @@ import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.Validate
 import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.ValidateOtpState
 import com.akhnaton.atrapp.databinding.ActivityOtpCustomerCodeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.customer_code.login.LoginWithCodeActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -35,6 +36,11 @@ class OTPCustomerCodeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOtpCustomerCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
          invoiceCode = intent.getStringExtra("invoice_code").toString()
          phoneNumber = intent.getStringExtra("phone_number").toString()
         email = intent.getStringExtra("email").toString()

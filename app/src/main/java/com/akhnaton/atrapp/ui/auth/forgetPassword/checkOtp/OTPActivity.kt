@@ -21,6 +21,7 @@ import com.akhnaton.atrapp.ui.auth.forgetPassword.changePassword.NewPasswordActi
 import com.akhnaton.atrapp.databinding.ActivityOtpactivityBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import kotlinx.coroutines.launch
 
 class OTPActivity : BaseActivity() {
@@ -38,6 +39,10 @@ class OTPActivity : BaseActivity() {
     }
 
     private fun init() {
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
         email = intent!!.getStringExtra("email")?:""
         observeCheckOtp()
         setupOtpInputs()

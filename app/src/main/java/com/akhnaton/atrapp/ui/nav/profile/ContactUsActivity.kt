@@ -7,9 +7,11 @@ import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityContactUsBinding
+import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 
 
-class ContactUsActivity : AppCompatActivity() {
+class ContactUsActivity : BaseActivity() {
     private lateinit var binding: ActivityContactUsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +22,11 @@ class ContactUsActivity : AppCompatActivity() {
 
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contact_us)
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
     }
 
     private fun setupListeners() {

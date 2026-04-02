@@ -6,6 +6,7 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.NotificationModel
 import com.akhnaton.atrapp.databinding.ActivityNotificationsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 
 class NotificationsActivity : BaseActivity() {
     lateinit var binding: ActivityNotificationsBinding
@@ -31,6 +32,9 @@ class NotificationsActivity : BaseActivity() {
 
         setupReviewRecycler(list)
 
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
     }
 
     private fun onClick() {

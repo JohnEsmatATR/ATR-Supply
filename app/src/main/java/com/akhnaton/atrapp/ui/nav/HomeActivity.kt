@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityHomeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.LocaleHelper
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.CartFragment
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteFragment
@@ -361,12 +363,13 @@ class HomeActivity : BaseActivity() {
     private fun setLayoutDirection() {
         val lang = SharedPreferenceHelper.language ?: Locale.getDefault().language
 
+        Log.d("WHAT",lang)
         if (lang == "ar") {
             ViewCompat.setLayoutDirection(binding.bottomNavigationView, ViewCompat.LAYOUT_DIRECTION_RTL)
-            reverseBottomNavMenu(true)
+//            reverseBottomNavMenu(true)
         } else {
             ViewCompat.setLayoutDirection(binding.bottomNavigationView, ViewCompat.LAYOUT_DIRECTION_LTR)
-            reverseBottomNavMenu(false)
+//            reverseBottomNavMenu(false)
         }
     }
 
@@ -384,5 +387,4 @@ class HomeActivity : BaseActivity() {
     companion object {
         private const val UPDATE_REQUEST_CODE = 100
     }
-
 }

@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart.checkout
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,8 +33,7 @@ class CartParentAdapter(
             binding.cartResponse = item
             val lan = SharedPreferenceHelper.language ?: "ar"
 
-
-
+            Log.d("WHAT", lan)
 
             val childAdapter = CartAdapter(
                 lan,
@@ -42,7 +42,7 @@ class CartParentAdapter(
                 onMinusClick,
                 onDeleteClick,
 
-            )
+                )
             binding.recyclerProducts.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = childAdapter

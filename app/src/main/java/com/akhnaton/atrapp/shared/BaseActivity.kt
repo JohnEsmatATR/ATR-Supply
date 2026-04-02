@@ -313,10 +313,18 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         SharedPreferenceHelper.init(newBase)
-        val lang = SharedPreferenceHelper.language ?: "ar"
+
+        val lang = SharedPreferenceHelper.language ?: "ar" // safer default
+
         val locale = Locale(lang)
+        Locale.setDefault(locale)
+
         val config = Configuration(newBase.resources.configuration)
         config.setLocale(locale)
+
+        // ✅ THIS IS THE MISSING PIECE
+        config.setLayoutDirection(locale)
+
         val context = newBase.createConfigurationContext(config)
 
         android.util.Log.d("DEBUGGGGG", "Current language: $lang")

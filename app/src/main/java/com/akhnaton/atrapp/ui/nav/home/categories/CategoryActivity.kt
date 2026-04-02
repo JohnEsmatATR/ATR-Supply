@@ -14,6 +14,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoriesIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.CategoryState
 import com.akhnaton.atrapp.databinding.ActivityCategoryBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import kotlinx.coroutines.launch
 
@@ -49,6 +50,10 @@ class CategoryActivity : BaseActivity(),
             itemAnimator = DefaultItemAnimator()
         }
         binding.btnBack.setOnClickListener(this)
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
     }
 
     private fun setAdapterData(data: List<CategoriesModel>) {

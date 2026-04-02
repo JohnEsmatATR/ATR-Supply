@@ -1,6 +1,8 @@
 package com.akhnaton.atrapp.ui.nav.home
 
+import android.util.LayoutDirection
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,7 +47,6 @@ class OrderTypeAdapter(
                 setHasFixedSize(true)
             }
         }
-
 
 
         fun bind(item: OrderTypeModel) {

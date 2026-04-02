@@ -245,4 +245,8 @@
     <string name="the_request_was_created_successfully">تم إنشاء الطلب بنجاح</string>
     <string name="your_order_number_s">رقم/أرقام الطلب الخاصة بك:</string>
     <string name="currency">ج.م</string>
+    <string name="favourites">المفضلة</string>
+    <string name="please_log_in_to_access_this_feature">قم بتسجيل الدخول أولا للوصول الي هذه الميزة</string>
+    <string name="empty_cart">السلة فارغة</string>
+    <string name="no_tracking_history">لا يوجد سجل طلبات</string>
 </resources>

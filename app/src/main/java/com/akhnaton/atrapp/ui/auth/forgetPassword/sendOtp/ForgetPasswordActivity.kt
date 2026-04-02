@@ -6,11 +6,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.sendOtp.SendOtpIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.sendOtp.SendOtpStatus
 import com.akhnaton.atrapp.databinding.ActivityForgetPasswordBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.forgetPassword.checkOtp.OTPActivity
 import kotlinx.coroutines.launch
 
@@ -28,6 +30,10 @@ class ForgetPasswordActivity : BaseActivity() {
     }
 
     private fun init() {
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
         observeSendOtp()
     }
 

@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.changePassword.ChangePasswordIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.changePassword.ChangePasswordStatus
 import com.akhnaton.atrapp.databinding.ActivityNewPasswordBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.PasswordResetSuccessfullyActivity
 import kotlinx.coroutines.launch
 
@@ -29,6 +31,10 @@ class NewPasswordActivity : BaseActivity() {
     }
 
     private fun init() {
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
         email = intent!!.getStringExtra("email") ?: ""
         otp = intent!!.getStringExtra("otp") ?: ""
         observeChangePassword()

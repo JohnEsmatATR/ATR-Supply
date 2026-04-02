@@ -8,11 +8,13 @@ import android.provider.OpenableColumns
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.auth.register.RegisterIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.register.RegisterStatus
 import com.akhnaton.atrapp.databinding.ActivitySignUpPdfBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.signUp.RegisterViewModel
 import com.akhnaton.atrapp.ui.auth.waiting.WaitingActivity
 import kotlinx.coroutines.launch
@@ -54,6 +56,10 @@ class SignUpPdfActivity : BaseActivity() {
     }
 
     private fun init() {
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+        
         firstName = intent.getStringExtra("firstName") ?: ""
         lastName = intent.getStringExtra("lastName") ?: ""
         email = intent.getStringExtra("email") ?: ""

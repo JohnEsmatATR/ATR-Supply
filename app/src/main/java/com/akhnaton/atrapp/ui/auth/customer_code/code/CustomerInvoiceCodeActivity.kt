@@ -7,12 +7,14 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.appSetting.AppSettingIntent
 import com.akhnaton.atrapp.data.statuesValue.appSetting.AppSettingState
 import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.SentOtpIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.loginWithCustomerCode.SentOtpState
 import com.akhnaton.atrapp.databinding.ActivityCustomerInvoiceCodeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.customer_code.otp.OTPCustomerCodeActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.delay
@@ -26,6 +28,11 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCustomerInvoiceCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
         observer()
         observerAppSetting()
         lifecycleScope.launch {

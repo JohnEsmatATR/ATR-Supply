@@ -34,7 +34,7 @@
         app:itemTextAppearanceInactive="@color/black"
         app:itemTextColor="@drawable/bottom_nav_icon_color_selector"
         app:labelVisibilityMode="labeled"
-
+        android:layoutDirection="rtl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -14,6 +14,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
 import com.akhnaton.atrapp.databinding.ActivityAddressesBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,10 @@ class   AddressesActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@AddressesActivity, R.layout.activity_addresses)
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
 
         observe()
         onClick()

@@ -135,7 +135,14 @@ class CartAdapter(
         private fun handleQuantity(editQuantity: EditText, item: CartProduct) {
             editQuantity.setText(item.myQuantity.toString())
             editQuantity.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
                     if (isManualChange) return
@@ -152,7 +159,11 @@ class CartAdapter(
                         editQuantity.setText(quantity.toString())
                         editQuantity.setSelection(editQuantity.text.length)
                         isManualChange = false
-                        onPlusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
+                        onPlusClick(
+                            item.copy(myQuantity = quantity),
+                            bindingAdapterPosition,
+                            quantity
+                        )
                     }
                 }
             })
@@ -184,7 +195,11 @@ class CartAdapter(
             editQuantity.setSelection(editQuantity.text.length)
             isManualChange = false
 
-            if (isPlus) onPlusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
+            if (isPlus) onPlusClick(
+                item.copy(myQuantity = quantity),
+                bindingAdapterPosition,
+                quantity
+            )
             else onMinusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
 
             if (binding is LayoutCartBinding) binding.btnPlus.isEnabled = quantity < item.quantity
@@ -195,13 +210,18 @@ class CartAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (language == "ar") {
-            val binding = LayoutCartArBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            ViewHolder(binding)
-        } else {
-            val binding = LayoutCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            ViewHolder(binding)
-        }
+//        return if (language == "ar") {
+//            val binding =
+//                LayoutCartArBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+//            ViewHolder(binding)
+//        } else {
+//            val binding =
+//                LayoutCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+//            ViewHolder(binding)
+//        }
+        val binding =
+            LayoutCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

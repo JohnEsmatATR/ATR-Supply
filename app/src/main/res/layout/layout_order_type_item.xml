@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="rtl"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -40,6 +39,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="8dp"
+        android:layoutDirection="ltr"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -47,9 +47,11 @@ class FavoriteFragment : BaseFragment() {
         binding = FragmentFavoriteBinding.inflate(inflater)
 
         guestHandling()
-        favoriteObserve()
-        search()
-        init()
+        if (SharedPreferenceHelper.isLogged!!) {
+            favoriteObserve()
+            search()
+            init()
+        }
 
         return binding.root
     }
@@ -109,6 +111,10 @@ class FavoriteFragment : BaseFragment() {
         adapter.setData(productList, false, flag)
         binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
+
+        if (productList.size == 0) {
+            binding.txtNoProducts.visibility = View.VISIBLE
+        }
     }
 
     private fun observeAddToCart() {
@@ -237,6 +243,9 @@ class FavoriteFragment : BaseFragment() {
                             }
 
                             adapter.setData(productList, false, flag)
+                            if (productList.size == 0) {
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                            }
 
                         } else if (it.data.status == 401) {
                             // onTokenExpired(it.data.errors!![0])

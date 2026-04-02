@@ -9,9 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityLanguageBinding
+import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 
-class LanguageActivity : AppCompatActivity(), View.OnClickListener {
+class LanguageActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLanguageBinding
 
@@ -19,7 +20,7 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
 
-        SharedPreferenceHelper.setLocale(this, SharedPreferenceHelper.language ?: "ar")
+//        SharedPreferenceHelper.setLocale(this, SharedPreferenceHelper.language ?: "ar")
 
         setupBinding()
         setupListeners()
@@ -28,6 +29,11 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this@LanguageActivity, R.layout.activity_language)
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
     }
 
     private fun setupListeners() {
@@ -47,12 +53,10 @@ class LanguageActivity : AppCompatActivity(), View.OnClickListener {
     private fun changeLanguage(langCode: String) {
         SharedPreferenceHelper.language = langCode
 
-        val intent = baseContext.packageManager
-            .getLaunchIntentForPackage(baseContext.packageName)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intent = Intent(this, com.akhnaton.atrapp.ui.splash.SplashActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
-        finishAffinity()
+        finish()
     }
 
     private fun updateSelectedLanguageUI() {

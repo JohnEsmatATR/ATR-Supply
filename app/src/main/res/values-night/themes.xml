@@ -3,5 +3,7 @@
     <style name="Base.Theme.ATRAPP" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/orange</item>
+        <item name="android:fontFamily">@font/ibm</item>
+        <item name="fontFamily">@font/ibm</item>
     </style>
 </resources>

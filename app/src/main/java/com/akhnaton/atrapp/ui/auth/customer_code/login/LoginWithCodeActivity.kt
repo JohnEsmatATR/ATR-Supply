@@ -33,6 +33,9 @@ class LoginWithCodeActivity : BaseActivity() {
         binding = ActivityLoginWithCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
 
         invoiceCode = intent.getStringExtra("invoice_code").toString()
         phoneNumber = intent.getStringExtra("phone_number").toString()

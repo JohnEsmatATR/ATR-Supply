@@ -81,6 +81,11 @@ class BestSellerDetailsActivity : BaseActivity() {
         }
         val productId = product.ID.toInt()
 
+
+        var isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
+
         observeProduct()
       //  getProductDetails(productId)
         addToCartObserve()

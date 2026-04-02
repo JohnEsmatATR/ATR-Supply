@@ -42,7 +42,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun guestHandling() {
-        Log.d("WHAT",SharedPreferenceHelper.isLogged.toString())
+        Log.d("WHAT", SharedPreferenceHelper.isLogged.toString())
         if (SharedPreferenceHelper.isLogged == false) {
             binding.txtUserName.text = resources.getString(R.string.guest)
             binding.accountLayout.visibility = View.GONE
@@ -82,31 +82,34 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             ?: Locale.getDefault().language
 
         if (lang == "ar") {
-            binding.imageView6.setImageResource(R.drawable.ic_profile)
-            binding.icProfile.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView6.setImageResource(R.drawable.ic_chevron_left)
+            binding.icProfile.setImageResource(R.drawable.ic_profile)
 
             // order layout
-            binding.imageView12.setImageResource(R.drawable.ic_clock)
-            binding.icClock.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView12.setImageResource(R.drawable.ic_chevron_left)
+            binding.icClock.setImageResource(R.drawable.ic_clock)
 
             // rate layout
-            binding.imageView11.setImageResource(R.drawable.ic_star)
-            binding.icStar.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView11.setImageResource(R.drawable.ic_chevron_left)
+            binding.icStar.setImageResource(R.drawable.ic_star)
 
-            binding.imageView10.setImageResource(R.drawable.ic_world)
-            binding.icWorld.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView10.setImageResource(R.drawable.ic_chevron_left)
+            binding.icWorld.setImageResource(R.drawable.ic_world)
 
-            binding.imageView9.setImageResource(R.drawable.ic_privacy)
-            binding.icPrivacy.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView9.setImageResource(R.drawable.ic_chevron_left)
+            binding.icPrivacy.setImageResource(R.drawable.ic_privacy)
 
-            binding.imageView8.setImageResource(R.drawable.ic_about)
-            binding.icAbout.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView8.setImageResource(R.drawable.ic_chevron_left)
+            binding.icAbout.setImageResource(R.drawable.ic_about)
 
-            binding.imageView7.setImageResource(R.drawable.ic_phone)
-            binding.icContact.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView7.setImageResource(R.drawable.ic_chevron_left)
+            binding.icContact.setImageResource(R.drawable.ic_phone)
 
-            binding.imageView13.setImageResource(R.drawable.ic_logout)
-            binding.icLogout.setImageResource(R.drawable.ic_chevron_left)
+            binding.imageView13.setImageResource(R.drawable.ic_chevron_left)
+            binding.icLogout.setImageResource(R.drawable.ic_logout)
+
+            binding.imageView14.setImageResource(R.drawable.ic_chevron_left)
+            binding.icLogin.setImageResource(R.drawable.ic_login)
         } else {
             binding.imageView6.setImageResource(R.drawable.ic_chevron_right)
             binding.icProfile.setImageResource(R.drawable.ic_profile)

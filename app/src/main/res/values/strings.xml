@@ -304,4 +304,5 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="empty_cart">Empty Cart</string>
     <string name="favourites">Favourites</string>
     <string name="please_log_in_to_access_this_feature">Please log in to access this feature.</string>
+    <string name="no_tracking_history">No Tracking History</string>
 </resources>
