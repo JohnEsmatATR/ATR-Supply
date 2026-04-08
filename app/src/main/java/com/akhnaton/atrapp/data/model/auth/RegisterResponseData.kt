@@ -1,5 +1,8 @@
 package com.akhnaton.atrapp.data.model.auth
 
+import com.google.gson.annotations.SerializedName
+
 data class RegisterResponseData(
-    val JWT: String
+    @SerializedName("JWT")
+    val jwt: String? = null
 )

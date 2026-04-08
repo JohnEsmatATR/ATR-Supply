@@ -65,7 +65,7 @@ class RegisterFromLineViewModel : ViewModel() {
                 )
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
-                    val token = body.data?.JWT
+                    val token = body.data?.jwt
 
                     if (!token.isNullOrEmpty()) {
                         SharedPreferenceHelper.userToken = token
