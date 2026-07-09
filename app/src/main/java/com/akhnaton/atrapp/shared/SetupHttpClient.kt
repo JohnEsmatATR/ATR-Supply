@@ -58,6 +58,7 @@ class SetupHttpClient {
             builder.hostnameVerifier { hostname, session ->
 //                hostname == "10.42.151.27"    // test
                 hostname == "sales.atr-eg.com"   // prod
+                        || hostname == "preweb.atr-eg.com"   // out
             }
 
             val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -82,7 +83,7 @@ class SetupHttpClient {
                                 "version", "${SharedPreferenceHelper.version}"
                             )
                             .addHeader("devicetype", "Android")
-                            .addHeader("language",lang)
+                            .addHeader("language", lang)
 
                         // Log request headers
                         val request = requestBuilder.build()

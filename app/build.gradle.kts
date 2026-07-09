@@ -27,8 +27,8 @@ android {
         applicationId = "com.akhnaton.atrapp"
         minSdk = 24
         targetSdk = 36
-        versionCode = 19
-        versionName = "1.8"
+        versionCode = 21
+        versionName = "1.10"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
