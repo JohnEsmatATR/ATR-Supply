@@ -10,6 +10,7 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivitySplashBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.auth.onBoarding.OnBoardingActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import kotlinx.coroutines.CoroutineScope
@@ -48,7 +49,7 @@ class SplashActivity : BaseActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                val intent = Intent(baseContext, OnBoardingActivity::class.java)
+                val intent = Intent(baseContext, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }

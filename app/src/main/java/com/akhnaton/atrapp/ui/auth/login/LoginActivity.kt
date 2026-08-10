@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginIntent
@@ -13,7 +15,9 @@ import com.akhnaton.atrapp.databinding.ActivityLoginBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.customer_code.code.CustomerInvoiceCodeActivity
 import com.akhnaton.atrapp.ui.auth.forgetPassword.sendOtp.ForgetPasswordActivity
+import com.akhnaton.atrapp.ui.auth.onBoarding.OnBoardingActivity
 import com.akhnaton.atrapp.ui.auth.signUp.info.SignUpInfoActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.google.firebase.messaging.FirebaseMessaging
@@ -28,23 +32,29 @@ class LoginActivity : BaseActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            view.setPadding(0, 0, 0, imeInsets.bottom)
+            insets
+        }
+
         init()
         onClick()
     }
 
     private fun init() {
         var isArabic = SharedPreferenceHelper.language == "ar"
-        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
-        else binding.btnBack.setImageResource(R.drawable.ic_back)
+//        if (isArabic) binding.btnLogin.setIconResource(R.drawable.ic_circle_arrow_left)
+//        else binding.btnLogin.setIconResource(R.drawable.ic_circle_arrow_right)
 
         observeLogin()
 
     }
 
     private fun onClick() {
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
+//        binding.btnBack.setOnClickListener {
+//            finish()
+//        }
         binding.txtForgetPassword.setOnClickListener {
             val intent = Intent(baseContext, ForgetPasswordActivity::class.java)
             startActivity(intent)
@@ -55,6 +65,16 @@ class LoginActivity : BaseActivity() {
         }
         binding.btnLogin.setOnClickListener {
             postLogin()
+        }
+        binding.btnCustomerCodeLogin.setOnClickListener {
+            startActivity(Intent(baseContext, CustomerInvoiceCodeActivity::class.java))
+        }
+        binding.btnContinueGuest.setOnClickListener {
+            SharedPreferenceHelper.let { sharedPref ->
+                sharedPref.isLogged = false
+            }
+            startActivity(Intent(baseContext, HomeActivity::class.java))
+            finish()
         }
     }
 
