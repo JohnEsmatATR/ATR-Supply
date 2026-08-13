@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import com.akhnaton.atrapp.databinding.ActivityWelcomeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 
 class WelcomeActivity : BaseActivity() {
     lateinit var binding: ActivityWelcomeBinding
@@ -25,7 +26,7 @@ class WelcomeActivity : BaseActivity() {
 
     private fun onClick() {
         binding.btnGetStarted.setOnClickListener {
-            val intent = Intent(baseContext, OnBoardingActivity::class.java)
+            val intent = Intent(baseContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
