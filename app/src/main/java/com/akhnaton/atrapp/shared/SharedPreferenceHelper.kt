@@ -82,5 +82,4 @@ object SharedPreferenceHelper {
         return context
     }
 
-
 }

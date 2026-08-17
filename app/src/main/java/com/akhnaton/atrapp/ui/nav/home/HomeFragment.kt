@@ -10,8 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.Category
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
@@ -43,6 +46,9 @@ class HomeFragment : BaseFragment() {
     private var direction = 1
     private var sliderHandler: Handler? = null
     private var sliderRunnable: Runnable? = null
+
+    private lateinit var categoryAdapter: com.akhnaton.atrapp.ui.nav.home.categories.CategoryAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +61,8 @@ class HomeFragment : BaseFragment() {
         setPlannerView()
         getAddress()
         observeAddress()
+        setupCategories()
+
 
         lifecycleScope.launch {
             categoryViewModel.categoryIntent.send(CategoryIntent.GetCategories)
@@ -70,7 +78,11 @@ class HomeFragment : BaseFragment() {
 
     private fun guestHandling() {
         if (SharedPreferenceHelper.isLogged == false) {
-            binding.cardAddress.visibility= View.GONE
+            binding.cardAddress.visibility = View.GONE
+            binding.tvWelcome.text = "${getString(R.string.welcome_guest)}"
+        } else {
+            binding.tvWelcome.text =
+                "${getString(R.string.welcome)} ${SharedPreferenceHelper.userObj?.first_name}"
         }
     }
 
@@ -247,6 +259,51 @@ class HomeFragment : BaseFragment() {
         sliderHandler?.removeCallbacks(sliderRunnable!!)
         sliderHandler = null
         sliderRunnable = null
+    }
+
+    private fun setupCategories() {
+        val categories = listOf(
+            Category(
+                name = "Pharma",
+                imageRes = R.drawable.pharma
+            ),
+            Category(
+                name = "Cosmetics",
+                imageRes = R.drawable.cosmetics
+            ),
+            Category(
+                name = "Mounjaro",
+                imageRes = R.drawable.mounjaro
+            ),
+            Category(
+                name = "Supplements",
+                imageRes = R.drawable.supplements
+            )
+        )
+
+        categoryAdapter = com.akhnaton.atrapp.ui.nav.home.categories.CategoryAdapter(
+            categories
+        ) { category ->
+
+            Log.d(
+                "CATEGORY",
+                "Selected: ${category.name}"
+            )
+
+            // Handle category click here
+        }
+
+        binding.recyclerCategories.apply {
+
+            layoutManager = GridLayoutManager(
+                requireContext(),
+                2
+            )
+
+            adapter = categoryAdapter
+
+            setHasFixedSize(true)
+        }
     }
 }
 

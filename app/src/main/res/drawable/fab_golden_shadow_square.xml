@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Outer Big Glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="100dp"
+                android:height="100dp" />
+            <solid android:color="#22F38E26"/>
+        </shape>
+    </item>
+
+    <!-- Medium Glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="92dp"
+                android:height="92dp" />
+            <solid android:color="#44F38E26"/>
+        </shape>
+    </item>
+
+    <!-- Main Ring -->
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="80dp"
+                android:height="80dp" />
+
+            <solid android:color="@android:color/transparent"/>
+
+            <stroke
+                android:width="2dp"
+                android:color="@color/main_color_gold"/>
+        </shape>
+    </item>
+
+</layer-list>

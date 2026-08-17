@@ -7,7 +7,7 @@
     <string name="guest">Guest</string>
     <string name="get_started">Get Started</string>
     <string name="welcome_to_atr_app">Welcome\nto ATR App</string>
-    <string name="welcome">Welcome</string>
+<!--    <string name="welcome">Welcome</string>-->
     <string name="please_enter_your_data_to_continue">Please enter your data to continue</string>
     <string name="email">Email</string>
     <string name="email_or_customer_code">Email Or Customer Code</string>
@@ -223,6 +223,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="search">Search</string>
+    <string name="search_products">Search Products</string>
     <string name="deals_made_for_you">Deals made for you!</string>
     <string name="about_us">About Us</string>
     <string name="account_details">Account Details</string>
@@ -305,4 +306,8 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="favourites">Favourites</string>
     <string name="please_log_in_to_access_this_feature">Please log in to access this feature.</string>
     <string name="no_tracking_history">No Tracking History</string>
+    <string name="welcome">👋 Welcome,</string>
+    <string name="welcome_guest">👋 Welcome, Guest</string>
+    <string name="shop_by_categories">Shop By Categories</string>
+    <string name="free_gift">Free Gift</string>
 </resources>

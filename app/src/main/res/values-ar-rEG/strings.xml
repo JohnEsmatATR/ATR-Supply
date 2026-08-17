@@ -8,7 +8,7 @@
     <string name="guest">زائر</string>
     <string name="get_started">ابدأ الآن</string>
     <string name="welcome_to_atr_app">مرحباً\nبك في تطبيق ATR</string>
-    <string name="welcome">مرحباً</string>
+<!--    <string name="welcome">مرحباً</string>-->
     <string name="please_enter_your_data_to_continue">من فضلك أدخل بياناتك للمتابعة</string>
     <string name="email">البريد الإلكتروني</string>
     <string name="email_or_customer_code">البريد الإلكتروني او كود العميل</string>
@@ -161,6 +161,7 @@
     <string name="first_name">الاسم الأول</string>
     <string name="last_name">الاسم الأخير</string>
     <string name="search">بحث</string>
+    <string name="search_products">بحث المنتجات</string>
     <string name="deals_made_for_you">عروض مصممة خصيصاً لك!</string>
     <string name="about_us">من نحن</string>
     <string name="account_details">تفاصيل الحساب</string>
@@ -249,4 +250,7 @@
     <string name="please_log_in_to_access_this_feature">قم بتسجيل الدخول أولا للوصول الي هذه الميزة</string>
     <string name="empty_cart">السلة فارغة</string>
     <string name="no_tracking_history">لا يوجد سجل طلبات</string>
+    <string name="welcome">👋 مرحباً,</string>
+    <string name="welcome_guest">👋 مرحباً, زائر</string>
+    <string name="shop_by_categories">تسوق حسب الفئة</string>
 </resources>

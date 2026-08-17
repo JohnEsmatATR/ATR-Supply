@@ -52,7 +52,6 @@ object ConstantLinks {
     //order types and categories
     const val ORDER_TYPES = "category/order_type_and_category_list"
 
-
     //REGISTER WITH CUSTOMER CODE
     const val SENT_OTP = "User/send_sms_otp"
     const val VALIDATE_OTP = "User/validate_OTP"
