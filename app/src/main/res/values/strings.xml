@@ -44,6 +44,7 @@
     <string name="view_all">View All</string>
     <string name="pharma">Pharma</string>
     <string name="best_seller">Best Seller</string>
+    <string name="best_sellers">Bestsellers</string>
     <string name="no_products">No Products</string>
     <string name="filter">Filter</string>
     <string name="nothing">" "</string>
@@ -310,4 +311,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="welcome_guest">👋 Welcome, Guest</string>
     <string name="shop_by_categories">Shop By Categories</string>
     <string name="free_gift">Free Gift</string>
+    <string name="sort">Sort</string>
+    <string name="new_arrivals">New Arrivals</string>
 </resources>

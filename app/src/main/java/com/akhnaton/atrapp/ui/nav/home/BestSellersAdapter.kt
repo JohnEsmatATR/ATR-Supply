@@ -14,11 +14,11 @@ import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
 import com.bumptech.glide.Glide
 
-class ProductAdapter(
+class BestSellersAdapter(
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
     private val onAddToCartClick: (product: ProductModel) -> Unit = {}
-) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<BestSellersAdapter.ViewHolder>() {
 
     private var productsList = ArrayList<ProductModel>()
     private lateinit var flag: String
@@ -125,17 +125,21 @@ class ProductAdapter(
             LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        if (isInHome) {
-            binding.root.layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-            )
-        } else {
-            binding.root.layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
+//        binding.root.layoutParams = RecyclerView.LayoutParams(
+//            RecyclerView.LayoutParams.WRAP_CONTENT,
+//            RecyclerView.LayoutParams.WRAP_CONTENT
+//        )
+//        if (isInHome) {
+//            binding.root.layoutParams = ConstraintLayout.LayoutParams(
+//                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+//                ConstraintLayout.LayoutParams.WRAP_CONTENT
+//            )
+//        } else {
+//            binding.root.layoutParams = ConstraintLayout.LayoutParams(
+//                ConstraintLayout.LayoutParams.MATCH_PARENT,
+//                ConstraintLayout.LayoutParams.WRAP_CONTENT
+//            )
+//        }
         return ViewHolder(binding)
     }
 

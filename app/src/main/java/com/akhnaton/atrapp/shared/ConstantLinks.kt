@@ -3,9 +3,9 @@ package com.akhnaton.atrapp.shared
 object ConstantLinks {
     //in site company use http
 
-//    const val BASE_URL = "http://10.42.151.27/customer_test/"          // test
+//    const val BASE_URL = "http://10.42.151.27/customer/"          // test
 //    const val BASE_URL = "https://sales.atr-eg.com/customer/"     // Prod
-    const val BASE_URL = "https://preweb.atr-eg.com/customer_test/"     // OUTSIDE_COMPANY
+    const val BASE_URL = "https://preweb.atr-eg.com/customer/"     // OUTSIDE_COMPANY
 
     fun isProd(): Boolean {
         return BASE_URL.contains("sales.atr-eg.com")

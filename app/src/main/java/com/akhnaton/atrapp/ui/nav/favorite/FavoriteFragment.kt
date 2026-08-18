@@ -228,7 +228,9 @@ class FavoriteFragment : BaseFragment() {
                         showToastSnack(it.error.toString(), true)
                     }
 
-                    is FavoriteStatus.AddProductToFavourites -> TODO()
+                    is FavoriteStatus.AddProductToFavourites -> {
+                        hideProgressDialog(binding.progressLoading)
+                    }
                     is FavoriteStatus.DeleteProductToFavourites -> {
                         hideProgressDialog(binding.progressLoading)
 

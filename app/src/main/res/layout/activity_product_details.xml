@@ -38,7 +38,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_favorite"
+            android:src="@drawable/ic_favorite2"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -22,7 +22,7 @@
             android:layout_height="@dimen/_100sdp"
             android:background="@drawable/fab_golden_shadow"
             android:padding="@dimen/_24sdp"
-            android:src="@drawable/ic_favorite2"
+            android:src="@drawable/ic_favorite_fill2"
             android:tint="@color/orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

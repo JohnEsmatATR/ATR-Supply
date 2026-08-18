@@ -24,6 +24,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchStatus
 import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.GridSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
@@ -345,7 +346,7 @@ class ProductsActivity : BaseActivity() {
 
     private fun setupProductsRecycler(list: List<ProductModel>) {
         if (!::adapter.isInitialized) {
-            val layoutManager = GridLayoutManager(this, 2)
+            var layoutManager = GridLayoutManager(this, 2)
             adapter = ProductAdapter(
                 onClick = { product, position, sharedView, transitionName ->
                     val intent =
@@ -385,6 +386,23 @@ class ProductsActivity : BaseActivity() {
             }
             if (list.size < pageSize) {
                 isLastPage = true
+            }
+
+            val spacing = resources.getDimensionPixelSize(
+                com.intuit.sdp.R.dimen._8sdp
+            )
+            binding.recycler.apply {
+                layoutManager = GridLayoutManager(
+                    this@ProductsActivity,
+                    2
+                )
+                adapter = adapter
+                addItemDecoration(
+                    GridSpacingItemDecoration(
+                        spanCount = 2,
+                        spacing = spacing
+                    )
+                )
             }
 
             binding.recycler.layoutManager = layoutManager

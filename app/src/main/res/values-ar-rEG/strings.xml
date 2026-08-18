@@ -46,6 +46,7 @@
     <string name="view_all">عرض الكل</string>
     <string name="pharma">فارما</string>
     <string name="best_seller">الأكثر مبيعاً</string>
+    <string name="best_sellers">الأكثر مبيعاً</string>
     <string name="no_products">لا توجد منتجات</string>
     <string name="filter">تصفية</string>
     <string name="nothing">" "</string>
@@ -253,4 +254,7 @@
     <string name="welcome">👋 مرحباً,</string>
     <string name="welcome_guest">👋 مرحباً, زائر</string>
     <string name="shop_by_categories">تسوق حسب الفئة</string>
+    <string name="free_gift">هدية مجانية</string>
+    <string name="sort">ترتيب</string>
+    <string name="new_arrivals">الأحدث وصولا</string>
 </resources>

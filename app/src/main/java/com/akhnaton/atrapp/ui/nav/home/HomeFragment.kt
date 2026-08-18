@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.Category
+import com.akhnaton.atrapp.data.model.CategoryModel
+import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
@@ -24,12 +27,15 @@ import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerState
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.HorizontalSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
+import com.akhnaton.atrapp.ui.nav.home.categories.CategoryAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.PannerViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -37,7 +43,8 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseFragment() {
     lateinit var binding: FragmentHomeBinding
     private val categoryViewModel: CategoryViewModel by viewModels()
-    private lateinit var orderTypeAdapter: OrderTypeAdapter
+//    private lateinit var orderTypeAdapter: OrderTypeAdapter
+    private lateinit var orderTypeAdapter2: OrderTypeAdapter2
     private val viewModel: AddressesViewModel by viewModels()
 
     private val pannerViewModel: PannerViewModel by viewModels()
@@ -47,7 +54,11 @@ class HomeFragment : BaseFragment() {
     private var sliderHandler: Handler? = null
     private var sliderRunnable: Runnable? = null
 
-    private lateinit var categoryAdapter: com.akhnaton.atrapp.ui.nav.home.categories.CategoryAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var bestSellersAdapter: BestSellersAdapter
+    private lateinit var newArrivalsAdapter: NewArrivalsAdapter
+
+    lateinit var adapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,13 +67,14 @@ class HomeFragment : BaseFragment() {
         binding = FragmentHomeBinding.inflate(inflater)
 
         guestHandling()
-        setupRecycler()
+        setupRecycler2()
         observeViewModel()
         setPlannerView()
         getAddress()
         observeAddress()
         setupCategories()
-
+        setupBestsellers()
+        setupNewArrivals()
 
         lifecycleScope.launch {
             categoryViewModel.categoryIntent.send(CategoryIntent.GetCategories)
@@ -86,10 +98,26 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+//    private fun setupRecycler() {
+//
+//        orderTypeAdapter = OrderTypeAdapter { category, orderTypeIndex, _ ->
+//            val intent = Intent(requireContext(), ProductsActivity::class.java)
+//            intent.putExtra("flag", orderTypeIndex)
+//            intent.putExtra("categoryId", category.ID)
+//            startActivity(intent)
+//        }
+//
+//
+//        binding.recyclerPharma.apply {
+//            layoutManager = LinearLayoutManager(requireContext())
+//            adapter = orderTypeAdapter
+//            setHasFixedSize(true)
+//        }
+//    }
 
-    private fun setupRecycler() {
+    private fun setupRecycler2() {
 
-        orderTypeAdapter = OrderTypeAdapter { category, orderTypeIndex, _ ->
+        orderTypeAdapter2 = OrderTypeAdapter2 { category, orderTypeIndex, _ ->
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", orderTypeIndex)
             intent.putExtra("categoryId", category.ID)
@@ -98,8 +126,8 @@ class HomeFragment : BaseFragment() {
 
 
         binding.recyclerPharma.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = orderTypeAdapter
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = orderTypeAdapter2
             setHasFixedSize(true)
         }
     }
@@ -118,7 +146,7 @@ class HomeFragment : BaseFragment() {
                         binding.recyclerPharma.visibility = View.VISIBLE
 
                         state.data.data?.let {
-                            orderTypeAdapter.setData(it)
+                            orderTypeAdapter2.setData(it)
                         }
                     }
 
@@ -280,29 +308,210 @@ class HomeFragment : BaseFragment() {
                 imageRes = R.drawable.supplements
             )
         )
-
-        categoryAdapter = com.akhnaton.atrapp.ui.nav.home.categories.CategoryAdapter(
+        categoryAdapter = CategoryAdapter(
             categories
         ) { category ->
-
             Log.d(
                 "CATEGORY",
                 "Selected: ${category.name}"
             )
-
             // Handle category click here
         }
-
         binding.recyclerCategories.apply {
-
             layoutManager = GridLayoutManager(
                 requireContext(),
                 2
             )
-
             adapter = categoryAdapter
-
             setHasFixedSize(true)
+        }
+    }
+
+    private fun setupBestsellers() {
+        val bestSellers = listOf(
+            ProductModel(
+                ID = 3949400,
+                TITLE = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                DESCRIPTION = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                IMAGE_URL = "https://sales.atr-eg.com/customer/uploads/products/40050.jpeg",
+                QUANTITY = 8500,
+                MY_QUANTITY = 0,
+                WEIGHT = "100 GM",
+                QOUTA = 0,
+                TAX = 0.0,
+                ITEM_TYPE = "Pharma",
+                IS_BEST_SELLER = false,
+                IS_LIKED = false,
+                PRICE_WITHOUT_TAX = 8019.8,
+                PRICE_DISCOUNT = 0.0,
+                PRICE_DISCOUNT_PERCENTAGE = "0%",
+                PRICE_AFTER_DISCOUNT = 8019.8,
+                PRICE_WITH_TAX = 8019.8,
+                BONUS_DATA = emptyList(),
+                MY_QUANTITY_TOTAL_PRICE = 0.0,
+                RATE = "5.0",
+                IN_STOCK = true,
+                HAS_BONUS = true,
+            ),ProductModel(
+                ID = 3949400,
+                TITLE = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                DESCRIPTION = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                IMAGE_URL = "https://sales.atr-eg.com/customer/uploads/products/40050.jpeg",
+                QUANTITY = 8500,
+                MY_QUANTITY = 0,
+                WEIGHT = "100 GM",
+                QOUTA = 0,
+                TAX = 0.0,
+                ITEM_TYPE = "Pharma",
+                IS_BEST_SELLER = false,
+                IS_LIKED = false,
+                PRICE_WITHOUT_TAX = 8019.8,
+                PRICE_DISCOUNT = 0.0,
+                PRICE_DISCOUNT_PERCENTAGE = "0%",
+                PRICE_AFTER_DISCOUNT = 8019.8,
+                PRICE_WITH_TAX = 8019.8,
+                BONUS_DATA = emptyList(),
+                MY_QUANTITY_TOTAL_PRICE = 0.0,
+                RATE = "5.0",
+                IN_STOCK = true,
+                HAS_BONUS = true,
+            ),ProductModel(
+                ID = 3949400,
+                TITLE = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                DESCRIPTION = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                IMAGE_URL = "https://sales.atr-eg.com/customer/uploads/products/40050.jpeg",
+                QUANTITY = 8500,
+                MY_QUANTITY = 0,
+                WEIGHT = "100 GM",
+                QOUTA = 0,
+                TAX = 0.0,
+                ITEM_TYPE = "Pharma",
+                IS_BEST_SELLER = false,
+                IS_LIKED = false,
+                PRICE_WITHOUT_TAX = 8019.8,
+                PRICE_DISCOUNT = 0.0,
+                PRICE_DISCOUNT_PERCENTAGE = "0%",
+                PRICE_AFTER_DISCOUNT = 8019.8,
+                PRICE_WITH_TAX = 8019.8,
+                BONUS_DATA = emptyList(),
+                MY_QUANTITY_TOTAL_PRICE = 0.0,
+                RATE = "5.0",
+                IN_STOCK = true,
+                HAS_BONUS = true,
+            ),
+        )
+        bestSellersAdapter = BestSellersAdapter(
+            onClick = { product, position, sharedView, transitionName ->
+            },
+            onFavoriteClick = { product, position, isFavorite ->
+            },
+            onAddToCartClick = { product ->
+            }
+        )
+        bestSellersAdapter.setData(bestSellers, false, "Pharma")
+
+        binding.recyclerBestSellers.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = bestSellersAdapter
+            addItemDecoration(
+                HorizontalSpacingItemDecoration(
+                    resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._4sdp)
+                )
+            )
+        }
+    }
+
+    private fun setupNewArrivals() {
+        val newArrivals = listOf(
+            ProductModel(
+                ID = 3949400,
+                TITLE = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                DESCRIPTION = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                IMAGE_URL = "https://sales.atr-eg.com/customer/uploads/products/40050.jpeg",
+                QUANTITY = 8500,
+                MY_QUANTITY = 0,
+                WEIGHT = "100 GM",
+                QOUTA = 0,
+                TAX = 0.0,
+                ITEM_TYPE = "Pharma",
+                IS_BEST_SELLER = false,
+                IS_LIKED = false,
+                PRICE_WITHOUT_TAX = 8019.8,
+                PRICE_DISCOUNT = 0.0,
+                PRICE_DISCOUNT_PERCENTAGE = "0%",
+                PRICE_AFTER_DISCOUNT = 8019.8,
+                PRICE_WITH_TAX = 8019.8,
+                BONUS_DATA = emptyList(),
+                MY_QUANTITY_TOTAL_PRICE = 0.0,
+                RATE = "5.0",
+                IN_STOCK = true,
+                HAS_BONUS = true,
+            ),ProductModel(
+                ID = 3949400,
+                TITLE = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                DESCRIPTION = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                IMAGE_URL = "https://sales.atr-eg.com/customer/uploads/products/40050.jpeg",
+                QUANTITY = 8500,
+                MY_QUANTITY = 0,
+                WEIGHT = "100 GM",
+                QOUTA = 0,
+                TAX = 0.0,
+                ITEM_TYPE = "Pharma",
+                IS_BEST_SELLER = false,
+                IS_LIKED = false,
+                PRICE_WITHOUT_TAX = 8019.8,
+                PRICE_DISCOUNT = 0.0,
+                PRICE_DISCOUNT_PERCENTAGE = "0%",
+                PRICE_AFTER_DISCOUNT = 8019.8,
+                PRICE_WITH_TAX = 8019.8,
+                BONUS_DATA = emptyList(),
+                MY_QUANTITY_TOTAL_PRICE = 0.0,
+                RATE = "5.0",
+                IN_STOCK = true,
+                HAS_BONUS = true,
+            ),ProductModel(
+                ID = 3949400,
+                TITLE = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                DESCRIPTION = "MOUNJARO KWIKPEN 2.5MG/0.6ML 3ML X1",
+                IMAGE_URL = "https://sales.atr-eg.com/customer/uploads/products/40050.jpeg",
+                QUANTITY = 8500,
+                MY_QUANTITY = 0,
+                WEIGHT = "100 GM",
+                QOUTA = 0,
+                TAX = 0.0,
+                ITEM_TYPE = "Pharma",
+                IS_BEST_SELLER = false,
+                IS_LIKED = false,
+                PRICE_WITHOUT_TAX = 8019.8,
+                PRICE_DISCOUNT = 0.0,
+                PRICE_DISCOUNT_PERCENTAGE = "0%",
+                PRICE_AFTER_DISCOUNT = 8019.8,
+                PRICE_WITH_TAX = 8019.8,
+                BONUS_DATA = emptyList(),
+                MY_QUANTITY_TOTAL_PRICE = 0.0,
+                RATE = "5.0",
+                IN_STOCK = true,
+                HAS_BONUS = true,
+            ),
+        )
+        newArrivalsAdapter = NewArrivalsAdapter(
+            onClick = { product, position, sharedView, transitionName ->
+            },
+            onFavoriteClick = { product, position, isFavorite ->
+            },
+            onAddToCartClick = { product ->
+            }
+        )
+        newArrivalsAdapter.setData(newArrivals, false, "Pharma")
+
+        binding.recyclerNewArrivals.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = newArrivalsAdapter
+            addItemDecoration(
+                HorizontalSpacingItemDecoration(
+                    resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._4sdp)
+                )
+            )
         }
     }
 }

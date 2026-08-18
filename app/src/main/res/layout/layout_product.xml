@@ -5,25 +5,28 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="productModel"
             type="com.akhnaton.atrapp.data.model.ProductModel" />
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_8sdp"
-        app:cardCornerRadius="@dimen/_8sdp">
+        android:layout_margin="@dimen/_4sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_2sdp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_image"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="0dp"
@@ -33,13 +36,12 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/im_item"
-                        android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_100sdp"
                         android:background="@color/white"
                         android:padding="@dimen/_12sdp"
                         android:scaleType="centerInside"
@@ -60,11 +62,11 @@
 
                         <ImageView
                             android:id="@+id/im_favorite"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:layout_gravity="center"
                             android:padding="@dimen/_4sdp"
-                            android:src="@drawable/ic_favorite2"
+                            android:src="@drawable/ic_favorite_fill2"
                             android:tint="@color/red" />
 
                     </androidx.cardview.widget.CardView>
@@ -104,26 +106,29 @@
                         android:paddingHorizontal="@dimen/_4sdp"
                         android:text="@string/out_of_stock"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_6ssp"
+                        android:textSize="@dimen/_8ssp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
+                        android:id="@+id/layoutFreeGift"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:background="@drawable/bg_red_orange_gradient"
                         android:paddingHorizontal="@dimen/_4sdp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvOutOfStock">
 
                         <ImageView
                             android:layout_width="@dimen/_7sdp"
                             android:layout_height="@dimen/_7sdp"
-                            android:src="@drawable/ic_gift"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_2sdp"
+                            android:src="@drawable/ic_gift"
                             android:tint="@color/white"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tvOutOfStock" />
@@ -132,10 +137,10 @@
                             android:id="@+id/tvFreeGift"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/free_gift"
                             android:layout_gravity="center"
+                            android:text="@string/free_gift"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_6ssp"
+                            android:textSize="@dimen/_8ssp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tvOutOfStock" />
 
@@ -153,7 +158,7 @@
                 android:gravity="start"
                 android:text="@{productModel.category != null &amp;&amp; productModel.category.TITLE != null ? productModel.category.TITLE : ``}"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/_6ssp"
+                android:textSize="@dimen/_8ssp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -168,10 +173,9 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:ellipsize="end"
                 android:gravity="start|top"
-                android:maxLines="2"
                 android:text="@{productModel.TITLE}"
                 android:textColor="@color/dark_gray"
-                android:textSize="@dimen/_8ssp"
+                android:textSize="@dimen/_10ssp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -206,30 +210,11 @@
                     android:gravity="center"
                     android:text="@{productModel.PRICE_WITH_TAX + ` LE`}"
                     android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/_8ssp"
+                    android:textSize="@dimen/_10ssp"
                     android:visibility="visible"
                     tools:text="44.00 EGP" />
 
             </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_add_to_cart"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginHorizontal="@dimen/_4sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:background="@{productModel.IN_STOCK ? @drawable/btn_orange_style : @drawable/btn_gray_style}"
-                android:enabled="@{productModel.IN_STOCK}"
-                android:padding="0dp"
-                android:text="@{productModel.IN_STOCK ? @string/add_to_cart : @string/out_of_stock}"
-                android:textColor="@{productModel.IN_STOCK ? @color/white : @color/gray}"
-                android:textSize="12sp"
-                app:backgroundTint="@null"
-                app:cornerRadius="@dimen/_4sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -278,6 +263,40 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_to_cart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:background="@{productModel.IN_STOCK ? @drawable/btn_orange_style : @drawable/btn_out_of_stock}"
+                android:enabled="@{!productModel.IN_STOCK}"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@{productModel.IN_STOCK ? @string/add_to_cart : @string/out_of_stock}"
+                android:textColor="@{productModel.IN_STOCK ? @color/white : @color/red}"
+                android:textSize="@dimen/_10ssp"
+                app:backgroundTint="@null"
+                app:cornerRadius="@dimen/_4sdp"
+                app:icon="@{productModel.IN_STOCK ? @drawable/ic_cart : @drawable/ic_circle_close}"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/_4sdp"
+                app:iconSize="@dimen/_14sdp"
+                android:textStyle="bold"
+                app:iconTint="@{productModel.IN_STOCK ? @color/white : @color/red}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
         </LinearLayout>
 
