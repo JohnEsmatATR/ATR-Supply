@@ -29,18 +29,18 @@ class BestSellerViewModel : ViewModel() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {
                 when (it) {
-                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo(1)
+                    is BestSellerIntent.GetBestSeller -> getBestsellerRepo(1, it.orderType)
 
                 }
             }
         }
     }
 
-    private fun getBestsellerRepo(bestSeller: Int) {
+    private fun getBestsellerRepo(bestSeller: Int, orderType: String) {
         viewModelScope.launch {
             _state.value = BestSellerStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getBestSeller(bestSeller)
+                val response = HomeRepository().getBestSeller(bestSeller, orderType)
                 if (response.code() == 200) {
                     Log.d(Common.KeroDebug, "getBestsellerRepo ${response.body()!!}")
                     BestSellerStatus.GetBestSeller(response.body()!!)

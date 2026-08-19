@@ -11,7 +11,7 @@ class HomeRepository {
     suspend fun filterProduct(search: String? = "", categoryId: Int) =
         retrofit.filterProduct(search, categoryId)
 
-    suspend fun getBestSeller(bestSeller: Int) = retrofit.getBestSeller(bestSeller)
+    suspend fun getBestSeller(bestSeller: Int, orderType: String) = retrofit.getBestSeller(bestSeller, orderType)
 
     suspend fun getProduct(
         categoryId: Int,

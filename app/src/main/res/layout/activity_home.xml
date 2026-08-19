@@ -6,57 +6,60 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.nav.HomeActivity">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/home"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <FrameLayout
-        android:id="@+id/flFragment"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingTop="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_55sdp"
-        android:background="@drawable/bottom_nav_rounded"
-        app:backgroundTint="@null"
-        app:itemActiveIndicatorStyle="@color/gray"
-        app:itemBackground="@null"
-        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
-        app:itemTextAppearanceActiveBoldEnabled="true"
-        app:itemTextAppearanceInactive="@color/black"
-        app:itemTextColor="@drawable/bottom_nav_icon_color_selector"
-        app:labelVisibilityMode="labeled"
-        android:layoutDirection="rtl"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        <FrameLayout
+            android:id="@+id/flFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/btn_tracking"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="@dimen/_35sdp"
-        android:background="@drawable/btn_floating_style"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:padding="15dp"
-        android:src="@drawable/ic_home_floating"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/bg_bottom_nav"
+            android:layoutDirection="rtl"
+            android:outlineProvider="none"
+            app:elevation="0dp"
+            app:backgroundTint="@null"
+            app:itemActiveIndicatorStyle="@color/gray"
+            app:itemBackground="@null"
+            app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
+            app:itemTextAppearanceActiveBoldEnabled="true"
+            app:itemTextAppearanceInactive="@color/black"
+            app:itemTextColor="@drawable/bottom_nav_icon_color_selector"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_menu" />
 
-
-
-
+        <ImageView
+            android:id="@+id/btn_tracking"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:background="@drawable/btn_floating_style"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="15dp"
+            android:src="@drawable/ic_home_floating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

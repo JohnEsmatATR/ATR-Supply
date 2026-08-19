@@ -53,9 +53,9 @@ class OrderTypeAdapter2(
 
         fun bind(item: OrderTypeModel, position: Int) {
             currentOrderType = item
-//            Glide.with(itemView.context)
-//                .load(imageUrl)
-//                .into(binding.invoiceImage)
+            Glide.with(itemView.context)
+                .load(item.IMAGE_URL)
+                .into(binding.ivCategory)
             binding.tvCategoryName.text = item.order_type
             binding.root.setOnClickListener {
                 onCategoryClick(item.categories[0], item.order_type_index, 0)

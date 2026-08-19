@@ -40,7 +40,7 @@ class BestSellerActivity : BaseActivity() {
     private fun getBestSeller() {
         lifecycleScope.launch {
             bestSellerViewModel.homeIntent.send(
-                BestSellerIntent.GetBestSeller(1)
+                BestSellerIntent.GetBestSeller(1, "Pharma")
             )
         }
     }

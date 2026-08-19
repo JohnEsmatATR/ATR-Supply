@@ -114,8 +114,6 @@ class ProductsActivity : BaseActivity() {
             }
         })
 
-
-
         searchObserve()
         productsObserve()
         Log.d("TAG", "ProductsActivity: ProductsActivity ")
