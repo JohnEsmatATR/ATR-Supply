@@ -13,6 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.CategoriesModel
+import com.akhnaton.atrapp.data.model.OrderTypeModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
@@ -34,6 +36,11 @@ import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.collections.emptyList
+import androidx.fragment.app.FragmentManager
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
+import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
 
 class ProductsActivity : BaseActivity() {
     lateinit var binding: ActivityProductsBinding
@@ -41,6 +48,7 @@ class ProductsActivity : BaseActivity() {
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
     private val addCartViewModel: AddToCartViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by viewModels()
     private var products: MutableList<ProductModel> = ArrayList()
     lateinit var adapter: ProductAdapter
     private var searchWord = ""
@@ -53,6 +61,7 @@ class ProductsActivity : BaseActivity() {
     private var pageSize = 10
     private var isSearchMode = false
     private var searchJob: Job? = null
+    private var categories: ArrayList<OrderTypeModel> = ArrayList()
     private lateinit var flag: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,6 +131,35 @@ class ProductsActivity : BaseActivity() {
         Log.d("TAG", "init flag: ${flag}")
         Log.d("TAG", "init categoryId: ${categoryId}")
         getProductsBasedOnCategory(categoryId, category = flag)
+
+        lifecycleScope.launch {
+            categoryViewModel.categoryIntent.send(CategoryIntent.GetCategories)
+        }
+        observeCategories()
+    }
+
+    private fun observeCategories() {
+        lifecycleScope.launch {
+            categoryViewModel.state.collect { state ->
+                when (state) {
+                    is CategoryStatus.Idle -> Unit
+                    is CategoryStatus.Loading -> {
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is CategoryStatus.GetCategory -> {
+                        hideProgressDialog(binding.progressLoading)
+                        categories = state.data.data!! as ArrayList<OrderTypeModel>
+                    }
+
+                    is CategoryStatus.Error -> {
+                        hideProgressDialog(binding.progressLoading)
+//                        binding.recyclerPharma.visibility = View.VISIBLE
+                        //   Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun searchObserve() {
@@ -190,6 +228,19 @@ class ProductsActivity : BaseActivity() {
     private fun onClick() {
         binding.btnBack.setOnClickListener {
             finish()
+        }
+
+        binding.layoutFilter.setOnClickListener {
+
+            Log.d("WHATcategories.size", "${categories.size}")
+            FilterProductsBottomSheet
+                .newInstance(
+                    orderTypes = categories,
+                )
+                .show(
+                    supportFragmentManager,
+                    "FilterProductsBottomSheet"
+                )
         }
     }
 

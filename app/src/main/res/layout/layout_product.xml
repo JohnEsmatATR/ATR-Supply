@@ -149,6 +149,13 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
+            <View
+                android:id="@+id/vTop"
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
             <TextView
                 android:id="@+id/txt_category"
                 android:layout_width="wrap_content"
@@ -159,11 +166,12 @@
                 android:text="@{productModel.category != null &amp;&amp; productModel.category.TITLE != null ? productModel.category.TITLE : ``}"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_8ssp"
+                android:visibility="gone"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_item_name"
-                tools:text="Category Name" />
+                tools:text="" />
 
             <TextView
                 android:id="@+id/txt_item_name"
@@ -180,7 +188,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_image"
-                tools:text="Body deodorant powder" />
+                tools:text="" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -212,7 +220,7 @@
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/_10ssp"
                     android:visibility="visible"
-                    tools:text="44.00 EGP" />
+                    tools:text="" />
 
             </LinearLayout>
 
@@ -264,12 +272,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
 
-            <View
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1" />
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_to_cart"
                 android:layout_width="match_parent"
@@ -297,6 +299,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+
+            <View
+                android:id="@+id/vBottom"
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
 
         </LinearLayout>
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/productContainer"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_filter_item"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="20dp"
+    android:paddingEnd="16dp">
+
+    <TextView
+        android:id="@+id/tvProduct"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Diclofenac Sodium"
+        android:textColor="#333333"
+        android:textSize="16sp" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center"
+        app:buttonTint="@color/checkbox_tint" />
+
+</LinearLayout>

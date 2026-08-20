@@ -109,6 +109,12 @@ class BestSellersAdapter(
                 onClick(item, position, sharedView, transitionName)
             }
 
+            binding.btnAddToCart.visibility= View.GONE
+            binding.txtPrice.visibility= View.GONE
+            binding.txtOldPrice.visibility= View.GONE
+            binding.txtCategory.visibility= View.GONE
+            binding.vBottom.visibility= View.VISIBLE
+
         }
 
         private fun changeFavoriteButton() {
@@ -125,10 +131,10 @@ class BestSellersAdapter(
             LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.txtOldPrice.paintFlags =
             binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-//        binding.root.layoutParams = RecyclerView.LayoutParams(
-//            RecyclerView.LayoutParams.WRAP_CONTENT,
-//            RecyclerView.LayoutParams.WRAP_CONTENT
-//        )
+        binding.root.layoutParams = RecyclerView.LayoutParams(
+            360,
+            RecyclerView.LayoutParams.MATCH_PARENT
+        )
 //        if (isInHome) {
 //            binding.root.layoutParams = ConstraintLayout.LayoutParams(
 //                ConstraintLayout.LayoutParams.WRAP_CONTENT,
