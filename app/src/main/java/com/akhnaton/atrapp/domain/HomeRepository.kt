@@ -37,9 +37,10 @@ class HomeRepository {
         categoryId: Int,
         page: Int,
         limit: Int,
-        categories: String
+        categories: String,
+        sortBy: String? = null // malak
     ) =
-        retrofit.getProductsByPagination(categoryId, page, limit, categories)
+        retrofit.getProductsByPagination(categoryId, page, limit, categories, sortBy)
 
 
     suspend fun getProductDetails(

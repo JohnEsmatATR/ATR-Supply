@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
@@ -41,6 +42,7 @@ import androidx.fragment.app.FragmentManager
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProductsActivity : BaseActivity() {
     lateinit var binding: ActivityProductsBinding
@@ -164,52 +166,52 @@ class ProductsActivity : BaseActivity() {
 
     private fun searchObserve() {
         lifecycleScope.launch {
-            searchViewModel.state.collect {
-                when (it) {
+            searchViewModel.state.collect { state ->
+                when (state) {
                     is SearchStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is SearchStatus.Loading -> {
+                        isLoading = true
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         showProgressDialog(binding.progressLoading)
                         binding.txtNoProducts.visibility = View.GONE
                     }
 
                     is SearchStatus.SearchProduct -> {
-                        if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
-
+                        isLoading = false
+                        hideProgressDialog(binding.progressLoading)
+                        if (state.data.status == 200) {
                             isSearchMode = true
-                            if (it.data.data!!.isNotEmpty()) {
-                                setupProductsRecycler(it.data.data!!)
+                            val searchResults = state.data.data ?: emptyList()
+
+                            if (searchResults.isNotEmpty()) {
                                 binding.txtNoProducts.visibility = View.GONE
                                 binding.recycler.visibility = View.VISIBLE
+                                setupProductsRecycler(searchResults)
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                                 binding.recycler.visibility = View.GONE
                             }
-
-
-                        } else if (it.data.status == 401) {
+                        } else if (state.data.status == 401) {
                             hideProgressDialog(binding.progressLoading)
-//                            onTokenExpired(it.data.errors!![0])
-
                         } else {
                             hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
+                            showToastSnack(state.data.message ?: "", true)
                         }
-
                     }
-
 
                     is SearchStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        isLoading = false
+                        Log.d(Common.KeroDebug, "observeHome Error: ${state.error}")
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        binding.txtNoProducts.visibility = View.VISIBLE
+                        binding.recycler.visibility = View.GONE
+                        showToastSnack(state.error.toString(), true)
                     }
-
                 }
             }
         }
     }
+
 
     private fun searchProduct(word: String, orderType: String, category: Int) {
         lifecycleScope.launch {
@@ -231,7 +233,6 @@ class ProductsActivity : BaseActivity() {
         }
 
         binding.layoutFilter.setOnClickListener {
-
             Log.d("WHATcategories.size", "${categories.size}")
             FilterProductsBottomSheet
                 .newInstance(
@@ -241,6 +242,54 @@ class ProductsActivity : BaseActivity() {
                     supportFragmentManager,
                     "FilterProductsBottomSheet"
                 )
+        }
+
+        binding.layoutSort.setOnClickListener {
+            val bottomSheetDialog = BottomSheetDialog(this)
+            val view = layoutInflater.inflate(R.layout.bottom_sheet_sort, null)
+
+            val rvSortingOptions = view.findViewById<RecyclerView>(R.id.rvSortingOptions)
+            val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
+            val btnApplySort = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
+
+            val sortingOptions = listOf(
+                "Alphabetical (A - Z)",
+                "Alphabetical (Z - A)",
+                "Price: Low to High",
+                "Price: High to Low"
+            )
+
+            var selectedSortByCode = "0-1"
+
+            rvSortingOptions.adapter = SortProductAdapter(sortingOptions) { position ->
+                selectedSortByCode = when (position) {
+                    0 -> "A-Z"
+                    1 -> "Z-A"
+                    2 -> "0-1"
+                    3 -> "1-0"
+                    else -> "0-1"
+                }
+            }
+
+            btnClose.setOnClickListener {
+                bottomSheetDialog.dismiss()
+            }
+
+            btnApplySort?.setOnClickListener {
+                viewModel.selectedSortBy = selectedSortByCode
+
+                currentPage = 1
+                products.clear()
+                if (::adapter.isInitialized) {
+                    adapter.clear()
+                }
+
+                getProductsBasedOnCategory(categoryId, page = 1, category = flag)
+                bottomSheetDialog.dismiss()
+            }
+
+            bottomSheetDialog.setContentView(view)
+            bottomSheetDialog.show()
         }
     }
 
@@ -298,12 +347,29 @@ class ProductsActivity : BaseActivity() {
                             pageSize = state.data.pagination?.page_size ?: pageSize
 
                             isSearchMode = false
+
+                            //malak
+                            if (currentPage == 1) {
+                                products.clear()
+                            }
+
                             if (dataList.isNotEmpty()) {
-                                products.addAll(dataList)
-                                setupProductsRecycler(dataList)
+
+                                Log.d("SORT_TEST", "Response First Product: ${dataList[0].TITLE} - Price: ${dataList[0].PRICE_AFTER_DISCOUNT}")
+                                products.addAll(dataList) //malak
                                 binding.txtNoProducts.visibility = View.GONE
+                                binding.recycler.visibility = View.VISIBLE //malak
+
+                                setupProductsRecycler(dataList)
+
                             } else {
-                                binding.txtNoProducts.visibility = View.VISIBLE
+                                if(currentPage == 1){
+                                    binding.txtNoProducts.visibility = View.VISIBLE
+                                    binding.recycler.visibility = View.GONE
+                                    if (::adapter.isInitialized) {
+                                        adapter.clear()
+                                    }
+                                }
                             }
 
 
@@ -314,6 +380,7 @@ class ProductsActivity : BaseActivity() {
                     }
 
                     is ProductsStatus.Error -> {
+                        // malak
                         isLoading = false
                         hideProgressDialog(binding.progressLoading)
                         binding.txtNoProducts.visibility = View.VISIBLE
@@ -358,7 +425,8 @@ class ProductsActivity : BaseActivity() {
                 ProductsIntent.GetProducts(
                     categoryId = categoryId,
                     page = page,
-                    category
+                    category,
+
                 )
             )
         }
@@ -395,25 +463,23 @@ class ProductsActivity : BaseActivity() {
 
     private fun setupProductsRecycler(list: List<ProductModel>) {
         if (!::adapter.isInitialized) {
-            var layoutManager = GridLayoutManager(this, 2)
-            adapter = ProductAdapter(
-                onClick = { product, position, sharedView, transitionName ->
-                    val intent =
-                        Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
-                            putExtra("flag", flag)
-                            putExtra("product", product)
-                            putExtra("transitionName", transitionName)
-                        }
+            val layoutManager = GridLayoutManager(this, 2)
 
+            adapter = ProductAdapter(
+                onClick = { product, _, sharedView, transitionName ->
+                    val intent = Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
+                        putExtra("flag", flag)
+                        putExtra("product", product)
+                        putExtra("transitionName", transitionName)
+                    }
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ProductsActivity,
                         sharedView,
                         transitionName
                     )
-
                     startActivity(intent, options.toBundle())
                 },
-                onFavoriteClick = { product, position, isFavorite ->
+                onFavoriteClick = { product, _, isFavorite ->
                     if (isFavorite) {
                         addProductToFavorite(product.ID, isFavorite)
                     } else {
@@ -425,40 +491,19 @@ class ProductsActivity : BaseActivity() {
                 }
             )
 
-//            adapter.setData(list, false, flag)
-
-//            adapter.addData(list)
-            if (currentPage == 1) {
-                adapter.setData(list, false, flag)
-            } else {
-                adapter.addData(list)
-            }
-            if (list.size < pageSize) {
-                isLastPage = true
-            }
-
-            val spacing = resources.getDimensionPixelSize(
-                com.intuit.sdp.R.dimen._8sdp
-            )
+            val spacing = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._8sdp)
             binding.recycler.apply {
-                layoutManager = GridLayoutManager(
-                    this@ProductsActivity,
-                    2
-                )
-                adapter = adapter
-                addItemDecoration(
-                    GridSpacingItemDecoration(
-                        spanCount = 2,
-                        spacing = spacing
+                this.layoutManager = layoutManager
+                this.adapter = this@ProductsActivity.adapter
+
+                if (itemDecorationCount == 0) {
+                    addItemDecoration(
+                        GridSpacingItemDecoration(
+                            spanCount = 2,
+                            spacing = spacing
+                        )
                     )
-                )
-            }
-
-            binding.recycler.layoutManager = layoutManager
-            binding.recycler.adapter = adapter
-
-            if (list.size < pageSize) {
-                isLastPage = true
+                }
             }
 
             binding.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -470,13 +515,8 @@ class ProductsActivity : BaseActivity() {
 
                         if (!isLoading && !isLastPage) {
                             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 3) {
-                                Log.d(
-                                    Common.KeroDebug,
-                                    "Pagination Log: Triggering load for page $currentPage"
-                                )
                                 lifecycleScope.launch {
                                     currentPage++
-
                                     if (isSearchMode) {
                                         searchProduct(searchWord, flag, categoryId)
                                     } else {
@@ -488,45 +528,19 @@ class ProductsActivity : BaseActivity() {
                                             )
                                         )
                                     }
-
                                 }
                             }
                         }
                     }
                 }
             })
+        }
 
-
+        // malak
+        if (currentPage == 1) {
+            adapter.setData(list, false, flag)
         } else {
-            if (isSearchMode) {
-
-//                adapter.setData(list, false, flag)
-//                adapter.addData(list)
-                adapter.addData(list)
-                if (currentPage == 1) {
-                    adapter.setData(list, false, flag)
-                } else {
-                    adapter.addData(list)
-                }
-                if (list.size < pageSize) {
-                    isLastPage = true
-                }
-            } else {
-
-//                adapter.addData(list)
-                adapter.addData(list)
-                if (currentPage == 1) {
-                    adapter.setData(list, false, flag)
-                } else {
-                    adapter.addData(list)
-                }
-                if (list.size < pageSize) {
-                    isLastPage = true
-                }
-                if (list.size < pageSize) {
-                    isLastPage = true
-                }
-            }
+            adapter.addData(list)
         }
     }
 

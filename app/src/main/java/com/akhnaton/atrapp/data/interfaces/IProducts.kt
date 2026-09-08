@@ -79,7 +79,8 @@ interface IProducts {
         @Field("category_id") categoryId: Int?,
         @Field("page") page: Int,
         @Field("per_page") limit: Int,
-        @Field("order_type") categories: String
+        @Field("order_type") categories: String,
+        @Field("sort_by") sortBy: String? = null // malak
     ): Response<BaseModel<List<ProductModel>>>
 
     @FormUrlEncoded

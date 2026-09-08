@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.login.LoginStatus
 import com.akhnaton.atrapp.domain.AuthRepository
+import com.android.volley.ParseError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,14 +47,26 @@ class LoginViewModel : ViewModel() {
             _state.value = LoginStatus.Loading
             _state.value = try {
                 val response = AuthRepository().login(email, password,fbToken)
-                if (response.code() == 200) {
+                if (response.isSuccessful && response.body() != null) {
                     LoginStatus.Login(response.body()!!)
                 } else {
-                    LoginStatus.Error(response.body()!!.message)
+                    val errorBodyString = response.errorBody()?.string()
+                    val myErrorMessage = errorMessage(errorBodyString) ?: "Email or password is invalid"
+                    LoginStatus.Error(myErrorMessage)
                 }
             } catch (e: Exception) {
                 LoginStatus.Error(e.message)
             }
+        }
+    }
+
+    private fun errorMessage(myErrorJson: String?): String? {
+        return try {
+            if (myErrorJson.isNullOrEmpty()) return null
+            val jsonObject = org.json.JSONObject(myErrorJson)
+            jsonObject.optString("message")
+        } catch (e: Exception){
+            null
         }
     }
 }

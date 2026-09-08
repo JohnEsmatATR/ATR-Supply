@@ -217,8 +217,10 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
 
 
     override fun onProductClick(data: OrderHistoryModel) {
+        Log.d("ORDER_PASS", "111")
+
         val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
-        intent.putExtra("orgSysId", data.ORIG_SYS_DOCUMENT_REF)
+        intent.putExtra("orgSysId", data.origSysDocumentRef)
         startActivity(intent)
     }
 }

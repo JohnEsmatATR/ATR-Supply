@@ -73,12 +73,15 @@ class SearchActivity : BaseActivity() {
                     is SearchStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         showProgressDialog(binding.progressLoading)
+                        binding.recycler.visibility = View.VISIBLE
                         binding.txtNoProducts.visibility=View.GONE
                     }
 
                     is SearchStatus.SearchProduct -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            showProgressDialog(binding.progressLoading)
+                            binding.recycler.visibility = View.VISIBLE
+                            binding.txtNoProducts.visibility = View.GONE
 
                             if (it.data.data!!.isNotEmpty()) {
                                 Log.d(Common.KeroDebug, "observeHome: ${it.data.data!!}")

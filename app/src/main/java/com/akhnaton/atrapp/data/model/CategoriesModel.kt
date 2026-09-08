@@ -4,7 +4,6 @@ import java.io.Serializable
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class CategoriesModel(
     val CATEGORY_ID: Int? = null,
     val CATEGORY_NAME: String? = null,
@@ -13,6 +12,6 @@ data class CategoriesModel(
     val IMAGE_URL: String? = null,
     val CHILD_ID: String? = null,
     var selected: Boolean = false
-) : Parcelable
+) : Serializable
 
 

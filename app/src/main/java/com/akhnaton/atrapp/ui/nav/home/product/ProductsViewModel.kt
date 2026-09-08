@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 
 class ProductsViewModel : ViewModel() {
 
+    var selectedSortBy: String? = "0-1" //malak,
+
     val homeIntent = Channel<ProductsIntent>(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<ProductsStatus>(ProductsStatus.Idle)
@@ -41,11 +43,12 @@ class ProductsViewModel : ViewModel() {
 
 
     private fun getProductsBasedOnCategoryRepo(categoryId: Int, categoryName: String) {
+        Log.d("SORT_TEST", "Sending to API -> sortBy code: $selectedSortBy")
         viewModelScope.launch {
             isLoading = true
             _state.value = ProductsStatus.Loading
             _state.value = try {
-                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit, categoryName)
+                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit, categoryName, selectedSortBy) //malak
                 if (response.code() == 200) {
                     val data = response.body()!!
                     val products = data.data ?: emptyList()

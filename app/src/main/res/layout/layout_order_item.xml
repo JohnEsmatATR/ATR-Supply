@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="data"
             type="com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel" />
@@ -12,36 +11,39 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_6sdp"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="@dimen/_15sdp"
-        android:backgroundTint="@color/lightGray"
-        app:strokeWidth="0dp"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@color/lightGray">
+        app:cardElevation="@dimen/_2sdp"
+        app:strokeWidth="0dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp">
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardImg"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_75sdp"
                 app:cardBackgroundColor="@color/white"
-                app:cardElevation="@dimen/_2sdp"
+                app:cardCornerRadius="@dimen/_6sdp"
+                app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:strokeColor="@null"
-                app:strokeWidth="0dp">
+                app:strokeColor="@color/lightGray"
+                app:strokeWidth="1dp">
 
                 <ImageView
                     android:id="@+id/imgProduct"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_8sdp"
-                    tools:src="@drawable/im_category"
-                    />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:scaleType="fitCenter"
+                    tools:src="@drawable/im_category" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -49,157 +51,143 @@
                 android:id="@+id/productName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_26sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="sans-serif-medium"
-                android:text='@{String.valueOf(data.name)}'
-                android:textSize="@dimen/_12sdp"
+                android:text='@{data.name}'
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardImg"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Eva Hand soap royal Deep Lines Filler 50 ML" />
+                tools:text="Eva Hand soap royal" />
 
+            <TextView
+                android:id="@+id/productDesc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text='@{data.description}'
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/productName"
+                tools:text="Deep Lines Filler 50 ML" />
+
+            <!-- الكمية عربي -->
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="الكميه :"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="الكمية :"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10sdp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/priceLayout"
-                app:layout_constraintEnd_toEndOf="@+id/productName"
-                app:layout_constraintTop_toBottomOf="@+id/productName"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quantity :"
-                app:layout_constraintEnd_toStartOf="@id/textView4"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/productName"
-                app:layout_constraintTop_toBottomOf="@+id/productName" />
-
-            <TextView
-                android:id="@+id/priceTxtar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="السعر :"
-                android:textColor="@color/black"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-            <TextView
-                android:id="@+id/pricerAr"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@{String.valueOf(data.price) +` EGP`}"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/priceTxtar"
-                app:layout_constraintEnd_toStartOf="@+id/priceTxtar"
-                app:layout_constraintTop_toTopOf="@+id/priceTxtar"
-                tools:text="345 EGP" />
-
-            <TextView
-                android:id="@+id/quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{String.valueOf(data.quantity)}"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="@+id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@id/productName"
-                tools:text=" 4" />
+                app:layout_constraintTop_toBottomOf="@+id/productDesc" />
 
             <TextView
                 android:id="@+id/quantityar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
                 android:text="@{String.valueOf(data.quantity)}"
                 android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
                 android:visibility="gone"
-                android:layout_marginEnd="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
-                app:layout_constraintEnd_toStartOf="@+id/textView4"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
                 app:layout_constraintTop_toTopOf="@+id/textView4"
-                tools:text=" 4" />
+                tools:text="4" />
 
+            <!-- الكمية إنجليزي -->
             <TextView
-                android:id="@+id/unitPriceLabel"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Unit Price :"
-                android:textColor="@color/black"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:text="Quantity :"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="@+id/productName"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/productDesc" />
 
             <TextView
-                android:id="@+id/unitPrice"
+                android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_4sdp"
-                app:layout_constraintStart_toEndOf="@+id/unitPriceLabel"
-                app:layout_constraintTop_toTopOf="@+id/unitPriceLabel"
-                tools:text="86.25 EGP" />
+                android:text="@{String.valueOf(data.quantity)}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="@+id/textView2"
+                tools:text="4" />
 
+            <!-- السعر عربي -->
             <TextView
-                android:id="@+id/unitPriceLabelAr"
+                android:id="@+id/priceTxtar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="سعر الوحدة :"
-                android:textColor="@color/black"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/_4sdp"
-                app:layout_constraintEnd_toEndOf="@+id/productName"
+                android:text="السعر :"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/productName"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
-                android:id="@+id/unitPriceAr"
+                android:id="@+id/pricerAr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:text='@{String.valueOf(data.price) + " ج.م"}'
                 android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold"
                 android:visibility="gone"
-                android:layout_marginEnd="@dimen/_5sdp"
-                app:layout_constraintEnd_toStartOf="@+id/unitPriceLabelAr"
-                app:layout_constraintTop_toTopOf="@+id/unitPriceLabelAr"
-                tools:text="86.25 EGP" />
+                app:layout_constraintBottom_toBottomOf="@+id/priceTxtar"
+                app:layout_constraintStart_toEndOf="@+id/priceTxtar"
+                app:layout_constraintTop_toTopOf="@+id/priceTxtar"
+                tools:text="1485 ج.م" />
 
+            <!-- السعر إنجليزي -->
             <LinearLayout
                 android:id="@+id/priceLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@+id/cardImg"
-                app:layout_constraintStart_toEndOf="@+id/cardImg"
-                app:layout_constraintTop_toBottomOf="@+id/unitPriceLabel">
+                app:layout_constraintStart_toStartOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
 
                 <TextView
                     android:id="@+id/priceTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Price : "
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:text="@{String.valueOf(data.price) +` EGP`}"
-                    tools:text="345 EGP"
-                    android:textColor="@color/black" />
+                    android:text='@{String.valueOf(data.price) + " EGP"}'
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp"
+                    android:textStyle="bold"
+                    tools:text="1485 EGP" />
 
             </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </com.google.android.material.card.MaterialCardView>
 </layout>

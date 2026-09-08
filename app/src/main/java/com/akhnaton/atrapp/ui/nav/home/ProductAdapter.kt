@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class ProductAdapter(
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
@@ -24,7 +24,6 @@ class ProductAdapter(
     private lateinit var flag: String
     var isInHome: Boolean = false
 
-    // في ProductAdapter
     fun setData(newList: List<ProductModel>, isAppend: Boolean, flag: String) {
         this.flag = flag
         if (!isAppend) {
@@ -33,7 +32,6 @@ class ProductAdapter(
         productsList.addAll(newList)
         notifyDataSetChanged()
     }
-
 
     fun addData(newList: List<ProductModel>) {
         val startPosition = productsList.size
@@ -47,7 +45,6 @@ class ProductAdapter(
         notifyDataSetChanged()
     }
 
-
     inner class ViewHolder(private val binding: LayoutProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isFavorite = false
@@ -57,44 +54,48 @@ class ProductAdapter(
             isFavorite = item.IS_LIKED
             hasBones = item.HAS_BONUS
             val offer = item.PRICE_DISCOUNT_PERCENTAGE
-            if (offer == "0%") {
+
+            if (offer == "0%" || offer.isNull_Or_Empty()) {
                 binding.imDiscount.visibility = View.GONE
                 binding.txtStock.visibility = View.GONE
             } else {
                 binding.imDiscount.visibility = View.VISIBLE
                 binding.txtStock.visibility = View.VISIBLE
             }
+
             if (item.PRICE_AFTER_DISCOUNT == 0.0) {
                 binding.txtPrice.visibility = View.GONE
             } else {
                 binding.txtPrice.visibility = View.VISIBLE
             }
 
-            Log.d("WHAT", item.PRICE_WITH_TAX.toString())
-            Log.d("WHAT", item.PRICE_AFTER_DISCOUNT.toString())
-
             if (item.PRICE_WITH_TAX == item.PRICE_AFTER_DISCOUNT) {
                 binding.txtOldPrice.visibility = View.GONE
             }
-            if (hasBones) {
-                binding.layoutFreeGift.visibility = View.VISIBLE
-            } else {
-                binding.layoutFreeGift.visibility = View.GONE
-            }
 
-//            changeFavoriteButton()
+            binding.layoutFreeGift.visibility = if (hasBones) View.VISIBLE else View.GONE
+
             if (item.IS_LIKED) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
             else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
 
+            //malak
             binding.productModel = item
-//
-            Glide.with(binding.root.context).load(item.IMAGE_URL).into(binding.imItem)
+
+            // malak
+            binding.executePendingBindings()
+
+            Glide.with(binding.root.context)
+                .load(item.IMAGE_URL)
+                .placeholder(R.drawable.ic_logo)
+                .error(R.drawable.ic_logo)
+                .override(300, 300) //malak
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.imItem)
 
             binding.imFavorite.setOnClickListener {
                 isFavorite = !isFavorite
                 if (isFavorite) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
                 else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
-//                changeFavoriteButton()
                 onFavoriteClick(item, position, isFavorite)
             }
 
@@ -104,27 +105,18 @@ class ProductAdapter(
 
             itemView.setOnClickListener {
                 val sharedView = binding.txtItemName
-                val transitionName =
-                    ViewCompat.getTransitionName(sharedView) ?: "itemImageTransition"
+                val transitionName = ViewCompat.getTransitionName(sharedView) ?: "itemImageTransition"
                 onClick(item, position, sharedView, transitionName)
-            }
-
-        }
-
-        private fun changeFavoriteButton() {
-            val iconRes = if (isFavorite) R.drawable.ic_favorite_fill2 else R.drawable.ic_favorite2
-            binding.imFavorite.load(iconRes) {
-                crossfade(true)
-                placeholder(R.drawable.ic_logo)
             }
         }
     }
 
+    private fun String?.isNull_Or_Empty(): Boolean = this == null || this.trim().isEmpty()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.txtOldPrice.paintFlags =
-            binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        val binding = LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.txtOldPrice.paintFlags = binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+
         if (isInHome) {
             binding.root.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -140,16 +132,13 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        productsList.get(position).let { holder.bind(it, position) }
+        holder.bind(productsList[position], position)
     }
 
-    override fun getItemCount(): Int {
-        return productsList.size
-    }
+    override fun getItemCount(): Int = productsList.size
 
     fun clear() {
         productsList.clear()
         notifyDataSetChanged()
     }
-
 }

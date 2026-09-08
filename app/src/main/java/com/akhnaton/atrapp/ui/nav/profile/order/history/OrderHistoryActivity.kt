@@ -28,6 +28,7 @@ import java.util.Locale
 
 class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickListener,
     View.OnClickListener {
+
     private lateinit var binding: ActivityOrderHistoryBinding
     private val ordersViewModel: MyOrdersViewModel by viewModels()
     private var mAdapter = OrderHistoryAdapter()
@@ -125,7 +126,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
 
     override fun onProductClick(data: OrderHistoryModel) {
         val intent = Intent(this, OrderDetailsActivity::class.java)
-        intent.putExtra("orgSysId", data.ORIG_SYS_DOCUMENT_REF)
+        intent.putExtra("orgSysId", data.origSysDocumentRef)
         startActivity(intent)
     }
 

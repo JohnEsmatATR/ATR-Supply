@@ -71,10 +71,11 @@ class HomeActivity : BaseActivity() {
                 view.paddingLeft,
                 systemBars.top,
                 view.paddingRight,
-                view.paddingBottom
+                0
             )
             insets
         }
+
 
         // Apply bottom margin to bottom navigation for system navigation bars
         ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationView) { view, insets ->

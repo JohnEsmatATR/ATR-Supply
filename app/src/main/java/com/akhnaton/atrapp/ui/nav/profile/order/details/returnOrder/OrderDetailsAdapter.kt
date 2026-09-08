@@ -10,7 +10,6 @@ import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
 import com.akhnaton.atrapp.databinding.LayoutOrderItemBinding
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.util.formatPrice
-import java.util.Locale
 
 class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>() {
 
@@ -28,41 +27,37 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
             val lang = SharedPreferenceHelper.language ?: "ar"
 
             // Calculate unit price
-            val unitPrice = if (item.quantity > 0) {
-                formatPrice(item.price / item.quantity, 2, Locale(lang))
-            } else {
-                formatPrice(0.0)
-            }
+//            val unitPrice = if (item.quantity > 0) {
+//                formatPrice(item.price / item.quantity, 2, Locale(lang))
+//            } else {
+//                formatPrice(0.0)
+//            }
 
-            val unitPriceText = "$unitPrice ${context.getString(R.string.currency)}"
+//            val unitPriceText = "$unitPrice ${context.getString(R.string.currency)}"
 
             if (lang == "ar") {
                 binding.priceLayout.visibility = View.GONE
                 binding.textView2.visibility = View.GONE
+                binding.quantity.visibility = View.GONE
+
                 binding.textView4.visibility = View.VISIBLE
+                binding.quantityar.visibility = View.VISIBLE
                 binding.pricerAr.visibility = View.VISIBLE
                 binding.priceTxtar.visibility = View.VISIBLE
-                binding.quantity.visibility = View.GONE
-                binding.unitPriceLabel.visibility = View.GONE
-                binding.unitPrice.visibility = View.GONE
-                binding.unitPriceLabelAr.visibility = View.VISIBLE
-                binding.unitPriceAr.visibility = View.VISIBLE
-                binding.unitPriceAr.text = unitPriceText
+//                binding.unitPriceAr.text = unitPriceText
             } else {
                 binding.priceLayout.visibility = View.VISIBLE
                 binding.textView2.visibility = View.VISIBLE
-                binding.textView4.visibility = View.GONE
-                binding.pricerAr.visibility = View.GONE
-                binding.quantityar.visibility = View.GONE
-                binding.priceTxtar.visibility = View.GONE
                 binding.quantity.visibility = View.VISIBLE
-                binding.unitPriceLabel.visibility = View.VISIBLE
-                binding.unitPrice.visibility = View.VISIBLE
-                binding.unitPriceLabelAr.visibility = View.GONE
-                binding.unitPriceAr.visibility = View.GONE
-                binding.unitPrice.text = unitPriceText
+
+                binding.textView4.visibility = View.GONE
+                binding.quantityar.visibility = View.GONE
+                binding.pricerAr.visibility = View.GONE
+                binding.priceTxtar.visibility = View.GONE
+//                binding.unitPrice.text = unitPriceText
             }
             binding.data = item
+
             binding.imgProduct.load(item.img) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)

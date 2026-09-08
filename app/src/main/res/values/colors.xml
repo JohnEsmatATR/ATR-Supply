@@ -30,5 +30,7 @@
 
     <color name="shimmer_background">#393838</color>
     <color name="main_color_gold">#F8CB6C</color>
+    <color name="orange_light">#FFF3E8</color>
+    <color name="orange_dark">#F28C28</color>
 
 </resources>

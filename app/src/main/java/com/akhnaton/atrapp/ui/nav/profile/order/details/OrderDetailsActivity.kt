@@ -22,7 +22,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderDetailsBinding
     private val orderDetailsViewModel: MyOrderDetailsViewModel by viewModels()
     private var mAdapter = OrderDetailsAdapter()
- var mList = mutableListOf<OrderDetailsModel>()
+    var mList = mutableListOf<OrderDetailsModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,11 +46,11 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
 
         val orgSysId = intent.getStringExtra("orgSysId")?:""
 
-        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${orgSysId}"
+        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${orgSysId}" //explain
 
         observe()
         getOrderDetails(orgSysId)
-       getOrderStates(orgSysId)
+        getOrderStates(orgSysId)
     }
 
 

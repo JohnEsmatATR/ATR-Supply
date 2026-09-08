@@ -72,6 +72,7 @@ class HomeFragment : BaseFragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
 
+
         guestHandling()
         setupRecycler2()
         observeViewModel()
@@ -506,5 +507,3 @@ class HomeFragment : BaseFragment() {
         }
     }
 }
-
-

@@ -103,6 +103,7 @@ class FilterProductsBottomSheet :
         view: View,
         savedInstanceState: Bundle?
     ) {
+
         super.onViewCreated(view, savedInstanceState)
         rvCategories =
             view.findViewById(R.id.rvCategories)

@@ -12,11 +12,9 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 class MyOrdersViewModel : ViewModel() {
-
     val ordersIntent = Channel<MyOrdersIntent>(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<MyOrdersStatus>(MyOrdersStatus.Idle)
-
     val state: StateFlow<MyOrdersStatus> get() = _state
 
     init {

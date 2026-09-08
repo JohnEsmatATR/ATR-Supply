@@ -27,11 +27,13 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/app_bar">
+            app:layout_constraintTop_toTopOf="@+id/app_bar"
+            android:paddingBottom="80dp"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -255,9 +257,9 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:text="@string/best_sellers"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
@@ -266,10 +268,10 @@
                     <TextView
                         android:id="@+id/tvViewAllBestSellers"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:gravity="right"
+                        android:gravity="end"
                         android:text="@string/view_all"
                         android:textColor="@color/orange"
                         android:textSize="14sp" />
@@ -288,7 +290,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/txt_deals"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_best_seller"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutBestSellers"
                     tools:listitem="@layout/layout_product" />
 
                 <LinearLayout

@@ -99,8 +99,11 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_email"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:paddingTop="11dp"
+                    android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="@string/email_or_customer_code"
                     android:inputType="textEmailAddress"
@@ -108,7 +111,10 @@
                     android:paddingStart="@dimen/_12sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/mid_gray_1"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,7 +145,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_password"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingTop="11dp"
                     android:background="@null"
                     android:hint="@string/password"
                     android:inputType="textPassword"
@@ -147,7 +156,9 @@
                     android:paddingStart="@dimen/_12sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/mid_gray_1"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:ellipsize="end"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
