@@ -92,7 +92,7 @@ class CartAdapter(
                 error(R.drawable.ic_logo)
             }
             setBonus(binding.txtbonus, binding.imageView, binding.textView3, item)
-            handleQuantity(binding.txtQuantity, item)
+            handleQuantity(binding.txtQuantity, item) //
 
             binding.btnPlus.isLongClickable = false
             binding.btnMinus.isLongClickable = false
