@@ -16,6 +16,8 @@ class FilterProductAdapter(
     private val onSelected: (Int, Boolean) -> Unit
 ) : RecyclerView.Adapter<FilterProductAdapter.ProductViewHolder>() {
 
+    private var selectedPosition: Int = -1 //malak
+
     inner class ProductViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
@@ -49,52 +51,39 @@ class FilterProductAdapter(
         holder: ProductViewHolder,
         position: Int
     ) {
-
         val product = categories[position]
-
         holder.name.text = product.TITLE
 
+        val isSelected = position == selectedPosition //malak
+
         holder.checkbox.setOnCheckedChangeListener(null)
+        holder.checkbox.isChecked = isSelected //malak
+        updateSelectedState(holder, isSelected) //malak
 
-        holder.checkbox.isChecked = product.selected
+        val clickListener = View.OnClickListener { //malak
+            val currentPosition = holder.bindingAdapterPosition // malak
+            if (currentPosition == RecyclerView.NO_POSITION || currentPosition >= categories.size) {
+                return@OnClickListener
+            } //malak
 
-        updateSelectedState(
-            holder,
-            product.selected
-        )
+            val previousSelected = selectedPosition // malak
 
-        holder.itemView.setOnClickListener {
-
-            product.selected = !product.selected
-
-            holder.checkbox.setOnCheckedChangeListener(null)
-            holder.checkbox.isChecked = product.selected
-
-            updateSelectedState(
-                holder,
-                product.selected
-            )
-
-            onSelected(
-                position,
-                product.selected
-            )
+            if (selectedPosition == currentPosition) { // malak
+                selectedPosition = RecyclerView.NO_POSITION
+                notifyItemChanged(currentPosition)
+                onSelected(-1, false)
+            } else {
+                selectedPosition = currentPosition
+                if (previousSelected != RecyclerView.NO_POSITION) {
+                    notifyItemChanged(previousSelected)
+                }
+                notifyItemChanged(selectedPosition) //malak
+                onSelected(selectedPosition, true)
+            }
         }
 
-        holder.checkbox.setOnClickListener {
-
-            product.selected = holder.checkbox.isChecked
-
-            updateSelectedState(
-                holder,
-                product.selected
-            )
-
-            onSelected(
-                position,
-                product.selected
-            )
-        }
+        holder.itemView.setOnClickListener(clickListener)
+        holder.checkbox.setOnClickListener(clickListener)
     }
 
     private fun updateSelectedState(
@@ -129,4 +118,9 @@ class FilterProductAdapter(
     }
 
     override fun getItemCount(): Int = categories.size
+
+    fun setSelectedPosition(position: Int){
+        this.selectedPosition = position
+        notifyDataSetChanged()
+    }
 }

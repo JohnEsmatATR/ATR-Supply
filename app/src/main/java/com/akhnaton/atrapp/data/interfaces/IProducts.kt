@@ -87,7 +87,8 @@ interface IProducts {
     @POST(ConstantLinks.GET_ALL_PRODUCT)
     suspend fun filterProduct(
         @Field("search") search: String? = "",
-        @Field("category_id") categoryId: Int
+        @Field("category_id") categoryId: Int,
+        @Field("order_type") orderType: String? //malak
     ): Response<BaseModel<List<ProductModel>>>
 
 }

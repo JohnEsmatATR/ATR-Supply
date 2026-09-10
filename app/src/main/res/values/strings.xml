@@ -313,4 +313,16 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="free_gift">Free Gift</string>
     <string name="sort">Sort</string>
     <string name="new_arrivals">New Arrivals</string>
+
+
+
+    <string name="filter_products">Filter Products</string>
+    <string name="refine_results_hint">Refine results by categories and attributes</string>
+    <string name="reset">Reset</string>
+    <string name="apply_filters">Apply Filters</string>
+
+    <string name="product_details_title">Product Details</string>
+    <string name="order_items">Order Items</string>
+
+
 </resources>

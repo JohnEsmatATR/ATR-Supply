@@ -257,4 +257,15 @@
     <string name="free_gift">هدية مجانية</string>
     <string name="sort">ترتيب</string>
     <string name="new_arrivals">الأحدث وصولا</string>
+
+
+    <string name="filter_products">فلترة المنتجات</string>
+    <string name="refine_results_hint">تضييق النتائج حسب الفئات والمواصفات</string>
+    <string name="reset">إعادة ضبط</string>
+    <string name="apply_filters">تطبيق الفلتر</string>
+
+    <string name="product_details_title">تفاصيل المنتج</string>
+    <string name="order_items">عناصر المنتج</string>
+
+
 </resources>

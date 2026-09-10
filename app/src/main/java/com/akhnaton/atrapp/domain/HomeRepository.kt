@@ -8,8 +8,8 @@ class HomeRepository {
 
     suspend fun getCategory(categories: String) = retrofit.getCategories(categories)
 
-    suspend fun filterProduct(search: String? = "", categoryId: Int) =
-        retrofit.filterProduct(search, categoryId)
+    suspend fun filterProduct(search: String? = "", categoryId: Int, orderType: String) =
+        retrofit.filterProduct(search, categoryId, orderType)
 
     suspend fun getBestSeller(bestSeller: Int, orderType: String) = retrofit.getBestSeller(bestSeller, orderType)
 

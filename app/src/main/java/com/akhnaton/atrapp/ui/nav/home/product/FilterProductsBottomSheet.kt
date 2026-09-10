@@ -24,6 +24,11 @@ class FilterProductsBottomSheet :
 
     private val selectedCategories = mutableListOf<CategoriesModel>()
 
+    private var selectedOrderTypeParam: String? = null //malak
+    private var selectedChildIdParam: Int? = null //malak
+
+    var onFilterAppliedListeners: ((orderType: String?, childId: Int?) -> Unit)? = null //malak
+
     private lateinit var rvCategories: RecyclerView
     private lateinit var rvProducts: RecyclerView
 
@@ -127,18 +132,19 @@ class FilterProductsBottomSheet :
             dismiss()
         }
         btnReset.setOnClickListener {
+            selectedChildIdParam = null // malak
             selectedCategories.forEach {
                 it.selected = false
             }
-            productAdapter.notifyDataSetChanged()
+
+            if(::productAdapter.isInitialized){
+                productAdapter.setSelectedPosition(-1)
+                productAdapter.notifyDataSetChanged()
+            }
         }
         btnApply.setOnClickListener {
-            val selectedProducts =
-                selectedCategories.filter {
-                    it.selected
-                }
-            // Return selected filters to your Activity/ViewModel
-            onFiltersApplied(selectedProducts)
+            Log.d("filter_test", "Apply clicked -> orderType: $selectedOrderTypeParam ChildId: $selectedChildIdParam",)
+            onFilterAppliedListeners?.invoke(selectedOrderTypeParam, selectedChildIdParam) //malak
             dismiss()
         }
     }
@@ -169,35 +175,43 @@ class FilterProductsBottomSheet :
 
     private fun onOrderTypeSelected(position: Int) {
 
-        val selectedOrderType =
-            orderTypes[position]
+        val selectedOrderType = orderTypes[position]
+
+        selectedOrderTypeParam = selectedOrderType.order_type_index //malak
+        selectedChildIdParam = null // malak
 
         selectedCategories.clear()
 
-        selectedCategories.addAll(
-            selectedOrderType.categories
-        )
+        selectedCategories.addAll(selectedOrderType.categories)
+        selectedCategories.forEach {//malak
+            it.selected = false
+        }
+
+        // malak from adapter:
+        productAdapter.setSelectedPosition(-1)
 
         productAdapter.notifyDataSetChanged()
     }
 
     private fun setupProducts() {
-
-        productAdapter =
-            FilterProductAdapter(
-                selectedCategories
-            ) { position, selected ->
-
-                selectedCategories[position].selected = selected
+        productAdapter = FilterProductAdapter(selectedCategories) { position, selected ->
+            if (position < 0 || position >= selectedCategories.size) {
+                selectedChildIdParam = null
+                return@FilterProductAdapter
+            }
+            if (selected) {
+                val childIdRaw = selectedCategories[position].CHILD_ID
+                selectedChildIdParam = childIdRaw?.toString()?.toIntOrNull()
+            } else {
+                selectedChildIdParam = null
             }
 
+            selectedCategories[position].selected = selected
+        }
+
         rvProducts.apply {
-
-            layoutManager =
-                LinearLayoutManager(requireContext())
-
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = productAdapter
-
             itemAnimator = null
         }
     }

@@ -234,10 +234,27 @@ class ProductsActivity : BaseActivity() {
 
         binding.layoutFilter.setOnClickListener {
             Log.d("WHATcategories.size", "${categories.size}")
-            FilterProductsBottomSheet
-                .newInstance(
-                    orderTypes = categories,
+
+            val bottomSheet = FilterProductsBottomSheet.newInstance(orderTypes = categories) //malak
+            bottomSheet.onFilterAppliedListeners = { orderType, childId -> //malaakk
+                Log.d("filter_test", "Received in Activity -> OrderType: $orderType, ChildId: $childId")
+                currentPage = 1 //malak
+                products.clear() // malak
+                if(::adapter.isInitialized){
+                    adapter.clear()
+                }
+                if(!orderType.isNullOrEmpty()) flag = orderType //malak
+
+                categoryId = childId ?: 0
+
+                getProductsBasedOnCategory(
+                    categoryId = categoryId,
+                    page = 1,
+                    category = flag
                 )
+
+            }
+            bottomSheet
                 .show(
                     supportFragmentManager,
                     "FilterProductsBottomSheet"
@@ -336,6 +353,9 @@ class ProductsActivity : BaseActivity() {
                         Log.d(Common.KeroDebug, "Pagination Log: Loading page $currentPage")
                         showProgressDialog(binding.progressLoading)
                         binding.txtNoProducts.visibility = View.GONE
+                        binding.progressLoading.visibility = View.VISIBLE // malaakk
+                        binding.recycler.visibility = View.INVISIBLE // malalak
+                        binding.txtNoProducts.visibility = View.GONE // malak
                     }
 
                     is ProductsStatus.GetProducts -> {
@@ -343,27 +363,35 @@ class ProductsActivity : BaseActivity() {
                         hideProgressDialog(binding.progressLoading)
 
                         if (state.data.status != -1) {
+                            // malak
                             val dataList = state.data.data ?: emptyList()
-                            pageSize = state.data.pagination?.page_size ?: pageSize
 
+                            pageSize = state.data.pagination?.page_size ?: pageSize
                             isSearchMode = false
 
-                            //malak
+                            // malak
                             if (currentPage == 1) {
                                 products.clear()
+                                if (::adapter.isInitialized) {
+                                    adapter.clear() // malak
+                                }
                             }
 
                             if (dataList.isNotEmpty()) {
-
                                 Log.d("SORT_TEST", "Response First Product: ${dataList[0].TITLE} - Price: ${dataList[0].PRICE_AFTER_DISCOUNT}")
-                                products.addAll(dataList) //malak
+
+                                products.addAll(dataList) // malak
                                 binding.txtNoProducts.visibility = View.GONE
-                                binding.recycler.visibility = View.VISIBLE //malak
+                                binding.recycler.visibility = View.VISIBLE // malak
 
                                 setupProductsRecycler(dataList)
 
+                                binding.recycler.post {
+                                    hideProgressDialog(binding.progressLoading)
+                                }
+                                // malak
                             } else {
-                                if(currentPage == 1){
+                                if (currentPage == 1) {
                                     binding.txtNoProducts.visibility = View.VISIBLE
                                     binding.recycler.visibility = View.GONE
                                     if (::adapter.isInitialized) {
@@ -371,11 +399,9 @@ class ProductsActivity : BaseActivity() {
                                     }
                                 }
                             }
-
-
                         } else {
                             binding.txtNoProducts.visibility = View.VISIBLE
-                            showToastSnack(state.data.message, true)
+                            showToastSnack(state.data.message ?: "", true)
                         }
                     }
 
