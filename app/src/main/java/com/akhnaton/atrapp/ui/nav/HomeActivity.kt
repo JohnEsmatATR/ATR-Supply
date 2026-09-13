@@ -242,10 +242,7 @@ class HomeActivity : BaseActivity() {
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
                 binding.bottomNavigationView.menu.findItem(R.id.profile)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
-
-
             }
-
             else -> {
                 setCurrentFragment(homeFragment)
                 binding.bottomNavigationView.menu.findItem(R.id.home)

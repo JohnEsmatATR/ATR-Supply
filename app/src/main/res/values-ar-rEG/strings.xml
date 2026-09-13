@@ -267,5 +267,13 @@
     <string name="product_details_title">تفاصيل المنتج</string>
     <string name="order_items">عناصر المنتج</string>
 
+    <string name="qty_label">الكمية: </string>
+    <string name="total_amount">الإجمالي</string>
+    <string name="more_details">عرض التفاصيل</string>
+    <string name="order_summary">ملخص الطلب</string>
+    <string name="subtotal_before_tax">المبلغ (قبل الضريبة)</string>
+    <string name="tax">قيمة الضريبة</string>
+    <string name="total_after_tax">الإجمالي النهائي</string>
+
 
 </resources>

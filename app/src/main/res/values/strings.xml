@@ -324,5 +324,13 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="product_details_title">Product Details</string>
     <string name="order_items">Order Items</string>
 
+    <string name="qty_label">Qty: </string>
+    <string name="total_amount">Total Amount</string>
+    <string name="more_details">More details</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="subtotal_before_tax">Subtotal (Before Tax)</string>
+    <string name="tax">V.A.T / Tax</string>
+    <string name="total_after_tax">Total Amount</string>
+
 
 </resources>

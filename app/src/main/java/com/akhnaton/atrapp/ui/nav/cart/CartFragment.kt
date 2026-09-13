@@ -61,10 +61,10 @@ class CartFragment : BaseFragment() {
             setupClickListeners()
         }
 
-        binding.cardAddress.setOnClickListener {
+         /* binding.cardAddress.setOnClickListener {
             val intent = Intent(requireContext(), AddressesActivity::class.java)
             startActivity(intent)
-        }
+        }*/ // malak
         val currentLang = SharedPreferenceHelper.language
         if (currentLang == "ar") {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -79,9 +79,9 @@ class CartFragment : BaseFragment() {
             binding.txtNoProducts.visibility = View.GONE
             binding.clGuest.visibility = View.VISIBLE
             binding.recycler.visibility = View.GONE
-            binding.appBar.visibility = View.GONE
+
             binding.layoutCart.visibility = View.GONE
-            binding.cardAddress.visibility = View.GONE
+            // binding.cardAddress.visibility = View.GONE
         }
 
         binding.btnLogin.setOnClickListener {
@@ -118,7 +118,7 @@ class CartFragment : BaseFragment() {
                             addresses.forEach { address ->
                                 if (address.prime == 1) {
                                     Log.d("DEBUG_ADDRESS", "Prime address found: $address")
-                                    binding.defaultAddress.text = address.TITLE
+                                    // binding.defaultAddress.text = address.TITLE
                                 }
                             }
 
