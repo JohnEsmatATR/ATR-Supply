@@ -6,28 +6,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
-import com.akhnaton.atrapp.ui.auth.onBoarding.OnBoardingActivity
-import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
-import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderHistoryActivity
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import java.util.Locale
 
-
 class ProfileFragment : BaseFragment(), View.OnClickListener {
-    lateinit var binding: FragmentProfileBinding
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
+
+    private var creditLimit: Double = 0.0
+    private var usedCredit: Double = 0.0
+    private var availableCredit: Double = 0.0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProfileBinding.inflate(inflater)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
         guestHandling()
+
         binding.accountLayout.setOnClickListener(this)
         binding.orderLayout.setOnClickListener(this)
         binding.languagesLayout.setOnClickListener(this)
@@ -35,8 +38,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.aboutLayout.setOnClickListener(this)
         binding.contactLayout.setOnClickListener(this)
         binding.logoutLayout.setOnClickListener(this)
-        binding.loginLayout.setOnClickListener(this)
 
+        binding.cardMoreCredit.setOnClickListener(this)
 
         return binding.root
     }
@@ -49,7 +52,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.v1.visibility = View.GONE
             binding.orderLayout.visibility = View.GONE
             binding.v2.visibility = View.GONE
-            binding.loginLayout.visibility = View.VISIBLE
+            binding.cardMoreCredit.visibility = View.GONE
             binding.logoutLayout.visibility = View.GONE
             binding.v7.visibility = View.GONE
         } else {
@@ -57,7 +60,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.v1.visibility = View.VISIBLE
             binding.orderLayout.visibility = View.VISIBLE
             binding.v2.visibility = View.VISIBLE
-            binding.loginLayout.visibility = View.GONE
+            binding.cardMoreCredit.visibility = View.VISIBLE
             binding.logoutLayout.visibility = View.VISIBLE
             binding.v7.visibility = View.VISIBLE
         }
@@ -66,7 +69,6 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Display username
         val user = SharedPreferenceHelper.userObj
         if (user != null) {
             val userName = "${user.first_name} ${user.last_name}".trim()
@@ -81,120 +83,93 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
             ?: Locale.getDefault().language
 
-        if (lang == "ar") {
-            binding.imageView6.setImageResource(R.drawable.ic_chevron_left)
-            binding.icProfile.setImageResource(R.drawable.ic_profile)
+        val chevronIcon = if (lang == "ar") R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
 
-            // order layout
-            binding.imageView12.setImageResource(R.drawable.ic_chevron_left)
-            binding.icClock.setImageResource(R.drawable.ic_clock)
+        binding.imageView6.setImageResource(chevronIcon)
+        binding.icProfile.setImageResource(R.drawable.ic_profile)
 
-            // rate layout
-            binding.imageView11.setImageResource(R.drawable.ic_chevron_left)
-            binding.icStar.setImageResource(R.drawable.ic_star)
+        binding.imageView12.setImageResource(chevronIcon)
+        binding.icClock.setImageResource(R.drawable.ic_clock)
 
-            binding.imageView10.setImageResource(R.drawable.ic_chevron_left)
-            binding.icWorld.setImageResource(R.drawable.ic_world)
+        binding.icArrowCredit.setImageResource(chevronIcon)
+        binding.imageView11.setImageResource(chevronIcon)
+        binding.icStar.setImageResource(R.drawable.ic_star)
 
-            binding.imageView9.setImageResource(R.drawable.ic_chevron_left)
-            binding.icPrivacy.setImageResource(R.drawable.ic_privacy)
+        binding.imageView10.setImageResource(chevronIcon)
+        binding.icWorld.setImageResource(R.drawable.ic_world)
 
-            binding.imageView8.setImageResource(R.drawable.ic_chevron_left)
-            binding.icAbout.setImageResource(R.drawable.ic_about)
+        binding.imageView9.setImageResource(chevronIcon)
+        binding.icPrivacy.setImageResource(R.drawable.ic_privacy)
 
-            binding.imageView7.setImageResource(R.drawable.ic_chevron_left)
-            binding.icContact.setImageResource(R.drawable.ic_phone)
+        binding.imageView8.setImageResource(chevronIcon)
+        binding.icAbout.setImageResource(R.drawable.ic_about)
 
-            binding.imageView13.setImageResource(R.drawable.ic_chevron_left)
-            binding.icLogout.setImageResource(R.drawable.ic_logout)
+        binding.imageView7.setImageResource(chevronIcon)
+        binding.icContact.setImageResource(R.drawable.ic_phone)
 
-            binding.imageView14.setImageResource(R.drawable.ic_chevron_left)
-            binding.icLogin.setImageResource(R.drawable.ic_login)
-        } else {
-            binding.imageView6.setImageResource(R.drawable.ic_chevron_right)
-            binding.icProfile.setImageResource(R.drawable.ic_profile)
+        binding.imageView13.setImageResource(chevronIcon)
+        binding.icLogout.setImageResource(R.drawable.ic_logout)
 
 
-            // order layout
-            binding.imageView12.setImageResource(R.drawable.ic_chevron_right)
-            binding.icClock.setImageResource(R.drawable.ic_clock)
-
-            // rate layout
-            binding.imageView11.setImageResource(R.drawable.ic_chevron_right)
-            binding.icStar.setImageResource(R.drawable.ic_star)
-
-            binding.imageView10.setImageResource(R.drawable.ic_chevron_right)
-            binding.icWorld.setImageResource(R.drawable.ic_world)
-
-            binding.imageView9.setImageResource(R.drawable.ic_chevron_right)
-            binding.icPrivacy.setImageResource(R.drawable.ic_privacy)
-
-            binding.imageView8.setImageResource(R.drawable.ic_chevron_right)
-            binding.icAbout.setImageResource(R.drawable.ic_about)
-
-            binding.imageView7.setImageResource(R.drawable.ic_chevron_right)
-            binding.icContact.setImageResource(R.drawable.ic_phone)
-
-            binding.imageView13.setImageResource(R.drawable.ic_chevron_right)
-            binding.icLogout.setImageResource(R.drawable.ic_logout)
-
-        }
     }
 
     override fun onClick(v: View) {
-        if (v.id == binding.accountLayout.id) {
-            val intent = Intent(requireContext(), AccountDetailsActivity::class.java)
-            startActivity(intent)
-        }
+        when (v.id) {
+            binding.accountLayout.id -> {
+                startActivity(Intent(requireContext(), AccountDetailsActivity::class.java))
+            }
+            binding.orderLayout.id -> {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.flFragment, TrackingFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+            binding.cardMoreCredit.id -> {
+                val intent = Intent(requireContext(), CreditInfoActivity::class.java).apply {
+                    putExtra("EXTRA_CREDIT_LIMIT", "$creditLimit EGP")
+                    putExtra("EXTRA_USED_CREDIT", "$usedCredit EGP")
+                    putExtra("EXTRA_AVAILABLE_CREDIT", "$availableCredit EGP")
+                }
+                startActivity(intent)
+            }
+            binding.languagesLayout.id -> {
+                startActivity(Intent(requireContext(), LanguageActivity::class.java))
+            }
+            binding.privacyLayout.id -> {
+                startActivity(Intent(requireContext(), PrivacyActivity::class.java))
+            }
+            binding.aboutLayout.id -> {
+                startActivity(Intent(requireContext(), AboutUsActivity::class.java))
+            }
+            binding.contactLayout.id -> {
+                startActivity(Intent(requireContext(), ContactUsActivity::class.java))
+            }
+            binding.logoutLayout.id -> {
+                SharedPreferenceHelper.apply {
+                    isLogged = false
+                    userObj = null
+                    userToken = null
+                    language = "en"
+                }
 
-        if (v.id == binding.orderLayout.id) {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.flFragment, TrackingFragment())
-                .addToBackStack(null)
-                .commit()
-        }
-
-
-        if (v.id == binding.languagesLayout.id) {
-            val intent = Intent(requireContext(), LanguageActivity::class.java)
-            startActivity(intent)
-        }
-
-        if (v.id == binding.privacyLayout.id) {
-            val intent = Intent(requireContext(), PrivacyActivity::class.java)
-            startActivity(intent)
-        }
-
-        if (v.id == binding.aboutLayout.id) {
-            val intent = Intent(requireContext(), AboutUsActivity::class.java)
-            startActivity(intent)
-        }
-
-        if (v.id == binding.contactLayout.id) {
-            val intent = Intent(requireContext(), ContactUsActivity::class.java)
-            startActivity(intent)
-        }
-
-        if (v.id == binding.logoutLayout.id) {
-            SharedPreferenceHelper.let {
-                it.isLogged = false
-                it.userObj = null
-                it.userToken = null
-                it.language = "en"
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                requireActivity().finish()
             }
 
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            requireActivity().finish()
         }
-
-        if (v.id == binding.loginLayout.id) {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            startActivity(intent)
-        }
-
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
+    fun updateCreditData(limit: Double, used: Double, available: Double) {
+        creditLimit = limit
+        usedCredit = used
+        availableCredit = available
+        Log.d("CreditInfoData", "Data Updated -> Limit: $limit, Used: $used, Available: $available")
+    }
 }

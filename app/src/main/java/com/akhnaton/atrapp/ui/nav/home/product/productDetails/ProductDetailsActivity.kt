@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -38,13 +37,14 @@ import kotlinx.coroutines.launch
 class ProductDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailsBinding
     private val addCartViewModel: AddToCartViewModel by viewModels()
-    private val viewModel : ProductDetailsViewModel by viewModels()
+    private val viewModel: ProductDetailsViewModel by viewModels()
     lateinit var product: ProductModel
     var quantity: Int = 1
-    private var productQuantity : Int=0
+    private var productQuantity: Int = 0
     private lateinit var flag: String
-    private var inStoke : Boolean = false
+    private var inStoke: Boolean = false
     private lateinit var bonusAdapter: BonusAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
@@ -52,33 +52,10 @@ class ProductDetailsActivity : BaseActivity() {
 
         init()
         onClick()
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
-        binding.btnGoToCart.setOnClickListener {
-            val intent = Intent(this@ProductDetailsActivity, HomeActivity::class.java)
-            intent.putExtra("open_cart", true)
-            intent.putExtra("from_product_details", true)
-            intent.putExtra("product", product)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-        }
-
-
-
     }
 
     @SuppressLint("SuspiciousIndentation")
     private fun init() {
-//        val lan = SharedPreferenceHelper.language ?: "ar"
-//        if (lan == "ar"){
-//            binding.ar.visibility = View.VISIBLE
-//            binding.en.visibility = View.GONE
-//        }else{
-//            binding.ar.visibility = View.GONE
-//            binding.en.visibility = View.VISIBLE
-//        }
         setupQuantityEditText()
 
         flag = intent.getStringExtra("flag") ?: ""
@@ -88,10 +65,8 @@ class ProductDetailsActivity : BaseActivity() {
 
         product = intent.getSerializableExtra("product") as ProductModel
         val transitionName = intent.getStringExtra("transitionName")
-   //     Log.d("TAG", "received product from intent: ${product}")
 
-
-            ViewCompat.setTransitionName(binding.txtItemName, transitionName)
+        ViewCompat.setTransitionName(binding.txtItemName, transitionName)
         binding.imProduce.load(product.IMAGE_URL) {
             crossfade(true)
             placeholder(R.drawable.ic_logo)
@@ -99,12 +74,12 @@ class ProductDetailsActivity : BaseActivity() {
         }
         val productId = product.ID.toInt()
 
-        var isArabic = SharedPreferenceHelper.language == "ar"
+        val isArabic = SharedPreferenceHelper.language == "ar"
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
         observeProduct()
-        getProductDetails(productId,flag)
+        getProductDetails(productId, flag)
         addToCartObserve()
         initBonusRecycler()
     }
@@ -112,53 +87,55 @@ class ProductDetailsActivity : BaseActivity() {
     private fun initBonusRecycler() {
         val lan = SharedPreferenceHelper.language ?: "ar"
         bonusAdapter = BonusAdapter(lan)
+
         binding.bonusRecycler.apply {
             adapter = bonusAdapter
             layoutManager = LinearLayoutManager(this@ProductDetailsActivity)
-
-        }
-        binding.bonusRecyclerAr.apply {
-            adapter = bonusAdapter
-            layoutManager = LinearLayoutManager(this@ProductDetailsActivity)
-
         }
     }
+
     @SuppressLint("SetTextI18n")
     private fun observeProduct() {
         lifecycleScope.launch {
-            viewModel.state.collect {
-                when (it) {
+            viewModel.state.collect { status ->
+                when (status) {
                     is ProductDetailsStatus.Error -> {
                         hideProgressDialog(binding.progressLoading)
-                        Toast.makeText(this@ProductDetailsActivity, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
-                        Log.d("TAG", "observeProduct: ${it.error}")
+                        Toast.makeText(this@ProductDetailsActivity, "Error: ${status.error}", Toast.LENGTH_SHORT).show()
+                        Log.d("TAG", "observeProduct: ${status.error}")
                     }
 
                     is ProductDetailsStatus.GetProductDetails -> {
-                        if (it.data.status == 200) {
+                        if (status.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
-                            val productData = it.data.data?.firstOrNull()
+                            val productData = status.data.data?.firstOrNull()
+                            Log.d("DEBUG_PRODUCT", "Returned Weight = '${productData?.WEIGHT}' | Returned Stock = ${productData?.IN_STOCK}")
 
                             if (productData != null) {
-                                // en
-                                binding.txtItemName.text = productData.TITLE
-                                binding.txtCategory.text = productData.category?.TITLE ?: ""
-                                binding.txtPrice.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
-                                binding.txtSize.text = productData.WEIGHT
-                                binding.txtDescription.text = productData.DESCRIPTION
-                                productQuantity = productData.QUANTITY
-                                Log.d("TAG", "observeProduct productQuantity : $productQuantity")
-                                if (productData.MY_QUANTITY != 0){
-                                    binding.txtQuantity.setText(productData.MY_QUANTITY.toString())
-                                    binding.txtQuantityAr.setText(productData.MY_QUANTITY.toString())
-                                }else{
-                                    binding.txtQuantity.setText("1")
-                                    binding.txtQuantityAr.setText("1")
+                                binding.txtItemName.text = productData.TITLE ?: ""
+                                binding.txtPriceValue.text = "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
+                                // 1. Dosage / Size Handling from API
+                                val dosageText = productData.WEIGHT
+                                if (!dosageText.isNullOrEmpty()) {
+                                    binding.txtSize.text = dosageText
+                                } else {
+                                    binding.txtSize.text = "N/A"
                                 }
+
+                                binding.txtDescription.text = productData.DESCRIPTION ?: ""
+                                productQuantity = productData.QUANTITY
+
+                                // Quantity Setup
+                                if (productData.MY_QUANTITY != 0) {
+                                    binding.txtQuantity.setText(productData.MY_QUANTITY.toString())
+                                    quantity = productData.MY_QUANTITY
+                                } else {
+                                    binding.txtQuantity.setText("1")
+                                    quantity = 1
+                                }
+                                // 2. Stock Handling from API (True / False)
                                 inStoke = productData.IN_STOCK
-
-
-                                binding.isStock.text = if (productData.IN_STOCK) {
+                                binding.isStock.text = if (inStoke) {
                                     getString(R.string.in_stock)
                                 } else {
                                     getString(R.string.out_of_stock)
@@ -167,12 +144,16 @@ class ProductDetailsActivity : BaseActivity() {
                                 binding.isStock.setTextColor(
                                     ContextCompat.getColor(
                                         binding.root.context,
-                                        if (productData.IN_STOCK) R.color.snack_green else R.color.snack_red
+                                        if (inStoke) R.color.snack_green else R.color.snack_red
                                     )
                                 )
-                                binding.txtQuantity.isEnabled=productData.IN_STOCK
 
+                                // Disable/Enable buttons according to stock
+                                binding.btnPlus.isEnabled = inStoke
+                                binding.btnMinus.isEnabled = inStoke
+                                binding.btnAddToCart.isEnabled = inStoke
 
+                                // Bonus Recycler
                                 val bonusList = productData.BONUS_DATA
                                 if (!bonusList.isNullOrEmpty()) {
                                     binding.bonusRecycler.visibility = View.VISIBLE
@@ -181,51 +162,18 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.bonusRecycler.visibility = View.GONE
                                 }
 
-
-
                                 binding.nestedScrollView.visibility = View.VISIBLE
                                 binding.productNotFound.visibility = View.GONE
 
-                                // ar
-                                binding.txtItemNameAr.text = productData.TITLE
-                                binding.txtCategoryAr.text = productData.category?.TITLE ?: ""
-                                binding.txtPriceAr.text = "${productData.PRICE_AFTER_DISCOUNT} LE"
-                                binding.txtSizeAr.text = productData.WEIGHT
-                                binding.txtDescriptionAr.text = productData.DESCRIPTION
-                                productQuantity = productData.QUANTITY
-                                Log.d("TAG", "observeProduct productQuantity : $productQuantity")
+                                // Update Total Price Bottom
+                                updateTotalPrice(productData.PRICE_AFTER_DISCOUNT)
 
-
-                                binding.isStockAr.text = if (productData.IN_STOCK) "In Stock" else "Out of Stock"
-                                binding.isStockAr.setTextColor(
-                                    ContextCompat.getColor(
-                                        binding.root.context,
-                                        if (productData.IN_STOCK) R.color.snack_green else R.color.snack_red
-                                    )
-                                )
-                                binding.txtQuantityAr.isEnabled=productData.IN_STOCK
-
-
-                                val bonusListAr = productData.BONUS_DATA
-                                if (!bonusListAr.isNullOrEmpty()) {
-                                    binding.bonusRecyclerAr.visibility = View.VISIBLE
-                                    bonusAdapter.setData(bonusListAr)
-                                } else {
-                                    binding.bonusRecyclerAr.visibility = View.GONE
-                                }
-
-
-                                binding.nestedScrollView.visibility = View.VISIBLE
-                                binding.productNotFound.visibility = View.GONE
                             } else {
-
                                 binding.nestedScrollView.visibility = View.GONE
                                 binding.productNotFound.visibility = View.VISIBLE
                             }
                         }
                     }
-
-
 
                     ProductDetailsStatus.Idle -> {
                         Log.d(Common.KeroDebug, "observeProduct: Idle")
@@ -239,10 +187,16 @@ class ProductDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun getProductDetails(productId: Int,category: String) {
+    private fun updateTotalPrice(pricePerUnit: Double? = null) {
+        val unitPrice = pricePerUnit ?: product.PRICE_AFTER_DISCOUNT
+        val total = unitPrice * quantity
+        binding.txtBottomTotalPrice.text = "$total L.E"
+    }
+
+    private fun getProductDetails(productId: Int, category: String) {
         lifecycleScope.launch {
             viewModel.homeIntent.send(
-                ProductDetailsIntent.GetProductDetails(productId,category)
+                ProductDetailsIntent.GetProductDetails(productId, category)
             )
         }
     }
@@ -259,73 +213,56 @@ class ProductDetailsActivity : BaseActivity() {
         binding.btnAddToCart.setOnClickListener {
             addProductToCart()
         }
-        binding.btnPlus.setOnClickListener {
-           if (validateIncreaseQuantity(quantity, productQuantity)) {
-                quantity++
-               Log.d("TAG", "onClick QUANTITY :${productQuantity} ")
-                binding.txtQuantity.setText(quantity.toString())
-
-           }
+        binding.btnBottomAddToCart?.setOnClickListener {
+            addProductToCart()
         }
+        binding.btnGoToCart.setOnClickListener {
+            val intent = Intent(this@ProductDetailsActivity, HomeActivity::class.java)
+            intent.putExtra("open_cart", true)
+            intent.putExtra("from_product_details", true)
+            intent.putExtra("product", product)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
+        binding.btnPlus.setOnClickListener {
+            if (validateIncreaseQuantity(quantity, productQuantity)) {
+                quantity++
+                binding.txtQuantity.setText(quantity.toString()) // استخدام setText
+                updateTotalPrice()
+            }
+        }
+
         binding.btnMinus.setOnClickListener {
             if (validateDecreaseQuantity(quantity)) {
                 quantity--
-                binding.txtQuantity.setText(quantity.toString())
+                binding.txtQuantity.setText(quantity.toString()) // استخدام setText
+                updateTotalPrice()
             }
         }
-
-        binding.btnPlusAr.setOnClickListener {
-            if (validateIncreaseQuantity(quantity, productQuantity)) {
-                quantity++
-                Log.d("TAG", "onClick QUANTITY :${productQuantity} ")
-                binding.txtQuantityAr.setText(quantity.toString())
-
-            }
-        }
-        binding.btnMinusAr.setOnClickListener {
-            if (validateDecreaseQuantity(quantity)) {
-                quantity--
-                binding.txtQuantityAr.setText(quantity.toString())
-            }
-        }
-        binding.btnAddToCartAr.setOnClickListener {
-            addProductToCartAr()
-        }
-
     }
 
     private fun addToCartObserve() {
         lifecycleScope.launch {
-            addCartViewModel.state.collect { it ->
-                when (it) {
+            addCartViewModel.state.collect { status ->
+                when (status) {
                     is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
 
                     is AddToCartStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeHome: Loading")
                         showProgressDialog(binding.progressLoading)
                     }
 
                     is AddToCartStatus.AddToCart -> {
                         hideProgressDialog(binding.progressLoading)
-                        if (it.data.status == 200) {
-                            Log.d(Common.KeroDebug, "observeHome: AddToCart Success")
-
-                            showAddToCartDialog(it.data)
-
-                            // ✅ إظهار زر الذهاب للكارت
-                           // binding.btnGoToCart.visibility = View.VISIBLE
-                            val animation = AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.slide_up)
-                          //  binding.btnGoToCart.startAnimation(animation)
-
+                        if (status.data.status == 200) {
+                            showAddToCartDialog(status.data)
                         } else {
-                            showToastSnack(it.data.message, true)
+                            showToastSnack(status.data.message, true)
                         }
                     }
 
                     is AddToCartStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error}")
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        showToastSnack(status.error.toString(), true)
                     }
                 }
             }
@@ -345,12 +282,10 @@ class ProductDetailsActivity : BaseActivity() {
         txtTitle.text = getString(R.string.cart_added_title)
         txtMessage.text = getString(R.string.cart_added_message)
 
-        // ✅ لو في bonus_quantity أكبر من 0، نظهر رسالة التهنئة
         val bonusQty = response.data?.bonus_quantity ?: 0
         if (bonusQty > 0) {
             txtBonus.visibility = View.VISIBLE
             txtBonus.text = getString(R.string.cart_bonus_message, bonusQty)
-
         } else {
             txtBonus.visibility = View.GONE
         }
@@ -376,37 +311,20 @@ class ProductDetailsActivity : BaseActivity() {
         dialog.show()
     }
 
-
     private fun addProductToCart() {
-        if (inStoke){
+        if (inStoke) {
             lifecycleScope.launch {
-                addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity,flag))
+                addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity, flag))
             }
-        }else {
+        } else {
             showToastSnack("Product Out Of Stock", true)
         }
-
-    }
-    private fun addProductToCartAr() {
-        if (inStoke){
-            lifecycleScope.launch {
-                addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity.toInt(),flag))
-            }
-        }else {
-            showToastSnack("Product Out Of Stock", true)
-        }
-
     }
 
-
-    @SuppressLint("SetTextI18n")
     private fun setupQuantityEditText() {
-        binding.txtQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
-        binding.txtQuantityAr.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
+        if (binding.txtQuantity is TextView) return
 
         var isUpdating = false
-
-        // txtQuantity
         binding.txtQuantity.doOnTextChanged { text, _, _, _ ->
             if (isUpdating) return@doOnTextChanged
 
@@ -416,15 +334,13 @@ class ProductDetailsActivity : BaseActivity() {
                     value < 1 -> {
                         isUpdating = true
                         quantity = 1
-                        binding.txtQuantity.setText("1")
-                        binding.txtQuantity.setSelection(binding.txtQuantity.text!!.length)
+                        binding.txtQuantity.setText("1") // استخدام setText
                         isUpdating = false
                     }
                     value > productQuantity -> {
                         isUpdating = true
                         quantity = productQuantity
-                        binding.txtQuantity.setText(productQuantity.toString())
-                        binding.txtQuantity.setSelection(binding.txtQuantity.text!!.length)
+                        binding.txtQuantity.setText(productQuantity.toString()) // استخدام setText
                         isUpdating = false
                     }
                     else -> {
@@ -434,59 +350,7 @@ class ProductDetailsActivity : BaseActivity() {
             } else {
                 quantity = 0
             }
-        }
-
-        binding.txtQuantity.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus && binding.txtQuantity.text.isNullOrEmpty()) {
-                isUpdating = true
-                quantity = 1
-                binding.txtQuantity.setText("1")
-                isUpdating = false
-            }
-        }
-
-        // txtQuantityAr
-        binding.txtQuantityAr.doOnTextChanged { text, _, _, _ ->
-            if (isUpdating) return@doOnTextChanged
-
-            val value = text.toString().toIntOrNull()
-            if (value != null) {
-                when {
-                    value < 1 -> {
-                        isUpdating = true
-                        quantity = 1
-                        binding.txtQuantityAr.setText("1")
-                        binding.txtQuantityAr.setSelection(binding.txtQuantityAr.text!!.length)
-                        isUpdating = false
-                    }
-                    value > productQuantity -> {
-                        isUpdating = true
-                        quantity = productQuantity
-                        binding.txtQuantityAr.setText(productQuantity.toString())
-                        binding.txtQuantityAr.setSelection(binding.txtQuantityAr.text!!.length)
-                        isUpdating = false
-                    }
-                    else -> {
-                        quantity = value
-                    }
-                }
-            } else {
-                quantity = 0
-            }
-        }
-
-        binding.txtQuantityAr.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus && binding.txtQuantityAr.text.isNullOrEmpty()) {
-                isUpdating = true
-                quantity = 1
-                binding.txtQuantityAr.setText("1")
-                isUpdating = false
-            }
+            updateTotalPrice()
         }
     }
-
-
-
-
-
 }

@@ -14,8 +14,8 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_logo"
-        android:localeConfig="@xml/locales_config"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
@@ -190,6 +190,14 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/black" />
 
+        <activity
+            android:name=".ui.nav.profile.CreditInfoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.nav.profile.order.details.OrderBottomSheet"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

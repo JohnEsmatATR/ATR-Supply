@@ -7,7 +7,7 @@
     <string name="guest">Guest</string>
     <string name="get_started">Get Started</string>
     <string name="welcome_to_atr_app">Welcome\nto ATR App</string>
-<!--    <string name="welcome">Welcome</string>-->
+    <!--    <string name="welcome">Welcome</string>-->
     <string name="please_enter_your_data_to_continue">Please enter your data to continue</string>
     <string name="email">Email</string>
     <string name="email_or_customer_code">Email Or Customer Code</string>
@@ -314,6 +314,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="sort">Sort</string>
     <string name="new_arrivals">New Arrivals</string>
 
+    <string name="log_out">Log Out</string>
 
 
     <string name="filter_products">Filter Products</string>
@@ -331,6 +332,18 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="subtotal_before_tax">Subtotal (Before Tax)</string>
     <string name="tax">V.A.T / Tax</string>
     <string name="total_after_tax">Total Amount</string>
+
+    <string name="sorting_title">Sorting</string>
+    <string name="sorting_subtitle">Select your preferred sorting order</string>
+    <string name="apply_sorting">Apply Sorting</string>
+
+
+    <string-array name="sorting_options">
+        <item>A to Z</item>
+        <item>Z to A</item>
+        <item>Price: Low to High</item>
+        <item>Price: High to Low</item>
+    </string-array>
 
 
 </resources>

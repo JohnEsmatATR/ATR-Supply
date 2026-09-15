@@ -23,7 +23,7 @@
             android:background="@drawable/fab_golden_shadow"
             android:padding="@dimen/_24sdp"
             android:src="@drawable/ic_favorite_fill2"
-            android:tint="@color/orange"
+            app:tint="@color/orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -92,22 +92,21 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/card_search"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@drawable/background_search_style"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/background_search_style">
 
             <android.widget.SearchView
                 android:id="@+id/txt_search"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:background="@color/lightGray"
                 android:iconifiedByDefault="false"
                 android:queryBackground="@null"
                 android:queryHint="@string/search"
+                android:layout_marginTop="@dimen/_25sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

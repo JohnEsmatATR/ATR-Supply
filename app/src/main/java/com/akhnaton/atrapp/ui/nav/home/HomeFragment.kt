@@ -243,29 +243,46 @@ class HomeFragment : BaseFragment() {
                     }
 
                     is PannerState.Success -> {
+                        hideProgressDialog(binding.progressLoading)
 
                         if (state.data.status == 200) {
                             val response = state.data.data
 
-                            response?.let {
-                                val adapter = BannerAdapter(it.banners)
+                            if (response != null && !response.banners.isNullOrEmpty()) {
+                                val banners = response.banners
+
+                                binding.slider.visibility = View.VISIBLE
+                                binding.tabLayout.visibility = View.VISIBLE
+                                binding.imgDefaultLogo.visibility = View.GONE
+
+                                val adapter = BannerAdapter(banners)
                                 viewPager = binding.slider
                                 viewPager.adapter = adapter
                                 binding.tabLayout.setupWithViewPager(viewPager)
-                                startAutoSlider(it.banners.size)
+                                startAutoSlider(banners.size)
+                            } else {
+                                binding.slider.visibility = View.GONE
+                                binding.tabLayout.visibility = View.GONE
+                                binding.imgDefaultLogo.visibility = View.VISIBLE
+                            }
 
+                            response?.customer_backgound_image?.let { bgImg ->
                                 Glide.with(requireContext())
-                                    .load(it.customer_backgound_image)
+                                    .load(bgImg)
                                     .into(binding.imgDeals)
                             }
                         } else {
-                            //  showToastSnack(state.data.message, true)
+                            binding.slider.visibility = View.GONE
+                            binding.tabLayout.visibility = View.GONE
+                            binding.imgDefaultLogo.visibility = View.VISIBLE
                         }
-
                     }
 
-
                     is PannerState.Error -> {
+                        hideProgressDialog(binding.progressLoading)
+                        binding.slider.visibility = View.GONE
+                        binding.tabLayout.visibility = View.GONE
+                        binding.imgDefaultLogo.visibility = View.VISIBLE
                     }
                 }
             }
