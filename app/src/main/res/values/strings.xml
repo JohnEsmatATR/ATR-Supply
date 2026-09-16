@@ -336,6 +336,12 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="sorting_title">Sorting</string>
     <string name="sorting_subtitle">Select your preferred sorting order</string>
     <string name="apply_sorting">Apply Sorting</string>
+    <string name="searching_in_pharma">Searching in: Pharma</string>
+    <string name="change_in_filters">Change in Filters</string>
+    <string name="alphabetical_a_z">Alphabetical (A - Z)</string>
+    <string name="alphabetical_z_a">Alphabetical (Z - A)</string>
+    <string name="price_l_h">Price: Low to High</string>
+    <string name="price_h_l">Price: High to Low</string>
 
 
     <string-array name="sorting_options">

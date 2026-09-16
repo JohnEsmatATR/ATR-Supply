@@ -7,8 +7,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class OrderHistoryModel(
-    @SerializedName("ORIG_SYS_DOCUMENT_REF")
-    val origSysDocumentRef: String? = null,
+    @SerializedName("ORDER_ID")
+    val ORDER_ID: String? = null,
 
     @SerializedName("STATUS_GROUP")
     val statusGroup: List<StatusGroup>? = null
@@ -22,6 +22,9 @@ data class StatusGroup(
 
     @SerializedName("DATE")
     val date: String? = null,
+
+    @SerializedName("DESCRIPTION")
+    val DESCRIPTION: String? = null,
 
     @SerializedName("IS_COMPLETED")
     val isCompleted: Boolean? = false,

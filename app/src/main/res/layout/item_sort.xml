@@ -43,15 +43,16 @@
         android:id="@+id/tvSortTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:textColor="#202020"
         android:textSize="15sp"
+        android:textAlignment="viewStart"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imgRadioButton"
         app:layout_constraintStart_toEndOf="@id/iconContainer"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Alphabetical (A - Z)" />
+        tools:text="@string/alphabetical_a_z" />
 
     <ImageView
         android:id="@+id/imgRadioButton"

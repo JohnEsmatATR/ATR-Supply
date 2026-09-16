@@ -88,7 +88,7 @@ class ProductAdapter(
                 .load(item.IMAGE_URL)
                 .placeholder(R.drawable.ic_logo)
                 .error(R.drawable.ic_logo)
-                .override(300, 300) //malak
+//                .override(300, 300) //malak
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.imItem)
 

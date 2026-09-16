@@ -27,7 +27,7 @@ class MyOrderDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             orderDetailsIntent.consumeAsFlow().collect {
                 when (it) {
-                    is MyOrderDetailsIntent.GetMyOrderDetails -> getOrderDetails(it.orgSysId)
+                    is MyOrderDetailsIntent.GetMyOrderDetails -> getOrderDetails(it.order_id)
                 }
             }
         }

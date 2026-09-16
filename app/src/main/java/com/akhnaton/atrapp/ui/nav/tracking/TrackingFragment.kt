@@ -220,7 +220,7 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
         Log.d("ORDER_PASS", "111")
 
         val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
-        intent.putExtra("orgSysId", data.origSysDocumentRef)
+        intent.putExtra("ORDER_ID", data.ORDER_ID)
         startActivity(intent)
     }
 }

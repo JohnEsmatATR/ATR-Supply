@@ -253,7 +253,6 @@ class HomeFragment : BaseFragment() {
 
                                 binding.slider.visibility = View.VISIBLE
                                 binding.tabLayout.visibility = View.VISIBLE
-                                binding.imgDefaultLogo.visibility = View.GONE
 
                                 val adapter = BannerAdapter(banners)
                                 viewPager = binding.slider
@@ -263,7 +262,6 @@ class HomeFragment : BaseFragment() {
                             } else {
                                 binding.slider.visibility = View.GONE
                                 binding.tabLayout.visibility = View.GONE
-                                binding.imgDefaultLogo.visibility = View.VISIBLE
                             }
 
                             response?.customer_backgound_image?.let { bgImg ->
@@ -274,7 +272,6 @@ class HomeFragment : BaseFragment() {
                         } else {
                             binding.slider.visibility = View.GONE
                             binding.tabLayout.visibility = View.GONE
-                            binding.imgDefaultLogo.visibility = View.VISIBLE
                         }
                     }
 
@@ -282,7 +279,6 @@ class HomeFragment : BaseFragment() {
                         hideProgressDialog(binding.progressLoading)
                         binding.slider.visibility = View.GONE
                         binding.tabLayout.visibility = View.GONE
-                        binding.imgDefaultLogo.visibility = View.VISIBLE
                     }
                 }
             }

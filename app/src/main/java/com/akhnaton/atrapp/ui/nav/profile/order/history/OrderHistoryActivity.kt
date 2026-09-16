@@ -126,7 +126,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
 
     override fun onProductClick(data: OrderHistoryModel) {
         val intent = Intent(this, OrderDetailsActivity::class.java)
-        intent.putExtra("orgSysId", data.origSysDocumentRef)
+        intent.putExtra("ORDER_ID", data.ORDER_ID)
         startActivity(intent)
     }
 

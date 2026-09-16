@@ -14,11 +14,13 @@ object RetrofitClient {
         val retrofit = Retrofit.Builder()
             .baseUrl(ConstantLinks.BASE_URL)
             .client(SetupHttpClient().setupOkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create
-                (GsonBuilder()
-                .setLenient()
-                .create()
-                        )
+            .addConverterFactory(
+                GsonConverterFactory.create
+                    (
+                    GsonBuilder()
+                        .setLenient()
+                        .create()
+                )
             )
             .build()
 

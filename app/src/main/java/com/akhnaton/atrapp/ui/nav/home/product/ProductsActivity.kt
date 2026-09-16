@@ -76,7 +76,8 @@ class ProductsActivity : BaseActivity() {
         onClick()
         observeAddToCart()
 
-        binding.btnChangeInFilters.paintFlags = binding.btnChangeInFilters.paintFlags or Paint.UNDERLINE_TEXT_FLAG //malak
+        binding.btnChangeInFilters.paintFlags =
+            binding.btnChangeInFilters.paintFlags or Paint.UNDERLINE_TEXT_FLAG //malak
         currentPage = intent.getIntExtra("saved_page", 1)
     }
 
@@ -168,21 +169,43 @@ class ProductsActivity : BaseActivity() {
     }
 
 
-    fun updateFilterUiState(selectedCount: Int) {
-        Log.d("filter_ui", "updateFilterUiState called with count: $selectedCount, isFiltered: $isFiltered")
+    fun updateFilterUiState(
+        selectedCount: Int
+    ) {
 
-        // malak
-        if (selectedCount > 0 || isFiltered) {
-            isFiltered = true //malak
-            binding.cardSearchingPharma.visibility = View.GONE //malak
-        }
+        isFiltered =
+            selectedCount > 0
 
-        // malak
-        if (selectedCount > 0) {
-            binding.tvFilterBadge.text = selectedCount.toString() //malak
-            binding.tvFilterBadge.visibility = View.VISIBLE //malak
+        Log.d(
+            "filter_ui",
+            "updateFilterUiState -> " +
+                    "selectedCount=$selectedCount, " +
+                    "isFiltered=$isFiltered"
+        )
+
+        // Search card
+        binding.cardSearchingPharma.visibility =
+            if (isFiltered) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
+        // Filter badge
+        if (isFiltered) {
+
+            binding.tvFilterBadge.text =
+                selectedCount.toString()
+
+            binding.tvFilterBadge.visibility =
+                View.VISIBLE
+
         } else {
-            binding.tvFilterBadge.visibility = View.GONE //malak
+
+            binding.tvFilterBadge.text = ""
+
+            binding.tvFilterBadge.visibility =
+                View.GONE
         }
     }
 
@@ -259,36 +282,77 @@ class ProductsActivity : BaseActivity() {
         }
 
         binding.layoutFilter.setOnClickListener {
-            Log.d("WHATcategories.size", "${categories.size}")
 
-            val bottomSheet = FilterProductsBottomSheet.newInstance(orderTypes = categories) //malak
-            bottomSheet.onFilterAppliedListeners = { orderType, childId -> //malaakk
-                Log.d("filter_test", "Received in Activity -> OrderType: $orderType, ChildId: $childId")
-                currentPage = 1 //malak
-                products.clear() // malak
-                if(::adapter.isInitialized){
-                    adapter.clear()
+            Log.d(
+                "filter_open",
+                "Opening filter -> " +
+                        "current orderType=$flag, " +
+                        "current childId=$categoryId"
+            )
+
+            val selectedChildId =
+                categoryId.takeIf { it != 0 }
+
+            val selectedOrderType =
+                flag.takeIf { it.isNotEmpty() }
+
+            val bottomSheet =
+                FilterProductsBottomSheet.newInstance(
+                    orderTypes = categories,
+                    selectedOrderType = selectedOrderType,
+                    selectedChildId = selectedChildId
+                )
+
+            bottomSheet.onFilterAppliedListeners =
+                { orderType, childId ->
+
+                    Log.d(
+                        "filter_test",
+                        "Received in Activity -> " +
+                                "OrderType: $orderType, " +
+                                "ChildId: $childId"
+                    )
+
+                    currentPage = 1
+
+                    products.clear()
+
+                    if (::adapter.isInitialized) {
+                        adapter.clear()
+                    }
+
+                    // Save selected order type
+                    flag = orderType.orEmpty()
+
+                    // Save selected child
+                    categoryId = childId ?: 0
+
+                    // Update filter UI
+                    val selectedCount =
+                        if (
+                            !orderType.isNullOrEmpty() ||
+                            childId != null && childId != 0
+                        ) {
+                            1
+                        } else {
+                            0
+                        }
+
+                    updateFilterUiState(
+                        selectedCount
+                    )
+
+                    getProductsBasedOnCategory(
+                        categoryId = categoryId,
+                        page = 1,
+                        category = flag
+                    )
                 }
-                if(!orderType.isNullOrEmpty()) flag = orderType //malak
 
-                categoryId = childId ?: 0
-
-                // malak
-                val selectedCount = if ((childId != null && childId != 0) || !orderType.isNullOrEmpty()) 1 else 0 //malak
-                updateFilterUiState(selectedCount) //malak
-
-                getProductsBasedOnCategory(
-                    categoryId = categoryId,
-                    page = 1,
-                    category = flag
-                )
-
-            }
-            bottomSheet
-                .show(
-                    supportFragmentManager,
-                    "FilterProductsBottomSheet"
-                )
+            bottomSheet.show(
+                supportFragmentManager,
+                "FilterProductsBottomSheet"
+            )
         }
 
         binding.layoutSort.setOnClickListener {
@@ -297,13 +361,14 @@ class ProductsActivity : BaseActivity() {
 
             val rvSortingOptions = view.findViewById<RecyclerView>(R.id.rvSortingOptions)
             val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
-            val btnApplySort = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
+            val btnApplySort =
+                view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
 
             val sortingOptions = listOf(
-                "Alphabetical (A - Z)",
-                "Alphabetical (Z - A)",
-                "Price: Low to High",
-                "Price: High to Low"
+                getString(R.string.alphabetical_a_z),
+                getString(R.string.alphabetical_z_a),
+                getString(R.string.price_l_h),
+                getString(R.string.price_h_l),
             )
 
             var selectedSortByCode: String? = null
@@ -408,7 +473,10 @@ class ProductsActivity : BaseActivity() {
                             }
 
                             if (dataList.isNotEmpty()) {
-                                Log.d("SORT_TEST", "Response First Product: ${dataList[0].TITLE} - Price: ${dataList[0].PRICE_AFTER_DISCOUNT}")
+                                Log.d(
+                                    "SORT_TEST",
+                                    "Response First Product: ${dataList[0].TITLE} - Price: ${dataList[0].PRICE_AFTER_DISCOUNT}"
+                                )
 
                                 products.addAll(dataList) // malak
                                 binding.txtNoProducts.visibility = View.GONE
@@ -523,11 +591,12 @@ class ProductsActivity : BaseActivity() {
 
             adapter = ProductAdapter(
                 onClick = { product, _, sharedView, transitionName ->
-                    val intent = Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
-                        putExtra("flag", flag)
-                        putExtra("product", product)
-                        putExtra("transitionName", transitionName)
-                    }
+                    val intent =
+                        Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
+                            putExtra("flag", flag)
+                            putExtra("product", product)
+                            putExtra("transitionName", transitionName)
+                        }
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ProductsActivity,
                         sharedView,

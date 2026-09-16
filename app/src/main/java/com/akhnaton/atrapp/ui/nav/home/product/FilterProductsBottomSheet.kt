@@ -36,9 +36,15 @@ class FilterProductsBottomSheet :
     private lateinit var productAdapter: FilterProductAdapter
 
     companion object {
+
         private const val ARG_ORDER_TYPES = "arg_order_types"
+        private const val ARG_SELECTED_ORDER_TYPE = "arg_selected_order_type"
+        private const val ARG_SELECTED_CHILD_ID = "arg_selected_child_id"
+
         fun newInstance(
-            orderTypes: ArrayList<OrderTypeModel>
+            orderTypes: ArrayList<OrderTypeModel>,
+            selectedOrderType: String?,
+            selectedChildId: Int?
         ): FilterProductsBottomSheet {
 
             return FilterProductsBottomSheet().apply {
@@ -49,6 +55,18 @@ class FilterProductsBottomSheet :
                         ARG_ORDER_TYPES,
                         orderTypes
                     )
+
+                    putString(
+                        ARG_SELECTED_ORDER_TYPE,
+                        selectedOrderType
+                    )
+
+                    if (selectedChildId != null) {
+                        putInt(
+                            ARG_SELECTED_CHILD_ID,
+                            selectedChildId
+                        )
+                    }
                 }
             }
         }
@@ -57,12 +75,32 @@ class FilterProductsBottomSheet :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val args = requireArguments()
+
         orderTypes =
-            requireArguments().getParcelableArrayList<OrderTypeModel>(
+            args.getParcelableArrayList<OrderTypeModel>(
                 ARG_ORDER_TYPES
             ) ?: throw IllegalArgumentException(
                 "orderTypes is required"
             )
+
+        selectedOrderTypeParam =
+            args.getString(ARG_SELECTED_ORDER_TYPE)
+
+        selectedChildIdParam =
+            if (args.containsKey(ARG_SELECTED_CHILD_ID)) {
+                args.getInt(ARG_SELECTED_CHILD_ID)
+            } else {
+                null
+            }
+
+        Log.d(
+            "filter_restore",
+            "BottomSheet opened -> " +
+                    "selectedOrderType=$selectedOrderTypeParam, " +
+                    "selectedChildId=$selectedChildIdParam"
+        )
+
     }
 
     override fun onCreateDialog(
@@ -120,28 +158,38 @@ class FilterProductsBottomSheet :
             view.findViewById<MaterialButton>(R.id.btnReset)
         val btnApply =
             view.findViewById<MaterialButton>(R.id.btnApply)
+
         setupCategories()
         setupProducts()
 
-        if (orderTypes.isNotEmpty()) {
-            categoryAdapter.setSelectedPosition(0)
-            onOrderTypeSelected(0)
-        }
+        restorePreviousSelection()
 
         btnClose.setOnClickListener {
             dismiss()
         }
         btnReset.setOnClickListener {
-            selectedChildIdParam = null // malak
+
+            selectedChildIdParam = null
+
             selectedCategories.forEach {
                 it.selected = false
             }
 
-            if(::productAdapter.isInitialized){
+            if (::productAdapter.isInitialized) {
+
                 productAdapter.setSelectedPosition(-1)
+
                 productAdapter.notifyDataSetChanged()
             }
+
+            Log.d(
+                "filter_reset",
+                "Filters reset -> " +
+                        "orderType=$selectedOrderTypeParam, " +
+                        "childId=$selectedChildIdParam"
+            )
         }
+
         btnApply.setOnClickListener {
             Log.d("filter_test", "Apply clicked -> orderType: $selectedOrderTypeParam ChildId: $selectedChildIdParam",)
             onFilterAppliedListeners?.invoke(selectedOrderTypeParam, selectedChildIdParam) //malak
@@ -149,6 +197,47 @@ class FilterProductsBottomSheet :
         }
     }
 
+    private fun restorePreviousSelection() {
+
+        if (orderTypes.isEmpty()) {
+            return
+        }
+
+        // Find previously selected order type
+        val selectedOrderTypePosition =
+            orderTypes.indexOfFirst {
+                it.order_type_index == selectedOrderTypeParam
+            }
+
+        Log.d(
+            "filter_restore",
+            "selectedOrderTypePosition=$selectedOrderTypePosition"
+        )
+
+        if (selectedOrderTypePosition >= 0) {
+
+            // Restore selected category/order type
+            categoryAdapter.setSelectedPosition(
+                selectedOrderTypePosition
+            )
+
+            onOrderTypeSelected(
+                selectedOrderTypePosition,
+                restoreChild = true
+            )
+
+        } else {
+
+            // No previous order type.
+            // Select first one as default.
+            categoryAdapter.setSelectedPosition(0)
+
+            onOrderTypeSelected(
+                0,
+                restoreChild = false
+            )
+        }
+    }
 
     private fun setupCategories() {
 
@@ -173,45 +262,109 @@ class FilterProductsBottomSheet :
         }
     }
 
-    private fun onOrderTypeSelected(position: Int) {
+    private fun onOrderTypeSelected(
+        position: Int,
+        restoreChild: Boolean = false
+    ) {
 
         val selectedOrderType = orderTypes[position]
 
-        selectedOrderTypeParam = selectedOrderType.order_type_index //malak
-        selectedChildIdParam = null // malak
+        selectedOrderTypeParam =
+            selectedOrderType.order_type_index
+
+        if (!restoreChild) {
+            selectedChildIdParam = null
+        }
 
         selectedCategories.clear()
 
-        selectedCategories.addAll(selectedOrderType.categories)
-        selectedCategories.forEach {//malak
+        selectedCategories.addAll(
+            selectedOrderType.categories
+        )
+
+        selectedCategories.forEach {
             it.selected = false
         }
 
-        // malak from adapter:
         productAdapter.setSelectedPosition(-1)
 
         productAdapter.notifyDataSetChanged()
+
+        // Restore previously selected child
+        if (restoreChild && selectedChildIdParam != null) {
+
+            val selectedChildPosition =
+                selectedCategories.indexOfFirst {
+                    it.CHILD_ID?.toIntOrNull() == selectedChildIdParam
+                }
+
+            Log.d(
+                "filter_restore",
+                "selectedChildId=$selectedChildIdParam, " +
+                        "selectedChildPosition=$selectedChildPosition"
+            )
+
+            if (selectedChildPosition >= 0) {
+
+                selectedCategories[selectedChildPosition]
+                    .selected = true
+
+                productAdapter.setSelectedPosition(
+                    selectedChildPosition
+                )
+
+                productAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun setupProducts() {
-        productAdapter = FilterProductAdapter(selectedCategories) { position, selected ->
-            if (position < 0 || position >= selectedCategories.size) {
-                selectedChildIdParam = null
-                return@FilterProductAdapter
-            }
-            if (selected) {
-                val childIdRaw = selectedCategories[position].CHILD_ID
-                selectedChildIdParam = childIdRaw?.toString()?.toIntOrNull()
-            } else {
-                selectedChildIdParam = null
-            }
 
-            selectedCategories[position].selected = selected
-        }
+        productAdapter =
+            FilterProductAdapter(
+                selectedCategories
+            ) { position, selected ->
+
+                if (
+                    position < 0 ||
+                    position >= selectedCategories.size
+                ) {
+                    selectedChildIdParam = null
+                    return@FilterProductAdapter
+                }
+
+                if (selected) {
+
+                    val childIdRaw =
+                        selectedCategories[position].CHILD_ID
+
+                    selectedChildIdParam =
+                        childIdRaw
+                            ?.toString()
+                            ?.toIntOrNull()
+
+                } else {
+
+                    selectedChildIdParam = null
+                }
+
+                selectedCategories[position].selected =
+                    selected
+
+                Log.d(
+                    "filter_selection",
+                    "selected=$selected, " +
+                            "orderType=$selectedOrderTypeParam, " +
+                            "childId=$selectedChildIdParam"
+                )
+            }
 
         rvProducts.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager =
+                LinearLayoutManager(requireContext())
+
             adapter = productAdapter
+
             itemAnimator = null
         }
     }

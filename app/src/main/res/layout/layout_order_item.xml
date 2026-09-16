@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel" />
+            type="com.akhnaton.atrapp.data.model.orderHistory.Item" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -55,7 +55,7 @@
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text='@{String.valueOf(data.name)}'
+                android:text='@{String.valueOf(data.TITLE)}'
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -90,7 +90,7 @@
                     android:id="@+id/quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(data.quantity)}"
+                    android:text="@{String.valueOf(data.QUANTITY)}"
                     android:textColor="#888888"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -111,7 +111,7 @@
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{String.valueOf(data.price) + " L.E"}'
+                    android:text='@{String.valueOf(data.UNIT_PRICE_WITH_TAX) + " L.E"}'
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"

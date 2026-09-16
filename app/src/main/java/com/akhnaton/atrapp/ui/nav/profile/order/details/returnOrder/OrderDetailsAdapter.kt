@@ -6,23 +6,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
+import com.akhnaton.atrapp.data.model.orderHistory.Item
 import com.akhnaton.atrapp.databinding.LayoutOrderItemBinding
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.util.formatPrice
 
 class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>() {
 
-    private var mList = mutableListOf<OrderDetailsModel>()
+    private var mList = mutableListOf<Item>()
 
-    fun setData(item: List<OrderDetailsModel>) {
+    fun setData(item: List<Item>) {
         mList = item.toMutableList()
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val binding: LayoutOrderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: OrderDetailsModel) {
+        fun bind(item: Item) {
             val context = binding.root.context
             val lang = SharedPreferenceHelper.language ?: "ar"
 
@@ -58,11 +58,11 @@ class OrderDetailsAdapter : RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>
             }
             binding.data = item
 
-            binding.imgProduct.load(item.img) {
-                crossfade(true)
-                placeholder(R.drawable.ic_logo)
-                error(R.drawable.ic_logo)
-            }
+//            binding.imgProduct.load(item.img) {
+//                crossfade(true)
+//                placeholder(R.drawable.ic_logo)
+//                error(R.drawable.ic_logo)
+//            }
 
         }
     }
