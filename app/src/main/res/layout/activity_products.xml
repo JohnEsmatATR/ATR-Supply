@@ -61,7 +61,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_filter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -70,25 +70,46 @@
                 android:layout_weight="1"
                 android:background="@drawable/background_filter_style"
                 android:backgroundTint="@color/lightGray"
-                android:gravity="center"
-                android:orientation="horizontal"
                 android:paddingHorizontal="15dp"
-                android:paddingVertical="15dp">
+                android:paddingVertical="12dp">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_filter" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_filter" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter"
+                        android:textColor="@color/mid_gray_1"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/filter"
-                    android:textColor="@color/mid_gray_1"
-                    android:textSize="16sp" />
+                    android:id="@+id/tv_filter_badge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_filter_badge"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/layout_sort"
@@ -101,17 +122,17 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingHorizontal="15dp"
-                android:paddingVertical="15dp">
+                android:paddingVertical="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/ic_filter" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/sort"
                     android:textColor="@color/mid_gray_1"
                     android:textSize="16sp" />
@@ -120,6 +141,53 @@
 
         </LinearLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card_searching_pharma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/bg_pharma_banner"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/ic_search_orange"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_menu_search"
+                app:tint="#E65100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_searching_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Searching in: Pharma"
+                android:textColor="#E65100"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ic_search_orange"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_change_in_filters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change in Filters"
+                android:textColor="#E65100"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
@@ -149,7 +217,7 @@
         android:id="@+id/progressLoading"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -259,8 +259,10 @@
     <string name="new_arrivals">الأحدث وصولا</string>
 
 
+    <string name="log_out">تسجيل الخروج</string>
+
     <string name="filter_products">فلترة المنتجات</string>
-    <string name="refine_results_hint">تضييق النتائج حسب الفئات والمواصفات</string>
+    <string name="refine_results_hint">تصفية النتائج حسب الفئات والمواصفات</string>
     <string name="reset">إعادة ضبط</string>
     <string name="apply_filters">تطبيق الفلتر</string>
 
@@ -275,5 +277,17 @@
     <string name="tax">قيمة الضريبة</string>
     <string name="total_after_tax">الإجمالي النهائي</string>
 
+    <string name="sorting_title">ترتيب النتائج</string>
+    <string name="sorting_subtitle">اختر طريقة الترتيب المفضلة لديك</string>
+    <string name="apply_sorting">تطبيق الترتيب</string>
+
+
+
+    <string-array name="sorting_options">
+        <item>من أ إلى ي</item>
+        <item>من ي إلى أ</item>
+        <item>السعر: من الأقل للأعلى</item>
+        <item>السعر: من الأعلى للأقل</item>
+    </string-array>
 
 </resources>

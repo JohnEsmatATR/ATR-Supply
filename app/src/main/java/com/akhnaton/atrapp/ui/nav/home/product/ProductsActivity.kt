@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.home.product
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -61,6 +62,7 @@ class ProductsActivity : BaseActivity() {
     // this just flag not pagination values
     private var currentPage = 1
     private var pageSize = 10
+    private var isFiltered = false //malak
     private var isSearchMode = false
     private var searchJob: Job? = null
     private var categories: ArrayList<OrderTypeModel> = ArrayList()
@@ -74,6 +76,7 @@ class ProductsActivity : BaseActivity() {
         onClick()
         observeAddToCart()
 
+        binding.btnChangeInFilters.paintFlags = binding.btnChangeInFilters.paintFlags or Paint.UNDERLINE_TEXT_FLAG //malak
         currentPage = intent.getIntExtra("saved_page", 1)
     }
 
@@ -164,6 +167,25 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
+
+    fun updateFilterUiState(selectedCount: Int) {
+        Log.d("filter_ui", "updateFilterUiState called with count: $selectedCount, isFiltered: $isFiltered")
+
+        // malak
+        if (selectedCount > 0 || isFiltered) {
+            isFiltered = true //malak
+            binding.cardSearchingPharma.visibility = View.GONE //malak
+        }
+
+        // malak
+        if (selectedCount > 0) {
+            binding.tvFilterBadge.text = selectedCount.toString() //malak
+            binding.tvFilterBadge.visibility = View.VISIBLE //malak
+        } else {
+            binding.tvFilterBadge.visibility = View.GONE //malak
+        }
+    }
+
     private fun searchObserve() {
         lifecycleScope.launch {
             searchViewModel.state.collect { state ->
@@ -231,6 +253,11 @@ class ProductsActivity : BaseActivity() {
             finish()
         }
 
+        // malak
+        binding.btnChangeInFilters.setOnClickListener {
+            binding.layoutFilter.performClick() //malak
+        }
+
         binding.layoutFilter.setOnClickListener {
             Log.d("WHATcategories.size", "${categories.size}")
 
@@ -245,6 +272,10 @@ class ProductsActivity : BaseActivity() {
                 if(!orderType.isNullOrEmpty()) flag = orderType //malak
 
                 categoryId = childId ?: 0
+
+                // malak
+                val selectedCount = if ((childId != null && childId != 0) || !orderType.isNullOrEmpty()) 1 else 0 //malak
+                updateFilterUiState(selectedCount) //malak
 
                 getProductsBasedOnCategory(
                     categoryId = categoryId,
@@ -275,7 +306,7 @@ class ProductsActivity : BaseActivity() {
                 "Price: High to Low"
             )
 
-            var selectedSortByCode = "0-1"
+            var selectedSortByCode: String? = null
 
             rvSortingOptions.adapter = SortProductAdapter(sortingOptions) { position ->
                 selectedSortByCode = when (position) {
@@ -283,7 +314,7 @@ class ProductsActivity : BaseActivity() {
                     1 -> "Z-A"
                     2 -> "0-1"
                     3 -> "1-0"
-                    else -> "0-1"
+                    else -> null
                 }
             }
 
@@ -452,7 +483,7 @@ class ProductsActivity : BaseActivity() {
                     page = page,
                     category,
 
-                )
+                    )
             )
         }
     }

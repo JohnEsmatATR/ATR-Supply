@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.profile.order.details
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -23,39 +24,40 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private val orderDetailsViewModel: MyOrderDetailsViewModel by viewModels()
     private var mAdapter = OrderDetailsAdapter()
     var mList = mutableListOf<OrderDetailsModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         init()
     }
+
     private val viewModel: OrderStatesViewModel by viewModels {
         OrderStatesViewModelFactory(OrderStateRepository())
     }
+
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_details)
 
+        val orgSysId = intent.getStringExtra("orgSysId") ?: ""
+
+        Log.d(Common.KeroDebug, "OrderDetailsActivity: Entered screen with orgSysId = $orgSysId")
+
         binding.btnBack.setOnClickListener(this)
         binding.productRecycler.apply {
-            layoutManager =
-                LinearLayoutManager(
-                    this@OrderDetailsActivity,
-                    LinearLayoutManager.VERTICAL, false
-                )
+            layoutManager = LinearLayoutManager(
+                this@OrderDetailsActivity,
+                LinearLayoutManager.VERTICAL, false
+            )
         }
         binding.productRecycler.adapter = mAdapter
 
-        val orgSysId = intent.getStringExtra("orgSysId")?:""
-
-        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${orgSysId}" //explain
+        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${orgSysId}"
 
         observe()
         getOrderDetails(orgSysId)
         getOrderStates(orgSysId)
     }
 
-
     override fun onClick(v: View) {
-
         if (v.id == binding.btnBack.id) {
             finish()
         }
@@ -79,12 +81,25 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                             mList.addAll(it.data.data!!)
                             mAdapter.setData(mList)
 
-                            binding.total.text = "${it.data.total} EGP"
+                            val grandTotalVal = it.data.total?.toDoubleOrNull() ?: 0.0
+                            val subtotalVal = grandTotalVal
+                            val taxVal = 0.0
+
+                            binding.total.text = "$grandTotalVal EGP"
+
+                            binding.total.setOnClickListener {
+                                val intent = Intent(this@OrderDetailsActivity, OrderBottomSheet::class.java).apply {
+                                    putExtra("SUBTOTAL", subtotalVal)
+                                    putExtra("TAX", taxVal)
+                                    putExtra("GRAND_TOTAL", grandTotalVal)
+                                }
+                                startActivity(intent)
+                            }
+
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
                         }
-
                     }
 
                     is MyOrderDetailsStatus.Error -> {
@@ -96,6 +111,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+
     private fun getOrderDetails(orgSysId: String) {
         lifecycleScope.launch {
             orderDetailsViewModel.orderDetailsIntent.send(
@@ -103,6 +119,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
             )
         }
     }
+
     private fun getOrderStates(orgSysId: String) {
         viewModel.handleIntent(OrderStatesIntent.GetOrderState, orgSysId)
     }
