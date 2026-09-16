@@ -150,7 +150,7 @@ class ProductsActivity : BaseActivity() {
                     }
 
                     is CategoryStatus.GetCategory -> {
-                        hideProgressDialog(binding.progressLoading)
+//                        hideProgressDialog(binding.progressLoading)
                         categories = state.data.data!! as ArrayList<OrderTypeModel>
                     }
 
@@ -225,7 +225,6 @@ class ProductsActivity : BaseActivity() {
             )
         }
     }
-
 
     private fun onClick() {
         binding.btnBack.setOnClickListener {
