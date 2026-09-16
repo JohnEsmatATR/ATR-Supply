@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class ProductsViewModel : ViewModel() {
 
-    var selectedSortBy: String? = "0-1" //malak,
+    var selectedSortBy: String? = null //malak,
 
     val homeIntent = Channel<ProductsIntent>(Channel.UNLIMITED)
 

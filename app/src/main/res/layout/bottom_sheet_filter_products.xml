@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_filter_bottom_sheet">
 
-    <!-- Header -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
@@ -45,7 +44,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Main content -->
     <LinearLayout
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
@@ -57,7 +55,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
 
-        <!-- Left menu -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCategories"
             android:layout_width="0dp"
@@ -82,7 +79,6 @@
             app:layout_constraintStart_toEndOf="@id/rvCategories"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Right products -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProducts"
             android:layout_width="0dp"
@@ -101,7 +97,6 @@
 
     </LinearLayout>
 
-    <!-- Bottom buttons -->
     <LinearLayout
         android:id="@+id/bottomButtons"
         android:layout_width="0dp"
