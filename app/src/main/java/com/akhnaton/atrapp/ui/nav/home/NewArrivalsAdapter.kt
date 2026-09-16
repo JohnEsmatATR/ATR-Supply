@@ -19,7 +19,7 @@ class NewArrivalsAdapter(
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
     private val onAddToCartClick: (product: ProductModel) -> Unit = {}
 ) : RecyclerView.Adapter<NewArrivalsAdapter.ViewHolder>() {
-
+//
     private var productsList = ArrayList<ProductModel>()
     private lateinit var flag: String
     var isInHome: Boolean = false
