@@ -33,7 +33,6 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -72,10 +71,8 @@
                 android:background="#F2F4F7"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardImg"
                 app:layout_constraintStart_toStartOf="@+id/productName"
-                app:layout_constraintTop_toBottomOf="@+id/productName"
-                app:layout_constraintVertical_bias="1.0">
+                app:layout_constraintTop_toBottomOf="@+id/productName">
 
                 <TextView
                     android:id="@+id/textView2"
@@ -98,87 +95,56 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/itemTax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text=""
+                android:textColor="#E8750A"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/qtyContainer"
+                tools:text="Tax: 50.00 L.E" />
+
             <LinearLayout
                 android:id="@+id/priceLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@+id/qtyContainer"
+                android:gravity="end"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/qtyContainer">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{String.valueOf(data.UNIT_PRICE_WITH_TAX) + " L.E"}'
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
-                    tools:text="4,084 L.E" />
+                    tools:text="4,084.00 L.E" />
 
                 <TextView
-                    android:id="@+id/priceTxt"
+                    android:id="@+id/unitPriceDisplay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:textColor="#888888"
+                    android:textSize="11sp"
+                    tools:text="(408.40 / unit)" />
+
+                <TextView
+                    android:id="@+id/priceWithTax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#E8750A"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="With Tax: 4,134.00 L.E" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints"/>
-
-            <TextView
-                android:id="@+id/priceTxtar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/pricerAr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/quantityar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/unitPriceLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/unitPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/unitPriceLabelAr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-            <TextView
-                android:id="@+id/unitPriceAr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -94,10 +94,21 @@ class HomeFragment : BaseFragment() {
             startActivity(intent)
         }
 
+        binding.tvViewAllBestSellers.setOnClickListener {
+            val intent = Intent(requireContext(), ProductsActivity::class.java)
+            intent.putExtra("flag", orderTypeIndex)
+            intent.putExtra("categoryId", category.ID)
+            intent.putExtra("show_card", false) /////malakkkkkkkk
+
+            startActivity(intent)
+        }
+
         binding.layoutSearch.setOnClickListener {
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", orderTypeIndex)
             intent.putExtra("categoryId", category.ID)
+            intent.putExtra("show_card", true) /////malak
+
             startActivity(intent)
         }
 
@@ -136,6 +147,8 @@ class HomeFragment : BaseFragment() {
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", orderTypeIndex)
             intent.putExtra("categoryId", category.ID)
+            intent.putExtra("show_card", false)
+
             startActivity(intent)
         }
 
@@ -372,11 +385,12 @@ class HomeFragment : BaseFragment() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = bestSellersAdapter
+            /*
             addItemDecoration(
                 HorizontalSpacingItemDecoration(
                     resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._4sdp)
                 )
-            )
+            )*/ //malakkkkkkkkkkkkkkkkkkkkkkkk
         }
     }
 
