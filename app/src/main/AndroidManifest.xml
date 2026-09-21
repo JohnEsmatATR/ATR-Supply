@@ -194,10 +194,7 @@
             android:name=".ui.nav.profile.CreditInfoActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.nav.profile.order.details.OrderBottomSheet"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

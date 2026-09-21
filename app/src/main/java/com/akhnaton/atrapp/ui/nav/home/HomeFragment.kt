@@ -94,10 +94,21 @@ class HomeFragment : BaseFragment() {
             startActivity(intent)
         }
 
+        binding.tvViewAllBestSellers.setOnClickListener {
+            val intent = Intent(requireContext(), ProductsActivity::class.java)
+            intent.putExtra("flag", orderTypeIndex)
+            intent.putExtra("categoryId", category.ID)
+            intent.putExtra("show_card", false) /////malakkkkkkkk
+
+            startActivity(intent)
+        }
+
         binding.layoutSearch.setOnClickListener {
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", orderTypeIndex)
             intent.putExtra("categoryId", category.ID)
+            intent.putExtra("show_card", true) /////malak
+
             startActivity(intent)
         }
 
@@ -136,6 +147,8 @@ class HomeFragment : BaseFragment() {
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", orderTypeIndex)
             intent.putExtra("categoryId", category.ID)
+            intent.putExtra("show_card", false)
+
             startActivity(intent)
         }
 
@@ -253,7 +266,6 @@ class HomeFragment : BaseFragment() {
 
                                 binding.slider.visibility = View.VISIBLE
                                 binding.tabLayout.visibility = View.VISIBLE
-                                binding.imgDefaultLogo.visibility = View.GONE
 
                                 val adapter = BannerAdapter(banners)
                                 viewPager = binding.slider
@@ -263,7 +275,6 @@ class HomeFragment : BaseFragment() {
                             } else {
                                 binding.slider.visibility = View.GONE
                                 binding.tabLayout.visibility = View.GONE
-                                binding.imgDefaultLogo.visibility = View.VISIBLE
                             }
 
                             response?.customer_backgound_image?.let { bgImg ->
@@ -274,7 +285,6 @@ class HomeFragment : BaseFragment() {
                         } else {
                             binding.slider.visibility = View.GONE
                             binding.tabLayout.visibility = View.GONE
-                            binding.imgDefaultLogo.visibility = View.VISIBLE
                         }
                     }
 
@@ -282,7 +292,6 @@ class HomeFragment : BaseFragment() {
                         hideProgressDialog(binding.progressLoading)
                         binding.slider.visibility = View.GONE
                         binding.tabLayout.visibility = View.GONE
-                        binding.imgDefaultLogo.visibility = View.VISIBLE
                     }
                 }
             }
@@ -376,11 +385,12 @@ class HomeFragment : BaseFragment() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = bestSellersAdapter
+            /*
             addItemDecoration(
                 HorizontalSpacingItemDecoration(
                     resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._4sdp)
                 )
-            )
+            )*/ //malakkkkkkkkkkkkkkkkkkkkkkkk
         }
     }
 

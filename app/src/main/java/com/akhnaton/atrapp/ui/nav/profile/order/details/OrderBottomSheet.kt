@@ -1,27 +1,69 @@
 package com.akhnaton.atrapp.ui.nav.profile.order.details
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import com.akhnaton.atrapp.databinding.ActivityOrderBottomSheetBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.databinding.BottomSheetOrderBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.util.Locale
 
-class OrderBottomSheet : AppCompatActivity() {
+class OrderBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var binding: ActivityOrderBottomSheetBinding
+    private var _binding: BottomSheetOrderBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = BottomSheetOrderBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivityOrderBottomSheetBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val subtotal = intent.getDoubleExtra("SUBTOTAL", 0.0)
-        val tax = intent.getDoubleExtra("TAX", 0.0)
-        val grandTotal = intent.getDoubleExtra("GRAND_TOTAL", 0.0)
+        val itemsCount = arguments?.getInt("ITEMS_COUNT") ?: 0
+        val totalPieces = arguments?.getInt("TOTAL_PIECES") ?: 0
 
-        binding.txtSubtotal.text = "$subtotal L.E"
-        binding.txtTax.text = "$tax L.E"
-        binding.txtGrandTotal.text = "$grandTotal L.E"
+        val subtotal = arguments?.getDouble("SUBTOTAL") ?: 0.0
+        val tax = arguments?.getDouble("TAX") ?: 0.0
+        val grandTotal = arguments?.getDouble("GRAND_TOTAL") ?: 0.0
+
+        val currency = getString(R.string.currency)
+
+        binding.txtItemsCount.text = getString(R.string.items_unit_format, itemsCount)
+        binding.txtTotalPieces.text = getString(R.string.pieces_unit_format, totalPieces)
+
+        val currentLocale = Locale.getDefault()
+        binding.txtSubtotal.text = String.format(currentLocale, "%.2f %s", subtotal, currency)
+        binding.txtTax.text = String.format(currentLocale, "%.2f %s", tax, currency)
+        binding.txtGrandTotal.text = String.format(currentLocale, "%.2f %s", grandTotal, currency)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

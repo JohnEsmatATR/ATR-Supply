@@ -48,6 +48,10 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         Log.d("WHAT", SharedPreferenceHelper.isLogged.toString())
         if (SharedPreferenceHelper.isLogged == false) {
             binding.txtUserName.text = resources.getString(R.string.guest)
+
+            binding.cardGroup1.visibility = View.GONE
+            binding.loginLayout.visibility = View.VISIBLE /////malak
+
             binding.accountLayout.visibility = View.GONE
             binding.v1.visibility = View.GONE
             binding.orderLayout.visibility = View.GONE
@@ -56,6 +60,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.logoutLayout.visibility = View.GONE
             binding.v7.visibility = View.GONE
         } else {
+            binding.loginLayout.visibility = View.GONE ///////malak
+
             binding.accountLayout.visibility = View.VISIBLE
             binding.v1.visibility = View.VISIBLE
             binding.orderLayout.visibility = View.VISIBLE
@@ -110,6 +116,12 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.imageView13.setImageResource(chevronIcon)
         binding.icLogout.setImageResource(R.drawable.ic_logout)
 
+        binding.loginLayout.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            requireActivity().finish()
+        }
 
     }
 

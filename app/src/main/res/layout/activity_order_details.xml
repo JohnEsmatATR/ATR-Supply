@@ -12,7 +12,6 @@
         android:background="#F8F9FA"
         tools:context=".ui.nav.profile.order.details.OrderDetailsActivity">
 
-        <!-- Top App Bar -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
@@ -23,7 +22,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- Circular Back Button Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -75,9 +73,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
-                android:paddingTop="8dp">
+                android:paddingTop="8dp"
+                android:paddingBottom="16dp">
 
-                <!-- Order ID Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -145,7 +143,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Order Items Header -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -156,7 +153,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- Product Recycler -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/productRecycler"
                     android:layout_width="match_parent"
@@ -168,13 +164,12 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <!-- Bottom More Details Button & Total Bar -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btn_more_details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="36dp"
             app:cardBackgroundColor="#E8750A"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
@@ -189,7 +184,7 @@
                 android:layout_height="56dp"
                 android:paddingHorizontal="16dp">
 
-                <!-- Total Amount Container (Left Side in LTR) -->
+
                 <LinearLayout
                     android:id="@+id/totalContainer"
                     android:layout_width="wrap_content"
@@ -217,7 +212,6 @@
                         tools:text="5,569 L.E" />
                 </LinearLayout>
 
-                <!-- More Details Label & Arrow (Right Side in LTR) -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -247,7 +241,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Loading Progress -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progressLoading"
             android:layout_width="0dp"
@@ -278,13 +271,53 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Hidden old views to avoid Kotlin ViewBinding break -->
-        <View android:id="@+id/orderDate" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" />
-        <View android:id="@+id/v1" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" />
-        <View android:id="@+id/orderStatus" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" />
-        <View android:id="@+id/paymentTxt" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" />
-        <View android:id="@+id/payment" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" />
-        <View android:id="@+id/constraintLayout2" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" />
+        <View
+            android:id="@+id/orderDate"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/v1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/orderStatus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/paymentTxt"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/payment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/constraintLayout2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

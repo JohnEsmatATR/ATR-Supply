@@ -26,6 +26,8 @@ class BannerAdapter(private val banners: List<String>) : PagerAdapter() {
 
         Glide.with(container.context)
             .load(banners[position])
+            .placeholder(R.drawable.ic_logo)
+            .error(R.drawable.ic_logo)
             .into(imageView)
 
         container.addView(view)

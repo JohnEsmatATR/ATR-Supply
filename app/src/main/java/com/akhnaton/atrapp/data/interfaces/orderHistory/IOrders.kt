@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.data.interfaces.orderHistory
 
+import MyOrderDetailsRes
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
 import com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel
@@ -18,7 +19,7 @@ interface IOrders {
     @FormUrlEncoded
     @POST(ConstantLinks.MY_ORDERS_DETAILS)
     suspend fun getMyOrderDetails(
-        @Field("ORIG_SYS_DOCUMENT_REF") id: String,
-    ): Response<BaseModel<List<OrderDetailsModel>>>
+        @Field("order_id") id: String,
+    ): Response<MyOrderDetailsRes>
 
 }

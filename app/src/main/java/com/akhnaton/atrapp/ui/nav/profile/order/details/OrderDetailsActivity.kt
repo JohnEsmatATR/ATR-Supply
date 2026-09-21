@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.orderHistory.Item
 import com.akhnaton.atrapp.data.model.orderHistory.OrderDetailsModel
 import com.akhnaton.atrapp.data.statuesValue.nav.home.orde_states.OrderStatesIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.orderDetails.MyOrderDetailsIntent
@@ -23,7 +24,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderDetailsBinding
     private val orderDetailsViewModel: MyOrderDetailsViewModel by viewModels()
     private var mAdapter = OrderDetailsAdapter()
-    var mList = mutableListOf<OrderDetailsModel>()
+    var mList = mutableListOf<Item>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +38,9 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_details)
 
-        val orgSysId = intent.getStringExtra("orgSysId") ?: ""
+        val ORDER_ID = intent.getStringExtra("ORDER_ID") ?: ""
 
-        Log.d(Common.KeroDebug, "OrderDetailsActivity: Entered screen with orgSysId = $orgSysId")
+        Log.d(Common.KeroDebug, "OrderDetailsActivity: Entered screen with ORDER_ID = $ORDER_ID")
 
         binding.btnBack.setOnClickListener(this)
         binding.productRecycler.apply {
@@ -50,11 +51,11 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
         }
         binding.productRecycler.adapter = mAdapter
 
-        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${orgSysId}"
+        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${ORDER_ID}"
 
         observe()
-        getOrderDetails(orgSysId)
-        getOrderStates(orgSysId)
+        getOrderDetails(ORDER_ID)
+        getOrderStates(ORDER_ID)
     }
 
     override fun onClick(v: View) {
@@ -65,8 +66,8 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private fun observe() {
         lifecycleScope.launch {
-            orderDetailsViewModel.state.collect {
-                when (it) {
+            orderDetailsViewModel.state.collect { status ->
+                when (status) {
                     is MyOrderDetailsStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is MyOrderDetailsStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
@@ -74,53 +75,61 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     is MyOrderDetailsStatus.GetMyOrderDetails -> {
-                        if (it.data.status == 200) {
+                        if (status.ahmed.status == 200) {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
-                            mList.addAll(it.data.data!!)
+                            mList.clear()
+                            mList.addAll(status.ahmed.item)
                             mAdapter.setData(mList)
 
-                            val grandTotalVal = it.data.total?.toDoubleOrNull() ?: 0.0
-                            val subtotalVal = grandTotalVal
-                            val taxVal = 0.0
+                            val itemsCount = status.ahmed.item?.size ?: 0
+                            val totalPieces = status.ahmed.item?.sumOf { it.QUANTITY ?: 1 } ?: 0
 
-                            binding.total.text = "$grandTotalVal EGP"
+                            val subtotalVal = status.ahmed.totalOrderPriceWithoutTax?.toDouble() ?: 0.0
+                            val taxVal = status.ahmed.totalOrderTax?.toDouble() ?: 0.0
+                            val grandTotalVal = status.ahmed.totalOrderPriceWithTax?.toDouble() ?: 0.0
 
-                            binding.total.setOnClickListener {
-                                val intent = Intent(this@OrderDetailsActivity, OrderBottomSheet::class.java).apply {
-                                    putExtra("SUBTOTAL", subtotalVal)
-                                    putExtra("TAX", taxVal)
-                                    putExtra("GRAND_TOTAL", grandTotalVal)
+                            binding.total.text = "${grandTotalVal.toInt()} EGP"
+
+                            binding.btnMoreDetails.setOnClickListener {
+                                val bottomSheet = OrderBottomSheet().apply {
+                                    arguments = Bundle().apply {
+                                        putDouble("SUBTOTAL", subtotalVal)
+                                        putDouble("TAX", taxVal)
+                                        putDouble("GRAND_TOTAL", grandTotalVal)
+                                        putInt("ITEMS_COUNT", itemsCount)
+                                        putInt("TOTAL_PIECES", totalPieces)
+                                    }
                                 }
-                                startActivity(intent)
+                                bottomSheet.show(supportFragmentManager, "OrderBottomSheet")
                             }
 
                         } else {
                             hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
+                            showToastSnack(status.ahmed.message, true)
                         }
                     }
 
                     is MyOrderDetailsStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        Log.d(Common.KeroDebug, "observeHome Error: ${status.error}")
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        showToastSnack(status.error.toString(), true)
                     }
                 }
             }
         }
     }
 
-    private fun getOrderDetails(orgSysId: String) {
+    private fun getOrderDetails(ORDER_ID: String) {
         lifecycleScope.launch {
             orderDetailsViewModel.orderDetailsIntent.send(
-                MyOrderDetailsIntent.GetMyOrderDetails(orgSysId)
+                MyOrderDetailsIntent.GetMyOrderDetails(ORDER_ID)
             )
         }
     }
 
-    private fun getOrderStates(orgSysId: String) {
-        viewModel.handleIntent(OrderStatesIntent.GetOrderState, orgSysId)
+    private fun getOrderStates(ORDER_ID: String) {
+        viewModel.handleIntent(OrderStatesIntent.GetOrderState, ORDER_ID)
     }
 }

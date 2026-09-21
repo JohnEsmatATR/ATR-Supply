@@ -280,6 +280,12 @@
     <string name="sorting_title">ترتيب النتائج</string>
     <string name="sorting_subtitle">اختر طريقة الترتيب المفضلة لديك</string>
     <string name="apply_sorting">تطبيق الترتيب</string>
+    <string name="searching_in_pharma">البحث في: أدوية</string>
+    <string name="change_in_filters">تغيير في التصفية</string>
+    <string name="alphabetical_a_z">أبجدي (A - Z)</string>
+    <string name="alphabetical_z_a">أبجدي (Z - A)</string>
+    <string name="price_l_h">سعر: من الأقل للأعلى</string>
+    <string name="price_h_l">سعر: من الأعلى للأقل</string>
 
 
 
@@ -289,5 +295,14 @@
         <item>السعر: من الأقل للأعلى</item>
         <item>السعر: من الأعلى للأقل</item>
     </string-array>
+
+    <string name="items_count_label">عدد الأصناف</string>
+    <string name="total_pieces_label">إجمالي عدد القطع</string>
+    <string name="items_unit_format">%1$d أصناف</string>
+    <string name="pieces_unit_format">%1$d قطعة</string>
+    <string name="tax_format">الضريبة: %.2f ج.م</string>
+    <string name="unit_price_suffix">/ للقطعة</string>
+    <string name="more_credit_info">المزيد من المعلومات الائتمانية</string>
+
 
 </resources>

@@ -15,11 +15,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
-import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.OrderTypeModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsStatus
@@ -30,20 +31,17 @@ import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.GridSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
+import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.home.search.SearchViewModel
-import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.collections.emptyList
-import androidx.fragment.app.FragmentManager
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
-import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
-import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProductsActivity : BaseActivity() {
     lateinit var binding: ActivityProductsBinding
@@ -59,33 +57,55 @@ class ProductsActivity : BaseActivity() {
     private var isLastPage = false
     private var categoryId: Int = 0
 
-    // this just flag not pagination values
     private var currentPage = 1
     private var pageSize = 10
-    private var isFiltered = false //malak
+    private var isFiltered = false
     private var isSearchMode = false
     private var searchJob: Job? = null
     private var categories: ArrayList<OrderTypeModel> = ArrayList()
     private lateinit var flag: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // Window insets are now handled automatically by BaseActivity
+
         init()
         onClick()
         observeAddToCart()
 
-        binding.btnChangeInFilters.paintFlags = binding.btnChangeInFilters.paintFlags or Paint.UNDERLINE_TEXT_FLAG //malak
+        val showCard = intent.getBooleanExtra("show_card", false)
+        binding.cardSearchingPharma.visibility = if (showCard) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        binding.btnChangeInFilters.paintFlags =
+            binding.btnChangeInFilters.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         currentPage = intent.getIntExtra("saved_page", 1)
     }
 
+    private fun handleLoadingState(isLoading: Boolean, isPagination: Boolean) {
+        if (isLoading) {
+            if (isPagination) {
+                binding.paginationLoadingLayout.visibility = View.VISIBLE
+                binding.progressLoading.visibility = View.GONE
+            } else {
+                binding.progressLoading.visibility = View.VISIBLE
+                binding.paginationLoadingLayout.visibility = View.GONE
+            }
+        } else {
+            binding.progressLoading.visibility = View.GONE
+            binding.paginationLoadingLayout.visibility = View.GONE
+        }
+    }
 
     private fun init() {
         flag = intent.getStringExtra("flag") ?: ""
         categoryId = intent.getIntExtra("categoryId", 0)
 
-        var isArabic = SharedPreferenceHelper.language == "ar"
+        val isArabic = SharedPreferenceHelper.language == "ar"
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
@@ -98,7 +118,6 @@ class ProductsActivity : BaseActivity() {
                     delay(500)
 
                     if (qString.isNotEmpty()) {
-                        // 🔍 New search
                         isSearchMode = true
                         currentPage = 1
                         isLastPage = false
@@ -109,7 +128,6 @@ class ProductsActivity : BaseActivity() {
 
                         searchProduct(qString, flag, categoryId)
                     } else {
-                        // ❌ Search cleared
                         resetToNormalProducts()
                     }
                 }
@@ -119,7 +137,6 @@ class ProductsActivity : BaseActivity() {
 
             override fun onQueryTextSubmit(qString: String): Boolean {
                 if (qString.isNotEmpty()) {
-//                    searchProduct(qString, flag, categoryId)
                     startNewSearch(qString)
                 } else {
                     getProductsBasedOnCategory(categoryId, category = flag)
@@ -130,11 +147,7 @@ class ProductsActivity : BaseActivity() {
 
         searchObserve()
         productsObserve()
-        Log.d("TAG", "ProductsActivity: ProductsActivity ")
 
-
-        Log.d("TAG", "init flag: ${flag}")
-        Log.d("TAG", "init categoryId: ${categoryId}")
         getProductsBasedOnCategory(categoryId, category = flag)
 
         lifecycleScope.launch {
@@ -149,40 +162,34 @@ class ProductsActivity : BaseActivity() {
                 when (state) {
                     is CategoryStatus.Idle -> Unit
                     is CategoryStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = true, isPagination = false)
                     }
 
                     is CategoryStatus.GetCategory -> {
-//                        hideProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = false, isPagination = false)
                         categories = state.data.data!! as ArrayList<OrderTypeModel>
                     }
 
                     is CategoryStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
-//                        binding.recyclerPharma.visibility = View.VISIBLE
-                        //   Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
+                        handleLoadingState(isLoading = false, isPagination = false)
                     }
                 }
             }
         }
     }
 
-
     fun updateFilterUiState(selectedCount: Int) {
-        Log.d("filter_ui", "updateFilterUiState called with count: $selectedCount, isFiltered: $isFiltered")
+        isFiltered = selectedCount > 0
 
-        // malak
-        if (selectedCount > 0 || isFiltered) {
-            isFiltered = true //malak
-            binding.cardSearchingPharma.visibility = View.GONE //malak
-        }
+        binding.cardSearchingPharma.visibility =
+            if (isFiltered) View.GONE else View.VISIBLE
 
-        // malak
-        if (selectedCount > 0) {
-            binding.tvFilterBadge.text = selectedCount.toString() //malak
-            binding.tvFilterBadge.visibility = View.VISIBLE //malak
+        if (isFiltered) {
+            binding.tvFilterBadge.text = selectedCount.toString()
+            binding.tvFilterBadge.visibility = View.VISIBLE
         } else {
-            binding.tvFilterBadge.visibility = View.GONE //malak
+            binding.tvFilterBadge.text = ""
+            binding.tvFilterBadge.visibility = View.GONE
         }
     }
 
@@ -193,14 +200,14 @@ class ProductsActivity : BaseActivity() {
                     is SearchStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is SearchStatus.Loading -> {
                         isLoading = true
-                        Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        val isPagination = currentPage > 1
+                        handleLoadingState(isLoading = true, isPagination = isPagination)
                         binding.txtNoProducts.visibility = View.GONE
                     }
 
                     is SearchStatus.SearchProduct -> {
                         isLoading = false
-                        hideProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = false, isPagination = false)
                         if (state.data.status == 200) {
                             isSearchMode = true
                             val searchResults = state.data.data ?: emptyList()
@@ -213,18 +220,14 @@ class ProductsActivity : BaseActivity() {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                                 binding.recycler.visibility = View.GONE
                             }
-                        } else if (state.data.status == 401) {
-                            hideProgressDialog(binding.progressLoading)
                         } else {
-                            hideProgressDialog(binding.progressLoading)
                             showToastSnack(state.data.message ?: "", true)
                         }
                     }
 
                     is SearchStatus.Error -> {
                         isLoading = false
-                        Log.d(Common.KeroDebug, "observeHome Error: ${state.error}")
-                        hideProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = false, isPagination = false)
                         binding.txtNoProducts.visibility = View.VISIBLE
                         binding.recycler.visibility = View.GONE
                         showToastSnack(state.error.toString(), true)
@@ -233,7 +236,6 @@ class ProductsActivity : BaseActivity() {
             }
         }
     }
-
 
     private fun searchProduct(word: String, orderType: String, category: Int) {
         lifecycleScope.launch {
@@ -253,42 +255,47 @@ class ProductsActivity : BaseActivity() {
             finish()
         }
 
-        // malak
         binding.btnChangeInFilters.setOnClickListener {
-            binding.layoutFilter.performClick() //malak
+            binding.layoutFilter.performClick()
         }
 
         binding.layoutFilter.setOnClickListener {
-            Log.d("WHATcategories.size", "${categories.size}")
+            val selectedChildId = categoryId.takeIf { it != 0 }
+            val selectedOrderType = flag.takeIf { it.isNotEmpty() }
 
-            val bottomSheet = FilterProductsBottomSheet.newInstance(orderTypes = categories) //malak
-            bottomSheet.onFilterAppliedListeners = { orderType, childId -> //malaakk
-                Log.d("filter_test", "Received in Activity -> OrderType: $orderType, ChildId: $childId")
-                currentPage = 1 //malak
-                products.clear() // malak
-                if(::adapter.isInitialized){
+            val bottomSheet =
+                FilterProductsBottomSheet.newInstance(
+                    orderTypes = categories,
+                    selectedOrderType = selectedOrderType,
+                    selectedChildId = selectedChildId
+                )
+
+            bottomSheet.onFilterAppliedListeners = { orderType, childId ->
+                currentPage = 1
+                products.clear()
+
+                if (::adapter.isInitialized) {
                     adapter.clear()
                 }
-                if(!orderType.isNullOrEmpty()) flag = orderType //malak
 
+                flag = orderType.orEmpty()
                 categoryId = childId ?: 0
 
-                // malak
-                val selectedCount = if ((childId != null && childId != 0) || !orderType.isNullOrEmpty()) 1 else 0 //malak
-                updateFilterUiState(selectedCount) //malak
+                val selectedCount = if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
+
+                updateFilterUiState(selectedCount)
 
                 getProductsBasedOnCategory(
                     categoryId = categoryId,
                     page = 1,
                     category = flag
                 )
-
             }
-            bottomSheet
-                .show(
-                    supportFragmentManager,
-                    "FilterProductsBottomSheet"
-                )
+
+            bottomSheet.show(
+                supportFragmentManager,
+                "FilterProductsBottomSheet"
+            )
         }
 
         binding.layoutSort.setOnClickListener {
@@ -297,13 +304,14 @@ class ProductsActivity : BaseActivity() {
 
             val rvSortingOptions = view.findViewById<RecyclerView>(R.id.rvSortingOptions)
             val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
-            val btnApplySort = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
+            val btnApplySort =
+                view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
 
             val sortingOptions = listOf(
-                "Alphabetical (A - Z)",
-                "Alphabetical (Z - A)",
-                "Price: Low to High",
-                "Price: High to Low"
+                getString(R.string.alphabetical_a_z),
+                getString(R.string.alphabetical_z_a),
+                getString(R.string.price_l_h),
+                getString(R.string.price_h_l),
             )
 
             var selectedSortByCode: String? = null
@@ -346,9 +354,9 @@ class ProductsActivity : BaseActivity() {
                 addCartViewModel.state.collect { state ->
                     when (state) {
                         is AddToCartStatus.Idle -> Unit
-                        is AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
+                        is AddToCartStatus.Loading -> handleLoadingState(isLoading = true, isPagination = false)
                         is AddToCartStatus.AddToCart -> {
-                            hideProgressDialog(binding.progressLoading)
+                            handleLoadingState(isLoading = false, isPagination = false)
                             if (state.data.status == 200) {
                                 showToastSnack(state.data.message ?: "", false)
                             } else {
@@ -358,7 +366,7 @@ class ProductsActivity : BaseActivity() {
                         }
 
                         is AddToCartStatus.Error -> {
-                            hideProgressDialog(binding.progressLoading)
+                            handleLoadingState(isLoading = false, isPagination = false)
                             showToastSnack(state.error ?: "", true)
                             addCartViewModel.resetState()
                         }
@@ -368,58 +376,45 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
-
     private fun productsObserve() {
         lifecycleScope.launch {
             viewModel.state.collect { state ->
                 when (state) {
                     is ProductsStatus.Idle -> {
-                        Log.d(Common.KeroDebug, "Pagination Log: State = Idle")
                         binding.txtNoProducts.visibility = View.GONE
                     }
 
                     is ProductsStatus.Loading -> {
                         isLoading = true
-                        Log.d(Common.KeroDebug, "Pagination Log: Loading page $currentPage")
-                        showProgressDialog(binding.progressLoading)
+                        val isPagination = currentPage > 1
+                        handleLoadingState(isLoading = true, isPagination = isPagination)
                         binding.txtNoProducts.visibility = View.GONE
-                        binding.progressLoading.visibility = View.VISIBLE // malaakk
-                        binding.recycler.visibility = View.INVISIBLE // malalak
-                        binding.txtNoProducts.visibility = View.GONE // malak
+                        binding.recycler.visibility = View.VISIBLE
                     }
 
                     is ProductsStatus.GetProducts -> {
                         isLoading = false
-                        hideProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = false, isPagination = false)
 
                         if (state.data.status != -1) {
-                            // malak
                             val dataList = state.data.data ?: emptyList()
 
                             pageSize = state.data.pagination?.page_size ?: pageSize
                             isSearchMode = false
 
-                            // malak
                             if (currentPage == 1) {
                                 products.clear()
                                 if (::adapter.isInitialized) {
-                                    adapter.clear() // malak
+                                    adapter.clear()
                                 }
                             }
 
                             if (dataList.isNotEmpty()) {
-                                Log.d("SORT_TEST", "Response First Product: ${dataList[0].TITLE} - Price: ${dataList[0].PRICE_AFTER_DISCOUNT}")
-
-                                products.addAll(dataList) // malak
+                                products.addAll(dataList)
                                 binding.txtNoProducts.visibility = View.GONE
-                                binding.recycler.visibility = View.VISIBLE // malak
+                                binding.recycler.visibility = View.VISIBLE
 
                                 setupProductsRecycler(dataList)
-
-                                binding.recycler.post {
-                                    hideProgressDialog(binding.progressLoading)
-                                }
-                                // malak
                             } else {
                                 if (currentPage == 1) {
                                     binding.txtNoProducts.visibility = View.VISIBLE
@@ -436,12 +431,12 @@ class ProductsActivity : BaseActivity() {
                     }
 
                     is ProductsStatus.Error -> {
-                        // malak
                         isLoading = false
-                        hideProgressDialog(binding.progressLoading)
-                        binding.txtNoProducts.visibility = View.VISIBLE
+                        handleLoadingState(isLoading = false, isPagination = false)
+                        if (currentPage == 1) {
+                            binding.txtNoProducts.visibility = View.VISIBLE
+                        }
                         showToastSnack(state.error.toString(), true)
-                        Log.e(Common.KeroDebug, "Pagination Log: Error: ${state.error}")
                     }
                 }
             }
@@ -474,20 +469,17 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
-
     private fun getProductsBasedOnCategory(categoryId: Int, page: Int = 1, category: String) {
         lifecycleScope.launch {
             viewModel.homeIntent.send(
                 ProductsIntent.GetProducts(
                     categoryId = categoryId,
                     page = page,
-                    category,
-
-                    )
+                    category
+                )
             )
         }
     }
-
 
     private fun handleAddToCart(product: ProductModel) {
         if (!product.IN_STOCK) {
@@ -523,11 +515,12 @@ class ProductsActivity : BaseActivity() {
 
             adapter = ProductAdapter(
                 onClick = { product, _, sharedView, transitionName ->
-                    val intent = Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
-                        putExtra("flag", flag)
-                        putExtra("product", product)
-                        putExtra("transitionName", transitionName)
-                    }
+                    val intent =
+                        Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
+                            putExtra("flag", flag)
+                            putExtra("product", product)
+                            putExtra("transitionName", transitionName)
+                        }
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ProductsActivity,
                         sharedView,
@@ -592,7 +585,6 @@ class ProductsActivity : BaseActivity() {
             })
         }
 
-        // malak
         if (currentPage == 1) {
             adapter.setData(list, false, flag)
         } else {
@@ -605,7 +597,9 @@ class ProductsActivity : BaseActivity() {
         currentPage = 1
         isLastPage = false
         products.clear()
-        adapter.clear()
+        if (::adapter.isInitialized) {
+            adapter.clear()
+        }
 
         searchProduct(word, flag, categoryId)
     }
@@ -627,5 +621,4 @@ class ProductsActivity : BaseActivity() {
             category = flag
         )
     }
-
 }

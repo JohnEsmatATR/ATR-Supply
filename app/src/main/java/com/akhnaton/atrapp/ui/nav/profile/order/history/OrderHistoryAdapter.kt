@@ -36,7 +36,7 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
         fun bind(item: OrderHistoryModel) {
             binding.data = item
             val steps = item.statusGroup.orEmpty()
-            binding.tvOrderNo.text = item.origSysDocumentRef.orEmpty()
+            binding.tvOrderNo.text = item.ORDER_ID.orEmpty()
             bindStatusBadge(steps)
 
             bindStep(
