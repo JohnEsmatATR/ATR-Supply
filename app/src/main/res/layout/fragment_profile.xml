@@ -52,7 +52,8 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="User Name" />
 
-        <!-- Card Group 1 (Account & Orders) -->
+
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardGroup1"
             android:layout_width="match_parent"
@@ -196,7 +197,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- More Credit Info Navigation & Expandable Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardMoreCredit"
             android:layout_width="match_parent"
@@ -237,10 +237,10 @@
 
                         <ImageView
                             android:id="@+id/icArrowCredit"
-                            android:layout_width="16dp"
+                            android:layout_width="12dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_star"
+                            android:src="@drawable/ic_money"
                             app:tint="#388E3C" />
                     </com.google.android.material.card.MaterialCardView>
 
@@ -249,7 +249,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:gravity="start"
-                        android:text="More Credit Info"
+                        android:text="@string/more_credit_info"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -270,7 +270,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- Expandable Credit Details Section -->
                 <LinearLayout
                     android:id="@+id/expandableCreditContent"
                     android:layout_width="match_parent"
@@ -362,7 +361,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Card Group 2 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardGroup2"
             android:layout_width="match_parent"
@@ -673,7 +671,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Card Group 3 (Logout / Login) -->
+
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardGroup3"
             android:layout_width="match_parent"
@@ -747,6 +746,8 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
                 <View
                     android:id="@+id/v7"
                     android:layout_width="match_parent"
@@ -754,8 +755,64 @@
                     android:layout_marginVertical="8dp"
                     android:background="#F0F0F0" />
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/loginLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardLoginIcon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        app:cardBackgroundColor="#FFF3E0"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeWidth="0dp">
+
+                        <ImageView
+                            android:id="@+id/icLogin"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_profile"
+                            app:tint="#E8750A" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/tvLogin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:gravity="start"
+                        android:text="@string/login"
+                        android:textColor="#E8750A"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ivChevronLogin"
+                        app:layout_constraintStart_toEndOf="@+id/cardLoginIcon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivChevronLogin"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="#CCCCCC" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

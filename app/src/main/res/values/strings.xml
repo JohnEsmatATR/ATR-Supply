@@ -351,5 +351,13 @@ In addition to a wide range of other complementary services, that are offered th
         <item>Price: High to Low</item>
     </string-array>
 
+    <string name="items_count_label">Items Count</string>
+    <string name="total_pieces_label">Total Quantity / Pieces</string>
+    <string name="items_unit_format">%1$d Items</string>
+    <string name="pieces_unit_format">%1$d Pieces</string>
+    <string name="tax_format">Tax: %.2f L.E</string>
+    <string name="unit_price_suffix">/ unit</string>
+    <string name="more_credit_info">More Credit Info</string>
+
 
 </resources>

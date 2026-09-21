@@ -113,6 +113,7 @@ class ProductDetailsActivity : BaseActivity() {
 
                             if (productData != null) {
                                 binding.txtItemName.text = productData.TITLE ?: ""
+                                binding.txtCategory.text = productData.category?.TITLE ?: ""
                                 binding.txtPriceValue.text = "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
                                 // 1. Dosage / Size Handling from API
                                 val dosageText = productData.WEIGHT

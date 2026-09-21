@@ -66,8 +66,8 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private fun observe() {
         lifecycleScope.launch {
-            orderDetailsViewModel.state.collect {
-                when (it) {
+            orderDetailsViewModel.state.collect { status ->
+                when (status) {
                     is MyOrderDetailsStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is MyOrderDetailsStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
@@ -75,38 +75,46 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     is MyOrderDetailsStatus.GetMyOrderDetails -> {
-                        if (it.data.status == 200) {
+                        if (status.ahmed.status == 200) {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
-                            mList.addAll(it.data.item)
+                            mList.clear()
+                            mList.addAll(status.ahmed.item)
                             mAdapter.setData(mList)
 
-                            val grandTotalVal = it.data.totalOrderPriceWithTax?.toInt() ?: 0
-                            val subtotalVal = grandTotalVal
-                            val taxVal = 0.0
+                            val itemsCount = status.ahmed.item?.size ?: 0
+                            val totalPieces = status.ahmed.item?.sumOf { it.QUANTITY ?: 1 } ?: 0
 
-                            binding.total.text = "$grandTotalVal EGP"
+                            val subtotalVal = status.ahmed.totalOrderPriceWithoutTax?.toDouble() ?: 0.0
+                            val taxVal = status.ahmed.totalOrderTax?.toDouble() ?: 0.0
+                            val grandTotalVal = status.ahmed.totalOrderPriceWithTax?.toDouble() ?: 0.0
 
-                            binding.total.setOnClickListener {
-                                val intent = Intent(this@OrderDetailsActivity, OrderBottomSheet::class.java).apply {
-                                    putExtra("SUBTOTAL", subtotalVal)
-                                    putExtra("TAX", taxVal)
-                                    putExtra("GRAND_TOTAL", grandTotalVal)
+                            binding.total.text = "${grandTotalVal.toInt()} EGP"
+
+                            binding.btnMoreDetails.setOnClickListener {
+                                val bottomSheet = OrderBottomSheet().apply {
+                                    arguments = Bundle().apply {
+                                        putDouble("SUBTOTAL", subtotalVal)
+                                        putDouble("TAX", taxVal)
+                                        putDouble("GRAND_TOTAL", grandTotalVal)
+                                        putInt("ITEMS_COUNT", itemsCount)
+                                        putInt("TOTAL_PIECES", totalPieces)
+                                    }
                                 }
-                                startActivity(intent)
+                                bottomSheet.show(supportFragmentManager, "OrderBottomSheet")
                             }
 
                         } else {
                             hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
+                            showToastSnack(status.ahmed.message, true)
                         }
                     }
 
                     is MyOrderDetailsStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        Log.d(Common.KeroDebug, "observeHome Error: ${status.error}")
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        showToastSnack(status.error.toString(), true)
                     }
                 }
             }

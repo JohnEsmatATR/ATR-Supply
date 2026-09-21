@@ -1,8 +1,8 @@
 package com.akhnaton.atrapp.data.model.orderHistory
-
 data class Item(
     val DESCRIPTION: String,
     val QUANTITY: Int,
+    val IMAGE_URL: String? = null,
     val TAX_VALUE: Int,
     val TITLE: String,
     val TOTAL_TAX: Int,

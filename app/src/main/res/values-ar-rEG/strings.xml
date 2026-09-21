@@ -296,4 +296,13 @@
         <item>السعر: من الأعلى للأقل</item>
     </string-array>
 
+    <string name="items_count_label">عدد الأصناف</string>
+    <string name="total_pieces_label">إجمالي عدد القطع</string>
+    <string name="items_unit_format">%1$d أصناف</string>
+    <string name="pieces_unit_format">%1$d قطعة</string>
+    <string name="tax_format">الضريبة: %.2f ج.م</string>
+    <string name="unit_price_suffix">/ للقطعة</string>
+    <string name="more_credit_info">المزيد من المعلومات الائتمانية</string>
+
+
 </resources>
