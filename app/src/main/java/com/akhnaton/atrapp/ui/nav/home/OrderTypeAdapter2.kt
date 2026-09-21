@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.OrderTypeModel
 import com.akhnaton.atrapp.databinding.ItemCategoryBinding
@@ -55,7 +56,11 @@ class OrderTypeAdapter2(
             currentOrderType = item
             Glide.with(itemView.context)
                 .load(item.IMAGE_URL)
+                .placeholder(R.drawable.ic_logo)
+                .error(R.drawable.ic_logo)
+                .fallback(R.drawable.ic_logo)
                 .into(binding.ivCategory)
+
             binding.tvCategoryName.text = item.order_type
             binding.root.setOnClickListener {
                 onCategoryClick(item.categories[0], item.order_type_index, 0)

@@ -56,6 +56,7 @@ class ProductsActivity : BaseActivity() {
     private var isLoading = false
     private var isLastPage = false
     private var categoryId: Int = 0
+    private var selectedChildId: Int? = null //// neww malakkkk
 
     private var currentPage = 1
     private var pageSize = 10
@@ -260,7 +261,7 @@ class ProductsActivity : BaseActivity() {
         }
 
         binding.layoutFilter.setOnClickListener {
-            val selectedChildId = categoryId.takeIf { it != 0 }
+            // (deleted by malakkk) val selectedChildId = categoryId.takeIf { it != 0 }
             val selectedOrderType = flag.takeIf { it.isNotEmpty() }
 
             val bottomSheet =
@@ -279,6 +280,7 @@ class ProductsActivity : BaseActivity() {
                 }
 
                 flag = orderType.orEmpty()
+                selectedChildId = childId // neww malakkkk
                 categoryId = childId ?: 0
 
                 val selectedCount = if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0

@@ -121,38 +121,19 @@
                     tools:text="100 GM" />
             </LinearLayout>
 
-            <!-- Price (Bottom Left) -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/txt_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:orientation="horizontal"
+                android:text="@{@string/price_format(cart.priceWithoutTax + ``)}"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/card_image">
+                app:layout_constraintStart_toEndOf="@id/card_image"
+                tools:text="34.6 EGP" />
 
-                <TextView
-                    android:id="@+id/txt_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{cart.priceWithoutTax + ``}"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:text="34.6" />
-
-                <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/price"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:text="EGP" />
-            </LinearLayout>
-
-            <!-- Quantity Controls (Fully Rounded Pill Shape) -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_quantity_container"
                 android:layout_width="wrap_content"
@@ -219,7 +200,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Unused Bonus Section (Maintained IDs for Compatibility) -->
             <LinearLayout
                 android:id="@+id/layout_data"
                 android:layout_width="0dp"

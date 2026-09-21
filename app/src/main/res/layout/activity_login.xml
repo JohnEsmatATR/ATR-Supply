@@ -9,7 +9,7 @@
     tools:context=".ui.auth.login.LoginActivity">
 
     <!-- ========================================================= -->
-    <!-- TOP IMAGE / BRAND AREA                                     -->
+    <!-- TOP IMAGE / BRAND AREA                                    -->
     <!-- ========================================================= -->
 
     <ImageView

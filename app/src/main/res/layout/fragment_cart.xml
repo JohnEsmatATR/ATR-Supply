@@ -34,7 +34,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Recycler View -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
@@ -50,7 +49,6 @@
         tools:itemCount="3"
         tools:listitem="@layout/item_cart_parent" />
 
-    <!-- Summary & Checkout Section -->
     <LinearLayout
         android:id="@+id/layout_cart"
         android:layout_width="match_parent"
@@ -64,7 +62,6 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Item Total Row -->
         <LinearLayout
             android:id="@+id/layout_item_total"
             android:layout_width="match_parent"
@@ -153,7 +150,6 @@
                 tools:text="-0.00 EGP" />
         </LinearLayout>
 
-        <!-- Delivery Free Row -->
         <LinearLayout
             android:id="@+id/layout_delivery_free"
             android:layout_width="match_parent"
@@ -232,7 +228,6 @@
                 tools:text="26203.50 EGP" />
         </LinearLayout>
 
-        <!-- Checkout Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_checkout"
             android:layout_width="match_parent"
@@ -252,7 +247,6 @@
 
     </LinearLayout>
 
-    <!-- Guest State -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_guest"
         android:layout_width="wrap_content"

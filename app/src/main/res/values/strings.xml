@@ -64,7 +64,7 @@
     <string name="my_cart">My Cart</string>
     <string name="your_cart_is_empty">Your cart is empty</string>
     <string name="checkout">Checkout</string>
-    <string name="grand_total">Grand Total : </string>
+    <string name="grand_total">Grand Total With Tax: </string>
     <string name="delivery_free">Delivery :</string>
     <string name="discount">Discount : </string>
     <string name="item_total">Item Total : </string>
@@ -357,7 +357,11 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="pieces_unit_format">%1$d Pieces</string>
     <string name="tax_format">Tax: %.2f L.E</string>
     <string name="unit_price_suffix">/ unit</string>
-    <string name="more_credit_info">More Credit Info</string>
+    <string name="more_credit_info">Credit limit</string>
+
+
+    <string name="price_format">%1$s L.E</string>
+    <string name="LE_format">L.E</string>
 
 
 </resources>

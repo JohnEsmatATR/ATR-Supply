@@ -2,6 +2,7 @@ package com.akhnaton.atrapp.ui.nav.profile
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -42,13 +43,11 @@ class CreditInfoActivity : AppCompatActivity() {
                 val apiService = RetrofitClient.getInstance(IProfile::class.java)
                 val response = apiService.getCreditInfo()
 
-                Log.d("API_RAW", "HTTP Code: ${response.code()}")
-                Log.d("API_RAW", "Raw Body: ${response.body()}")
-
                 if (response.isSuccessful && response.body() != null) {
                     val baseResponse = response.body()!!
-
                     val creditData = baseResponse.creditData
+
+                    binding.progressLoading.visibility = View.GONE // loaadinggggggg
 
                     if (creditData != null) {
                         binding.tvCreditLimit.text = "${creditData.creditLimit ?: 0.0} EGP"

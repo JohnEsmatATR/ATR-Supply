@@ -55,7 +55,6 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.accountLayout.visibility = View.GONE
             binding.v1.visibility = View.GONE
             binding.orderLayout.visibility = View.GONE
-            binding.v2.visibility = View.GONE
             binding.cardMoreCredit.visibility = View.GONE
             binding.logoutLayout.visibility = View.GONE
             binding.v7.visibility = View.GONE
@@ -65,10 +64,9 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.accountLayout.visibility = View.VISIBLE
             binding.v1.visibility = View.VISIBLE
             binding.orderLayout.visibility = View.VISIBLE
-            binding.v2.visibility = View.VISIBLE
             binding.cardMoreCredit.visibility = View.VISIBLE
             binding.logoutLayout.visibility = View.VISIBLE
-            binding.v7.visibility = View.VISIBLE
+            binding.v7.visibility = View.GONE
         }
     }
 
@@ -97,7 +95,9 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.imageView12.setImageResource(chevronIcon)
         binding.icClock.setImageResource(R.drawable.ic_clock)
 
-        binding.icArrowCredit.setImageResource(chevronIcon)
+        binding.icArrowCredit.setImageResource(R.drawable.ic_money)
+        binding.icCreditArrow.setImageResource(chevronIcon)
+
         binding.imageView11.setImageResource(chevronIcon)
         binding.icStar.setImageResource(R.drawable.ic_star)
 

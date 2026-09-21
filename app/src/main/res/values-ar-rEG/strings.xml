@@ -66,7 +66,7 @@
     <string name="my_cart">سلة التسوق الخاصة بي</string>
     <string name="your_cart_is_empty">سلة التسوق فارغة</string>
     <string name="checkout">إتمام الشراء</string>
-    <string name="grand_total">الإجمالي الكلي:</string>
+    <string name="grand_total">الإجمالي الكلي مع الضريبه:</string>
     <string name="delivery_free">التوصيل:</string>
     <string name="discount">الخصم:</string>
     <string name="item_total">إجمالي العناصر:</string>
@@ -302,7 +302,10 @@
     <string name="pieces_unit_format">%1$d قطعة</string>
     <string name="tax_format">الضريبة: %.2f ج.م</string>
     <string name="unit_price_suffix">/ للقطعة</string>
-    <string name="more_credit_info">المزيد من المعلومات الائتمانية</string>
+    <string name="more_credit_info">الحد الائتماني</string>
 
+
+    <string name="price_format">%1$s ج.م</string>
+    <string name="LE_format">ج.م</string>
 
 </resources>

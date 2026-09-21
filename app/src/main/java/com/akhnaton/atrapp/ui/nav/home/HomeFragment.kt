@@ -36,6 +36,7 @@ import com.akhnaton.atrapp.ui.nav.home.categories.CategoryAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.PannerViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -373,6 +374,12 @@ class HomeFragment : BaseFragment() {
     private fun setupBestsellers(bestSellers1: MutableList<ProductModel>) {
         bestSellersAdapter = BestSellersAdapter(
             onClick = { product, position, sharedView, transitionName ->
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                    putExtra("PRODUCT_ID", product.ID)
+                    putExtra("product", product)
+                    putExtra("flag", orderTypeIndex)
+                }
+                startActivity(intent)
             },
             onFavoriteClick = { product, position, isFavorite ->
             },
@@ -385,15 +392,8 @@ class HomeFragment : BaseFragment() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = bestSellersAdapter
-            /*
-            addItemDecoration(
-                HorizontalSpacingItemDecoration(
-                    resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._4sdp)
-                )
-            )*/ //malakkkkkkkkkkkkkkkkkkkkkkkk
         }
     }
-
     private fun setupNewArrivals() {
         val newArrivals = listOf(
             ProductModel(
