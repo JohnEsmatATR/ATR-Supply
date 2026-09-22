@@ -1,11 +1,13 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
@@ -15,6 +17,9 @@ import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import java.util.Locale
 
 class ProfileFragment : BaseFragment(), View.OnClickListener {
+
+
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -27,6 +32,14 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        requireActivity().window.statusBarColor =
+            Color.parseColor("#EE6D18")
+
+        requireActivity().window.decorView.systemUiVisibility =
+            requireActivity().window.decorView.systemUiVisibility and
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         guestHandling()

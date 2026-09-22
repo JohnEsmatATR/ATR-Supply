@@ -64,6 +64,8 @@ class ProductsActivity : BaseActivity() {
     private var isSearchMode = false
     private var searchJob: Job? = null
     private var categories: ArrayList<OrderTypeModel> = ArrayList()
+
+    private var selectedSortPosition: Int = -1 ////newww malakkk
     private lateinit var flag: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -316,23 +318,32 @@ class ProductsActivity : BaseActivity() {
                 getString(R.string.price_h_l),
             )
 
-            var selectedSortByCode: String? = null
+            var tempSelectedPosition = selectedSortPosition
 
-            rvSortingOptions.adapter = SortProductAdapter(sortingOptions) { position ->
-                selectedSortByCode = when (position) {
-                    0 -> "A-Z"
-                    1 -> "Z-A"
-                    2 -> "0-1"
-                    3 -> "1-0"
-                    else -> null
-                }
-            }
+            val sortAdapter = SortProductAdapter(
+                sortingOptions = sortingOptions,
+                selectedPosition = selectedSortPosition // my current position
+            ) { position -> //newww malakkk
+                tempSelectedPosition = position
+            } //newww malakkk
+
+            rvSortingOptions.adapter = sortAdapter //newww malakkk
 
             btnClose.setOnClickListener {
                 bottomSheetDialog.dismiss()
             }
 
             btnApplySort?.setOnClickListener {
+                selectedSortPosition = tempSelectedPosition //newww malakkk
+
+                val selectedSortByCode = when (selectedSortPosition) { //newww malakkk
+                    0 -> "A-Z"
+                    1 -> "Z-A"
+                    2 -> "0-1"
+                    3 -> "1-0"
+                    else -> null
+                } //newww malakkk
+
                 viewModel.selectedSortBy = selectedSortByCode
 
                 currentPage = 1

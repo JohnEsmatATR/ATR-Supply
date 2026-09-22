@@ -20,20 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/btnBack"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:background="@color/white"
             android:clickable="true"
             android:focusable="true"
-            android:padding="4dp"
-            android:rotation="180"
-            android:src="@drawable/ic_chevron_right"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,9 +49,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- ========================================================= -->
-    <!-- MAIN CONTENT CONTAINER                                    -->
-    <!-- ========================================================= -->
     <LinearLayout
         android:id="@+id/contentLayout"
         android:layout_width="0dp"
@@ -62,7 +59,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBar">
 
-        <!-- Available Credit Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

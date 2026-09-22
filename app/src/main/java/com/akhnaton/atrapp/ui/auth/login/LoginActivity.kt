@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.auth.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -82,21 +83,20 @@ class LoginActivity : BaseActivity() {
     private fun observeLogin() {
         lifecycleScope.launch {
             viewModel.state.collect {
+
                 when (it) {
-                    is LoginStatus.Idle -> Log.d(Common.KeroDebug, "observeLogin: it")
+
+                    is LoginStatus.Idle -> {
+                        binding.progressLoading.visibility = View.GONE /////////newww malakkk
+                    }
+
                     is LoginStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeLogin: it")
-                        showProgressDialog(binding.progressLoading)
+                        binding.progressLoading.visibility = View.VISIBLE /////////newww malakkk
                     }
 
                     is LoginStatus.Login -> {
 
-
-
-
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, false)
 
                             SharedPreferenceHelper.let { sharedPref ->
                                 sharedPref.isLogged = true
@@ -104,19 +104,38 @@ class LoginActivity : BaseActivity() {
                                 sharedPref.userToken = it.data.data!!.token
                             }
 
-                            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                            startActivity(
+                                Intent(
+                                    this@LoginActivity,
+                                    HomeActivity::class.java
+                                )
+                            )
+
                             finishAffinity()
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
+                            binding.progressLoading.visibility = View.GONE /////////newww malakkk
+
+                            showToastSnack(
+                                it.data.message,
+                                true
+                            )
                         }
                     }
 
                     is LoginStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeLogin Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+
+                        binding.progressLoading.visibility = View.GONE /////////newww malakkk
+
+                        Log.d(
+                            Common.KeroDebug,
+                            "observeLogin Error: ${it.error}"
+                        )
+
+                        showToastSnack(
+                            it.error.toString(),
+                            true
+                        )
                     }
                 }
             }
@@ -127,13 +146,11 @@ class LoginActivity : BaseActivity() {
         val email = binding.layoutEmail.editText?.text?.toString()?.trim() ?: ""
         val password = binding.layoutPassword.editText?.text?.toString()?.trim() ?: ""
 
-
         if (email.isEmpty()) {
             Toast.makeText(this, "Please enter your email or phone number", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Validate email format if input contains @ (looks like email)
         if (email.contains("@") && !isValidEmail(email.lowercase())) {
             Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
             return
@@ -144,16 +161,18 @@ class LoginActivity : BaseActivity() {
             return
         }
 
+        binding.progressLoading.visibility = View.VISIBLE /////////newww malakkk
+
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                binding.progressLoading.visibility = View.GONE /////////newww malakkk
                 return@addOnCompleteListener
             }
 
             val fbToken = task.result ?: ""
             Log.d("FCM", "Token: $fbToken")
 
-            // Lowercase email only if it's an email (contains @), otherwise keep as is (phone number)
             val loginIdentifier = if (email.contains("@")) email.lowercase() else email
 
             lifecycleScope.launch {

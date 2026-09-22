@@ -363,5 +363,12 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="price_format">%1$s L.E</string>
     <string name="LE_format">L.E</string>
 
+    <string name="price_with_tax">With Tax</string>
+    <string name="unit">unit</string>
+
+    <string name="credit_details">Credit Details</string>
+    <string name="available_credit">Available Credit</string>
+    <string name="total_credit_limit">Total Credit Limit</string>
+    <string name="used_credit">Used Credit</string>
 
 </resources>

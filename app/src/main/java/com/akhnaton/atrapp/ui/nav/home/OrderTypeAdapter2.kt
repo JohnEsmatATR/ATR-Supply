@@ -56,6 +56,7 @@ class OrderTypeAdapter2(
             currentOrderType = item
             Glide.with(itemView.context)
                 .load(item.IMAGE_URL)
+                .fitCenter()
                 .placeholder(R.drawable.ic_logo)
                 .error(R.drawable.ic_logo)
                 .fallback(R.drawable.ic_logo)
