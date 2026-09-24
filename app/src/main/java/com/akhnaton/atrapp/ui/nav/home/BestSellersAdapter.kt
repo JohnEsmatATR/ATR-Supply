@@ -97,6 +97,9 @@ class BestSellersAdapter(
 
             binding.imFavorite.setOnClickListener {
                 isFavorite = !isFavorite
+
+                item.IS_LIKED = isFavorite /// new Malakkkk
+
                 if (isFavorite) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
                 else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
 //                changeFavoriteButton()

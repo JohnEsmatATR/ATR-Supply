@@ -177,6 +177,10 @@ class FavoriteFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(FavoriteIntent.GetFavorite)
+        } /////newwww malakkkk
+
         //init()
 
     }

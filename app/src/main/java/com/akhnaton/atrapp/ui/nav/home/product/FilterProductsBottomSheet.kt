@@ -21,11 +21,14 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var orderTypes: ArrayList<OrderTypeModel>
 
+    private var selectedCategoryIdParam: Int? = null //new malak
+
+    private val selectedCategoryData = mutableMapOf<String, Pair<Int?, Int?>>() //new malak
+
     private val selectedCategories = mutableListOf<CategoriesModel>()
 
     private var selectedOrderTypeParam: String? = null //malak
     private var selectedChildIdParam: Int? = null
-    private val selectedChildIds = mutableMapOf<String, Int>() //// newwww malak
 
     var onFilterAppliedListeners: ((orderType: String?, childId: Int?) -> Unit)? = null //malak
 
@@ -73,7 +76,7 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             selectedChildIdParam = args.getInt(ARG_SELECTED_CHILD_ID)
             selectedOrderTypeParam?.let { key ->
                 selectedChildIdParam?.let { id ->
-                    selectedChildIds[key] = id
+                    selectedCategoryData[key] = Pair(null, id) //new malak
                 }
             }
         }
@@ -125,8 +128,9 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         }
 
         btnReset.setOnClickListener {
-            selectedChildIds.clear() ////newww malakkk
+            selectedCategoryData.clear() //new malak
             selectedChildIdParam = null
+            selectedCategoryIdParam = null //new malak
 
             selectedCategories.forEach { it.selected = false }
 
@@ -139,9 +143,12 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         }
 
         btnApply.setOnClickListener {
-            val currentChildId = selectedOrderTypeParam?.let { selectedChildIds[it] }
+            val selectedPair = selectedOrderTypeParam?.let { selectedCategoryData[it] } //new malak
+            val currentChildId = selectedPair?.second //new malak
+            val currentCategoryId = selectedPair?.first //new malak
 
-            Log.d("filter_test", "Apply clicked -> orderType: $selectedOrderTypeParam, childId: $currentChildId")
+            Log.d("filter_test", "Apply clicked -> orderTypeIndex: $selectedOrderTypeParam, categoryId: $currentCategoryId, childId: $currentChildId")
+
             onFilterAppliedListeners?.invoke(selectedOrderTypeParam, currentChildId) //malak
             dismiss()
         }
@@ -187,12 +194,20 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
         selectedCategories.forEach { it.selected = false }
 
-        val savedChildId = selectedChildIds[currentOrderTypeKey]
+        val dataPair = selectedCategoryData[currentOrderTypeKey] //new malak
         var selectedPosition = -1
 
-        if (savedChildId != null) {
-            selectedPosition = selectedCategories.indexOfFirst {
-                it.CHILD_ID?.toIntOrNull() == savedChildId
+        if (dataPair != null) {
+            val (savedCategoryId, savedChildId) = dataPair //new malak
+
+            selectedPosition = selectedCategories.indexOfFirst { it ->
+                val catChildId = it.CHILD_ID?.toString()?.toIntOrNull()
+
+                if (savedCategoryId != null) { //new malak
+                    it.ID == savedCategoryId && catChildId == savedChildId //new malak
+                } else {
+                    catChildId == savedChildId //new malak
+                }
             }
 
             if (selectedPosition >= 0) {
@@ -211,15 +226,15 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             val currentOrderTypeKey = selectedOrderTypeParam ?: return@FilterProductAdapter
 
             if (selected) {
-                selectedChildIds.clear()
+                selectedCategoryData.clear() //new malak
 
-                val childIdRaw = selectedCategories[position].CHILD_ID
-                val childId = childIdRaw?.toString()?.toIntOrNull()
+                val selectedCategory = selectedCategories[position] //new malak
+                val childId = selectedCategory.CHILD_ID?.toString()?.toIntOrNull() //new malak
+                val categoryId = selectedCategory.ID //new malak
 
-                if (childId != null) {
-                    selectedChildIds[currentOrderTypeKey] = childId
-                    selectedChildIdParam = childId
-                }
+                selectedCategoryData[currentOrderTypeKey] = Pair(categoryId, childId) //new malak
+                selectedChildIdParam = childId //new malak
+                selectedCategoryIdParam = categoryId //new malak
 
                 selectedCategories.forEachIndexed { index, item ->
                     item.selected = (index == position)
@@ -227,8 +242,9 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
                 productAdapter.setSelectedPosition(position)
 
             } else {
-                selectedChildIds.remove(currentOrderTypeKey)
+                selectedCategoryData.remove(currentOrderTypeKey) //new malak
                 selectedChildIdParam = null
+                selectedCategoryIdParam = null //new malak
                 selectedCategories[position].selected = false
                 productAdapter.setSelectedPosition(-1)
             }

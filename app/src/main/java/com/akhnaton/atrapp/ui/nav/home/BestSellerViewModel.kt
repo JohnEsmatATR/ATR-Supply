@@ -25,6 +25,8 @@ class BestSellerViewModel : ViewModel() {
         makeHomeObserve()
     }
 
+
+
     private fun makeHomeObserve() {
         viewModelScope.launch {
             homeIntent.consumeAsFlow().collect {

@@ -67,6 +67,11 @@ class OrderDetailsAdapter :
 
             binding.data = item
 
+            binding.imgProduct.load(item.IMAGE_URL) {
+                placeholder(R.drawable.ic_logo)
+                error(R.drawable.ic_logo)
+            }
+
             val context = binding.root.context
 
             val currency = context.getString(R.string.LE_format)
@@ -75,16 +80,20 @@ class OrderDetailsAdapter :
             val unitSuffix = context.getString(R.string.unit_price_suffix)
 
             val taxValue = item.TOTAL_TAX?.toDouble() ?: 0.0
-            binding.itemTax.text = "$taxLabel: ${String.format(Locale.US, "%.2f", taxValue)} $currency" /////////newww malakkk
+            binding.itemTax.text =
+                "$taxLabel: ${String.format(Locale.US, "%.2f", taxValue)} $currency"
 
             val totalPrice = item.TOTAL_UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
-            binding.price.text = "${String.format(Locale.US, "%.2f", totalPrice)} $currency" /////////newww malakkk
+            binding.price.text =
+                "${String.format(Locale.US, "%.2f", totalPrice)} $currency"
 
             val unitPrice = item.UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
-            binding.unitPriceDisplay.text = "(${String.format(Locale.US, "%.2f", unitPrice)} $unitSuffix)" /////////newww malakkk
+            binding.unitPriceDisplay.text =
+                "(${String.format(Locale.US, "%.2f", unitPrice)} $unitSuffix)"
 
             val priceWithTaxValue = item.UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
-            binding.priceWithTax.text = "$priceWithTaxLabel: ${String.format(Locale.US, "%.2f", priceWithTaxValue)} $currency"
+            binding.priceWithTax.text =
+                "$priceWithTaxLabel: ${String.format(Locale.US, "%.2f", priceWithTaxValue)} $currency"
 
             binding.executePendingBindings()
         }

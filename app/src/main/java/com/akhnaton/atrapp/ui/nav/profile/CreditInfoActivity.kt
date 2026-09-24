@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,12 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.interfaces.IProfile
 import com.akhnaton.atrapp.databinding.ActivityCreditInfoBinding
+import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.RetrofitClient
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import kotlinx.coroutines.launch
+import java.util.Locale
 
-class CreditInfoActivity : AppCompatActivity() {
+class CreditInfoActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCreditInfoBinding
 
@@ -47,12 +52,14 @@ class CreditInfoActivity : AppCompatActivity() {
                     val baseResponse = response.body()!!
                     val creditData = baseResponse.creditData
 
-                    binding.progressLoading.visibility = View.GONE // loaadinggggggg
+                    binding.progressLoading.visibility = View.GONE
 
                     if (creditData != null) {
-                        binding.tvCreditLimit.text = "${creditData.creditLimit ?: 0.0} EGP"
-                        binding.tvUsedCredit.text = "${creditData.usedCredit ?: 0.0} EGP"
-                        binding.tvAvailableCredit.text = "${creditData.availableCredit ?: 0.0} EGP"
+                        val currency = getString(R.string.currency)
+
+                        binding.tvCreditLimit.text = String.format(Locale.getDefault(), "%.2f %s", creditData.creditLimit ?: 0.0, currency)
+                        binding.tvUsedCredit.text = String.format(Locale.getDefault(), "%.2f %s", creditData.usedCredit ?: 0.0, currency)
+                        binding.tvAvailableCredit.text = String.format(Locale.getDefault(), "%.2f %s", creditData.availableCredit ?: 0.0, currency)
                     } else {
                         Log.e("API_ERROR", "Data object inside response is NULL. Message: ${baseResponse.message}")
                     }
