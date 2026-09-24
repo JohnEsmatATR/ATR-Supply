@@ -26,6 +26,9 @@ class CreditInfoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+
+
+
         binding = ActivityCreditInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -34,6 +37,7 @@ class CreditInfoActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
 
         binding.btnBack.setOnClickListener {
             finish()

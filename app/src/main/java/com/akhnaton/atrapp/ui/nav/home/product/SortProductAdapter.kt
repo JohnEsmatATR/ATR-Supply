@@ -97,6 +97,10 @@ class SortProductAdapter(
 
             selectedPosition = pos
 
+            if (oldPosition >= 0) {
+                notifyItemChanged(oldPosition)
+            }
+
             notifyItemChanged(oldPosition)
             notifyItemChanged(selectedPosition)
 

@@ -66,6 +66,7 @@
         android:layout_marginTop="@dimen/_16sdp"
         android:background="#FFFFFF"
         android:gravity="center"
+        android:orientation="horizontal"
         android:paddingHorizontal="@dimen/_16sdp"
         android:paddingVertical="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -73,9 +74,27 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnResetSort"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_weight="1"
+            android:text="@string/reset"
+            android:textAllCaps="false"
+            android:textColor="#323232"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp"
+            app:strokeColor="#E0E0E0"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnApplySort"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_weight="1"
             android:text="@string/apply_sorting"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"

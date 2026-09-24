@@ -308,6 +308,9 @@ class ProductsActivity : BaseActivity() {
 
             val rvSortingOptions = view.findViewById<RecyclerView>(R.id.rvSortingOptions)
             val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
+
+            val btnResetSort = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnResetSort)
+
             val btnApplySort =
                 view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
 
@@ -333,10 +336,19 @@ class ProductsActivity : BaseActivity() {
                 bottomSheetDialog.dismiss()
             }
 
+            btnResetSort?.setOnClickListener {
+                tempSelectedPosition = -1
+                sortAdapter.selectedPosition = -1
+                sortAdapter.notifyDataSetChanged()
+            } ///new malakk
+
+
             btnApplySort?.setOnClickListener {
                 selectedSortPosition = tempSelectedPosition //newww malakkk
 
+
                 val selectedSortByCode = when (selectedSortPosition) { //newww malakkk
+
                     0 -> "A-Z"
                     1 -> "Z-A"
                     2 -> "0-1"
@@ -370,6 +382,8 @@ class ProductsActivity : BaseActivity() {
                         is AddToCartStatus.Loading -> handleLoadingState(isLoading = true, isPagination = false)
                         is AddToCartStatus.AddToCart -> {
                             handleLoadingState(isLoading = false, isPagination = false)
+
+                            Log.d("CART_DEBUG", "Status: ${state.data.status}, Message: ${state.data.message}")
                             if (state.data.status == 200) {
                                 showToastSnack(state.data.message ?: "", false)
                             } else {

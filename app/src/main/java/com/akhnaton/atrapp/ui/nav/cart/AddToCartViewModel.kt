@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
@@ -16,10 +17,7 @@ class AddToCartViewModel : ViewModel() {
     val addToCartIntent = Channel<AddToCartIntent>(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<AddToCartStatus>(AddToCartStatus.Idle)
-
     val state: StateFlow<AddToCartStatus> get() = _state
-
-
 
     init {
         makeHomeObserve()
@@ -27,25 +25,23 @@ class AddToCartViewModel : ViewModel() {
 
     private fun makeHomeObserve() {
         viewModelScope.launch {
-            addToCartIntent.consumeAsFlow().collect {
-                when (it) {
+            addToCartIntent.consumeAsFlow().collect { intent ->
+                Log.d("TEST_CART", "1. ViewModel Received Intent: $intent")
+                when (intent) {
                     is AddToCartIntent.AddProductToCart -> addProductToCart(
-                        it.productId,
-                        it.quantity,
-                        it.category
+                        intent.productId,
+                        intent.quantity,
+                        intent.category
                     )
 
                     is AddToCartIntent.deleteProductToCart -> deleteProductFromCart(
-                        it.productId,
-                        it.quantity
+                        intent.productId,
+                        intent.quantity
                     )
-
-
                 }
             }
         }
     }
-
 
     fun resetState() {
         _state.value = AddToCartStatus.Idle
@@ -57,23 +53,31 @@ class AddToCartViewModel : ViewModel() {
         category: String
     ) {
         viewModelScope.launch {
+            Log.d("TEST_CART", "2. ViewModel emitting Loading state")
             _state.value = AddToCartStatus.Loading
-            _state.value = try {
+
+            try {
+                Log.d("TEST_CART", "3. Calling CartRepository.addProductToCart...")
                 val response = CartRepository().addProductToCart(
                     productId,
                     quantity,
                     category
                 )
-                if (response.code() == 200) {
-                    AddToCartStatus.AddToCart(response.body()!!)
+
+                Log.d("TEST_CART", "4. API Response Code: ${response.code()}")
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    Log.d("TEST_CART", "5. Success Body Status: ${body.status}")
+                    _state.value = AddToCartStatus.AddToCart(body)
                 } else {
-                    AddToCartStatus.Error(response.body()!!.message)
+                    val errorMsg = response.errorBody()?.string() ?: response.message()
+                    Log.e("TEST_CART", "5. API Error: $errorMsg")
+                    _state.value = AddToCartStatus.Error(errorMsg)
                 }
-
             } catch (e: Exception) {
-                AddToCartStatus.Error(e.message)
+                Log.e("TEST_CART", "Exception in addProductToCart: ${e.localizedMessage}", e)
+                _state.value = AddToCartStatus.Error(e.localizedMessage ?: "Unknown Error")
             }
-
         }
     }
 
@@ -83,24 +87,19 @@ class AddToCartViewModel : ViewModel() {
     ) {
         viewModelScope.launch {
             _state.value = AddToCartStatus.Loading
-            _state.value = try {
+            try {
                 val response = CartRepository().deleteProductFromCart(
                     productId,
                     quantity,
                 )
-                if (response.code() == 200) {
-                    AddToCartStatus.AddToCart(response.body()!!)
+                if (response.isSuccessful && response.body() != null) {
+                    _state.value = AddToCartStatus.AddToCart(response.body()!!)
                 } else {
-                    AddToCartStatus.Error(response.body()!!.message)
+                    _state.value = AddToCartStatus.Error(response.message())
                 }
-
             } catch (e: Exception) {
-                AddToCartStatus.Error(e.message)
+                _state.value = AddToCartStatus.Error(e.localizedMessage)
             }
-
         }
     }
-
-
 }
-
