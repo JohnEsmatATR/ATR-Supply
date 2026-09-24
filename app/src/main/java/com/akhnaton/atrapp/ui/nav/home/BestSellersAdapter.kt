@@ -17,14 +17,14 @@ import com.bumptech.glide.Glide
 class BestSellersAdapter(
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
-    private val onAddToCartClick: (product: ProductModel) -> Unit = {}
+    private val onAddToCartClick: (product: ProductModel) -> Unit = {},
+
 ) : RecyclerView.Adapter<BestSellersAdapter.ViewHolder>() {
 
     private var productsList = ArrayList<ProductModel>()
     private lateinit var flag: String
     var isInHome: Boolean = false
 
-    // في ProductAdapter
     fun setData(newList: List<ProductModel>, isAppend: Boolean, flag: String) {
         this.flag = flag
         if (!isAppend) {
@@ -88,10 +88,18 @@ class BestSellersAdapter(
 
             binding.productModel = item
 //
-            Glide.with(binding.root.context).load(item.IMAGE_URL).into(binding.imItem)
+            Glide.with(binding.root.context)
+                .load(item.IMAGE_URL)
+                .placeholder(R.drawable.ic_logo)
+                .error(R.drawable.ic_logo)
+                .fallback(R.drawable.ic_logo)
+                .into(binding.imItem)
 
             binding.imFavorite.setOnClickListener {
                 isFavorite = !isFavorite
+
+                item.IS_LIKED = isFavorite /// new Malakkkk
+
                 if (isFavorite) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
                 else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
 //                changeFavoriteButton()

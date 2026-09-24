@@ -134,7 +134,7 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.txtQuantity.setText("1")
                                     quantity = 1
                                 }
-                                // 2. Stock Handling from API (True / False)
+
                                 inStoke = productData.IN_STOCK
                                 binding.isStock.text = if (inStoke) {
                                     getString(R.string.in_stock)
@@ -149,7 +149,6 @@ class ProductDetailsActivity : BaseActivity() {
                                     )
                                 )
 
-                                // Disable/Enable buttons according to stock
                                 binding.btnPlus.isEnabled = inStoke
                                 binding.btnMinus.isEnabled = inStoke
                                 binding.btnAddToCart.isEnabled = inStoke
@@ -190,9 +189,11 @@ class ProductDetailsActivity : BaseActivity() {
 
     private fun updateTotalPrice(pricePerUnit: Double? = null) {
         val unitPrice = pricePerUnit ?: product.PRICE_AFTER_DISCOUNT
-        val total = unitPrice * quantity
+        val currentQty = binding.txtQuantity.text.toString().toIntOrNull() ?: quantity //malaaaaaak
+        val total = unitPrice * currentQty // malakkkkkkkk
         binding.txtBottomTotalPrice.text = "$total L.E"
     }
+
 
     private fun getProductDetails(productId: Int, category: String) {
         lifecycleScope.launch {
@@ -228,7 +229,7 @@ class ProductDetailsActivity : BaseActivity() {
         binding.btnPlus.setOnClickListener {
             if (validateIncreaseQuantity(quantity, productQuantity)) {
                 quantity++
-                binding.txtQuantity.setText(quantity.toString()) // استخدام setText
+                binding.txtQuantity.setText(quantity.toString())
                 updateTotalPrice()
             }
         }
@@ -236,7 +237,7 @@ class ProductDetailsActivity : BaseActivity() {
         binding.btnMinus.setOnClickListener {
             if (validateDecreaseQuantity(quantity)) {
                 quantity--
-                binding.txtQuantity.setText(quantity.toString()) // استخدام setText
+                binding.txtQuantity.setText(quantity.toString())
                 updateTotalPrice()
             }
         }
@@ -335,13 +336,13 @@ class ProductDetailsActivity : BaseActivity() {
                     value < 1 -> {
                         isUpdating = true
                         quantity = 1
-                        binding.txtQuantity.setText("1") // استخدام setText
+                        binding.txtQuantity.setText("1")
                         isUpdating = false
                     }
                     value > productQuantity -> {
                         isUpdating = true
                         quantity = productQuantity
-                        binding.txtQuantity.setText(productQuantity.toString()) // استخدام setText
+                        binding.txtQuantity.setText(productQuantity.toString())
                         isUpdating = false
                     }
                     else -> {

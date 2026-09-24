@@ -16,10 +16,11 @@
             android:id="@+id/ivCategory"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80sdp"
+            android:padding="@dimen/_12sdp"
             android:layout_gravity="center"
             android:src="@drawable/ic_logo"
             android:contentDescription="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
     </androidx.cardview.widget.CardView>
 

@@ -1,11 +1,13 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
@@ -15,6 +17,9 @@ import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import java.util.Locale
 
 class ProfileFragment : BaseFragment(), View.OnClickListener {
+
+
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -27,6 +32,14 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        requireActivity().window.statusBarColor =
+            Color.parseColor("#EE6D18")
+
+        requireActivity().window.decorView.systemUiVisibility =
+            requireActivity().window.decorView.systemUiVisibility and
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         guestHandling()
@@ -55,7 +68,6 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.accountLayout.visibility = View.GONE
             binding.v1.visibility = View.GONE
             binding.orderLayout.visibility = View.GONE
-            binding.v2.visibility = View.GONE
             binding.cardMoreCredit.visibility = View.GONE
             binding.logoutLayout.visibility = View.GONE
             binding.v7.visibility = View.GONE
@@ -65,10 +77,9 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.accountLayout.visibility = View.VISIBLE
             binding.v1.visibility = View.VISIBLE
             binding.orderLayout.visibility = View.VISIBLE
-            binding.v2.visibility = View.VISIBLE
             binding.cardMoreCredit.visibility = View.VISIBLE
             binding.logoutLayout.visibility = View.VISIBLE
-            binding.v7.visibility = View.VISIBLE
+            binding.v7.visibility = View.GONE
         }
     }
 
@@ -97,7 +108,9 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         binding.imageView12.setImageResource(chevronIcon)
         binding.icClock.setImageResource(R.drawable.ic_clock)
 
-        binding.icArrowCredit.setImageResource(chevronIcon)
+        binding.icArrowCredit.setImageResource(R.drawable.ic_money)
+        binding.icCreditArrow.setImageResource(chevronIcon)
+
         binding.imageView11.setImageResource(chevronIcon)
         binding.icStar.setImageResource(R.drawable.ic_star)
 

@@ -7,6 +7,7 @@ import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.Item
 import com.akhnaton.atrapp.databinding.LayoutOrderItemBinding
+import java.util.Locale
 
 class OrderDetailsAdapter :
     RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>() {
@@ -66,26 +67,33 @@ class OrderDetailsAdapter :
 
             binding.data = item
 
-
-
             binding.imgProduct.load(item.IMAGE_URL) {
-                crossfade(true)
                 placeholder(R.drawable.ic_logo)
                 error(R.drawable.ic_logo)
             }
 
+            val context = binding.root.context
 
-            binding.imgProduct.setImageResource(R.drawable.im_category)
+            val currency = context.getString(R.string.LE_format)
+            val taxLabel = context.getString(R.string.tax)
+            val priceWithTaxLabel = context.getString(R.string.price_with_tax)
+            val unitSuffix = context.getString(R.string.unit_price_suffix)
 
-            binding.priceWithTax.text = String.format("Price With Tax: %.2f L.E", item.UNIT_PRICE_WITH_TAX.toDouble())
-            // my totall tax
-            binding.itemTax.text = String.format("Tax: %.2f L.E", item.TOTAL_TAX.toDouble())
+            val taxValue = item.TOTAL_TAX?.toDouble() ?: 0.0
+            binding.itemTax.text =
+                "$taxLabel: ${String.format(Locale.US, "%.2f", taxValue)} $currency"
 
-            // my totalll price
-            binding.price.text = String.format("%.2f L.E", item.TOTAL_UNIT_PRICE_WITH_TAX.toDouble())
+            val totalPrice = item.TOTAL_UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
+            binding.price.text =
+                "${String.format(Locale.US, "%.2f", totalPrice)} $currency"
 
-            // my unit price
-            binding.unitPriceDisplay.text = String.format("(%.2f / unit)", item.UNIT_PRICE_WITHOUT_TAX.toDouble())
+            val unitPrice = item.UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
+            binding.unitPriceDisplay.text =
+                "(${String.format(Locale.US, "%.2f", unitPrice)} $unitSuffix)"
+
+            val priceWithTaxValue = item.UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
+            binding.priceWithTax.text =
+                "$priceWithTaxLabel: ${String.format(Locale.US, "%.2f", priceWithTaxValue)} $currency"
 
             binding.executePendingBindings()
         }

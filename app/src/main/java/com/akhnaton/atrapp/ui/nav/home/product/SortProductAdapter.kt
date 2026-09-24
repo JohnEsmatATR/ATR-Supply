@@ -10,10 +10,9 @@ import com.akhnaton.atrapp.R
 
 class SortProductAdapter(
     private val sortingOptions: List<String>,
+    var selectedPosition: Int = -1, /////////newww malakkk
     private val onSelected: (Int) -> Unit
 ) : RecyclerView.Adapter<SortProductAdapter.SortViewHolder>() {
-
-    private var selectedPosition = -1 //malak
 
     inner class SortViewHolder(
         itemView: View
@@ -86,9 +85,6 @@ class SortProductAdapter(
                 holder.sortIcon.setImageResource(R.drawable.des)
             }
         }
-
-
-
 
         updateSelectedState(
             holder,

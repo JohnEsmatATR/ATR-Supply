@@ -1,5 +1,8 @@
 package com.akhnaton.atrapp.ui.nav.home
 
+
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -23,6 +26,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerInten
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerState
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
@@ -32,15 +36,21 @@ import com.akhnaton.atrapp.shared.HorizontalSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
+import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.categories.CategoryAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.PannerViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment() {
     lateinit var binding: FragmentHomeBinding
+
+
+    private val favoriteViewModel: FavoriteViewModel by viewModels() ///newww malkakk
+    val userToken = SharedPreferenceHelper.userObj?.token ?: "" ////newww malakkk
     private val categoryViewModel: CategoryViewModel by viewModels()
 
     //    private lateinit var orderTypeAdapter: OrderTypeAdapter
@@ -326,6 +336,10 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
+
+        bestSellers.clear() ////newww malakk
+        getBestSeller() ////newww malakk
+
         super.onDestroyView()
         sliderHandler?.removeCallbacks(sliderRunnable!!)
         sliderHandler = null
@@ -373,8 +387,44 @@ class HomeFragment : BaseFragment() {
     private fun setupBestsellers(bestSellers1: MutableList<ProductModel>) {
         bestSellersAdapter = BestSellersAdapter(
             onClick = { product, position, sharedView, transitionName ->
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                    putExtra("PRODUCT_ID", product.ID)
+                    putExtra("product", product)
+                    putExtra("flag", orderTypeIndex)
+                }
+                startActivity(intent)
             },
+
             onFavoriteClick = { product, position, isFavorite ->
+
+                product.IS_LIKED = isFavorite
+                if (position < bestSellers.size) {
+                    bestSellers[position].IS_LIKED = isFavorite
+                }
+
+                val userToken = SharedPreferenceHelper.userObj?.token ?: ""
+                lifecycleScope.launch {
+                    if (isFavorite) {
+                        favoriteViewModel.favoriteIntent.send(
+                            FavoriteIntent.AddProductToFavourites(
+                                token = userToken,
+                                productId = product.ID,
+                                add = true,
+                                categories = orderTypeIndex
+                            )
+                        )
+                    } else {
+                        favoriteViewModel.favoriteIntent.send(
+                            FavoriteIntent.DeleteFromFavourites(
+                                token = userToken,
+                                productId = product.ID,
+                                add = false,
+                                categories = orderTypeIndex
+                            )
+                        )
+                    }
+                }
+
             },
             onAddToCartClick = { product ->
             }
@@ -385,15 +435,8 @@ class HomeFragment : BaseFragment() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = bestSellersAdapter
-            /*
-            addItemDecoration(
-                HorizontalSpacingItemDecoration(
-                    resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._4sdp)
-                )
-            )*/ //malakkkkkkkkkkkkkkkkkkkkkkkk
         }
     }
-
     private fun setupNewArrivals() {
         val newArrivals = listOf(
             ProductModel(
@@ -506,6 +549,9 @@ class HomeFragment : BaseFragment() {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             if (it.data.data!!.isNotEmpty()) {
+
+                                bestSellers.clear() ////newwww malakkk
+
                                 bestSellers.addAll(it.data.data!!)
                                 setupBestsellers(bestSellers)
                             }

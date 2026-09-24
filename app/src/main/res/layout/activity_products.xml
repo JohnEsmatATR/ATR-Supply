@@ -61,6 +61,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
+            <!-- Filter Section -->
             <RelativeLayout
                 android:id="@+id/layout_filter"
                 android:layout_width="0dp"
@@ -84,13 +85,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:src="@drawable/ic_filter" />
+                        android:src="@drawable/ic_filterr" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/filter"
-                        android:textColor="@color/mid_gray_1"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -111,6 +112,7 @@
 
             </RelativeLayout>
 
+            <!-- Sort Section -->
             <LinearLayout
                 android:id="@+id/layout_sort"
                 android:layout_width="0dp"
@@ -128,13 +130,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_filter" />
+                    android:src="@drawable/ic_sort" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sort"
-                    android:textColor="@color/mid_gray_1"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
             </LinearLayout>

@@ -51,7 +51,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
         }
         binding.productRecycler.adapter = mAdapter
 
-        binding.orderNumber.text = "${resources.getString(R.string.order_number)}: ${ORDER_ID}"
+        binding.orderNumber.text = "#$ORDER_ID"
 
         observe()
         getOrderDetails(ORDER_ID)
