@@ -315,5 +315,7 @@
     <string name="available_credit">الائتمان المتاح</string>
     <string name="total_credit_limit">إجمالي حد الائتمان</string>
     <string name="used_credit">الائتمان المستهلك</string>
+    <string name="special_offer">عرض خاص</string>
+    <string name="price_without_tax">السعر بدون ضريبة</string>
 
 </resources>

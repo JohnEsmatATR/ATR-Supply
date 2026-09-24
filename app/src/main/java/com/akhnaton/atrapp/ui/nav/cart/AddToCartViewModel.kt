@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
@@ -71,6 +72,7 @@ class AddToCartViewModel : ViewModel() {
                 }
 
             } catch (e: Exception) {
+                Log.d("TAG", e.message.toString())
                 AddToCartStatus.Error(e.message)
             }
 

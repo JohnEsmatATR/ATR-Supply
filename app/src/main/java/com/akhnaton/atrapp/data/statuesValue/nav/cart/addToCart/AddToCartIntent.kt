@@ -13,6 +13,4 @@ sealed class AddToCartIntent {
         val quantity: Int?,
     ) : AddToCartIntent()
 
-
-
 }

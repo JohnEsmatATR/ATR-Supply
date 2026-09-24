@@ -370,5 +370,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="available_credit">Available Credit</string>
     <string name="total_credit_limit">Total Credit Limit</string>
     <string name="used_credit">Used Credit</string>
+    <string name="special_offer">Special Offer</string>
+    <string name="price_without_tax">Price Without Tax</string>
 
 </resources>
