@@ -45,6 +45,15 @@ class ProductAdapter(
         notifyDataSetChanged()
     }
 
+    //new malak
+    fun updateProductInCart(productId: Int, quantity: Int = 1) {
+        val index = productsList.indexOfFirst { it.ID == productId }
+        if (index != -1) {
+            productsList[index].MY_QUANTITY = quantity
+            notifyItemChanged(index)
+        }
+    }
+
     inner class ViewHolder(private val binding: LayoutProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isFavorite = false
@@ -99,8 +108,11 @@ class ProductAdapter(
                 onFavoriteClick(item, position, isFavorite)
             }
 
+            //new malak
             binding.btnAddToCart.setOnClickListener {
-                onAddToCartClick(item)
+                if (item.IN_STOCK && item.MY_QUANTITY == 0) {
+                    onAddToCartClick(item)
+                }
             }
 
             itemView.setOnClickListener {

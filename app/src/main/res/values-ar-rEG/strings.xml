@@ -316,4 +316,6 @@
     <string name="total_credit_limit">إجمالي حد الائتمان</string>
     <string name="used_credit">الائتمان المستهلك</string>
 
+    <string name="in_cart">في سلة التسوق</string>
+
 </resources>

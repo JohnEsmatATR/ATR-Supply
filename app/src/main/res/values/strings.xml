@@ -371,4 +371,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="total_credit_limit">Total Credit Limit</string>
     <string name="used_credit">Used Credit</string>
 
+    <string name="in_cart">In Cart</string>
+
 </resources>

@@ -131,6 +131,7 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             selectedCategoryData.clear() //new malak
             selectedChildIdParam = null
             selectedCategoryIdParam = null //new malak
+            selectedOrderTypeParam = null //new malak
 
             selectedCategories.forEach { it.selected = false }
 
@@ -147,9 +148,11 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             val currentChildId = selectedPair?.second //new malak
             val currentCategoryId = selectedPair?.first //new malak
 
+            val finalOrderType = if (currentChildId != null) selectedOrderTypeParam else null //new malak
+
             Log.d("filter_test", "Apply clicked -> orderTypeIndex: $selectedOrderTypeParam, categoryId: $currentCategoryId, childId: $currentChildId")
 
-            onFilterAppliedListeners?.invoke(selectedOrderTypeParam, currentChildId) //malak
+            onFilterAppliedListeners?.invoke(finalOrderType, currentChildId) //new malak
             dismiss()
         }
     }
