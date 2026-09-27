@@ -374,4 +374,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="special_offer">Special Offer</string>
     <string name="price_without_tax">Price Without Tax</string>
 
+    <string name="in_cart">In Cart</string>
+
 </resources>

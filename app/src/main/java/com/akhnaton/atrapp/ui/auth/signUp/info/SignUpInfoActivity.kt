@@ -2,6 +2,8 @@ package com.akhnaton.atrapp.ui.auth.signUp.info
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivitySignUpInfoBinding
 import com.akhnaton.atrapp.shared.BaseActivity
@@ -16,8 +18,28 @@ class SignUpInfoActivity : BaseActivity() {
         binding = ActivitySignUpInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        handleTopBottomKeyboard()
+
         init()
         onClick()
+    }
+
+    private fun handleTopBottomKeyboard() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+
+            val bottomPadding = maxOf(imeInsets.bottom, systemBars.bottom)
+
+            binding.root.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                bottomPadding
+            )
+
+            insets
+        }
     }
 
     private fun init() {

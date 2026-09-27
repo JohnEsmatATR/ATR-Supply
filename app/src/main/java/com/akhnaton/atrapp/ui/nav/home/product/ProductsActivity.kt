@@ -275,19 +275,27 @@ class ProductsActivity : BaseActivity() {
 
             bottomSheet.onFilterAppliedListeners = { orderType, childId ->
                 currentPage = 1
+                viewModel.currentPage = 1 //new malak
                 products.clear()
 
                 if (::adapter.isInitialized) {
                     adapter.clear()
                 }
 
-                flag = orderType.orEmpty()
-                selectedChildId = childId // neww malakkkk
-                categoryId = childId ?: 0
+                selectedChildId = childId
+
+                //new malak
+                if (childId != null) {
+                    categoryId = childId
+                }
+                if (!orderType.isNullOrEmpty()) {
+                    flag = orderType
+                }
 
                 val selectedCount = if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
 
                 updateFilterUiState(selectedCount)
+
 
                 getProductsBasedOnCategory(
                     categoryId = categoryId,
@@ -308,6 +316,9 @@ class ProductsActivity : BaseActivity() {
 
             val rvSortingOptions = view.findViewById<RecyclerView>(R.id.rvSortingOptions)
             val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
+
+            val btnResetSort = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnResetSort)
+
             val btnApplySort =
                 view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
 
@@ -333,10 +344,19 @@ class ProductsActivity : BaseActivity() {
                 bottomSheetDialog.dismiss()
             }
 
+            btnResetSort?.setOnClickListener {
+                tempSelectedPosition = -1
+                sortAdapter.selectedPosition = -1
+                sortAdapter.notifyDataSetChanged()
+            } ///new malakk
+
+
             btnApplySort?.setOnClickListener {
                 selectedSortPosition = tempSelectedPosition //newww malakkk
 
+
                 val selectedSortByCode = when (selectedSortPosition) { //newww malakkk
+
                     0 -> "A-Z"
                     1 -> "Z-A"
                     2 -> "0-1"
@@ -347,6 +367,7 @@ class ProductsActivity : BaseActivity() {
                 viewModel.selectedSortBy = selectedSortByCode
 
                 currentPage = 1
+                viewModel.currentPage = 1 //new malak
                 products.clear()
                 if (::adapter.isInitialized) {
                     adapter.clear()
@@ -367,14 +388,23 @@ class ProductsActivity : BaseActivity() {
                 addCartViewModel.state.collect { state ->
                     when (state) {
                         is AddToCartStatus.Idle -> Unit
-                        is AddToCartStatus.Loading -> handleLoadingState(isLoading = true, isPagination = false)
+                        is AddToCartStatus.Loading -> {
+                            handleLoadingState(isLoading = true, isPagination = false)
+                        }
                         is AddToCartStatus.AddToCart -> {
                             handleLoadingState(isLoading = false, isPagination = false)
+
                             if (state.data.status == 200) {
-                                showToastSnack(state.data.message ?: "", false)
+                                showToastSnack(state.data.message ?: "Added successfully", false)
+
+                                val addedItemId = state.data.data?.item_id?.toIntOrNull()
+                                if (addedItemId != null) {
+                                    adapter.updateProductInCart(addedItemId, quantity = 1)
+                                }
                             } else {
                                 showToastSnack(state.data.message ?: "", true)
                             }
+
                             addCartViewModel.resetState()
                         }
 
@@ -484,6 +514,7 @@ class ProductsActivity : BaseActivity() {
 
     private fun getProductsBasedOnCategory(categoryId: Int, page: Int = 1, category: String) {
         lifecycleScope.launch {
+            viewModel.currentPage = page //new malak
             viewModel.homeIntent.send(
                 ProductsIntent.GetProducts(
                     categoryId = categoryId,

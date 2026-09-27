@@ -319,4 +319,6 @@
     <string name="special_offer">عرض خاص</string>
     <string name="price_without_tax">السعر بدون ضريبة</string>
 
+    <string name="in_cart">في سلة التسوق</string>
+
 </resources>

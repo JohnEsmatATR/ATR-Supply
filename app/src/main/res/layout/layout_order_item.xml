@@ -51,13 +51,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="12dp"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:text='@{String.valueOf(data.TITLE)}'
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/priceLayout"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardImg"
                 app:layout_constraintTop_toTopOf="@+id/cardImg"
                 tools:text="Betmiga 50 mg" />
@@ -118,6 +119,7 @@
 
                 <TextView
                     android:id="@+id/price"
+                    android:layout_marginTop="25dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -137,13 +139,29 @@
                     android:id="@+id/priceWithTax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:textColor="#E8750A"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="With Tax: 4,134.00 L.E" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/productName3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text='@{String.valueOf(data.TITLE)}'
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardImg"
+                app:layout_constraintTop_toTopOf="@+id/cardImg"
+                tools:text="Betmiga 50 mg Prolonged Release Tablets" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

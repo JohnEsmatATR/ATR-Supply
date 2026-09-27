@@ -61,7 +61,6 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
-            <!-- Filter Section -->
             <RelativeLayout
                 android:id="@+id/layout_filter"
                 android:layout_width="0dp"
@@ -112,7 +111,6 @@
 
             </RelativeLayout>
 
-            <!-- Sort Section -->
             <LinearLayout
                 android:id="@+id/layout_sort"
                 android:layout_width="0dp"

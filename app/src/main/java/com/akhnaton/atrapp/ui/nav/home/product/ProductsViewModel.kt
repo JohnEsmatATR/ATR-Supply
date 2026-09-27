@@ -47,8 +47,9 @@ class ProductsViewModel : ViewModel() {
         viewModelScope.launch {
             isLoading = true
             _state.value = ProductsStatus.Loading
+
             _state.value = try {
-                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit, categoryName, selectedSortBy) //malak
+                val response = HomeRepository().getProductsByPagination(categoryId, currentPage, limit, categoryName, selectedSortBy)//malak
                 if (response.code() == 200) {
                     val data = response.body()!!
                     val products = data.data ?: emptyList()

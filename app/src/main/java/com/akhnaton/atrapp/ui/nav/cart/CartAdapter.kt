@@ -190,20 +190,31 @@ class CartAdapter(
                 return
             }
 
-            isManualChange = true
-            editQuantity.setText(quantity.toString())
-            editQuantity.setSelection(editQuantity.text.length)
-            isManualChange = false
+//            isManualChange = true
+//            editQuantity.setText(quantity.toString())
+//            editQuantity.setSelection(editQuantity.text.length)
+//            isManualChange = false
 
-            if (isPlus) onPlusClick(
-                item.copy(myQuantity = quantity),
-                bindingAdapterPosition,
-                quantity
-            )
-            else onMinusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
 
-            if (binding is LayoutCartBinding) binding.btnPlus.isEnabled = quantity < item.quantity
-            if (binding is LayoutCartArBinding) binding.btnPlus.isEnabled = quantity < item.quantity
+            val pos = bindingAdapterPosition
+            if (pos != RecyclerView.NO_POSITION) {
+                if(isPlus){
+                    onPlusClick(item, pos, quantity) //new malak
+                }
+                else {
+                    onMinusClick(item, pos, quantity) //new malak
+                }
+            } //new malak
+
+//            if (isPlus) onPlusClick(
+//                item.copy(myQuantity = quantity),
+//                bindingAdapterPosition,
+//                quantity
+//            )
+//            else onMinusClick(item.copy(myQuantity = quantity), bindingAdapterPosition, quantity)
+//
+//            if (binding is LayoutCartBinding) binding.btnPlus.isEnabled = quantity < item.quantity
+//            if (binding is LayoutCartArBinding) binding.btnPlus.isEnabled = quantity < item.quantity
 
             isProcessing = false
         }

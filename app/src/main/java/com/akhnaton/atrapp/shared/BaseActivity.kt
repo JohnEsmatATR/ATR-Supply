@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.shared
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Gravity
@@ -24,11 +25,17 @@ import java.util.Locale
 
 
 open class BaseActivity : AppCompatActivity() {
+
+
     var dp = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dp = resources.displayMetrics.density
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //new malak
+
+
         
         // Enable edge-to-edge display
         WindowCompat.setDecorFitsSystemWindows(window, false)
