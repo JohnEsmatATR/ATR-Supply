@@ -30,7 +30,9 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDeta
 import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.DialogUtils
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
@@ -71,7 +73,6 @@ class ProductDetailsActivity : BaseActivity() {
                 )
             )
             insets
-
         }
     }
 
@@ -249,7 +250,19 @@ class ProductDetailsActivity : BaseActivity() {
             finish()
         }
         binding.btnBottomAddToCart?.setOnClickListener {
-            addProductToCart()
+            if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
+                context = this@ProductDetailsActivity,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            )
+            else addProductToCart()
         }
         binding.btnPlus.setOnClickListener {
             if (validateIncreaseQuantity(quantity, productQuantity)) {

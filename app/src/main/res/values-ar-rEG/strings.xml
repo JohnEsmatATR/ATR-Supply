@@ -6,6 +6,7 @@
     <string name="login">تسجيل دخول</string>
     <string name="continue_as">المتابعة كـ</string>
     <string name="guest">زائر</string>
+    <string name="you_are_not_logged_in">لم تقم بتسجيل دخول بعد</string>
     <string name="get_started">ابدأ الآن</string>
     <string name="welcome_to_atr_app">مرحباً\nبك في تطبيق ATR</string>
 <!--    <string name="welcome">مرحباً</string>-->
