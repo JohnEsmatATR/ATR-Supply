@@ -553,7 +553,7 @@ class ProductsActivity : BaseActivity() {
                 }
             )
 
-            val spacing = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._8sdp)
+            val spacing = resources.getDimensionPixelSize(R.dimen.margin_bottom2)
             binding.recycler.apply {
                 this.layoutManager = layoutManager
                 this.adapter = this@ProductsActivity.adapter
