@@ -20,6 +20,9 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.Category
 import com.akhnaton.atrapp.data.model.ProductModel
+import com.akhnaton.atrapp.data.model.TotalCartsData
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.bestSeller.BestSellerIntent
@@ -34,6 +37,8 @@ import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.HorizontalSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.nav.cart.CartFragment
+import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
@@ -76,24 +81,27 @@ class HomeFragment : BaseFragment() {
     var orderTypeIndex = ""
     lateinit var category: CategoriesModel
 
+    private val cartViewModel: CartViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
 
-
         guestHandling()
         setupRecycler2()
         observeViewModel()
-        setPlannerView()
+        observeBanner()
         getAddress()
         observeAddress()
 //        setupCategories()
 //        setupBestsellers()
         getBestSeller()
-        setupNewArrivals()
         bestSellerObserve()
+        setupNewArrivals()
+        getCart()
+        observeCart()
 
         lifecycleScope.launch {
             categoryViewModel.categoryIntent.send(CategoryIntent.GetCategories)
@@ -122,16 +130,23 @@ class HomeFragment : BaseFragment() {
             startActivity(intent)
         }
 
+        binding.layoutCart.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.flFragment, CartFragment())
+                commit()
+            }
+        }
+
         return binding.root
     }
 
     private fun guestHandling() {
         if (SharedPreferenceHelper.isLogged == false) {
             binding.cardAddress.visibility = View.GONE
-            binding.tvWelcome.text = "${getString(R.string.welcome_guest)}"
+//            binding.tvWelcome.text = "${getString(R.string.welcome_guest)}"
         } else {
-            binding.tvWelcome.text =
-                "${getString(R.string.welcome)} ${SharedPreferenceHelper.userObj?.first_name}"
+//            binding.tvWelcome.text =
+//                "${getString(R.string.welcome)} ${SharedPreferenceHelper.userObj?.first_name}"
         }
     }
 
@@ -257,7 +272,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun setPlannerView() {
+    private fun observeBanner() {
         lifecycleScope.launch {
             pannerViewModel.state.collect { state ->
                 when (state) {
@@ -437,6 +452,7 @@ class HomeFragment : BaseFragment() {
             adapter = bestSellersAdapter
         }
     }
+
     private fun setupNewArrivals() {
         val newArrivals = listOf(
             ProductModel(
@@ -577,6 +593,37 @@ class HomeFragment : BaseFragment() {
             bestSellerViewModel.homeIntent.send(
                 BestSellerIntent.GetBestSeller(1, "Pharma")
             )
+        }
+    }
+
+    private fun getCart() {
+        lifecycleScope.launch {
+            val lang = SharedPreferenceHelper.language ?: "ar"
+            cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
+        }
+    }
+
+    private fun observeCart() {
+        lifecycleScope.launch {
+            cartViewModel.state.collect { state ->
+                when (state) {
+                    is CartStatus.Idle -> {}
+                    is CartStatus.Loading -> {
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is CartStatus.GetMyCart -> {
+                        hideProgressDialog(binding.progressLoading)
+                        binding.tvCartCount.text = state.data.data.size.toString()
+                    }
+
+                    is CartStatus.Error -> {
+                        Log.d("TAG", "observeCart: ${state.error.toString()}")
+                        showToastSnack(state.error.toString(), true)
+                        binding.tvCartCount.visibility = View.GONE
+                    }
+                }
+            }
         }
     }
 }

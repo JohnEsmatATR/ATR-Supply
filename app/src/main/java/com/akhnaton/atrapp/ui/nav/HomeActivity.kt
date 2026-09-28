@@ -140,7 +140,6 @@ class HomeActivity : BaseActivity() {
             setCurrentFragment(TrackingFragment())
             binding.bottomNavigationView.selectedItemId = R.id.nothig
 
-
             binding.bottomNavigationView.menu.findItem(R.id.home)
                 .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
             binding.bottomNavigationView.menu.findItem(R.id.favorite)
@@ -270,11 +269,7 @@ class HomeActivity : BaseActivity() {
         onBackPressedDispatcher.addCallback(this) {
             val selectedItemId = binding.bottomNavigationView.selectedItemId
 
-            if (selectedItemId != R.id.home) {
-                // لو مش في Home → يرجعه للـ Home
-                binding.bottomNavigationView.selectedItemId = R.id.home
-                setItemSelected(R.id.home)
-            } else {
+            if (selectedItemId == R.id.home) {
                 // لو في Home → لازم ضغطتين
                 if (backPressedTime + 2000 > System.currentTimeMillis()) {
                     AlertDialog.Builder(this@HomeActivity)
@@ -287,6 +282,10 @@ class HomeActivity : BaseActivity() {
                     Toast.makeText(this@HomeActivity, "اضغط مرة أخرى للخروج", Toast.LENGTH_SHORT).show()
                 }
                 backPressedTime = System.currentTimeMillis()
+            } else {
+                // لو مش في Home → يرجعه للـ Home
+                binding.bottomNavigationView.selectedItemId = R.id.home
+                setItemSelected(R.id.home)
             }
         }
     }

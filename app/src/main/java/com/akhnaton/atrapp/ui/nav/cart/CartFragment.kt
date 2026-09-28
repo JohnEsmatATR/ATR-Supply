@@ -257,7 +257,7 @@ class CartFragment : BaseFragment() {
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.adapter = parentAdapter
         parentAdapter.setData(list)
-        binding.layoutCart.visibility = View.VISIBLE
+//        binding.layoutCart.visibility = View.VISIBLE
     }
 
     private fun updateCartSummaryUI() {
