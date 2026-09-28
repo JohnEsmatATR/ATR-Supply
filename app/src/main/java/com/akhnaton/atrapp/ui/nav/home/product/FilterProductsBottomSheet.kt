@@ -74,9 +74,16 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
         if (args.containsKey(ARG_SELECTED_CHILD_ID)) {
             selectedChildIdParam = args.getInt(ARG_SELECTED_CHILD_ID)
+
+            // new malak
+            val initialCategory = orderTypes.find { it.order_type_index == selectedOrderTypeParam }
+                ?.categories?.find { it.CHILD_ID?.toString()?.toIntOrNull() == selectedChildIdParam }
+
+            selectedCategoryIdParam = initialCategory?.ID //new malak
+
             selectedOrderTypeParam?.let { key ->
-                selectedChildIdParam?.let { id ->
-                    selectedCategoryData[key] = Pair(null, id) //new malak
+                selectedChildIdParam?.let { childId ->
+                    selectedCategoryData[key] = Pair(selectedCategoryIdParam, childId) //new malak
                 }
             }
         }
@@ -152,7 +159,7 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
             Log.d("filter_test", "Apply clicked -> orderTypeIndex: $selectedOrderTypeParam, categoryId: $currentCategoryId, childId: $currentChildId")
 
-            onFilterAppliedListeners?.invoke(finalOrderType, currentChildId) //new malak
+            onFilterAppliedListeners?.invoke(finalOrderType, currentChildId) //malak
             dismiss()
         }
     }
@@ -203,13 +210,17 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         if (dataPair != null) {
             val (savedCategoryId, savedChildId) = dataPair //new malak
 
-            selectedPosition = selectedCategories.indexOfFirst { it ->
-                val catChildId = it.CHILD_ID?.toString()?.toIntOrNull()
+            // new malak
+            selectedPosition = selectedCategories.indexOfFirst { cat ->
+                val catChildId = cat.CHILD_ID?.toString()?.toIntOrNull()
+                val catId = cat.ID
 
-                if (savedCategoryId != null) { //new malak
-                    it.ID == savedCategoryId && catChildId == savedChildId //new malak
+                if (savedCategoryId != null && savedChildId != null) {
+                    catId == savedCategoryId && catChildId == savedChildId
+                } else if (savedCategoryId != null) {
+                    catId == savedCategoryId
                 } else {
-                    catChildId == savedChildId //new malak
+                    catChildId == savedChildId
                 }
             }
 
