@@ -20,26 +20,17 @@ import com.google.android.material.button.MaterialButton
 class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var orderTypes: ArrayList<OrderTypeModel>
-
     private var selectedCategoryIdParam: Int? = null //new malak
-
     private val selectedCategoryData = mutableMapOf<String, Pair<Int?, Int?>>() //new malak
-
     private val selectedCategories = mutableListOf<CategoriesModel>()
-
     private var selectedOrderTypeParam: String? = null //malak
     private var selectedChildIdParam: Int? = null
-
     var onFilterAppliedListeners: ((orderType: String?, childId: Int?) -> Unit)? = null //malak
-
     private lateinit var rvCategories: RecyclerView
     private lateinit var rvProducts: RecyclerView
-
     private lateinit var categoryAdapter: FilterCategoryAdapter
     private lateinit var productAdapter: FilterProductAdapter
-
     companion object {
-
         private const val ARG_ORDER_TYPES = "arg_order_types"
         private const val ARG_SELECTED_ORDER_TYPE = "arg_selected_order_type"
         private const val ARG_SELECTED_CHILD_ID = "arg_selected_child_id"
@@ -211,9 +202,10 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             val (savedCategoryId, savedChildId) = dataPair //new malak
 
             // new malak
-            selectedPosition = selectedCategories.indexOfFirst { cat ->
-                val catChildId = cat.CHILD_ID?.toString()?.toIntOrNull()
-                val catId = cat.ID
+            selectedPosition = selectedCategories.indexOfFirst { select ->
+                val catChildId = select.CHILD_ID?.toString()?.toIntOrNull()
+                val catId = select.ID
+
 
                 if (savedCategoryId != null && savedChildId != null) {
                     catId == savedCategoryId && catChildId == savedChildId

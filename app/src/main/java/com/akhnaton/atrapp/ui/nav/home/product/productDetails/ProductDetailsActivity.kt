@@ -252,6 +252,7 @@ class ProductDetailsActivity : BaseActivity() {
         binding.btnBottomAddToCart?.setOnClickListener {
             if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
                 context = this@ProductDetailsActivity,
+                isDismissable = true,
                 icon = R.drawable.ic_error,
                 title = getString(R.string.you_are_not_logged_in),
                 description = getString(R.string.please_log_in_to_access_this_feature),

@@ -35,10 +35,12 @@ import com.akhnaton.atrapp.data.statuesValue.nav.panner.PannerState
 import com.akhnaton.atrapp.databinding.FragmentHomeBinding
 import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.DialogUtils
 import com.akhnaton.atrapp.shared.HorizontalSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.CartFragment
 import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
@@ -167,6 +169,8 @@ class HomeFragment : BaseFragment() {
 //        }
 //    }
 
+
+
     private fun setupRecycler2() {
         orderTypeAdapter2 = OrderTypeAdapter2 { category, orderTypeIndex, _ ->
             val intent = Intent(requireContext(), ProductsActivity::class.java)
@@ -264,7 +268,34 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+
+    //new malak
+    private fun showLoginDialogue() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.login_required))
+        builder.setMessage(getString(R.string.login_required_message))
+
+        builder.setPositiveButton(getString(R.string.login)) { dialog, _ ->
+            dialog.dismiss()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
+            ?.setTextColor(resources.getColor(R.color.orange))
+        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+            ?.setTextColor(resources.getColor(R.color.black))
+    }
     private fun getAddress() {
+        if (SharedPreferenceHelper.isLogged == false) return //new malak
+
         lifecycleScope.launch {
             viewModel.addressIntent.send(
                 AddressIntent.GetMyAddresses
@@ -411,6 +442,31 @@ class HomeFragment : BaseFragment() {
             },
 
             onFavoriteClick = { product, position, isFavorite ->
+
+                if (SharedPreferenceHelper.isLogged == false) {
+                    bestSellersAdapter.notifyItemChanged(position)
+                    DialogUtils.showResultDialog(
+                        context = requireContext(),
+                        isDismissable = true,
+                        icon = R.drawable.ic_error,
+                        title = getString(R.string.you_are_not_logged_in),
+                        description = getString(R.string.please_log_in_to_access_this_feature),
+                        isOkMessage = true,
+                        yesText = getString(R.string.login),
+                        onConfirm = {
+                            val intent = Intent(requireContext(), LoginActivity::class.java)
+                            startActivity(intent)
+                        }
+                    )
+                    return@BestSellersAdapter
+                }
+
+                if(SharedPreferenceHelper.isLogged == false){
+                    bestSellersAdapter.notifyItemChanged(position)
+
+                    showLoginDialogue()
+                    return@BestSellersAdapter
+                }
 
                 product.IS_LIKED = isFavorite
                 if (position < bestSellers.size) {

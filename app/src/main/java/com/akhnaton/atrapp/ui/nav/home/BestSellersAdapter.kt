@@ -5,13 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.bumptech.glide.Glide
 
 class BestSellersAdapter(
@@ -19,7 +19,7 @@ class BestSellersAdapter(
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
     private val onAddToCartClick: (product: ProductModel) -> Unit = {},
 
-) : RecyclerView.Adapter<BestSellersAdapter.ViewHolder>() {
+    ) : RecyclerView.Adapter<BestSellersAdapter.ViewHolder>() {
 
     private var productsList = ArrayList<ProductModel>()
     private lateinit var flag: String
@@ -34,7 +34,6 @@ class BestSellersAdapter(
         notifyDataSetChanged()
     }
 
-
     fun addData(newList: List<ProductModel>) {
         val startPosition = productsList.size
         productsList.addAll(newList)
@@ -46,7 +45,6 @@ class BestSellersAdapter(
         this.productsList.addAll(newList)
         notifyDataSetChanged()
     }
-
 
     inner class ViewHolder(private val binding: LayoutProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -70,9 +68,6 @@ class BestSellersAdapter(
                 binding.txtPrice.visibility = View.VISIBLE
             }
 
-            Log.d("WHAT", item.PRICE_WITH_TAX.toString())
-            Log.d("WHAT", item.PRICE_AFTER_DISCOUNT.toString())
-
             if (item.PRICE_WITH_TAX == item.PRICE_AFTER_DISCOUNT) {
                 binding.txtOldPrice.visibility = View.GONE
             }
@@ -82,12 +77,11 @@ class BestSellersAdapter(
                 binding.layoutFreeGift.visibility = View.GONE
             }
 
-//            changeFavoriteButton()
             if (item.IS_LIKED) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
             else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
 
             binding.productModel = item
-//
+
             Glide.with(binding.root.context)
                 .load(item.IMAGE_URL)
                 .placeholder(R.drawable.ic_logo)
@@ -96,14 +90,16 @@ class BestSellersAdapter(
                 .into(binding.imItem)
 
             binding.imFavorite.setOnClickListener {
-                isFavorite = !isFavorite
-
-                item.IS_LIKED = isFavorite /// new Malakkkk
-
-                if (isFavorite) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
-                else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
-//                changeFavoriteButton()
-                onFavoriteClick(item, position, isFavorite)
+                val isLogged = SharedPreferenceHelper.isLogged ?: false
+                if (!isLogged) {
+                    onFavoriteClick(item, position, item.IS_LIKED)
+                } else {
+                    val newFavoriteState = !item.IS_LIKED
+                    item.IS_LIKED = newFavoriteState
+                    if (newFavoriteState) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
+                    else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
+                    onFavoriteClick(item, position, newFavoriteState)
+                }
             }
 
             binding.btnAddToCart.setOnClickListener {
@@ -124,14 +120,6 @@ class BestSellersAdapter(
             binding.vBottom.visibility= View.VISIBLE
 
         }
-
-        private fun changeFavoriteButton() {
-            val iconRes = if (isFavorite) R.drawable.ic_favorite_fill2 else R.drawable.ic_favorite2
-            binding.imFavorite.load(iconRes) {
-                crossfade(true)
-                placeholder(R.drawable.ic_logo)
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -143,17 +131,6 @@ class BestSellersAdapter(
             360,
             RecyclerView.LayoutParams.MATCH_PARENT
         )
-//        if (isInHome) {
-//            binding.root.layoutParams = ConstraintLayout.LayoutParams(
-//                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-//                ConstraintLayout.LayoutParams.WRAP_CONTENT
-//            )
-//        } else {
-//            binding.root.layoutParams = ConstraintLayout.LayoutParams(
-//                ConstraintLayout.LayoutParams.MATCH_PARENT,
-//                ConstraintLayout.LayoutParams.WRAP_CONTENT
-//            )
-//        }
         return ViewHolder(binding)
     }
 
@@ -169,5 +146,4 @@ class BestSellersAdapter(
         productsList.clear()
         notifyDataSetChanged()
     }
-
 }

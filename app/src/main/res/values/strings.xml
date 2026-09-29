@@ -376,4 +376,8 @@ In addition to a wide range of other complementary services, that are offered th
 
     <string name="in_cart">In Cart</string>
 
+    <string name="login_required">Login is required!</string>
+    <string name="login_required_message">Please login to add product to favourite..</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
