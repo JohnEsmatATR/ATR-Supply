@@ -163,8 +163,7 @@ class HomeActivity : BaseActivity() {
         binding.bottomNavigationView.selectedItemId = R.id.home
         setItemSelected(R.id.home)
     }
-
-
+    
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)

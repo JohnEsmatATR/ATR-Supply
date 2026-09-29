@@ -9,16 +9,20 @@ import android.widget.ImageButton
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.CartData
 import com.akhnaton.atrapp.data.model.OrderTypeModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
@@ -32,6 +36,7 @@ import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.GridSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
@@ -67,6 +72,8 @@ class ProductsActivity : BaseActivity() {
 
     private var selectedSortPosition: Int = -1 ////newww malakkk
     private lateinit var flag: String
+    private val cartViewModel: CartViewModel by viewModels()
+    private val cartSet = mutableSetOf<CartData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +83,8 @@ class ProductsActivity : BaseActivity() {
         init()
         onClick()
         observeAddToCart()
+        getCart()
+        observeCart()
 
         val showCard = intent.getBooleanExtra("show_card", false)
         binding.cardSearchingPharma.visibility = if (showCard) {
@@ -169,7 +178,7 @@ class ProductsActivity : BaseActivity() {
                     }
 
                     is CategoryStatus.GetCategory -> {
-                        handleLoadingState(isLoading = false, isPagination = false)
+//                        handleLoadingState(isLoading = false, isPagination = false)
                         categories = state.data.data!! as ArrayList<OrderTypeModel>
                     }
 
@@ -664,5 +673,38 @@ class ProductsActivity : BaseActivity() {
             page = 1,
             category = flag
         )
+    }
+
+    private fun getCart() {
+        lifecycleScope.launch {
+            val lang = SharedPreferenceHelper.language ?: "ar"
+            cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
+        }
+    }
+
+    private fun observeCart() {
+        lifecycleScope.launch {
+            cartViewModel.state.collect { state ->
+                when (state) {
+                    is CartStatus.Idle -> {}
+                    is CartStatus.Loading -> {
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is CartStatus.GetMyCart -> {
+                        hideProgressDialog(binding.progressLoading)
+                        if (state.data.status == 200) {
+                            cartSet.clear()
+                            cartSet.addAll(state.data.data.orEmpty())
+                        }
+                    }
+
+                    is CartStatus.Error -> {
+                        Log.d("TAG", "observeCart: ${state.error.toString()}")
+                        showToastSnack(state.error.toString(), true)
+                    }
+                }
+            }
+        }
     }
 }
