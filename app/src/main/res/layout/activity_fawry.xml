@@ -93,7 +93,7 @@
                     android:gravity="center"
                     android:scrollHorizontally="false"
                     android:singleLine="false"
-                    android:text="138356280825-21257\n157078280825-06278"
+                    tools:text="138356280825-21257\n157078280825-06278"
                     android:textColor="@color/orange"
                     android:textSize="@dimen/_16sdp"
                     app:layout_constraintBottom_toBottomOf="parent"

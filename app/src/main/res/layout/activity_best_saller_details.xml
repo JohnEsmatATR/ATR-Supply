@@ -48,7 +48,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
         android:id="@+id/product_not_found"
-        android:text="Product Not Found "
+        android:text="@string/product_not_found"
         android:gravity="center"
         android:textStyle="italic"
         android:visibility="gone"
@@ -285,7 +285,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="1"
+                        tools:text="1"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -386,7 +386,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="0dp"
-                        android:text="4.2"
+                        tools:text="4.2"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -436,7 +436,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_16sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:text="View all reviews"
+                    android:text="@string/view_all_reviews"
                     android:textColor="@color/orange"
                     android:visibility="gone"
                     android:textSize="16sp"
@@ -513,7 +513,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:backgroundTint="@color/white"
-                android:text="go to cart"
+                android:text="@string/go_to_cart"
                 android:textColor="@color/orange"
                 android:elevation="@dimen/_50sdp"
                 android:drawableLeft="@drawable/ic_cart"

@@ -7,7 +7,6 @@
     android:background="#F9FAFB"
     tools:context=".ui.nav.home.product.productDetails.ProductDetailsActivity">
 
-    <!-- Top Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -103,7 +102,6 @@
                     android:transitionName="itemImageTransition" />
             </androidx.cardview.widget.CardView>
 
-            <!-- ENGLISH LAYOUT SECTION (en) -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/en"
                 android:layout_width="match_parent"
@@ -168,7 +166,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_item_name">
 
-                    <!-- رقم السعر (كبير و Bold) -->
                     <TextView
                         android:id="@+id/txt_price_value"
                         android:layout_width="wrap_content"
@@ -206,7 +203,6 @@
                     android:background="#EFEFEF"
                     app:layout_constraintTop_toBottomOf="@+id/bonus_recycler" />
 
-                <!-- Dosage & Availability Row -->
                 <LinearLayout
                     android:id="@+id/layout_info"
                     android:layout_width="match_parent"
@@ -215,7 +211,6 @@
                     android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@+id/divider_1">
 
-                    <!-- Dosage Card -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -266,7 +261,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Availability Card -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -326,7 +320,6 @@
                     android:background="#EFEFEF"
                     app:layout_constraintTop_toBottomOf="@+id/layout_info" />
 
-                <!-- Quantity Layout -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_qty"
                     android:layout_width="match_parent"
@@ -358,7 +351,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <!-- زرار الناقص (-) -->
                         <TextView
                             android:id="@+id/btn_minus"
                             android:layout_width="28dp"
@@ -369,7 +361,6 @@
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
-                        <!-- رقم الكمية (1) -->
                         <EditText
                             android:id="@+id/txt_quantity"
                             android:layout_width="38dp"
@@ -384,7 +375,6 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-                        <!-- زرار الزائد (+) -->
                         <TextView
                             android:id="@+id/btn_plus"
                             android:layout_width="28dp"
@@ -398,7 +388,6 @@
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- Description Layout -->
                 <LinearLayout
                     android:id="@+id/layout_description"
                     android:layout_width="match_parent"
@@ -426,7 +415,6 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <!-- Hidden Views matching Kotlin code -->
                 <LinearLayout
                     android:id="@+id/layout_reviews"
                     android:layout_width="match_parent"
@@ -449,7 +437,6 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/layout_view_all_reviews" />
 
-                <!-- Hidden button maintained for ViewBinding -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_add_to_cart"
                     android:layout_width="0dp"
@@ -459,7 +446,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- ARABIC LAYOUT SECTION (ar) -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ar"
                 android:layout_width="match_parent"
@@ -759,7 +745,6 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/layout_view_all_reviews_ar" />
 
-                <!-- Hidden AR Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_add_to_cart_ar"
                     android:layout_width="0dp"
@@ -838,7 +823,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Loading Overlay -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/progressLoading"
         android:layout_width="match_parent"

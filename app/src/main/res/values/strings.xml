@@ -377,4 +377,28 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="login_required_message">Please login to add product to favourite..</string>
     <string name="cancel">Cancel</string>
 
+    <string name="failed_to_load_data">Failed to load data</string>
+    <string name="unknown_error">Unknown error occurred</string>
+
+    <string name="product_not_found">Product not found</string>
+
+    <string name="view_all_reviews">View all reviews</string>
+
+    <string name="company_name">ATR Akhnaton Trading and Distribution</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="facebook">Facebook</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="youtube">YouTube</string>
+    <string name="or_continue_with">Or Continue With</string>
+
+    <string name="dummy_text">jbejcbec</string>
+
+
+    <string name="from">From</string>
+    <string name="to">To</string>
+
+    <string name="return_summary">Return summary</string>
+    <string name="estimated_refund_value">Estimated refund value</string>
+
+
 </resources>

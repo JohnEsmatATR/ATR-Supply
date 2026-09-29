@@ -131,7 +131,7 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_25sdp"
         android:layout_marginHorizontal="@dimen/_60sdp"
-        android:backgroundTint="@android:color/transparent"
+        android:backgroundTint="@color/transparent"
         android:clickable="true"
         android:text="@string/enter"
         android:textColor="@color/black"

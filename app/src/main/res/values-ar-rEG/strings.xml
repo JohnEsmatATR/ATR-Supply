@@ -323,5 +323,25 @@
     <string name="login_required_message">برجاء تسجيل الدخول لتتمكن من إضافة المنتجات إلى المفضلات..</string>
     <string name="cancel">إلغاء</string>
 
+    <string name="failed_to_load_data">فشل تحميل البيانات</string>
+    <string name="unknown_error">خطأ غير معروف</string>
+    <string name="product_not_found">لا يوجد هذا المنتج</string>
+
+    <string name="view_all_reviews">عرض كل التقييمات</string>
+
+    <string name="company_name">أخناتون للتجارة والتوزيع ATR</string>
+    <string name="whatsapp">واتساب</string>
+    <string name="facebook">فيسبوك</string>
+    <string name="linkedin">لينكد إن</string>
+    <string name="youtube">يوتيوب</string>
+    <string name="or_continue_with">أو سجل الدخول عبر</string>
+    <string name="dummy_text">jbejcbec</string>
+
+
+    <string name="from">من</string>
+    <string name="to">الى</string>
+
+    <string name="return_summary">ملخص المرتجع</string>
+    <string name="estimated_refund_value">قيمة المبلغ المسترد المتوقعة</string>
 
 </resources>
