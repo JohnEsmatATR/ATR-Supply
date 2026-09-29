@@ -31,6 +31,7 @@ import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.GridSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
@@ -382,6 +383,31 @@ class ProductsActivity : BaseActivity() {
         }
     }
 
+    private fun showLoginDialogue() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.login_required))
+        builder.setMessage(getString(R.string.login_required_message))
+
+        builder.setPositiveButton(getString(R.string.login)) { dialog, _ ->
+            dialog.dismiss()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
+            ?.setTextColor(resources.getColor(R.color.orange))
+        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+            ?.setTextColor(resources.getColor(R.color.black))
+    }
+
+
     private fun observeAddToCart() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -526,6 +552,13 @@ class ProductsActivity : BaseActivity() {
     }
 
     private fun handleAddToCart(product: ProductModel) {
+
+        //new malak
+        if (SharedPreferenceHelper.isLogged == false) {
+            showLoginDialogue()
+            return
+        }
+
         if (!product.IN_STOCK) {
             showToastSnack("Product Out Of Stock", true)
             return

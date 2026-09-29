@@ -318,4 +318,10 @@
 
     <string name="in_cart">في سلة التسوق</string>
 
+
+    <string name="login_required">تسجيل الدخول مطلوب!</string>
+    <string name="login_required_message">برجاء تسجيل الدخول لتتمكن من إضافة المنتجات إلى المفضلات..</string>
+    <string name="cancel">إلغاء</string>
+
+
 </resources>
