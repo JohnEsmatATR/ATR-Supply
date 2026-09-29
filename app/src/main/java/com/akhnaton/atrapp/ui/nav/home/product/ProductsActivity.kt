@@ -33,6 +33,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchStatus
 import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.DialogUtils
 import com.akhnaton.atrapp.shared.GridSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
@@ -74,18 +75,17 @@ class ProductsActivity : BaseActivity() {
     private var selectedSortPosition: Int = -1 ////newww malakkk
     private lateinit var flag: String
     private val cartViewModel: CartViewModel by viewModels()
-    private val cartSet = mutableSetOf<CartData>()
+    private val cartItems = mutableMapOf<Int, Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        guestHandling()
         init()
         onClick()
         observeAddToCart()
-        getCart()
-        observeCart()
 
         val showCard = intent.getBooleanExtra("show_card", false)
         binding.cardSearchingPharma.visibility = if (showCard) {
@@ -97,6 +97,13 @@ class ProductsActivity : BaseActivity() {
         binding.btnChangeInFilters.paintFlags =
             binding.btnChangeInFilters.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         currentPage = intent.getIntExtra("saved_page", 1)
+    }
+
+    private fun guestHandling() {
+        if (!isGuest()) {
+            getCart()
+            observeCart()
+        }
     }
 
     private fun handleLoadingState(isLoading: Boolean, isPagination: Boolean) {
@@ -302,7 +309,8 @@ class ProductsActivity : BaseActivity() {
                     flag = orderType
                 }
 
-                val selectedCount = if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
+                val selectedCount =
+                    if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
 
                 updateFilterUiState(selectedCount)
 
@@ -327,7 +335,8 @@ class ProductsActivity : BaseActivity() {
             val rvSortingOptions = view.findViewById<RecyclerView>(R.id.rvSortingOptions)
             val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
 
-            val btnResetSort = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnResetSort)
+            val btnResetSort =
+                view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnResetSort)
 
             val btnApplySort =
                 view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
@@ -426,6 +435,7 @@ class ProductsActivity : BaseActivity() {
                         is AddToCartStatus.Loading -> {
                             handleLoadingState(isLoading = true, isPagination = false)
                         }
+
                         is AddToCartStatus.AddToCart -> {
                             handleLoadingState(isLoading = false, isPagination = false)
 
@@ -563,8 +573,20 @@ class ProductsActivity : BaseActivity() {
     private fun handleAddToCart(product: ProductModel) {
 
         //new malak
-        if (SharedPreferenceHelper.isLogged == false) {
-            showLoginDialogue()
+        if (isGuest()) {
+            DialogUtils.showResultDialog(
+                context = this@ProductsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this@ProductsActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            )
             return
         }
 
@@ -727,8 +749,16 @@ class ProductsActivity : BaseActivity() {
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
                         if (state.data.status == 200) {
-                            cartSet.clear()
-                            cartSet.addAll(state.data.data.orEmpty())
+                            cartItems.clear()
+                            state.data.data.orEmpty().forEach { cartData ->
+                                cartData.carts.orEmpty().forEach { cart ->
+                                    cart.items?.products.orEmpty().forEach { product ->
+                                        cartItems[product.id] = product.myQuantity
+                                    }
+                                }
+                            }
+
+                            Log.d("CART", "cartItems = $cartItems")
                         }
                     }
 
@@ -739,5 +769,9 @@ class ProductsActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun isGuest(): Boolean {
+        return SharedPreferenceHelper.isLogged == false
     }
 }

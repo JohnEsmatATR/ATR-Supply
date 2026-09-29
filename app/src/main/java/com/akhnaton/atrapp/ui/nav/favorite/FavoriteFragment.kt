@@ -235,6 +235,7 @@ class FavoriteFragment : BaseFragment() {
                     is FavoriteStatus.AddProductToFavourites -> {
                         hideProgressDialog(binding.progressLoading)
                     }
+
                     is FavoriteStatus.DeleteProductToFavourites -> {
                         hideProgressDialog(binding.progressLoading)
 

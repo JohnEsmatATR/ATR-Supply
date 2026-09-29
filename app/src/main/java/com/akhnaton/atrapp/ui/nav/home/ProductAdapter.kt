@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.home
 
+import android.content.Intent
 import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
+import com.akhnaton.atrapp.shared.DialogUtils
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
@@ -102,6 +106,23 @@ class ProductAdapter(
                 .into(binding.imItem)
 
             binding.imFavorite.setOnClickListener {
+                if (SharedPreferenceHelper.isLogged == false) {
+                    DialogUtils.showResultDialog(
+                        context = itemView.context,
+                        isDismissable = true,
+                        icon = R.drawable.ic_error,
+                        title = itemView.context.getString(R.string.you_are_not_logged_in),
+                        description = itemView.context.getString(R.string.please_log_in_to_access_this_feature),
+                        isOkMessage = true,
+                        yesText = itemView.context.getString(R.string.login),
+                        onConfirm = {
+                            val intent =
+                                Intent(itemView.context, LoginActivity::class.java)
+                            itemView.context.startActivity(intent)
+                        }
+                    )
+                    return@setOnClickListener
+                }
                 isFavorite = !isFavorite
                 if (isFavorite) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
                 else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)

@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
@@ -11,11 +12,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -25,6 +28,8 @@ import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
 import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
@@ -35,6 +40,7 @@ import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
@@ -49,6 +55,8 @@ class ProductDetailsActivity : BaseActivity() {
     private lateinit var flag: String
     private var inStoke: Boolean = false
     private lateinit var bonusAdapter: BonusAdapter
+    private lateinit var productData: ProductModel
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,7 +139,7 @@ class ProductDetailsActivity : BaseActivity() {
                     is ProductDetailsStatus.GetProductDetails -> {
                         if (status.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
-                            val productData = status.data.data?.firstOrNull()
+                            productData = status.data.data?.firstOrNull()!!
                             Log.d(
                                 "DEBUG_PRODUCT",
                                 "Returned Weight = '${productData?.WEIGHT}' | Returned Stock = ${productData?.IN_STOCK}"
@@ -249,6 +257,39 @@ class ProductDetailsActivity : BaseActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+        binding.btnShare.setOnClickListener {
+            if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
+                context = this@ProductDetailsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            ) else shareProduct()
+        }
+        binding.btnFavIcon.setOnClickListener {
+            if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
+                context = this@ProductDetailsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            ) else addProductToFavorite(
+                productId = product.ID,
+                add = true
+            )
+        }
         binding.btnBottomAddToCart?.setOnClickListener {
             if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
                 context = this@ProductDetailsActivity,
@@ -282,6 +323,36 @@ class ProductDetailsActivity : BaseActivity() {
                 updateTotalPrice()
             }
         }
+    }
+
+    private fun shareProduct() {
+
+        val imageUri: Uri = product.IMAGE_URL.toUri() // your image Uri
+
+        val shareText = """
+        Check out this product!
+        
+        Product: ${product.TITLE}
+        Price: ${product.PRICE_WITH_TAX}
+        Price Without Tax: ${product.PRICE_WITHOUT_TAX}
+        Tax: ${product.TAX}
+    """.trimIndent()
+
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/*"
+
+            putExtra(Intent.EXTRA_TEXT, shareText)
+            putExtra(Intent.EXTRA_STREAM, imageUri)
+
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        startActivity(
+            Intent.createChooser(
+                shareIntent,
+                "Share product"
+            )
+        )
     }
 
     private fun addToCartObserve() {
@@ -385,6 +456,64 @@ class ProductDetailsActivity : BaseActivity() {
             Log.d("WHATquantity", "quantity = $quantity")
 
             updateTotalPrice()
+        }
+    }
+
+    private fun addProductToFavorite(
+        productId: Int,
+        add: Boolean,
+    ) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.AddProductToFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                    "Pharma"
+                )
+            )
+        }
+    }
+
+    private fun favoriteObserve() {
+        lifecycleScope.launch {
+            favoriteViewModel.state.collect {
+                when (it) {
+                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is FavoriteStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is FavoriteStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                    is FavoriteStatus.AddProductToFavourites -> {
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.data.message.toString(), true)
+                    }
+
+                    is FavoriteStatus.DeleteProductToFavourites -> {
+                        hideProgressDialog(binding.progressLoading)
+
+                        if (it.data.status == 200) {
+                            Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
+                            showToastSnack(it.data.message, false)
+
+                        } else if (it.data.status == 401) {
+                            // onTokenExpired(it.data.errors!![0])
+                        } else {
+                            // showToastSnack(it.data.message, true)
+                        }
+                    }
+
+                    else -> {}
+
+                }
+            }
         }
     }
 }

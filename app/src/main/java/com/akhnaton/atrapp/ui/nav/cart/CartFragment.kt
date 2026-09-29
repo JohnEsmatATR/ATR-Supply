@@ -81,6 +81,7 @@ class CartFragment : BaseFragment() {
             binding.recycler.visibility = View.GONE
 
             binding.layoutCart.visibility = View.GONE
+            binding.cardCheckout.visibility = View.GONE
             // binding.cardAddress.visibility = View.GONE
         }
 
