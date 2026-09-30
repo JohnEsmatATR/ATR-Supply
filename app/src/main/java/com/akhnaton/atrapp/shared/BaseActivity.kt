@@ -36,10 +36,9 @@ open class BaseActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //new malak
 
 
-        
         // Enable edge-to-edge display
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        
+
         // Set up window insets controller
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.isAppearanceLightStatusBars = true
@@ -83,10 +82,10 @@ open class BaseActivity : AppCompatActivity() {
 
                 // Find and setup RecyclerViews to respect bottom navigation bar
                 setupRecyclerViewInsets(rootView)
-                
+
                 // Find and setup NestedScrollViews to respect bottom navigation bar
                 setupScrollViewInsets(rootView)
-                
+
                 // Force apply window insets to ensure they're processed
                 ViewCompat.requestApplyInsets(rootView)
             }
@@ -98,25 +97,29 @@ open class BaseActivity : AppCompatActivity() {
      */
     private fun setupRecyclerViewInsets(rootView: View) {
         val recyclerViews = mutableListOf<androidx.recyclerview.widget.RecyclerView>()
-        findViewsByType(rootView, androidx.recyclerview.widget.RecyclerView::class.java, recyclerViews)
-        
+        findViewsByType(
+            rootView,
+            androidx.recyclerview.widget.RecyclerView::class.java,
+            recyclerViews
+        )
+
         recyclerViews.forEach { recyclerView ->
             // Store original padding values before setting listener
             val originalPaddingLeft = recyclerView.paddingLeft
             val originalPaddingTop = recyclerView.paddingTop
             val originalPaddingRight = recyclerView.paddingRight
             val originalPaddingBottom = recyclerView.paddingBottom
-            
+
             // Ensure padding is respected
             recyclerView.clipToPadding = false
-            
+
             ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { view, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                 // Use original padding values, or current if original was 0
                 val paddingLeft = originalPaddingLeft.takeIf { it > 0 } ?: view.paddingLeft
                 val paddingTop = originalPaddingTop.takeIf { it > 0 } ?: view.paddingTop
                 val paddingRight = originalPaddingRight.takeIf { it > 0 } ?: view.paddingRight
-                
+
                 view.setPadding(
                     paddingLeft,
                     paddingTop,
@@ -134,9 +137,13 @@ open class BaseActivity : AppCompatActivity() {
     private fun setupScrollViewInsets(rootView: View) {
         val nestedScrollViews = mutableListOf<androidx.core.widget.NestedScrollView>()
         val scrollViews = mutableListOf<android.widget.ScrollView>()
-        findViewsByType(rootView, androidx.core.widget.NestedScrollView::class.java, nestedScrollViews)
+        findViewsByType(
+            rootView,
+            androidx.core.widget.NestedScrollView::class.java,
+            nestedScrollViews
+        )
         findViewsByType(rootView, android.widget.ScrollView::class.java, scrollViews)
-        
+
         nestedScrollViews.forEach { scrollView ->
             ViewCompat.setOnApplyWindowInsetsListener(scrollView) { view, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -149,7 +156,7 @@ open class BaseActivity : AppCompatActivity() {
                 insets
             }
         }
-        
+
         scrollViews.forEach { scrollView ->
             ViewCompat.setOnApplyWindowInsetsListener(scrollView) { view, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -185,11 +192,14 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showToastSnack(word: String?, flag: Boolean) {
         try {
-            val layout = LayoutInflater.from(this).inflate(R.layout.snack_bar_layout,
-                null, false)
+            val layout = LayoutInflater.from(this).inflate(
+                R.layout.snack_bar_layout,
+                null, false
+            )
             layout.setBackgroundColor(
-                if (flag)  ContextCompat.getColor(this@BaseActivity, R.color.snack_red)
-                else ContextCompat.getColor(this@BaseActivity,
+                if (flag) ContextCompat.getColor(this@BaseActivity, R.color.snack_red)
+                else ContextCompat.getColor(
+                    this@BaseActivity,
                     R.color.snack_green
                 )
             )
@@ -210,7 +220,7 @@ open class BaseActivity : AppCompatActivity() {
             )
             snackbar.setBackgroundTint(
                 if (flag) ContextCompat.getColor(this@BaseActivity, R.color.snack_red)
-                else  ContextCompat.getColor(this@BaseActivity, R.color.snack_green)
+                else ContextCompat.getColor(this@BaseActivity, R.color.snack_green)
             )
 
             snackbar.view.layoutParams = params
@@ -253,7 +263,6 @@ open class BaseActivity : AppCompatActivity() {
     fun validateDecreaseQuantity(qty: Int): Boolean {
         return (qty > 1)
     }
-
 
 
     fun showProgressDialog(view: View) {

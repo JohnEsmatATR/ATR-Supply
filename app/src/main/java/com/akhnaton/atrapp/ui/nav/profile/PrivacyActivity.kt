@@ -20,7 +20,6 @@ class PrivacyActivity : BaseActivity(), View.OnClickListener {
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
-        Log.d("WHAT", "LANG: ${SharedPreferenceHelper.language}")
         binding.btnBack.setOnClickListener(this)
     }
 

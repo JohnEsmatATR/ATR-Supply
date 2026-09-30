@@ -325,6 +325,10 @@
     <string name="login_required">تسجيل الدخول مطلوب!</string>
     <string name="login_required_message">برجاء تسجيل الدخول لتتمكن من إضافة المنتجات إلى المفضلات..</string>
     <string name="cancel">إلغاء</string>
+    <string name="search_for_pharma">البحث عن Pharma</string>
+    <string name="search_for_cosmetics">البحث عن Cosmetics</string>
+    <string name="search_for_supplements">البحث عن Supplements</string>
+    <string name="search_for_mounjaro">البحث عن Mounjaro</string>
 
 
 </resources>

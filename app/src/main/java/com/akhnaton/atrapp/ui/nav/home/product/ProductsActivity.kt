@@ -86,6 +86,7 @@ class ProductsActivity : BaseActivity() {
         init()
         onClick()
         observeAddToCart()
+        observeCart()
 
         val showCard = intent.getBooleanExtra("show_card", false)
         binding.cardSearchingPharma.visibility = if (showCard) {
@@ -102,7 +103,6 @@ class ProductsActivity : BaseActivity() {
     private fun guestHandling() {
         if (!isGuest()) {
             getCart()
-            observeCart()
         }
     }
 
@@ -182,7 +182,7 @@ class ProductsActivity : BaseActivity() {
                 when (state) {
                     is CategoryStatus.Idle -> Unit
                     is CategoryStatus.Loading -> {
-                        handleLoadingState(isLoading = true, isPagination = false)
+//                        handleLoadingState(isLoading = true, isPagination = false)
                     }
 
                     is CategoryStatus.GetCategory -> {
@@ -191,7 +191,7 @@ class ProductsActivity : BaseActivity() {
                     }
 
                     is CategoryStatus.Error -> {
-                        handleLoadingState(isLoading = false, isPagination = false)
+//                        handleLoadingState(isLoading = false, isPagination = false)
                     }
                 }
             }
@@ -571,7 +571,6 @@ class ProductsActivity : BaseActivity() {
     }
 
     private fun handleAddToCart(product: ProductModel) {
-
         //new malak
         if (isGuest()) {
             DialogUtils.showResultDialog(
@@ -637,6 +636,22 @@ class ProductsActivity : BaseActivity() {
                     startActivity(intent, options.toBundle())
                 },
                 onFavoriteClick = { product, _, isFavorite ->
+                    if (SharedPreferenceHelper.isLogged == false) {
+                        DialogUtils.showResultDialog(
+                            context = this,
+                            isDismissable = true,
+                            icon = R.drawable.ic_error,
+                            title = getString(R.string.you_are_not_logged_in),
+                            description = getString(R.string.please_log_in_to_access_this_feature),
+                            isOkMessage = true,
+                            yesText = getString(R.string.login),
+                            onConfirm = {
+                                val intent = Intent(this, LoginActivity::class.java)
+                                startActivity(intent)
+                            }
+                        )
+                        return@ProductAdapter
+                    }
                     if (isFavorite) {
                         addProductToFavorite(product.ID, isFavorite)
                     } else {
@@ -743,11 +758,11 @@ class ProductsActivity : BaseActivity() {
                 when (state) {
                     is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = true, isPagination = false)
                     }
 
                     is CartStatus.GetMyCart -> {
-                        hideProgressDialog(binding.progressLoading)
+//                        handleLoadingState(isLoading = false, isPagination = false)
                         if (state.data.status == 200) {
                             cartItems.clear()
                             state.data.data.orEmpty().forEach { cartData ->
@@ -757,7 +772,6 @@ class ProductsActivity : BaseActivity() {
                                     }
                                 }
                             }
-
                             Log.d("CART", "cartItems = $cartItems")
                         }
                     }

@@ -379,5 +379,9 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="login_required">Login is required!</string>
     <string name="login_required_message">Please login to add product to favourite..</string>
     <string name="cancel">Cancel</string>
+    <string name="search_for_pharma">Search For Pharma</string>
+    <string name="search_for_cosmetics">Search For Cosmetics</string>
+    <string name="search_for_supplements">Search For Supplements</string>
+    <string name="search_for_mounjaro">Search For Mounjaro</string>
 
 </resources>

@@ -85,11 +85,67 @@ class HomeFragment : BaseFragment() {
 
     private val cartViewModel: CartViewModel by viewModels()
 
+    private lateinit var searchHints: List<String>
+
+    private var hintIndex = 0
+    private var charIndex = 0
+    private var isDeleting = false
+
+    private val hintHandler = Handler(Looper.getMainLooper())
+
+    private val hintRunnable = object : Runnable {
+        override fun run() {
+
+            val currentText = searchHints[hintIndex]
+
+            if (!isDeleting) {
+                // Typing
+                charIndex++
+
+                binding.tvSearch.text = currentText.substring(0, charIndex)
+
+                if (charIndex == currentText.length) {
+                    // Wait after completing the word
+                    isDeleting = true
+                    hintHandler.postDelayed(this, 1500)
+                    return
+                }
+
+                hintHandler.postDelayed(this, 80)
+
+            } else {
+                // Deleting
+                charIndex--
+
+                binding.tvSearch.text = currentText.substring(0, charIndex)
+
+                if (charIndex == 0) {
+                    isDeleting = false
+                    hintIndex = (hintIndex + 1) % searchHints.size
+
+                    hintHandler.postDelayed(this, 400)
+                    return
+                }
+
+                hintHandler.postDelayed(this, 40)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
+
+        searchHints = listOf(
+            getString(R.string.search_for_pharma),
+            getString(R.string.search_for_cosmetics),
+            getString(R.string.search_for_supplements),
+            getString(R.string.search_for_mounjaro)
+        )
+
+        hintHandler.post(hintRunnable)
 
         guestHandling()
         setupRecycler2()
@@ -168,7 +224,6 @@ class HomeFragment : BaseFragment() {
 //            setHasFixedSize(true)
 //        }
 //    }
-
 
 
     private fun setupRecycler2() {
@@ -293,6 +348,7 @@ class HomeFragment : BaseFragment() {
         alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
             ?.setTextColor(resources.getColor(R.color.black))
     }
+
     private fun getAddress() {
         if (SharedPreferenceHelper.isLogged == false) return //new malak
 
@@ -382,6 +438,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
+        hintHandler.removeCallbacks(hintRunnable)
 
         bestSellers.clear() ////newww malakk
         getBestSeller() ////newww malakk
@@ -442,7 +499,6 @@ class HomeFragment : BaseFragment() {
             },
 
             onFavoriteClick = { product, position, isFavorite ->
-
                 if (SharedPreferenceHelper.isLogged == false) {
                     bestSellersAdapter.notifyItemChanged(position)
                     DialogUtils.showResultDialog(
@@ -461,7 +517,7 @@ class HomeFragment : BaseFragment() {
                     return@BestSellersAdapter
                 }
 
-                if(SharedPreferenceHelper.isLogged == false){
+                if (SharedPreferenceHelper.isLogged == false) {
                     bestSellersAdapter.notifyItemChanged(position)
 
                     showLoginDialogue()

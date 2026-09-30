@@ -3,6 +3,8 @@ package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
@@ -53,6 +55,7 @@ class ProductDetailsActivity : BaseActivity() {
     var quantity: Int = 1
     private var productQuantity: Int = 0
     private lateinit var flag: String
+    var productId: Int = 0
     private var inStoke: Boolean = false
     private lateinit var bonusAdapter: BonusAdapter
     private lateinit var productData: ProductModel
@@ -99,7 +102,7 @@ class ProductDetailsActivity : BaseActivity() {
             placeholder(R.drawable.ic_logo)
             error(R.drawable.ic_logo)
         }
-        val productId = product.ID.toInt()
+        productId = product.ID.toInt()
 
         val isArabic = SharedPreferenceHelper.language == "ar"
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
@@ -109,6 +112,7 @@ class ProductDetailsActivity : BaseActivity() {
         getProductDetails(productId, flag)
         addToCartObserve()
 //        initBonusRecycler()
+        favoriteObserve()
     }
 
     private fun initBonusRecycler() {
@@ -146,6 +150,16 @@ class ProductDetailsActivity : BaseActivity() {
                             )
 
                             if (productData != null) {
+                                if (productData.IS_LIKED) {
+                                    binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
+                                    val orangeColor = Color.parseColor("#EE7907")
+                                    binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
+                                } else {
+                                    binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)
+                                    val grayColor = Color.parseColor("#C1C1C1")
+                                    binding.btnFavIcon.imageTintList =
+                                        ColorStateList.valueOf(grayColor)
+                                }
                                 binding.txtItemName.text = productData.TITLE ?: ""
                                 binding.txtCategory.text = productData.category?.TITLE ?: ""
                                 binding.txtPriceValue.text =
@@ -269,8 +283,7 @@ class ProductDetailsActivity : BaseActivity() {
                 onConfirm = {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-                }
-            ) else shareProduct()
+                }) else shareProduct()
         }
         binding.btnFavIcon.setOnClickListener {
             if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
@@ -284,10 +297,10 @@ class ProductDetailsActivity : BaseActivity() {
                 onConfirm = {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-                }
-            ) else addProductToFavorite(
-                productId = product.ID,
-                add = true
+                }) else if (productData.IS_LIKED) deleteProductToFavorite(
+                productId = product.ID, add = true
+            ) else if (!productData.IS_LIKED) addProductToFavorite(
+                productId = product.ID, add = true
             )
         }
         binding.btnBottomAddToCart?.setOnClickListener {
@@ -302,8 +315,7 @@ class ProductDetailsActivity : BaseActivity() {
                 onConfirm = {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-                }
-            )
+                })
             else addProductToCart()
         }
         binding.btnPlus.setOnClickListener {
@@ -349,8 +361,7 @@ class ProductDetailsActivity : BaseActivity() {
 
         startActivity(
             Intent.createChooser(
-                shareIntent,
-                "Share product"
+                shareIntent, "Share product"
             )
         )
     }
@@ -440,9 +451,7 @@ class ProductDetailsActivity : BaseActivity() {
 
         binding.txtQuantity.doAfterTextChanged { editable ->
 
-            val value = editable
-                ?.toString()
-                ?.toIntOrNull()
+            val value = editable?.toString()?.toIntOrNull()
 
             Log.d("WHATquantity", "typed value = $value")
 
@@ -466,10 +475,20 @@ class ProductDetailsActivity : BaseActivity() {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(
                 FavoriteIntent.AddProductToFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}", productId, add, "Pharma"
+                )
+            )
+        }
+    }
+
+    private fun deleteProductToFavorite(productId: Int, add: Boolean) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.DeleteFromFavourites(
                     "Bearer ${SharedPreferenceHelper.userToken}",
                     productId,
                     add,
-                    "Pharma"
+                    flag
                 )
             )
         }
@@ -492,14 +511,23 @@ class ProductDetailsActivity : BaseActivity() {
                     }
 
                     is FavoriteStatus.AddProductToFavourites -> {
+                        binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
+                        val orangeColor = Color.parseColor("#EE7907")
+                        binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.data.message.toString(), true)
+                        showToastSnack(it.data.message.toString(), false)
+                        getProductDetails(productId, flag)
                     }
 
                     is FavoriteStatus.DeleteProductToFavourites -> {
                         hideProgressDialog(binding.progressLoading)
 
                         if (it.data.status == 200) {
+                            binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)
+                            val grayColor = Color.parseColor("#C1C1C1")
+                            binding.btnFavIcon.imageTintList = ColorStateList.valueOf(grayColor)
+                            getProductDetails(productId, flag)
+
                             Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
                             showToastSnack(it.data.message, false)
 
