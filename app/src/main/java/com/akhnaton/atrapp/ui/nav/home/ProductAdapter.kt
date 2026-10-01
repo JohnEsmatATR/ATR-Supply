@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class ProductAdapter(
+    private var cartItems: Map<Int, Int> = emptyMap(),
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
     private val onAddToCartClick: (product: ProductModel) -> Unit = {}
@@ -49,11 +50,39 @@ class ProductAdapter(
         notifyDataSetChanged()
     }
 
+    fun updateCartItems(newCartItems: Map<Int, Int>) {
+        cartItems = newCartItems.toMap()
+        notifyDataSetChanged()
+    }
+
     //new malak
-    fun updateProductInCart(productId: Int, quantity: Int = 1) {
-        val index = productsList.indexOfFirst { it.ID == productId }
+//    fun updateProductInCart(productId: Int, quantity: Int = 1) {
+//        val index = productsList.indexOfFirst { it.ID == productId }
+//        if (index != -1) {
+//            productsList[index].MY_QUANTITY = quantity
+//            notifyItemChanged(index)
+//        }
+//    }
+
+    fun updateCartQuantity(
+        productId: Int,
+        quantity: Int
+    ) {
+        val updatedCartItems = cartItems.toMutableMap()
+
+        if (quantity > 0) {
+            updatedCartItems[productId] = quantity
+        } else {
+            updatedCartItems.remove(productId)
+        }
+
+        cartItems = updatedCartItems
+
+        val index = productsList.indexOfFirst {
+            it.ID == productId
+        }
+
         if (index != -1) {
-            productsList[index].MY_QUANTITY = quantity
             notifyItemChanged(index)
         }
     }

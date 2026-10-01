@@ -7,6 +7,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,6 +55,8 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
+
+        handleTopBottomKeyboard()
         guestHandling()
         if (SharedPreferenceHelper.isLogged!!) {
             observeCart()
@@ -61,10 +66,20 @@ class CartFragment : BaseFragment() {
             setupClickListeners()
         }
 
-         /* binding.cardAddress.setOnClickListener {
-            val intent = Intent(requireContext(), AddressesActivity::class.java)
-            startActivity(intent)
-        }*/ // malak
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.popBackStack()
+                }
+            }
+        )
+
+        /* binding.cardAddress.setOnClickListener {
+           val intent = Intent(requireContext(), AddressesActivity::class.java)
+           startActivity(intent)
+       }*/ // malak
         val currentLang = SharedPreferenceHelper.language
         if (currentLang == "ar") {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -187,6 +202,10 @@ class CartFragment : BaseFragment() {
                                 0.0,
                                 0.0
                             )
+                        binding.tvTotal.text =
+                            "${state.data.data.firstOrNull()?.totalCartsData?.cartTotal} ${
+                                getString(R.string.currency)
+                            }"
                         if (cartData.isNotEmpty()) {
                             setupParentRecycler(cartData)
                             updateCartSummaryUI()
@@ -350,6 +369,25 @@ class CartFragment : BaseFragment() {
         updateCartSummaryUI()
     }
 
+    private fun handleTopBottomKeyboard() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val imeInsets = insets.getInsets(
+                WindowInsetsCompat.Type.ime()
+            )
+            view.setPadding(
+                view.paddingLeft,
+                0,
+                view.paddingRight,
+                maxOf(
+                    imeInsets.bottom,
+                    systemBars.bottom
+                )
+            )
+            insets
+        }
+    }
 
 }
 

@@ -55,10 +55,12 @@
             android:background="@drawable/btn_floating_style"
             android:foreground="?android:attr/selectableItemBackground"
             android:padding="15dp"
+            android:visibility="gone"
             android:src="@drawable/ic_home_floating"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

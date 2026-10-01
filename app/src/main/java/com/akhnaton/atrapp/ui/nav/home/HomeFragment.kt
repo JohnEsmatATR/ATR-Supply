@@ -189,10 +189,10 @@ class HomeFragment : BaseFragment() {
         }
 
         binding.layoutCart.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.flFragment, CartFragment())
-                commit()
-            }
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.flFragment, CartFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         return binding.root

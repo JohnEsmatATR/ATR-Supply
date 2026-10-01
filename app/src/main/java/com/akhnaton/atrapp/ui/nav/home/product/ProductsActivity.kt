@@ -444,7 +444,8 @@ class ProductsActivity : BaseActivity() {
 
                                 val addedItemId = state.data.data?.item_id?.toIntOrNull()
                                 if (addedItemId != null) {
-                                    adapter.updateProductInCart(addedItemId, quantity = 1)
+                                    adapter.updateCartQuantity(addedItemId, quantity = 1)
+//                                    adapter.updateProductInCart(addedItemId, quantity = 1)
                                 }
                             } else {
                                 showToastSnack(state.data.message ?: "", true)
@@ -621,6 +622,7 @@ class ProductsActivity : BaseActivity() {
             val layoutManager = GridLayoutManager(this, 2)
 
             adapter = ProductAdapter(
+                cartItems = cartItems.toMap(),
                 onClick = { product, _, sharedView, transitionName ->
                     val intent =
                         Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
@@ -762,9 +764,10 @@ class ProductsActivity : BaseActivity() {
                     }
 
                     is CartStatus.GetMyCart -> {
-//                        handleLoadingState(isLoading = false, isPagination = false)
                         if (state.data.status == 200) {
+
                             cartItems.clear()
+
                             state.data.data.orEmpty().forEach { cartData ->
                                 cartData.carts.orEmpty().forEach { cart ->
                                     cart.items?.products.orEmpty().forEach { product ->
@@ -772,7 +775,12 @@ class ProductsActivity : BaseActivity() {
                                     }
                                 }
                             }
+
                             Log.d("CART", "cartItems = $cartItems")
+
+                            if (::adapter.isInitialized) {
+                                adapter.updateCartItems(cartItems)
+                            }
                         }
                     }
 

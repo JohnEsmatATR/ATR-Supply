@@ -11,18 +11,24 @@
 
 
 
+<!--        <item-->
+<!--            android:id="@+id/cart"-->
+<!--            android:title="@string/cart"-->
+<!--            android:icon="@drawable/ic_cart"-->
+<!--            />-->
+
         <item
-            android:id="@+id/cart"
-            android:title="@string/cart"
-            android:icon="@drawable/ic_cart"
+            android:id="@+id/tracking"
+            android:title="@string/track_order"
+            android:icon="@drawable/ic_home_floating"
             />
 
 
 
-        <item
-            android:id="@+id/nothig"
-            android:title="@string/nothing"
-            />
+<!--        <item-->
+<!--            android:id="@+id/nothig"-->
+<!--            android:title="@string/nothing"-->
+<!--            />-->
 
 
 
