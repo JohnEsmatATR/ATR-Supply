@@ -16,10 +16,21 @@ import com.akhnaton.atrapp.ui.auth.PasswordResetSuccessfullyActivity
 import kotlinx.coroutines.launch
 
 class NewPasswordActivity : BaseActivity() {
+
     lateinit var binding: ActivityNewPasswordBinding
     private val viewModel: ChangePasswordViewModel by viewModels()
-    var email = ""
-    var otp = ""
+
+    private var email = ""
+    private var otp = ""
+
+    companion object {
+        private const val LANGUAGE_AR = "ar"
+        private const val HTTP_STATUS_SUCCESS = 200
+
+        // Intent Extras
+        const val EXTRA_EMAIL = "email"
+        const val EXTRA_OTP = "otp"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +42,16 @@ class NewPasswordActivity : BaseActivity() {
     }
 
     private fun init() {
-        var isArabic = SharedPreferenceHelper.language == "ar"
-        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
-        else binding.btnBack.setImageResource(R.drawable.ic_back)
+        val isArabic = SharedPreferenceHelper.language == LANGUAGE_AR
+        if (isArabic) {
+            binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        } else {
+            binding.btnBack.setImageResource(R.drawable.ic_back)
+        }
 
-        email = intent!!.getStringExtra("email") ?: ""
-        otp = intent!!.getStringExtra("otp") ?: ""
+        email = intent?.getStringExtra(EXTRA_EMAIL).orEmpty()
+        otp = intent?.getStringExtra(EXTRA_OTP).orEmpty()
+
         observeChangePassword()
     }
 
@@ -49,38 +64,35 @@ class NewPasswordActivity : BaseActivity() {
                 fetchChangePassword()
             }
         }
-
     }
 
     private fun observeChangePassword() {
         lifecycleScope.launch {
-            viewModel.state.collect {
-                when (it) {
-                    is ChangePasswordStatus.Idle -> Log.d(Common.KeroDebug, "observeLogin: it")
+            viewModel.state.collect { status ->
+                when (status) {
+                    is ChangePasswordStatus.Idle -> {
+                        Log.d(Common.KeroDebug, "ChangePasswordStatus: Idle")
+                    }
                     is ChangePasswordStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeLogin: it")
+                        Log.d(Common.KeroDebug, "ChangePasswordStatus: Loading")
                         showProgressDialog(binding.progressLoading)
                     }
-
                     is ChangePasswordStatus.ChangePassword -> {
-                        if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, false)
+                        hideProgressDialog(binding.progressLoading)
+                        if (status.data.status == HTTP_STATUS_SUCCESS) {
+                            showToastSnack(status.data.message, false)
 
                             val intent = Intent(baseContext, PasswordResetSuccessfullyActivity::class.java)
                             startActivity(intent)
                             finishAffinity()
-
                         } else {
-                            hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
+                            showToastSnack(status.data.message, true)
                         }
                     }
-
                     is ChangePasswordStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeLogin Error: ${it.error.toString()}")
+                        Log.d(Common.KeroDebug, "ChangePasswordStatus Error: ${status.error}")
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        showToastSnack(status.error.toString(), true)
                     }
                 }
             }
@@ -88,22 +100,21 @@ class NewPasswordActivity : BaseActivity() {
     }
 
     private fun fetchChangePassword() {
+        val password = binding.layoutPassword.editText?.text?.toString().orEmpty()
         lifecycleScope.launch {
             viewModel.sendOtpIntent.send(
                 ChangePasswordIntent.SendOtp(
                     email,
                     otp,
-                    binding.layoutPassword.editText!!.text.toString(),
+                    password
                 )
             )
         }
-
     }
 
     private fun isVerify(): Boolean {
-        val password = binding.layoutPassword.editText!!.text.toString()
-        val confirmPassword = binding.layoutConfirmPassword.editText!!.text.toString()
-        return password.equals(confirmPassword)
+        val password = binding.layoutPassword.editText?.text?.toString().orEmpty()
+        val confirmPassword = binding.layoutConfirmPassword.editText?.text?.toString().orEmpty()
+        return password == confirmPassword
     }
-
 }

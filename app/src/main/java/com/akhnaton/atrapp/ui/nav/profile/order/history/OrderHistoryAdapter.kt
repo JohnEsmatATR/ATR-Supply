@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel
@@ -109,21 +110,21 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
             } else {
                 imageView.background = createCircleDrawable(
                     Color.WHITE,
-                    Color.parseColor("#DDDDDD")
+                    ContextCompat.getColor(labelView.context, R.color.light_gray)
                 )
                 imageView.setImageDrawable(null)
                 imageView.clearColorFilter()
-                labelView.setTextColor(Color.parseColor("#C5C5C5"))
+                labelView.setTextColor(ContextCompat.getColor(labelView.context, R.color.firstColor))
             }
         }
 
         private fun bindLine(line: View, step: StatusGroup?) {
             if (step?.isCompleted == true) {
                 line.setBackgroundColor(
-                    parseColor(step.color, Color.parseColor("#FF9500"))
+                    parseColor(step.color, ContextCompat.getColor(line.context, R.color.secondColor))
                 )
             } else {
-                line.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                line.setBackgroundColor(ContextCompat.getColor(line.context, R.color.thirdColor))
             }
         }
 

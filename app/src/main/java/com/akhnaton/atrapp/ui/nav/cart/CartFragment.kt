@@ -66,7 +66,7 @@ class CartFragment : BaseFragment() {
             startActivity(intent)
         }*/ // malak
         val currentLang = SharedPreferenceHelper.language
-        if (currentLang == "ar") {
+        if (currentLang == LANGUAGE_AR) {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
         } else {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_LTR
@@ -228,7 +228,7 @@ class CartFragment : BaseFragment() {
 
     private fun getMyCart() {
         lifecycleScope.launch {
-            val lang = SharedPreferenceHelper.language ?: "ar"
+            val lang = SharedPreferenceHelper.language ?: DEFAULT_LANGUAGE
             cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
         }
     }
@@ -262,7 +262,7 @@ class CartFragment : BaseFragment() {
 
     private fun updateCartSummaryUI() {
         val context = binding.root.context
-        val appLocaleCode = SharedPreferenceHelper.language ?: "ar"
+        val appLocaleCode = SharedPreferenceHelper.language ?: DEFAULT_LANGUAGE
         val appLocale = Locale(appLocaleCode)
 
         if (cartData.isEmpty()) {
@@ -276,16 +276,14 @@ class CartFragment : BaseFragment() {
 //        val totals = cartViewModel.calculateCartTotals(allProducts)
         val totals = cartSummary
         val totalBeforeDiscount = totals.cartTotal + totals.totalDiscount
-        if (appLocaleCode == "ar") {
+        if (appLocaleCode == LANGUAGE_AR) {
             binding.txtItemTotal.gravity = Gravity.START
             binding.txtDiscount.gravity = Gravity.START
             binding.txtGrandTotal.gravity = Gravity.START
         }
 
         binding.txtItemTotal.text =
-            formatNumber(totalBeforeDiscount, appLocale) + " " + resources.getString(
-                R.string.currency
-            )
+            formatNumber(totalBeforeDiscount, appLocale) + " " + resources.getString(R.string.currency)
         binding.txtDiscount.text =
             formatNumber(totals.totalDiscount, appLocale) + " " + resources.getString(
                 R.string.currency
@@ -349,6 +347,10 @@ class CartFragment : BaseFragment() {
         updateCartSummaryUI()
     }
 
+    companion object {
+        private const val LANGUAGE_AR = "ar"
+        private const val DEFAULT_LANGUAGE = "ar"
+    }
 
 }
 

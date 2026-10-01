@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:text="Cosmetics"
+            android:text="@string/cosmetics"
             android:textColor="@color/dark_gray"
             android:textSize="18sp"
             android:textStyle="bold" />

@@ -54,5 +54,51 @@
     <color name="hint_gray">#808080</color>
 
     <color name="search_orange">#E65100</color>
+    <color name="light_gray">#DDDDDD</color>
+
+    <color name="firstColor">#C5C5C5</color>
+    <color name="secondColor">#FF9500</color>
+    <color name="thirdColor">#C5C5C5</color>
+    <color name="forthColor">#E5E5E5</color>
+
+    <color name="sheet_handle_color">#D0D0D0</color>
+    <color name="sub_text_gray">#7A7A7A</color>
+    <color name="my_divider_gray">#E0E0E0</color>
+
+    <color name="add_to_cart_orange">#EB7D1E</color>
+    <color name="product_card_background">#FFFDF9</color>
+    <color name="icon_gray">#A0A0A0</color>
+    <color name="text_gray">#757575</color>
+    <color name="divider">#EFEFEF</color>
+    <color name="info_icon_background">#E8E8EC</color>
+    <color name="secondary_text">#8C8C8C</color>
+    <color name="filter_title">#202020</color>
+    <color name="filter_subtitle">#999999</color>
+    <color name="filter_divider">#EEEEEE</color>
+    <color name="filter_reset_text">#333333</color>
+    <color name="filter_stroke">#CCCCCC</color>
+    <color name="sort_reset_text">#323232</color>
+    <color name="cart_background">#FAFAFA</color>
+    <color name="cart_icon_background">#F0F0F2</color>
+    <color name="cart_icon_tint">#8E8E93</color>
+    <color name="discount_icon_background">#E8F5E9</color>
+    <color name="cart_orange">#FF6F00</color>
+
+    <color name="profile_blue_light">#E1F5FE</color>
+    <color name="order_history_icon">#0288D1</color>
+    <color name="profile_green">#388E3C</color>
+    <color name="profile_privacy_light">#ECEFF1</color>
+    <color name="profile_privacy">#607D8B</color>
+    <color name="profile_about_light">#E0F7FA</color>
+    <color name="profile_about">#00ACC1</color>
+    <color name="profile_contact_light">#FBE9E7</color>
+    <color name="profile_contact">#FF7043</color>
+    <color name="profile_rate_light">#FFFDE7</color>
+    <color name="profile_star">#FBC02D</color>
+    <color name="profile_logout_light">#FFEBEE</color>
+    <color name="order_number_gray">#888888</color>
+    <color name="order_stepper_background">#FAF9F9</color>
+    <color name="order_item_quantity_background">#F2F4F7</color>
+    <color name="product_details_background">#FFFFFF</color>
 
 </resources>

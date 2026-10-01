@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
@@ -33,8 +34,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
 
-        requireActivity().window.statusBarColor =
-            Color.parseColor("#EE6D18")
+        //no hardcoded
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
 
         requireActivity().window.decorView.systemUiVisibility =
             requireActivity().window.decorView.systemUiVisibility and
@@ -100,7 +101,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
             ?: Locale.getDefault().language
 
-        val chevronIcon = if (lang == "ar") R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
+        //no hardcoded
+        val chevronIcon = if (lang == LANG_AR) R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
 
         binding.imageView6.setImageResource(chevronIcon)
         binding.icProfile.setImageResource(R.drawable.ic_profile)
@@ -151,9 +153,12 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             }
             binding.cardMoreCredit.id -> {
                 val intent = Intent(requireContext(), CreditInfoActivity::class.java).apply {
-                    putExtra("EXTRA_CREDIT_LIMIT", "$creditLimit EGP")
-                    putExtra("EXTRA_USED_CREDIT", "$usedCredit EGP")
-                    putExtra("EXTRA_AVAILABLE_CREDIT", "$availableCredit EGP")
+
+                    //no hardcoded
+                    val currencySymbol = getString(R.string.currency)
+                    putExtra(EXTRA_CREDIT_LIMIT, "$creditLimit $currencySymbol")
+                    putExtra(EXTRA_USED_CREDIT, "$usedCredit $currencySymbol")
+                    putExtra(EXTRA_AVAILABLE_CREDIT, "$availableCredit $currencySymbol")
                 }
                 startActivity(intent)
             }
@@ -174,7 +179,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                     isLogged = false
                     userObj = null
                     userToken = null
-                    language = "en"
+                    //no hardcoded
+                    language = DEFAULT_LANG
                 }
 
                 val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -196,5 +202,13 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         usedCredit = used
         availableCredit = available
         Log.d("CreditInfoData", "Data Updated -> Limit: $limit, Used: $used, Available: $available")
+    }
+
+    companion object {
+        private const val LANG_AR = "ar"
+        private const val DEFAULT_LANG = "en"
+        const val EXTRA_CREDIT_LIMIT = "EXTRA_CREDIT_LIMIT"
+        const val EXTRA_USED_CREDIT = "EXTRA_USED_CREDIT"
+        const val EXTRA_AVAILABLE_CREDIT = "EXTRA_AVAILABLE_CREDIT"
     }
 }

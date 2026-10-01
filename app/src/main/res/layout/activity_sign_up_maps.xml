@@ -83,7 +83,7 @@
             app:boxBackgroundColor="@color/white"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:visibility="visible"
-            android:hint="العنوان المقترح"
+            android:hint="@string/suggested_address"
             android:layout_marginBottom="@dimen/_20sdp"
             app:boxStrokeColor="@color/orange"
             app:boxStrokeWidth="1dp">

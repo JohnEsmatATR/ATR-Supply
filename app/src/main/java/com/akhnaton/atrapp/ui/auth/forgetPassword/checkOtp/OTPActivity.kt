@@ -17,17 +17,26 @@ import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.chackOtp.CheckOtpIntent
 import com.akhnaton.atrapp.data.statuesValue.auth.forgetPassword.chackOtp.CheckOtpStatus
-import com.akhnaton.atrapp.ui.auth.forgetPassword.changePassword.NewPasswordActivity
 import com.akhnaton.atrapp.databinding.ActivityOtpactivityBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.forgetPassword.changePassword.NewPasswordActivity
 import kotlinx.coroutines.launch
 
 class OTPActivity : BaseActivity() {
+
     lateinit var binding: ActivityOtpactivityBinding
     private val viewModel: CheckOTPViewModel by viewModels()
-    var email = ""
+    private var email = ""
+
+    companion object {
+        private const val LANGUAGE_AR = "ar"
+        private const val HTTP_STATUS_SUCCESS = 200
+        private const val KEYBOARD_DELAY_MS = 200L
+        const val EXTRA_EMAIL = "email"
+        const val EXTRA_OTP = "otp"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,34 +48,37 @@ class OTPActivity : BaseActivity() {
     }
 
     private fun init() {
-        var isArabic = SharedPreferenceHelper.language == "ar"
-        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
-        else binding.btnBack.setImageResource(R.drawable.ic_back)
+        val isArabic = SharedPreferenceHelper.language == LANGUAGE_AR
+        if (isArabic) {
+            binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        } else {
+            binding.btnBack.setImageResource(R.drawable.ic_back)
+        }
 
-        email = intent!!.getStringExtra("email")?:""
+        email = intent?.getStringExtra(EXTRA_EMAIL).orEmpty()
         observeCheckOtp()
         setupOtpInputs()
     }
-    
+
     private fun setupOtpInputs() {
         val editTexts = listOf(
             binding.et1, binding.et2, binding.et3, binding.et4
         )
-        
+
         binding.et1.requestFocus()
         binding.et1.postDelayed({
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(binding.et1, InputMethodManager.SHOW_IMPLICIT)
-        }, 200)
-        
+        }, KEYBOARD_DELAY_MS)
+
         for (i in editTexts.indices) {
             val editText = editTexts[i]
-            
+
             editText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     val inputs = editTexts.map { it.text.toString() }
                     val isComplete = inputs.all { it.length == 1 }
-                    
+
                     // Show/hide button based on completion
                     if (isComplete) {
                         if (binding.btnNext.isInvisible) {
@@ -83,16 +95,16 @@ class OTPActivity : BaseActivity() {
                             binding.btnNext.visibility = View.INVISIBLE
                         }
                     }
-                    
+
                     if (s?.length == 1 && i < editTexts.size - 1) {
                         editTexts[i + 1].requestFocus()
                     }
                 }
-                
+
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             })
-            
+
             editText.setOnKeyListener { _, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_DEL &&
                     event.action == KeyEvent.ACTION_DOWN &&
@@ -118,36 +130,36 @@ class OTPActivity : BaseActivity() {
 
     private fun observeCheckOtp() {
         lifecycleScope.launch {
-            viewModel.state.collect {
-                when (it) {
-                    is CheckOtpStatus.Idle -> Log.d(Common.KeroDebug, "observeLogin: it")
+            viewModel.state.collect { status ->
+                when (status) {
+                    is CheckOtpStatus.Idle -> {
+                        Log.d(Common.KeroDebug, "CheckOtpStatus: Idle")
+                    }
                     is CheckOtpStatus.Loading -> {
-                        Log.d(Common.KeroDebug, "observeLogin: it")
+                        Log.d(Common.KeroDebug, "CheckOtpStatus: Loading")
                         showProgressDialog(binding.progressLoading)
                     }
-
                     is CheckOtpStatus.CheckOtp -> {
-                        if (it.data.status == 200) {
+                        if (status.data.status == HTTP_STATUS_SUCCESS) {
                             hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, false)
+                            showToastSnack(status.data.message, false)
 
                             val intent = Intent(baseContext, NewPasswordActivity::class.java)
                             val editTexts = listOf(binding.et1, binding.et2, binding.et3, binding.et4)
                             val otp = editTexts.joinToString("") { it.text.toString() }
-                            intent.putExtra("email", email)
-                            intent.putExtra("otp", otp)
-                            startActivity(intent)
 
+                            intent.putExtra(NewPasswordActivity.EXTRA_EMAIL, email)
+                            intent.putExtra(NewPasswordActivity.EXTRA_OTP, otp)
+                            startActivity(intent)
                         } else {
                             hideProgressDialog(binding.progressLoading)
-                            showToastSnack(it.data.message, true)
+                            showToastSnack(status.data.message, true)
                         }
                     }
-
                     is CheckOtpStatus.Error -> {
-                        Log.d(Common.KeroDebug, "observeLogin Error: ${it.error.toString()}")
+                        Log.d(Common.KeroDebug, "CheckOtpStatus Error: ${status.error}")
                         hideProgressDialog(binding.progressLoading)
-                        showToastSnack(it.error.toString(), true)
+                        showToastSnack(status.error.toString(), true)
                     }
                 }
             }
@@ -157,7 +169,7 @@ class OTPActivity : BaseActivity() {
     private fun fetchCheckOTP() {
         val editTexts = listOf(binding.et1, binding.et2, binding.et3, binding.et4)
         val otp = editTexts.joinToString("") { it.text.toString() }
-        
+
         lifecycleScope.launch {
             viewModel.sendOtpIntent.send(
                 CheckOtpIntent.SendOtp(
@@ -167,5 +179,4 @@ class OTPActivity : BaseActivity() {
             )
         }
     }
-
 }

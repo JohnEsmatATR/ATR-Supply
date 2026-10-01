@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Category Title"
+            android:text="@string/category_title"
             android:textColor="@color/black"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold" />

@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/white"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -15,7 +15,7 @@
             android:layout_height="4dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"
-            android:background="#D0D0D0" />
+            android:background="@color/sheet_handle_color" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/items_count_label"
-                android:textColor="#7A7A7A"
+                android:textColor="@color/sub_text_gray"
                 android:textSize="14sp" />
 
             <TextView
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginVertical="8dp"
-            android:background="#E0E0E0" />
+            android:background="@color/my_divider_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -157,7 +157,7 @@
                 android:id="@+id/txtGrandTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#E8750A"
+                android:textColor="@color/order_details_orange"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 tools:text="5,569.00 L.E" />

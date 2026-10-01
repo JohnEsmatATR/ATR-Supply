@@ -35,6 +35,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import java.util.Locale
 
 class HomeActivity : BaseActivity() {
+
     lateinit var binding: ActivityHomeBinding
     private var backPressedTime: Long = 0
 
@@ -260,7 +261,8 @@ class HomeActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (intent.getBooleanExtra("open_cart", false)) {
+        //no hardcoded
+        if (intent.getBooleanExtra(EXTRA_OPEN_CART, false)) {
 
             setItemSelected(R.id.cart)
             binding.bottomNavigationView.selectedItemId = R.id.cart
@@ -278,13 +280,13 @@ class HomeActivity : BaseActivity() {
                 // لو في Home → لازم ضغطتين
                 if (backPressedTime + 2000 > System.currentTimeMillis()) {
                     AlertDialog.Builder(this@HomeActivity)
-                        .setTitle("الخروج")
-                        .setMessage("هل تريد الخروج من التطبيق؟")
-                        .setPositiveButton("نعم") { _, _ -> finish() }
-                        .setNegativeButton("لا", null)
+                        .setTitle(R.string.exit_title)
+                        .setMessage(R.string.exit_message)
+                        .setPositiveButton(R.string.yes) { _, _ -> finish() }
+                        .setNegativeButton(R.string.no, null)
                         .show()
                 } else {
-                    Toast.makeText(this@HomeActivity, "اضغط مرة أخرى للخروج", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@HomeActivity, R.string.press_again_to_exit, Toast.LENGTH_SHORT).show()
                 }
                 backPressedTime = System.currentTimeMillis()
             }
@@ -326,7 +328,8 @@ class HomeActivity : BaseActivity() {
         if (isGranted) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Toast.makeText(baseContext, "Fetching FCM registration token failed", Toast.LENGTH_SHORT).show()
+                    //no hardcoded
+                    Toast.makeText(baseContext, getString(R.string.error_fcm_token_failed), Toast.LENGTH_SHORT).show()
                     return@OnCompleteListener
                 }
                 val token = task.result
@@ -334,7 +337,7 @@ class HomeActivity : BaseActivity() {
 //                Toast.makeText(baseContext, "token : $token", Toast.LENGTH_SHORT).show()
             })
         } else {
-            Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.error_notification_permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -361,8 +364,9 @@ class HomeActivity : BaseActivity() {
     private fun setLayoutDirection() {
         val lang = SharedPreferenceHelper.language ?: Locale.getDefault().language
 
-        Log.d("WHAT",lang)
-        if (lang == "ar") {
+        //no hardcoded
+        Log.d(TAG, "Current language: $lang")
+        if (lang == LANG_AR) {
             ViewCompat.setLayoutDirection(binding.bottomNavigationView, ViewCompat.LAYOUT_DIRECTION_RTL)
 //            reverseBottomNavMenu(true)
         } else {
@@ -383,6 +387,11 @@ class HomeActivity : BaseActivity() {
     }
 
     companion object {
+
+        //no hardcoded
+        private const val TAG = "HomeActivity"
+        private const val LANG_AR = "ar"
+        const val EXTRA_OPEN_CART = "open_cart"
         private const val UPDATE_REQUEST_CODE = 100
     }
 }

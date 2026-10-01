@@ -149,7 +149,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:text="@string/used_credit"
-                        android:textColor="#666666"
+                        android:textColor="@color/gray_text"
                         android:textSize="14sp" />
 
                     <TextView

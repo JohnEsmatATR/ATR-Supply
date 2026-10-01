@@ -30,7 +30,8 @@ class LanguageActivity : BaseActivity(), View.OnClickListener {
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this@LanguageActivity, R.layout.activity_language)
 
-        var isArabic = SharedPreferenceHelper.language == "ar"
+        //no hardcoded
+        val isArabic = SharedPreferenceHelper.language == LANG_AR
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
@@ -45,8 +46,10 @@ class LanguageActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             binding.btnBack.id -> finish()
-            binding.btnArabic.id -> changeLanguage("ar")
-            binding.btnEnglish.id -> changeLanguage("en")
+
+            //no hardcoded
+            binding.btnArabic.id -> changeLanguage(LANG_AR)
+            binding.btnEnglish.id -> changeLanguage(LANG_EN)
         }
     }
 
@@ -60,14 +63,17 @@ class LanguageActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateSelectedLanguageUI() {
-        val selectedLang = SharedPreferenceHelper.language ?: "ar"
+
+        //no hardcoded
+        val selectedLang = SharedPreferenceHelper.language ?: LANG_AR
 
 
         binding.layoutEnglish.findViewById<ImageView>(R.id.ic_checkmark).visibility = View.GONE
         binding.layoutArabic.findViewById<ImageView>(R.id.ic_checkmark2).visibility = View.GONE
 
 
-        if (selectedLang == "en") {
+        //no hardcoded
+        if (selectedLang == LANG_EN) {
 
             binding.layoutEnglish.strokeColor = ContextCompat.getColor(this, R.color.orange)
             binding.layoutEnglish.strokeWidth = 3
@@ -79,6 +85,11 @@ class LanguageActivity : BaseActivity(), View.OnClickListener {
             binding.layoutEnglish.strokeWidth = 3
         }
 
+    }
+
+    companion object {
+        private const val LANG_AR = "ar"
+        private const val LANG_EN = "en"
     }
 }
 

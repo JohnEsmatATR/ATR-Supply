@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
+    android:background="@color/bg_light_gray"
     android:clipToPadding="false"
     android:fillViewport="true"
     android:paddingBottom="24dp"
@@ -83,7 +83,7 @@
                         android:id="@+id/cardProfileIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#FFF3E0"
+                        app:cardBackgroundColor="@color/order_details_icon_background"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -98,7 +98,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="@string/account_detailss"
                             android:src="@drawable/ic_profile"
-                            app:tint="#E8750A" />
+                            app:tint="@color/order_details_orange" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -124,7 +124,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="#CCCCCC" />
+                        app:tint="@color/filter_stroke" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -133,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="8dp"
-                    android:background="#F0F0F0" />
+                    android:background="@color/divider_gray" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/orderLayout"
@@ -144,7 +144,7 @@
                         android:id="@+id/cardClockIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#E1F5FE"
+                        app:cardBackgroundColor="@color/profile_blue_light"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -158,7 +158,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_clock"
-                            app:tint="#0288D1" />
+                            app:tint="@color/order_history_icon" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -220,7 +220,7 @@
                         android:id="@+id/cardCreditIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#E8F5E9"
+                        app:cardBackgroundColor="@color/discount_icon_background"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -287,8 +287,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Credit Limit:"
-                            android:textColor="#666666"
+                            android:text="@string/more_credit_info"
+                            android:textColor="@color/gray_text"
                             android:textSize="13sp" />
 
                         <TextView
@@ -311,7 +311,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Used Credit:"
+                            android:text="@string/used_credit"
                             android:textColor="#666666"
                             android:textSize="13sp" />
 
@@ -335,7 +335,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Available Credit:"
+                            android:text="@string/available_credit"
                             android:textColor="#666666"
                             android:textSize="13sp" />
 
@@ -383,7 +383,7 @@
                         android:id="@+id/cardWorldIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#E8F5E9"
+                        app:cardBackgroundColor="@color/discount_icon_background"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -397,7 +397,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_world"
-                            app:tint="#388E3C" />
+                            app:tint="@color/profile_green" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -442,7 +442,7 @@
                         android:id="@+id/cardPrivacyIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#ECEFF1"
+                        app:cardBackgroundColor="@color/profile_privacy_light"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -456,7 +456,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_privacy"
-                            app:tint="#607D8B" />
+                            app:tint="@color/profile_privacy" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -501,7 +501,7 @@
                         android:id="@+id/cardAboutIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#E0F7FA"
+                        app:cardBackgroundColor="@color/profile_about_light"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -515,7 +515,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_about"
-                            app:tint="#00ACC1" />
+                            app:tint="@color/profile_about" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -560,7 +560,7 @@
                         android:id="@+id/cardContactIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#FBE9E7"
+                        app:cardBackgroundColor="@color/profile_contact_light"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -574,7 +574,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_phone"
-                            app:tint="#FF7043" />
+                            app:tint="@color/profile_contact" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -618,7 +618,7 @@
                         android:id="@+id/cardStarIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#FFFDE7"
+                        app:cardBackgroundColor="@color/profile_rate_light"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -632,7 +632,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_star"
-                            app:tint="#FBC02D" />
+                            app:tint="@color/profile_star" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -695,7 +695,7 @@
                         android:id="@+id/cardLogoutIcon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        app:cardBackgroundColor="#FFEBEE"
+                        app:cardBackgroundColor="@color/profile_logout_light"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -709,7 +709,7 @@
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_logout"
-                            app:tint="#D32F2F" />
+                            app:tint="@color/red_alert" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
@@ -719,7 +719,7 @@
                         android:layout_marginStart="12dp"
                         android:gravity="start"
                         android:text="@string/log_out"
-                        android:textColor="#D32F2F"
+                        android:textColor="@color/red_alert"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"

@@ -16,7 +16,7 @@ class PrivacyActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_privacy)
 
-        var isArabic = SharedPreferenceHelper.language == "ar"
+        val isArabic = SharedPreferenceHelper.language == LANG_AR
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
@@ -28,5 +28,9 @@ class PrivacyActivity : BaseActivity(), View.OnClickListener {
         if (v.id == binding.btnBack.id) {
             finish()
         }
+    }
+
+    companion object {
+        private const val LANG_AR = "ar"
     }
 }

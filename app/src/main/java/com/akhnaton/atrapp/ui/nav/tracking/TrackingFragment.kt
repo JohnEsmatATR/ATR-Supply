@@ -152,7 +152,7 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
             { _, year: Int, monthOfYear: Int, dayOfMonth: Int ->
                 val selectedDate = Calendar.getInstance()
                 selectedDate.set(year, monthOfYear, dayOfMonth)
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.getDefault())
                 val formattedDate = dateFormat.format(selectedDate.time)
                 if (binding.fromED.id == id) {
                     binding.fromED.setText(formattedDate.toString())
@@ -220,7 +220,14 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
         Log.d("ORDER_PASS", "111")
 
         val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
-        intent.putExtra("ORDER_ID", data.ORDER_ID)
+        intent.putExtra(EXTRA_ORDER_ID, data.ORDER_ID)
         startActivity(intent)
     }
+
+    companion object {
+        private const val TAG = "TrackingFragment"
+        const val EXTRA_ORDER_ID = "ORDER_ID"
+        private const val DATE_FORMAT_PATTERN = "dd/MM/yyyy"
+    }
+
 }

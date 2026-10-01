@@ -344,4 +344,33 @@
     <string name="return_summary">ملخص المرتجع</string>
     <string name="estimated_refund_value">قيمة المبلغ المسترد المتوقعة</string>
 
+    <string name="error_enter_customer_code">ادخل كود العميل</string>
+    <string name="error_enter_phone_number">ادخل رقم الهاتف</string>
+    <string name="error_phone_length_invalid">رقم الهاتف يجب أن يكون 11 رقم</string>
+    <string name="error_enter_email">ادخل البريد الالكتروني</string>
+
+    <string name="otp_sent">تم ارسال رمز التحقق</string>
+
+    <string name="error_fcm_token_failed">فشل في الحصول على رمز الإشعارات</string>
+    <string name="error_notification_permission_denied">تم رفض إذن الإشعارات</string>
+
+    <string name="filter_badge_count">%1$d</string>
+    <string name="facebook_followers_posts">٣٫٨ ألف متابع   •   ١٣٦ منشور</string>
+    <string name="social_followers_posts">٢٠٫٣ ألف متابع   •   ١٣٦ منشور</string>
+    <string name="no_customer_found_message">لا يوجد رقم تليفون مسجل لدينا. برجاء التواصل مع المندوب</string>
+    <string name="default_quantity">1</string>
+    <string name="suggested_address">العنوان المقترح</string>
+    <string name="alert">تنبيه!</string>
+    <string name="are_you_sure_you_want_to_sign_out">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+    <string name="ok">موافق</string>
+    <string name="free">مجاني</string>
+    <string name="empty_cart_message">سلة التسوق فارغة. أضف بعض المنتجات للبدء!</string>
+    <string name="category_title">عنوان التصنيف</string>
+    <string name="generic_name">اسم المادة الفعالة الأولى</string>
+    <string name="two">2</string>
+    <string name="review_text">المنتج ممتاز مقابل السعر</string>
+    <string name="error_invalid_email">من فضلك أدخل عنوان بريد إلكتروني صحيح.</string>
+    <string name="error_email_or_phone_empty">من فضلك أدخل البريد الإلكتروني أو رقم الهاتف</string>
+    <string name="error_invalid_credentials">البريد الإلكتروني أو كلمة المرور غير صحيحة</string>
+
 </resources>

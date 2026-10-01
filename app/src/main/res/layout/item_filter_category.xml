@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="1st Generic Name"
+        android:text="@string/generic_name"
         android:textColor="#555555"
         android:textSize="15sp" />
 
@@ -24,7 +24,7 @@
         android:layout_height="32dp"
         android:background="@drawable/bg_category_count"
         android:gravity="center"
-        android:text="2"
+        android:text="@string/two"
         android:textColor="#FFFFFF"
         android:textSize="13sp"
         android:textStyle="bold"

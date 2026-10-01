@@ -17,7 +17,7 @@
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        app:strokeColor="#F0F0F0"
+        app:strokeColor="@color/divider_gray"
         app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +29,7 @@
                 android:id="@+id/cardImg"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                app:cardBackgroundColor="#F8F9FA"
+                app:cardBackgroundColor="@color/bg_light_gray"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:background="#F2F4F7"
+                android:background="@color/order_item_quantity_background"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
                 app:layout_constraintStart_toStartOf="@+id/productName"
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/qty_label"
-                    android:textColor="#888888"
+                    android:textColor="@color/order_number_gray"
                     android:textSize="12sp"
                     tools:text="Qty: " />
 
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{String.valueOf(data.QUANTITY)}"
-                    android:textColor="#888888"
+                    android:textColor="@color/order_number_gray"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="10" />
@@ -131,7 +131,7 @@
                     android:id="@+id/unitPriceDisplay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#888888"
+                    android:textColor="@color/order_number_gray"
                     android:textSize="11sp"
                     tools:text="(408.40 / unit)" />
 
@@ -139,7 +139,7 @@
                     android:id="@+id/priceWithTax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#E8750A"
+                    android:textColor="@color/order_details_orange"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="With Tax: 4,134.00 L.E" />
