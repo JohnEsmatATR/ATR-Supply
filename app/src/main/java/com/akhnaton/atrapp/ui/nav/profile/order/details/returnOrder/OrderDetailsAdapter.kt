@@ -74,7 +74,7 @@ class OrderDetailsAdapter :
 
             val context = binding.root.context
 
-            val currency = context.getString(R.string.LE_format)
+            val currency = context.getString(R.string.currency)
             val taxLabel = context.getString(R.string.tax)
             val priceWithTaxLabel = context.getString(R.string.price_with_tax)
             val unitSuffix = context.getString(R.string.unit_price_suffix)

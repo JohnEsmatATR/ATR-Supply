@@ -591,7 +591,19 @@ class ProductsActivity : BaseActivity() {
         }
 
         if (!product.IN_STOCK) {
-            showToastSnack("Product Out Of Stock", true)
+            DialogUtils.showResultDialog(
+                context = this@ProductsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.product_out_of_stock),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this@ProductsActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            )
             return
         }
 

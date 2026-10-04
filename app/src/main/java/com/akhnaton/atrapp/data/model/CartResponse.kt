@@ -42,7 +42,9 @@ data class Pagination(
     @SerializedName("current_page")
     val currentPage: Int,
     @SerializedName("page_size")
-    val pageSize: Int
+    val pageSize: Int,
+    @SerializedName("total_rows")
+    val totalRows: String
 )
 
 data class CartProduct(

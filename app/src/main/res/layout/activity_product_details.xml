@@ -195,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="2dp"
-                        android:text="@string/LE_format"
+                        android:text="@string/currency"
                         android:textColor="#757575"
                         android:textSize="14sp" />
                 </LinearLayout>

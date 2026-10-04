@@ -256,7 +256,7 @@ class ProductDetailsActivity : BaseActivity() {
         val unitPrice = pricePerUnit ?: product.PRICE_AFTER_DISCOUNT
         val currentQty = binding.txtQuantity.text.toString().toIntOrNull() ?: quantity //malaaaaaak
         val total = unitPrice * currentQty // malakkkkkkkk
-        binding.txtBottomTotalPrice.text = "$total L.E"
+        binding.txtBottomTotalPrice.text = "$total ${getString(R.string.currency)}"
     }
 
     private fun getProductDetails(productId: Int, category: String) {
@@ -345,9 +345,9 @@ class ProductDetailsActivity : BaseActivity() {
         Check out this product!
         
         Product: ${product.TITLE}
-        Price: ${product.PRICE_WITH_TAX}
-        Price Without Tax: ${product.PRICE_WITHOUT_TAX}
-        Tax: ${product.TAX}
+        Price: ${product.PRICE_WITH_TAX} ${getString(R.string.currency)}
+        Price Without Tax: ${product.PRICE_WITHOUT_TAX} ${getString(R.string.currency)}
+        Tax: ${product.TAX} ${getString(R.string.currency)}
     """.trimIndent()
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -475,7 +475,7 @@ class ProductDetailsActivity : BaseActivity() {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(
                 FavoriteIntent.AddProductToFavourites(
-                    "Bearer ${SharedPreferenceHelper.userToken}", productId, add, "Pharma"
+                    "Bearer ${SharedPreferenceHelper.userToken}", productId, add, flag
                 )
             )
         }

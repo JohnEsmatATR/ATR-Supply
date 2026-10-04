@@ -329,6 +329,8 @@
     <string name="search_for_cosmetics">البحث عن Cosmetics</string>
     <string name="search_for_supplements">البحث عن Supplements</string>
     <string name="search_for_mounjaro">البحث عن Mounjaro</string>
+    <string name="product_out_of_stock">الصنف إنتهى من المخزن</string>
+    <string name="added_to_cart">أُضيف إلى عربة التسوق</string>
 
 
 </resources>

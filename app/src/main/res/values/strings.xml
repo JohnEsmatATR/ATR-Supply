@@ -383,5 +383,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="search_for_cosmetics">Search For Cosmetics</string>
     <string name="search_for_supplements">Search For Supplements</string>
     <string name="search_for_mounjaro">Search For Mounjaro</string>
+    <string name="product_out_of_stock">Product Out Of Stock</string>
+    <string name="added_to_cart">Added To Cart</string>
 
 </resources>

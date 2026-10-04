@@ -19,7 +19,6 @@ import java.util.Locale
 class ProfileFragment : BaseFragment(), View.OnClickListener {
 
 
-
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -100,7 +99,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
             ?: Locale.getDefault().language
 
-        val chevronIcon = if (lang == "ar") R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
+        val chevronIcon =
+            if (lang == "ar") R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
 
         binding.imageView6.setImageResource(chevronIcon)
         binding.icProfile.setImageResource(R.drawable.ic_profile)
@@ -143,32 +143,42 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.accountLayout.id -> {
                 startActivity(Intent(requireContext(), AccountDetailsActivity::class.java))
             }
+
             binding.orderLayout.id -> {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.flFragment, TrackingFragment())
                     .addToBackStack(null)
                     .commit()
             }
+
             binding.cardMoreCredit.id -> {
                 val intent = Intent(requireContext(), CreditInfoActivity::class.java).apply {
-                    putExtra("EXTRA_CREDIT_LIMIT", "$creditLimit EGP")
-                    putExtra("EXTRA_USED_CREDIT", "$usedCredit EGP")
-                    putExtra("EXTRA_AVAILABLE_CREDIT", "$availableCredit EGP")
+                    putExtra("EXTRA_CREDIT_LIMIT", "$creditLimit ${getString(R.string.currency)}")
+                    putExtra("EXTRA_USED_CREDIT", "$usedCredit ${getString(R.string.currency)}")
+                    putExtra(
+                        "EXTRA_AVAILABLE_CREDIT",
+                        "$availableCredit ${getString(R.string.currency)}"
+                    )
                 }
                 startActivity(intent)
             }
+
             binding.languagesLayout.id -> {
                 startActivity(Intent(requireContext(), LanguageActivity::class.java))
             }
+
             binding.privacyLayout.id -> {
                 startActivity(Intent(requireContext(), PrivacyActivity::class.java))
             }
+
             binding.aboutLayout.id -> {
                 startActivity(Intent(requireContext(), AboutUsActivity::class.java))
             }
+
             binding.contactLayout.id -> {
                 startActivity(Intent(requireContext(), ContactUsActivity::class.java))
             }
+
             binding.logoutLayout.id -> {
                 SharedPreferenceHelper.apply {
                     isLogged = false

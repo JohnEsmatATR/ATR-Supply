@@ -86,11 +86,14 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                             val itemsCount = status.ahmed.item?.size ?: 0
                             val totalPieces = status.ahmed.item?.sumOf { it.QUANTITY ?: 1 } ?: 0
 
-                            val subtotalVal = status.ahmed.totalOrderPriceWithoutTax?.toDouble() ?: 0.0
+                            val subtotalVal =
+                                status.ahmed.totalOrderPriceWithoutTax?.toDouble() ?: 0.0
                             val taxVal = status.ahmed.totalOrderTax?.toDouble() ?: 0.0
-                            val grandTotalVal = status.ahmed.totalOrderPriceWithTax?.toDouble() ?: 0.0
+                            val grandTotalVal =
+                                status.ahmed.totalOrderPriceWithTax?.toDouble() ?: 0.0
 
-                            binding.total.text = "${grandTotalVal.toInt()} EGP"
+                            binding.total.text =
+                                "${grandTotalVal.toInt()} ${getString(R.string.currency)}"
 
                             binding.btnMoreDetails.setOnClickListener {
                                 val bottomSheet = OrderBottomSheet().apply {

@@ -286,7 +286,7 @@ class FavoriteFragment : BaseFragment() {
                     "Bearer ${SharedPreferenceHelper.userToken}",
                     productId,
                     add,
-                    "Pharma"
+                    flag
                 )
             )
         }
@@ -300,7 +300,7 @@ class FavoriteFragment : BaseFragment() {
                     "Bearer ${SharedPreferenceHelper.userToken}",
                     productId,
                     add,
-                    "Pharma"
+                    flag
                 )
             )
         }

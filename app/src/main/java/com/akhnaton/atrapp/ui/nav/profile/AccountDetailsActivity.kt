@@ -16,7 +16,7 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_account_details)
 
         init()
-        binding.updateBtn.setOnClickListener(this)
+//        binding.updateBtn.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
     }
 
@@ -27,17 +27,17 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
-        binding.layoutPdf.visibility = View.GONE
-        binding.passwordLayout.visibility = View.GONE
+//        binding.layoutPdf.visibility = View.GONE
+//        binding.passwordLayout.visibility = View.GONE
       //  binding.password.visibility = View.GONE
 
-        binding.nameED.isEnabled = false
-        binding.phoneED.isEnabled = false
-        binding.emailED.isEnabled = false
-        binding.addressED.isEnabled = false
+//        binding.nameED.isEnabled = false
+//        binding.phoneED.isEnabled = false
+//        binding.emailED.isEnabled = false
+//        binding.addressED.isEnabled = false
 
         // Ensure phone layout is visible
-        binding.phoneLayout.visibility = View.VISIBLE
+//        binding.phoneLayout.visibility = View.VISIBLE
 
         val user = SharedPreferenceHelper.userObj
         if (user != null) {
@@ -46,17 +46,19 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
             val email = user.email?.takeIf { it.isNotEmpty() } ?: ""
             val address = user.address?.ADDRESS?.takeIf { it.isNotEmpty() } ?: ""
             
-            binding.nameED.setText(fullName.ifEmpty { "-" })
-            binding.phoneED.setText(phone.ifEmpty { "-" })
-            binding.emailED.setText(email.ifEmpty { "-" })
-            binding.addressED.setText(address.ifEmpty { "-" })
+            binding.fullNameTxt.setText(fullName.ifEmpty { "-" })
+            binding.email.setText(email.ifEmpty { "-" })
+            binding.nameValue.setText(fullName.ifEmpty { "-" })
+            binding.emailValue.setText(email.ifEmpty { "-" })
+            binding.phoneValue.setText(phone.ifEmpty { "-" })
+            binding.addressValue.setText(address.ifEmpty { "-" })
         }
     }
 
     override fun onClick(v: View) {
-        if (v.id == binding.updateBtn.id) {
-            finish()
-        }
+//        if (v.id == binding.updateBtn.id) {
+//            finish()
+//        }
 
         if (v.id == binding.btnBack.id) {
             finish()
