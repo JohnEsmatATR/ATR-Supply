@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -16,6 +17,9 @@ import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import java.util.Locale
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 
 class ProfileFragment : BaseFragment(), View.OnClickListener {
 
@@ -34,14 +38,37 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
 
-        //no hardcoded
-        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
-
-        requireActivity().window.decorView.systemUiVisibility =
-            requireActivity().window.decorView.systemUiVisibility and
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+
+
+        WindowCompat.setDecorFitsSystemWindows(
+            requireActivity().window,
+            false
+        )
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+
+            val systemBars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+            )
+
+            binding.root.setPadding(
+                systemBars.left,
+                0,
+                systemBars.right,
+                systemBars.bottom
+            )
+
+            insets
+        }
+
+        WindowCompat.getInsetsController(
+            requireActivity().window,
+            requireActivity().window.decorView
+        ).isAppearanceLightStatusBars = false
+
+
 
         guestHandling()
 
@@ -55,7 +82,32 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
 
         binding.cardMoreCredit.setOnClickListener(this)
 
+        //new malak
+        binding.rateLayout.setOnClickListener(this)
+
         return binding.root
+    }
+
+
+
+    //new malak
+    private fun myPlayStore(){
+        val appPackageName = requireContext().packageName
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    android.net.Uri.parse("market://details?id=$appPackageName")
+                ).setPackage("com.android.vending")
+            )
+        } catch (e: android.content.ActivityNotFoundException){
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    android.net.Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+                )
+            )
+        }
     }
 
     private fun guestHandling() {
@@ -86,6 +138,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val user = SharedPreferenceHelper.userObj
         if (user != null) {
@@ -174,19 +227,35 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.contactLayout.id -> {
                 startActivity(Intent(requireContext(), ContactUsActivity::class.java))
             }
-            binding.logoutLayout.id -> {
-                SharedPreferenceHelper.apply {
-                    isLogged = false
-                    userObj = null
-                    userToken = null
-                    //no hardcoded
-                    language = DEFAULT_LANG
-                }
 
-                val intent = Intent(requireContext(), LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                requireActivity().finish()
+            //new malak
+            binding.rateLayout.id -> {
+                myPlayStore()
+            }
+
+
+            binding.logoutLayout.id -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.logout)
+                    .setMessage(R.string.logout_confirmation)
+                    .setPositiveButton(R.string.yes) { _, _ ->
+
+                        SharedPreferenceHelper.apply {
+                            isLogged = false
+                            userObj = null
+                            userToken = null
+                            language = DEFAULT_LANG
+                        }
+
+                        val intent = Intent(requireContext(), LoginActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                    .setNegativeButton(R.string.no, null)
+                    .show()
             }
 
         }

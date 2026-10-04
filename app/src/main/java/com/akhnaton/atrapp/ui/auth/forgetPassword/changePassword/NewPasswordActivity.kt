@@ -19,15 +19,12 @@ class NewPasswordActivity : BaseActivity() {
 
     lateinit var binding: ActivityNewPasswordBinding
     private val viewModel: ChangePasswordViewModel by viewModels()
-
     private var email = ""
     private var otp = ""
 
     companion object {
         private const val LANGUAGE_AR = "ar"
         private const val HTTP_STATUS_SUCCESS = 200
-
-        // Intent Extras
         const val EXTRA_EMAIL = "email"
         const val EXTRA_OTP = "otp"
     }

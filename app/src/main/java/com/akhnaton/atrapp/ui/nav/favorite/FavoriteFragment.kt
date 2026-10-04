@@ -128,6 +128,12 @@ class FavoriteFragment : BaseFragment() {
                             hideProgressDialog(binding.progressLoading)
                             if (state.data.status == 200) {
                                 showToastSnack(state.data.message ?: "", false)
+
+                                val addedItemId = state.data.data?.item_id?.toIntOrNull()
+
+                                if (addedItemId != null) {
+                                    adapter.updateProductInCart(addedItemId, quantity = 1)
+                                }
                             } else {
                                 showToastSnack(state.data.message ?: "", true)
                             }

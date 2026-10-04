@@ -372,5 +372,7 @@
     <string name="error_invalid_email">من فضلك أدخل عنوان بريد إلكتروني صحيح.</string>
     <string name="error_email_or_phone_empty">من فضلك أدخل البريد الإلكتروني أو رقم الهاتف</string>
     <string name="error_invalid_credentials">البريد الإلكتروني أو كلمة المرور غير صحيحة</string>
+    <string name="logout_confirmation">هل تريد تسجيل الخروج؟</string>
+
 
 </resources>

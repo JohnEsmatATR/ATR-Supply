@@ -74,11 +74,25 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnApplySort"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_weight="1"
+            android:text="@string/apply_sorting"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/orange"
+            app:cornerRadius="14dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnResetSort"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="@dimen/_42sdp"
-            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginStart="@dimen/_6sdp"
             android:layout_weight="1"
             android:text="@string/reset"
             android:textAllCaps="false"
@@ -88,20 +102,6 @@
             app:cornerRadius="14dp"
             app:strokeColor="@color/my_divider_gray"
             app:strokeWidth="1dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnApplySort"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_42sdp"
-            android:layout_marginStart="@dimen/_6sdp"
-            android:layout_weight="1"
-            android:text="@string/apply_sorting"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/orange"
-            app:cornerRadius="14dp" />
 
     </LinearLayout>
 
