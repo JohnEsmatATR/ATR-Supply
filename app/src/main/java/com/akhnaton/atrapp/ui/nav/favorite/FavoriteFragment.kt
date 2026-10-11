@@ -69,7 +69,9 @@ class FavoriteFragment : BaseFragment() {
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -111,6 +113,7 @@ class FavoriteFragment : BaseFragment() {
         adapter.setData(productList, false, flag)
         binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
+
 
         if (productList.size == 0) {
             binding.txtNoProducts.visibility = View.VISIBLE
@@ -241,6 +244,7 @@ class FavoriteFragment : BaseFragment() {
                     is FavoriteStatus.AddProductToFavourites -> {
                         hideProgressDialog(binding.progressLoading)
                     }
+
                     is FavoriteStatus.DeleteProductToFavourites -> {
                         hideProgressDialog(binding.progressLoading)
 
@@ -291,7 +295,7 @@ class FavoriteFragment : BaseFragment() {
                     "Bearer ${SharedPreferenceHelper.userToken}",
                     productId,
                     add,
-                    "Pharma"
+                    flag
                 )
             )
         }
@@ -305,7 +309,7 @@ class FavoriteFragment : BaseFragment() {
                     "Bearer ${SharedPreferenceHelper.userToken}",
                     productId,
                     add,
-                    "Pharma"
+                    flag
                 )
             )
         }

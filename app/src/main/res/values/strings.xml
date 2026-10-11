@@ -5,6 +5,7 @@
     <string name="login">Login</string>
     <string name="continue_as">Continue as a </string>
     <string name="guest">Guest</string>
+    <string name="you_are_not_logged_in">You\'re not logged in</string>
     <string name="get_started">Get Started</string>
     <string name="welcome_to_atr_app">Welcome\nto ATR App</string>
     <!--    <string name="welcome">Welcome</string>-->
@@ -370,12 +371,20 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="available_credit">Available Credit</string>
     <string name="total_credit_limit">Total Credit Limit</string>
     <string name="used_credit">Used Credit</string>
+    <string name="special_offer">Special Offer</string>
+    <string name="price_without_tax">Price Without Tax</string>
 
     <string name="in_cart">In Cart</string>
 
     <string name="login_required">Login is required!</string>
     <string name="login_required_message">Please login to add product to favourite..</string>
     <string name="cancel">Cancel</string>
+    <string name="search_for_pharma">Search For Pharma</string>
+    <string name="search_for_cosmetics">Search For Cosmetics</string>
+    <string name="search_for_supplements">Search For Supplements</string>
+    <string name="search_for_mounjaro">Search For Mounjaro</string>
+    <string name="product_out_of_stock">Product Out Of Stock</string>
+    <string name="added_to_cart">Added To Cart</string>
 
     <string name="failed_to_load_data">Failed to load data</string>
     <string name="unknown_error">Unknown error occurred</string>

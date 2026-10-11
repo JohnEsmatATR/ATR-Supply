@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityHomeBinding
 import com.akhnaton.atrapp.shared.BaseActivity
@@ -49,19 +50,32 @@ class HomeActivity : BaseActivity() {
         onClick()
         handleBackPress()
         checkForAppUpdate()
-        binding.btnTracking.setOnClickListener {
-            setCurrentFragment(TrackingFragment())
-            binding.bottomNavigationView.menu.findItem(R.id.home)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
-            binding.bottomNavigationView.menu.findItem(R.id.favorite)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-            binding.bottomNavigationView.menu.findItem(R.id.cart)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
-            binding.bottomNavigationView.menu.findItem(R.id.profile)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
-        }
 
         askNotificationPermission()
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(
+            object : FragmentManager.FragmentLifecycleCallbacks() {
+
+                override fun onFragmentResumed(
+                    fm: FragmentManager,
+                    f: Fragment
+                ) {
+                    super.onFragmentResumed(fm, f)
+
+                    when (f) {
+                        is CartFragment -> {
+                            binding.bottomNavigationView.visibility = View.GONE
+                        }
+
+                        is HomeFragment -> {
+                            binding.bottomNavigationView.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            },
+            false
+        )
+
     }
 
     private fun setupWindowInsets() {
@@ -134,20 +148,18 @@ class HomeActivity : BaseActivity() {
 
     private fun initNavBottom() {
 //        setItemSelected(R.id.home)
-        binding.bottomNavigationView.menu[2].isEnabled = false
-
+//        binding.bottomNavigationView.menu[2].isEnabled = false
 
         binding.btnTracking.setOnClickListener {
             setCurrentFragment(TrackingFragment())
-            binding.bottomNavigationView.selectedItemId = R.id.nothig
-
+//            binding.bottomNavigationView.selectedItemId = R.id.nothig
 
             binding.bottomNavigationView.menu.findItem(R.id.home)
                 .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
             binding.bottomNavigationView.menu.findItem(R.id.favorite)
                 .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-            binding.bottomNavigationView.menu.findItem(R.id.cart)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+            binding.bottomNavigationView.menu.findItem(R.id.tracking)
+                .icon = ContextCompat.getDrawable(this, R.drawable.ic_home_floating)
             binding.bottomNavigationView.menu.findItem(R.id.profile)
                 .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
         }
@@ -156,7 +168,7 @@ class HomeActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.home -> setItemSelected(R.id.home)
                 R.id.favorite -> setItemSelected(R.id.favorite)
-                R.id.cart -> setItemSelected(R.id.cart)
+                R.id.tracking -> setItemSelected(R.id.tracking)
                 R.id.profile -> setItemSelected(R.id.profile)
                 else -> setItemSelected(R.id.home)
             }
@@ -165,7 +177,6 @@ class HomeActivity : BaseActivity() {
         binding.bottomNavigationView.selectedItemId = R.id.home
         setItemSelected(R.id.home)
     }
-
 
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
@@ -177,22 +188,9 @@ class HomeActivity : BaseActivity() {
     private fun setItemSelected(item: Int) {
         val homeFragment = HomeFragment()
         val cartFragment = CartFragment()
+        val trackingFragment = TrackingFragment()
         val favoriteFragment = FavoriteFragment()
         val profileFragment = ProfileFragment()
-
-        binding.btnTracking.setOnClickListener {
-            setCurrentFragment(TrackingFragment())
-            binding.bottomNavigationView.menu.findItem(R.id.home)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
-            binding.bottomNavigationView.menu.findItem(R.id.favorite)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-            binding.bottomNavigationView.menu.findItem(R.id.cart)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
-            binding.bottomNavigationView.menu.findItem(R.id.profile)
-                .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
-            binding.bottomNavigationView.selectedItemId = R.id.nothig
-
-        }
 
         when (item) {
             R.id.home -> {
@@ -201,20 +199,20 @@ class HomeActivity : BaseActivity() {
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
                 binding.bottomNavigationView.menu.findItem(R.id.favorite)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-                binding.bottomNavigationView.menu.findItem(R.id.cart)
-                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.tracking)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home_floating)
                 binding.bottomNavigationView.menu.findItem(R.id.profile)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
             }
 
-            R.id.cart -> {
-                setCurrentFragment(cartFragment)
+            R.id.tracking -> {
+                setCurrentFragment(trackingFragment)
                 binding.bottomNavigationView.menu.findItem(R.id.home)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
                 binding.bottomNavigationView.menu.findItem(R.id.favorite)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-                binding.bottomNavigationView.menu.findItem(R.id.cart)
-                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.tracking)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home_floating)
                 binding.bottomNavigationView.menu.findItem(R.id.profile)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
 
@@ -226,8 +224,8 @@ class HomeActivity : BaseActivity() {
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
                 binding.bottomNavigationView.menu.findItem(R.id.favorite)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-                binding.bottomNavigationView.menu.findItem(R.id.cart)
-                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.tracking)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home_floating)
                 binding.bottomNavigationView.menu.findItem(R.id.profile)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
 
@@ -239,8 +237,8 @@ class HomeActivity : BaseActivity() {
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
                 binding.bottomNavigationView.menu.findItem(R.id.favorite)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-                binding.bottomNavigationView.menu.findItem(R.id.cart)
-                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.tracking)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home_floating)
                 binding.bottomNavigationView.menu.findItem(R.id.profile)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
             }
@@ -250,8 +248,8 @@ class HomeActivity : BaseActivity() {
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_home)
                 binding.bottomNavigationView.menu.findItem(R.id.favorite)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite2)
-                binding.bottomNavigationView.menu.findItem(R.id.cart)
-                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                binding.bottomNavigationView.menu.findItem(R.id.tracking)
+                    .icon = ContextCompat.getDrawable(this, R.drawable.ic_home_floating)
                 binding.bottomNavigationView.menu.findItem(R.id.profile)
                     .icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
 
@@ -261,22 +259,18 @@ class HomeActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        //no hardcoded
-        if (intent.getBooleanExtra(EXTRA_OPEN_CART, false)) {
-
-            setItemSelected(R.id.cart)
-            binding.bottomNavigationView.selectedItemId = R.id.cart
+        if (intent.getBooleanExtra("open_cart", false)) {
+            val cartFragment = CartFragment()
+            setCurrentFragment(cartFragment)
+//            setItemSelected(R.id.cart)
+//            binding.bottomNavigationView.selectedItemId = R.id.cart
         }
     }
     private fun handleBackPress() {
         onBackPressedDispatcher.addCallback(this) {
             val selectedItemId = binding.bottomNavigationView.selectedItemId
 
-            if (selectedItemId != R.id.home) {
-                // لو مش في Home → يرجعه للـ Home
-                binding.bottomNavigationView.selectedItemId = R.id.home
-                setItemSelected(R.id.home)
-            } else {
+            if (selectedItemId == R.id.home) {
                 // لو في Home → لازم ضغطتين
                 if (backPressedTime + 2000 > System.currentTimeMillis()) {
                     AlertDialog.Builder(this@HomeActivity)
@@ -289,6 +283,10 @@ class HomeActivity : BaseActivity() {
                     Toast.makeText(this@HomeActivity, R.string.press_again_to_exit, Toast.LENGTH_SHORT).show()
                 }
                 backPressedTime = System.currentTimeMillis()
+            } else {
+                // لو مش في Home → يرجعه للـ Home
+                binding.bottomNavigationView.selectedItemId = R.id.home
+                setItemSelected(R.id.home)
             }
         }
     }

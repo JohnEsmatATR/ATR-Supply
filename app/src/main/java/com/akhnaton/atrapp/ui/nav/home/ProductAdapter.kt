@@ -1,20 +1,26 @@
 package com.akhnaton.atrapp.ui.nav.home
 
+import android.content.Intent
 import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
+import com.akhnaton.atrapp.shared.DialogUtils
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class ProductAdapter(
+    private var cartItems: Map<Int, Int> = emptyMap(),
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
     private val onAddToCartClick: (product: ProductModel) -> Unit = {}
@@ -45,11 +51,39 @@ class ProductAdapter(
         notifyDataSetChanged()
     }
 
+    fun updateCartItems(newCartItems: Map<Int, Int>) {
+        cartItems = newCartItems.toMap()
+        notifyDataSetChanged()
+    }
+
     //new malak
     fun updateProductInCart(productId: Int, quantity: Int = 1) {
         val index = productsList.indexOfFirst { it.ID == productId }
         if (index != -1) {
             productsList[index].MY_QUANTITY = quantity
+            notifyItemChanged(index)
+        }
+    }
+
+    fun updateCartQuantity(
+        productId: Int,
+        quantity: Int
+    ) {
+        val updatedCartItems = cartItems.toMutableMap()
+
+        if (quantity > 0) {
+            updatedCartItems[productId] = quantity
+        } else {
+            updatedCartItems.remove(productId)
+        }
+
+        cartItems = updatedCartItems
+
+        val index = productsList.indexOfFirst {
+            it.ID == productId
+        }
+
+        if (index != -1) {
             notifyItemChanged(index)
         }
     }
@@ -102,6 +136,23 @@ class ProductAdapter(
                 .into(binding.imItem)
 
             binding.imFavorite.setOnClickListener {
+                if (SharedPreferenceHelper.isLogged == false) {
+                    DialogUtils.showResultDialog(
+                        context = itemView.context,
+                        isDismissable = true,
+                        icon = R.drawable.ic_error,
+                        title = itemView.context.getString(R.string.you_are_not_logged_in),
+                        description = itemView.context.getString(R.string.please_log_in_to_access_this_feature),
+                        isOkMessage = true,
+                        yesText = itemView.context.getString(R.string.login),
+                        onConfirm = {
+                            val intent =
+                                Intent(itemView.context, LoginActivity::class.java)
+                            itemView.context.startActivity(intent)
+                        }
+                    )
+                    return@setOnClickListener
+                }
                 isFavorite = !isFavorite
                 if (isFavorite) binding.imFavorite.setImageResource(R.drawable.ic_favorite_fill2)
                 else binding.imFavorite.setImageResource(R.drawable.ic_favorite2)
@@ -109,15 +160,79 @@ class ProductAdapter(
             }
 
             //new malak
+            val cartQuantity = cartItems[item.ID] ?: 0
+
+            when {
+                !item.IN_STOCK -> {
+                    // 1. Not in stock
+                    binding.btnAddToCart.isEnabled = false
+                    binding.btnAddToCart.text = itemView.context.getString(R.string.out_of_stock)
+                    binding.btnAddToCart.visibility = View.VISIBLE
+                    binding.btnAddToCart.setTextColor(itemView.context.getColorStateList(R.color.snack_red))
+                    binding.btnAddToCart.background =
+                        itemView.context.getDrawable(R.drawable.btn_out_of_stock)
+                    binding.btnAddToCart.icon = ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.ic_circle_close
+                    )
+                    binding.btnAddToCart.iconTint = ContextCompat.getColorStateList(
+                        itemView.context,
+                        R.color.snack_red
+                    )
+
+                    // Set your "out of stock" UI here
+                }
+
+                cartQuantity > 0 -> {
+                    // 2. Already in cart
+                    binding.btnAddToCart.isEnabled = false
+                    binding.btnAddToCart.text = itemView.context.getString(R.string.in_cart)
+                    binding.btnAddToCart.visibility = View.VISIBLE
+                    binding.btnAddToCart.setTextColor(itemView.context.getColorStateList(R.color.snack_green))
+                    binding.btnAddToCart.background =
+                        itemView.context.getDrawable(R.drawable.bg_in_cart_btn)
+                    binding.btnAddToCart.icon = ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.ic_check_circle
+                    )
+                    binding.btnAddToCart.iconTint = ContextCompat.getColorStateList(
+                        itemView.context,
+                        R.color.snack_green
+                    )
+
+                    // Set your "already in cart" UI here
+                }
+
+                else -> {
+                    // 3. In stock and NOT in cart
+                    binding.btnAddToCart.isEnabled = true
+                    binding.btnAddToCart.visibility = View.VISIBLE
+                    binding.btnAddToCart.setTextColor(itemView.context.getColorStateList(R.color.white))
+                    binding.btnAddToCart.background =
+                        itemView.context.getDrawable(R.drawable.btn_orange_style)
+                    binding.btnAddToCart.icon = ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.ic_cart
+                    )
+                    binding.btnAddToCart.iconTint = ContextCompat.getColorStateList(
+                        itemView.context,
+                        R.color.white
+                    )
+
+                    // Set your normal "add to cart" UI here
+                }
+            }
+
             binding.btnAddToCart.setOnClickListener {
-                if (item.IN_STOCK && item.MY_QUANTITY == 0) {
+                if (item.IN_STOCK && cartItems[item.ID] == null) {
                     onAddToCartClick(item)
                 }
             }
 
             itemView.setOnClickListener {
                 val sharedView = binding.txtItemName
-                val transitionName = ViewCompat.getTransitionName(sharedView) ?: "itemImageTransition"
+                val transitionName =
+                    ViewCompat.getTransitionName(sharedView) ?: "itemImageTransition"
                 onClick(item, position, sharedView, transitionName)
             }
         }
@@ -126,8 +241,10 @@ class ProductAdapter(
     private fun String?.isNull_Or_Empty(): Boolean = this == null || this.trim().isEmpty()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.txtOldPrice.paintFlags = binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        val binding =
+            LayoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.txtOldPrice.paintFlags =
+            binding.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
         if (isInHome) {
             binding.root.layoutParams = ConstraintLayout.LayoutParams(

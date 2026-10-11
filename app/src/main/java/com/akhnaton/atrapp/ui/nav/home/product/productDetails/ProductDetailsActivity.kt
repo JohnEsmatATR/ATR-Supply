@@ -3,6 +3,9 @@ package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
@@ -11,8 +14,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -22,14 +30,19 @@ import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model.common.BaseModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
 import com.akhnaton.atrapp.databinding.ActivityProductDetailsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.DialogUtils
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
@@ -42,16 +55,36 @@ class ProductDetailsActivity : BaseActivity() {
     var quantity: Int = 1
     private var productQuantity: Int = 0
     private lateinit var flag: String
+    var productId: Int = 0
     private var inStoke: Boolean = false
     private lateinit var bonusAdapter: BonusAdapter
+    private lateinit var productData: ProductModel
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        handleTopBottomKeyboard()
         init()
         onClick()
+    }
+
+    private fun handleTopBottomKeyboard() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val imeInsets = insets.getInsets(
+                WindowInsetsCompat.Type.ime()
+            )
+            view.setPadding(
+                view.paddingLeft, systemBars.top, view.paddingRight, maxOf(
+                    imeInsets.bottom, systemBars.bottom
+                )
+            )
+            insets
+        }
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -59,9 +92,6 @@ class ProductDetailsActivity : BaseActivity() {
         setupQuantityEditText()
 
         flag = intent.getStringExtra("flag") ?: ""
-
-        binding.layoutReviews.visibility = View.GONE
-        binding.txtYouMightAlsoLike.visibility = View.GONE
 
         product = intent.getSerializableExtra("product") as ProductModel
         val transitionName = intent.getStringExtra("transitionName")
@@ -72,7 +102,7 @@ class ProductDetailsActivity : BaseActivity() {
             placeholder(R.drawable.ic_logo)
             error(R.drawable.ic_logo)
         }
-        val productId = product.ID.toInt()
+        productId = product.ID.toInt()
 
         val isArabic = SharedPreferenceHelper.language == "ar"
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
@@ -81,7 +111,8 @@ class ProductDetailsActivity : BaseActivity() {
         observeProduct()
         getProductDetails(productId, flag)
         addToCartObserve()
-        initBonusRecycler()
+//        initBonusRecycler()
+        favoriteObserve()
     }
 
     private fun initBonusRecycler() {
@@ -101,20 +132,50 @@ class ProductDetailsActivity : BaseActivity() {
                 when (status) {
                     is ProductDetailsStatus.Error -> {
                         hideProgressDialog(binding.progressLoading)
-                        Toast.makeText(this@ProductDetailsActivity, "Error: ${status.error}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ProductDetailsActivity,
+                            "Error: ${status.error}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         Log.d("TAG", "observeProduct: ${status.error}")
                     }
 
                     is ProductDetailsStatus.GetProductDetails -> {
                         if (status.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
-                            val productData = status.data.data?.firstOrNull()
-                            Log.d("DEBUG_PRODUCT", "Returned Weight = '${productData?.WEIGHT}' | Returned Stock = ${productData?.IN_STOCK}")
+                            productData = status.data.data?.firstOrNull()!!
+                            Log.d(
+                                "DEBUG_PRODUCT",
+                                "Returned Weight = '${productData?.WEIGHT}' | Returned Stock = ${productData?.IN_STOCK}"
+                            )
 
                             if (productData != null) {
+                                if (productData.IS_LIKED) {
+                                    binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
+                                    val orangeColor = Color.parseColor("#EE7907")
+                                    binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
+                                } else {
+                                    binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)
+                                    val grayColor = Color.parseColor("#C1C1C1")
+                                    binding.btnFavIcon.imageTintList =
+                                        ColorStateList.valueOf(grayColor)
+                                }
                                 binding.txtItemName.text = productData.TITLE ?: ""
                                 binding.txtCategory.text = productData.category?.TITLE ?: ""
-                                binding.txtPriceValue.text = "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
+                                binding.txtPriceValue.text =
+                                    "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
+                                binding.tvPriceWithoutTax.text =
+                                    "${getString(R.string.price_without_tax)}: ${productData.PRICE_WITHOUT_TAX ?: 0.0} ${
+                                        getString(
+                                            R.string.currency
+                                        )
+                                    }"
+                                binding.tvTax.text =
+                                    "${getString(R.string.tax)}: ${productData.TAX ?: 0.0} ${
+                                        getString(
+                                            R.string.currency
+                                        )
+                                    }"
                                 // 1. Dosage / Size Handling from API
                                 val dosageText = productData.WEIGHT
                                 if (!dosageText.isNullOrEmpty()) {
@@ -123,7 +184,6 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.txtSize.text = "N/A"
                                 }
 
-                                binding.txtDescription.text = productData.DESCRIPTION ?: ""
                                 productQuantity = productData.QUANTITY
 
                                 // Quantity Setup
@@ -151,25 +211,30 @@ class ProductDetailsActivity : BaseActivity() {
 
                                 binding.btnPlus.isEnabled = inStoke
                                 binding.btnMinus.isEnabled = inStoke
-                                binding.btnAddToCart.isEnabled = inStoke
 
                                 // Bonus Recycler
                                 val bonusList = productData.BONUS_DATA
                                 if (!bonusList.isNullOrEmpty()) {
-                                    binding.bonusRecycler.visibility = View.VISIBLE
-                                    bonusAdapter.setData(bonusList)
+                                    binding.cardBonus.visibility = View.VISIBLE
+                                    val bonusString =
+                                        productData.BONUS_DATA.orEmpty().joinToString("\n") {
+                                            "Buy ${it.BUY}, GET ${it.GET}"
+                                        }
+                                    binding.tvBonus.text = bonusString
+//                                    binding.bonusRecycler.visibility = View.VISIBLE
+//                                    bonusAdapter.setData(bonusList)
                                 } else {
-                                    binding.bonusRecycler.visibility = View.GONE
+//                                    binding.bonusRecycler.visibility = View.GONE
                                 }
 
-                                binding.nestedScrollView.visibility = View.VISIBLE
+//                                binding.nestedScrollView.visibility = View.VISIBLE
                                 binding.productNotFound.visibility = View.GONE
 
                                 // Update Total Price Bottom
                                 updateTotalPrice(productData.PRICE_AFTER_DISCOUNT)
 
                             } else {
-                                binding.nestedScrollView.visibility = View.GONE
+//                                binding.nestedScrollView.visibility = View.GONE
                                 binding.productNotFound.visibility = View.VISIBLE
                             }
                         }
@@ -191,9 +256,8 @@ class ProductDetailsActivity : BaseActivity() {
         val unitPrice = pricePerUnit ?: product.PRICE_AFTER_DISCOUNT
         val currentQty = binding.txtQuantity.text.toString().toIntOrNull() ?: quantity //malaaaaaak
         val total = unitPrice * currentQty // malakkkkkkkk
-        binding.txtBottomTotalPrice.text = "$total L.E"
+        binding.txtBottomTotalPrice.text = "$total ${getString(R.string.currency)}"
     }
-
 
     private fun getProductDetails(productId: Int, category: String) {
         lifecycleScope.launch {
@@ -207,28 +271,57 @@ class ProductDetailsActivity : BaseActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
-        binding.layoutViewAllReviews.setOnClickListener {
-            val intent = Intent(this@ProductDetailsActivity, ReviewActivity::class.java)
-            intent.putExtra("product", product)
-            startActivity(intent)
+        binding.btnShare.setOnClickListener {
+            if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
+                context = this@ProductDetailsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }) else shareProduct()
         }
-        binding.btnAddToCart.setOnClickListener {
-            addProductToCart()
+        binding.btnFavIcon.setOnClickListener {
+            if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
+                context = this@ProductDetailsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }) else if (productData.IS_LIKED) deleteProductToFavorite(
+                productId = product.ID, add = true
+            ) else if (!productData.IS_LIKED) addProductToFavorite(
+                productId = product.ID, add = true
+            )
         }
         binding.btnBottomAddToCart?.setOnClickListener {
-            addProductToCart()
-        }
-        binding.btnGoToCart.setOnClickListener {
-            val intent = Intent(this@ProductDetailsActivity, HomeActivity::class.java)
-            intent.putExtra("open_cart", true)
-            intent.putExtra("from_product_details", true)
-            intent.putExtra("product", product)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
+            if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
+                context = this@ProductDetailsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            else addProductToCart()
         }
         binding.btnPlus.setOnClickListener {
             if (validateIncreaseQuantity(quantity, productQuantity)) {
                 quantity++
+                Log.d("WHATquantity", quantity.toString())
                 binding.txtQuantity.setText(quantity.toString())
                 updateTotalPrice()
             }
@@ -237,10 +330,40 @@ class ProductDetailsActivity : BaseActivity() {
         binding.btnMinus.setOnClickListener {
             if (validateDecreaseQuantity(quantity)) {
                 quantity--
+                Log.d("WHATquantity", quantity.toString())
                 binding.txtQuantity.setText(quantity.toString())
                 updateTotalPrice()
             }
         }
+    }
+
+    private fun shareProduct() {
+
+        val imageUri: Uri = product.IMAGE_URL.toUri() // your image Uri
+
+        val shareText = """
+        Check out this product!
+        
+        Product: ${product.TITLE}
+        Price: ${product.PRICE_WITH_TAX} ${getString(R.string.currency)}
+        Price Without Tax: ${product.PRICE_WITHOUT_TAX} ${getString(R.string.currency)}
+        Tax: ${product.TAX} ${getString(R.string.currency)}
+    """.trimIndent()
+
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/*"
+
+            putExtra(Intent.EXTRA_TEXT, shareText)
+            putExtra(Intent.EXTRA_STREAM, imageUri)
+
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        startActivity(
+            Intent.createChooser(
+                shareIntent, "Share product"
+            )
+        )
     }
 
     private fun addToCartObserve() {
@@ -292,10 +415,7 @@ class ProductDetailsActivity : BaseActivity() {
             txtBonus.visibility = View.GONE
         }
 
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
+        val dialog = AlertDialog.Builder(this).setView(dialogView).setCancelable(false).create()
 
         btnContinue.setOnClickListener {
             dialog.dismiss()
@@ -316,7 +436,11 @@ class ProductDetailsActivity : BaseActivity() {
     private fun addProductToCart() {
         if (inStoke) {
             lifecycleScope.launch {
-                addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity, flag))
+                addCartViewModel.addToCartIntent.send(
+                    AddToCartIntent.AddProductToCart(
+                        product.ID, quantity, flag
+                    )
+                )
             }
         } else {
             showToastSnack("Product Out Of Stock", true)
@@ -324,35 +448,100 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun setupQuantityEditText() {
-        if (binding.txtQuantity is TextView) return
 
-        var isUpdating = false
-        binding.txtQuantity.doOnTextChanged { text, _, _, _ ->
-            if (isUpdating) return@doOnTextChanged
+        binding.txtQuantity.doAfterTextChanged { editable ->
 
-            val value = text.toString().toIntOrNull()
-            if (value != null) {
-                when {
-                    value < 1 -> {
-                        isUpdating = true
-                        quantity = 1
-                        binding.txtQuantity.setText("1")
-                        isUpdating = false
-                    }
-                    value > productQuantity -> {
-                        isUpdating = true
-                        quantity = productQuantity
-                        binding.txtQuantity.setText(productQuantity.toString())
-                        isUpdating = false
-                    }
-                    else -> {
-                        quantity = value
-                    }
-                }
-            } else {
-                quantity = 0
+            val value = editable?.toString()?.toIntOrNull()
+
+            Log.d("WHATquantity", "typed value = $value")
+
+            quantity = when {
+                value == null -> 0
+                value < 1 -> 1
+                value > productQuantity -> productQuantity
+                else -> value
             }
+
+            Log.d("WHATquantity", "quantity = $quantity")
+
             updateTotalPrice()
+        }
+    }
+
+    private fun addProductToFavorite(
+        productId: Int,
+        add: Boolean,
+    ) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.AddProductToFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}", productId, add, flag
+                )
+            )
+        }
+    }
+
+    private fun deleteProductToFavorite(productId: Int, add: Boolean) {
+        lifecycleScope.launch {
+            favoriteViewModel.favoriteIntent.send(
+                FavoriteIntent.DeleteFromFavourites(
+                    "Bearer ${SharedPreferenceHelper.userToken}",
+                    productId,
+                    add,
+                    flag
+                )
+            )
+        }
+    }
+
+    private fun favoriteObserve() {
+        lifecycleScope.launch {
+            favoriteViewModel.state.collect {
+                when (it) {
+                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is FavoriteStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is FavoriteStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                    is FavoriteStatus.AddProductToFavourites -> {
+                        binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
+                        val orangeColor = Color.parseColor("#EE7907")
+                        binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
+                        hideProgressDialog(binding.progressLoading)
+                        showToastSnack(it.data.message.toString(), false)
+                        getProductDetails(productId, flag)
+                    }
+
+                    is FavoriteStatus.DeleteProductToFavourites -> {
+                        hideProgressDialog(binding.progressLoading)
+
+                        if (it.data.status == 200) {
+                            binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)
+                            val grayColor = Color.parseColor("#C1C1C1")
+                            binding.btnFavIcon.imageTintList = ColorStateList.valueOf(grayColor)
+                            getProductDetails(productId, flag)
+
+                            Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
+                            showToastSnack(it.data.message, false)
+
+                        } else if (it.data.status == 401) {
+                            // onTokenExpired(it.data.errors!![0])
+                        } else {
+                            // showToastSnack(it.data.message, true)
+                        }
+                    }
+
+                    else -> {}
+
+                }
+            }
         }
     }
 }

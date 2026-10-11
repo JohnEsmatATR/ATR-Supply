@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.home
 
+import android.content.Intent
 import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,15 +12,16 @@ import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.databinding.LayoutProductBinding
+import com.akhnaton.atrapp.shared.DialogUtils
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
+import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.bumptech.glide.Glide
 
 class BestSellersAdapter(
     private val onClick: (product: ProductModel, position: Int, sharedView: View, transitionName: String) -> Unit,
     private val onFavoriteClick: (product: ProductModel, position: Int, isFavorite: Boolean) -> Unit,
     private val onAddToCartClick: (product: ProductModel) -> Unit = {},
-
-    ) : RecyclerView.Adapter<BestSellersAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<BestSellersAdapter.ViewHolder>() {
 
     private var productsList = ArrayList<ProductModel>()
     private lateinit var flag: String
@@ -91,8 +93,21 @@ class BestSellersAdapter(
 
             binding.imFavorite.setOnClickListener {
                 val isLogged = SharedPreferenceHelper.isLogged ?: false
-                if (!isLogged) {
-                    onFavoriteClick(item, position, item.IS_LIKED)
+                if (SharedPreferenceHelper.isLogged == false) {
+                    DialogUtils.showResultDialog(
+                        context = itemView.context,
+                        isDismissable = true,
+                        icon = R.drawable.ic_error,
+                        title = itemView.context.getString(R.string.you_are_not_logged_in),
+                        description = itemView.context.getString(R.string.please_log_in_to_access_this_feature),
+                        isOkMessage = true,
+                        yesText = itemView.context.getString(R.string.login),
+                        onConfirm = {
+                            val intent = Intent(itemView.context, LoginActivity::class.java)
+                            itemView.context.startActivity(intent)
+                        }
+                    )
+                    return@setOnClickListener
                 } else {
                     val newFavoriteState = !item.IS_LIKED
                     item.IS_LIKED = newFavoriteState
@@ -113,11 +128,11 @@ class BestSellersAdapter(
                 onClick(item, position, sharedView, transitionName)
             }
 
-            binding.btnAddToCart.visibility= View.GONE
-            binding.txtPrice.visibility= View.GONE
-            binding.txtOldPrice.visibility= View.GONE
-            binding.txtCategory.visibility= View.GONE
-            binding.vBottom.visibility= View.VISIBLE
+            binding.btnAddToCart.visibility = View.GONE
+            binding.txtPrice.visibility = View.GONE
+            binding.txtOldPrice.visibility = View.GONE
+            binding.txtCategory.visibility = View.GONE
+            binding.vBottom.visibility = View.VISIBLE
 
         }
     }

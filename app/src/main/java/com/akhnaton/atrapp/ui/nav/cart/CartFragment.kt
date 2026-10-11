@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.R.attr.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +8,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
@@ -52,6 +57,8 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
+
+        handleTopBottomKeyboard()
         guestHandling()
         if (SharedPreferenceHelper.isLogged!!) {
             observeCart()
@@ -61,10 +68,20 @@ class CartFragment : BaseFragment() {
             setupClickListeners()
         }
 
-         /* binding.cardAddress.setOnClickListener {
-            val intent = Intent(requireContext(), AddressesActivity::class.java)
-            startActivity(intent)
-        }*/ // malak
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.popBackStack()
+                }
+            }
+        )
+
+        /* binding.cardAddress.setOnClickListener {
+           val intent = Intent(requireContext(), AddressesActivity::class.java)
+           startActivity(intent)
+       }*/ // malak
         val currentLang = SharedPreferenceHelper.language
         if (currentLang == LANGUAGE_AR) {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -81,6 +98,7 @@ class CartFragment : BaseFragment() {
             binding.recycler.visibility = View.GONE
 
             binding.layoutCart.visibility = View.GONE
+            binding.cardCheckout.visibility = View.GONE
             // binding.cardAddress.visibility = View.GONE
         }
 
@@ -186,6 +204,10 @@ class CartFragment : BaseFragment() {
                                 0.0,
                                 0.0
                             )
+                        binding.tvTotal.text =
+                            "${state.data.data.firstOrNull()?.totalCartsData?.cartTotal} ${
+                                getString(R.string.currency)
+                            }"
                         if (cartData.isNotEmpty()) {
                             setupParentRecycler(cartData)
                             updateCartSummaryUI()
@@ -257,7 +279,7 @@ class CartFragment : BaseFragment() {
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.adapter = parentAdapter
         parentAdapter.setData(list)
-        binding.layoutCart.visibility = View.VISIBLE
+//        binding.layoutCart.visibility = View.VISIBLE
     }
 
     private fun updateCartSummaryUI() {
@@ -350,6 +372,25 @@ class CartFragment : BaseFragment() {
     companion object {
         private const val LANGUAGE_AR = "ar"
         private const val DEFAULT_LANGUAGE = "ar"
+    }
+    private fun handleTopBottomKeyboard() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val imeInsets = insets.getInsets(
+                WindowInsetsCompat.Type.ime()
+            )
+            view.setPadding(
+                view.paddingLeft,
+                0,
+                view.paddingRight,
+                maxOf(
+                    imeInsets.bottom,
+                    systemBars.bottom
+                )
+            )
+            insets
+        }
     }
 
 }

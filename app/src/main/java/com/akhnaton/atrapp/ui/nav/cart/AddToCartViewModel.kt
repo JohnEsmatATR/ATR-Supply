@@ -75,6 +75,8 @@ class AddToCartViewModel : ViewModel() {
                     _state.value = AddToCartStatus.Error(errorMsg)
                 }
             } catch (e: Exception) {
+                Log.d("TAG", e.message.toString())
+                AddToCartStatus.Error(e.message)
                 Log.e("TEST_CART", "Exception in addProductToCart: ${e.localizedMessage}", e)
                 _state.value = AddToCartStatus.Error(e.localizedMessage ?: "Unknown Error")
             }

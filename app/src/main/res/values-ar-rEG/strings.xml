@@ -6,6 +6,7 @@
     <string name="login">تسجيل دخول</string>
     <string name="continue_as">المتابعة كـ</string>
     <string name="guest">زائر</string>
+    <string name="you_are_not_logged_in">لم تقم بتسجيل دخول بعد</string>
     <string name="get_started">ابدأ الآن</string>
     <string name="welcome_to_atr_app">مرحباً\nبك في تطبيق ATR</string>
 <!--    <string name="welcome">مرحباً</string>-->
@@ -315,6 +316,8 @@
     <string name="available_credit">الائتمان المتاح</string>
     <string name="total_credit_limit">إجمالي حد الائتمان</string>
     <string name="used_credit">الائتمان المستهلك</string>
+    <string name="special_offer">عرض خاص</string>
+    <string name="price_without_tax">السعر بدون ضريبة</string>
 
     <string name="in_cart">في سلة التسوق</string>
 
@@ -322,6 +325,12 @@
     <string name="login_required">تسجيل الدخول مطلوب!</string>
     <string name="login_required_message">برجاء تسجيل الدخول لتتمكن من إضافة المنتجات إلى المفضلات..</string>
     <string name="cancel">إلغاء</string>
+    <string name="search_for_pharma">البحث عن Pharma</string>
+    <string name="search_for_cosmetics">البحث عن Cosmetics</string>
+    <string name="search_for_supplements">البحث عن Supplements</string>
+    <string name="search_for_mounjaro">البحث عن Mounjaro</string>
+    <string name="product_out_of_stock">الصنف إنتهى من المخزن</string>
+    <string name="added_to_cart">أُضيف إلى عربة التسوق</string>
 
     <string name="failed_to_load_data">فشل تحميل البيانات</string>
     <string name="unknown_error">خطأ غير معروف</string>

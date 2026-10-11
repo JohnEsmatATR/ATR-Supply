@@ -9,16 +9,20 @@ import android.widget.ImageButton
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
+import com.akhnaton.atrapp.data.model.CartData
 import com.akhnaton.atrapp.data.model.OrderTypeModel
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
@@ -29,10 +33,12 @@ import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchStatus
 import com.akhnaton.atrapp.databinding.ActivityProductsBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.shared.DialogUtils
 import com.akhnaton.atrapp.shared.GridSpacingItemDecoration
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.CategoryViewModel
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
@@ -68,15 +74,19 @@ class ProductsActivity : BaseActivity() {
 
     private var selectedSortPosition: Int = -1 ////newww malakkk
     private lateinit var flag: String
+    private val cartViewModel: CartViewModel by viewModels()
+    private val cartItems = mutableMapOf<Int, Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        guestHandling()
         init()
         onClick()
         observeAddToCart()
+        observeCart()
 
         val showCard = intent.getBooleanExtra("show_card", false)
         binding.cardSearchingPharma.visibility = if (showCard) {
@@ -88,6 +98,12 @@ class ProductsActivity : BaseActivity() {
         binding.btnChangeInFilters.paintFlags =
             binding.btnChangeInFilters.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         currentPage = intent.getIntExtra("saved_page", 1)
+    }
+
+    private fun guestHandling() {
+        if (!isGuest()) {
+            getCart()
+        }
     }
 
     private fun handleLoadingState(isLoading: Boolean, isPagination: Boolean) {
@@ -166,16 +182,16 @@ class ProductsActivity : BaseActivity() {
                 when (state) {
                     is CategoryStatus.Idle -> Unit
                     is CategoryStatus.Loading -> {
-                        handleLoadingState(isLoading = true, isPagination = false)
+//                        handleLoadingState(isLoading = true, isPagination = false)
                     }
 
                     is CategoryStatus.GetCategory -> {
-                        handleLoadingState(isLoading = false, isPagination = false)
+//                        handleLoadingState(isLoading = false, isPagination = false)
                         categories = state.data.data!! as ArrayList<OrderTypeModel>
                     }
 
                     is CategoryStatus.Error -> {
-                        handleLoadingState(isLoading = false, isPagination = false)
+//                        handleLoadingState(isLoading = false, isPagination = false)
                     }
                 }
             }
@@ -293,7 +309,8 @@ class ProductsActivity : BaseActivity() {
                     flag = orderType
                 }
 
-                val selectedCount = if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
+                val selectedCount =
+                    if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
 
                 updateFilterUiState(selectedCount)
 
@@ -318,7 +335,8 @@ class ProductsActivity : BaseActivity() {
             val rvSortingOptions = view.findViewById<RecyclerView>(R.id.rvSortingOptions)
             val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
 
-            val btnResetSort = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnResetSort)
+            val btnResetSort =
+                view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnResetSort)
 
             val btnApplySort =
                 view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySort)
@@ -417,6 +435,7 @@ class ProductsActivity : BaseActivity() {
                         is AddToCartStatus.Loading -> {
                             handleLoadingState(isLoading = true, isPagination = false)
                         }
+
                         is AddToCartStatus.AddToCart -> {
                             handleLoadingState(isLoading = false, isPagination = false)
 
@@ -425,7 +444,8 @@ class ProductsActivity : BaseActivity() {
 
                                 val addedItemId = state.data.data?.item_id?.toIntOrNull()
                                 if (addedItemId != null) {
-                                    adapter.updateProductInCart(addedItemId, quantity = 1)
+                                    adapter.updateCartQuantity(addedItemId, quantity = 1)
+//                                    adapter.updateProductInCart(addedItemId, quantity = 1)
                                 }
                             } else {
                                 showToastSnack(state.data.message ?: "", true)
@@ -552,15 +572,38 @@ class ProductsActivity : BaseActivity() {
     }
 
     private fun handleAddToCart(product: ProductModel) {
-
         //new malak
-        if (SharedPreferenceHelper.isLogged == false) {
-            showLoginDialogue()
+        if (isGuest()) {
+            DialogUtils.showResultDialog(
+                context = this@ProductsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.you_are_not_logged_in),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this@ProductsActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            )
             return
         }
 
         if (!product.IN_STOCK) {
-            showToastSnack("Product Out Of Stock", true)
+            DialogUtils.showResultDialog(
+                context = this@ProductsActivity,
+                isDismissable = true,
+                icon = R.drawable.ic_error,
+                title = getString(R.string.product_out_of_stock),
+                description = getString(R.string.please_log_in_to_access_this_feature),
+                isOkMessage = true,
+                yesText = getString(R.string.login),
+                onConfirm = {
+                    val intent = Intent(this@ProductsActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            )
             return
         }
 
@@ -591,6 +634,7 @@ class ProductsActivity : BaseActivity() {
             val layoutManager = GridLayoutManager(this, 2)
 
             adapter = ProductAdapter(
+                cartItems = cartItems.toMap(),
                 onClick = { product, _, sharedView, transitionName ->
                     val intent =
                         Intent(this@ProductsActivity, ProductDetailsActivity::class.java).apply {
@@ -606,6 +650,22 @@ class ProductsActivity : BaseActivity() {
                     startActivity(intent, options.toBundle())
                 },
                 onFavoriteClick = { product, _, isFavorite ->
+                    if (SharedPreferenceHelper.isLogged == false) {
+                        DialogUtils.showResultDialog(
+                            context = this,
+                            isDismissable = true,
+                            icon = R.drawable.ic_error,
+                            title = getString(R.string.you_are_not_logged_in),
+                            description = getString(R.string.please_log_in_to_access_this_feature),
+                            isOkMessage = true,
+                            yesText = getString(R.string.login),
+                            onConfirm = {
+                                val intent = Intent(this, LoginActivity::class.java)
+                                startActivity(intent)
+                            }
+                        )
+                        return@ProductAdapter
+                    }
                     if (isFavorite) {
                         addProductToFavorite(product.ID, isFavorite)
                     } else {
@@ -617,7 +677,7 @@ class ProductsActivity : BaseActivity() {
                 }
             )
 
-            val spacing = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._8sdp)
+            val spacing = resources.getDimensionPixelSize(R.dimen.margin_bottom2)
             binding.recycler.apply {
                 this.layoutManager = layoutManager
                 this.adapter = this@ProductsActivity.adapter
@@ -697,5 +757,55 @@ class ProductsActivity : BaseActivity() {
             page = 1,
             category = flag
         )
+    }
+
+    private fun getCart() {
+        lifecycleScope.launch {
+            val lang = SharedPreferenceHelper.language ?: "ar"
+            cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
+        }
+    }
+
+    private fun observeCart() {
+        lifecycleScope.launch {
+            cartViewModel.state.collect { state ->
+                when (state) {
+                    is CartStatus.Idle -> {}
+                    is CartStatus.Loading -> {
+                        handleLoadingState(isLoading = true, isPagination = false)
+                    }
+
+                    is CartStatus.GetMyCart -> {
+                        if (state.data.status == 200) {
+
+                            cartItems.clear()
+
+                            state.data.data.orEmpty().forEach { cartData ->
+                                cartData.carts.orEmpty().forEach { cart ->
+                                    cart.items?.products.orEmpty().forEach { product ->
+                                        cartItems[product.id] = product.myQuantity
+                                    }
+                                }
+                            }
+
+                            Log.d("CART", "cartItems = $cartItems")
+
+                            if (::adapter.isInitialized) {
+                                adapter.updateCartItems(cartItems)
+                            }
+                        }
+                    }
+
+                    is CartStatus.Error -> {
+                        Log.d("TAG", "observeCart: ${state.error.toString()}")
+                        showToastSnack(state.error.toString(), true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun isGuest(): Boolean {
+        return SharedPreferenceHelper.isLogged == false
     }
 }

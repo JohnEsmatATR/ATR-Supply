@@ -12,12 +12,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel
-import com.akhnaton.atrapp.data.model.orderHistory.StatusGroup
 import com.akhnaton.atrapp.databinding.LayoutOrderBinding
 
-class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>() {
+class OrderHistoryAdapter :
+    RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>() {
 
     private lateinit var listener: OnProductClickListener
+
     private var mList = mutableListOf<OrderHistoryModel>()
 
     fun setData(
@@ -26,6 +27,7 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
     ) {
         mList = order.toMutableList()
         this.listener = listener
+
         notifyDataSetChanged()
     }
 
@@ -34,138 +36,95 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
         private val listener: OnProductClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private val statusTimelineHelper =
+            OrderStatusTimelineHelper(
+                binding.statusContainer
+            )
+
         fun bind(item: OrderHistoryModel) {
+
             binding.data = item
+
+            binding.tvOrderNo.text =
+                item.ORDER_ID.orEmpty()
+
+            // --------------------------------
+            // STATUS TIMELINE
+            // --------------------------------
+
             val steps = item.statusGroup.orEmpty()
-            binding.tvOrderNo.text = item.ORDER_ID.orEmpty()
+
+            statusTimelineHelper.bind(steps)
+
+            // --------------------------------
+            // STATUS BADGE
+            // --------------------------------
+
             bindStatusBadge(steps)
 
-            bindStep(
-                binding.imgStep1,
-                binding.tvStep1Label,
-                binding.tvStep1Date,
-                steps.getOrNull(0)
-            )
-
-            bindStep(
-                binding.imgStep2,
-                binding.tvStep2Label,
-                binding.tvStep2Date,
-                steps.getOrNull(1)
-            )
-
-            bindStep(
-                binding.imgStep3,
-                binding.tvStep3Label,
-                binding.tvStep3Date,
-                steps.getOrNull(2)
-            )
-
-            bindLine(binding.lineStart, steps.getOrNull(0))
-            bindLine(binding.line1, steps.getOrNull(0))
-            bindLine(binding.line2, steps.getOrNull(1))
-            bindLine(binding.lineEnd, steps.getOrNull(2))
+            // --------------------------------
+            // VIEW ORDER BUTTON
+            // --------------------------------
 
             binding.btnViewOrder.apply {
+
                 isEnabled = true
                 isClickable = true
                 isFocusable = true
 
                 setOnClickListener {
+
                     Log.d(
                         "VIEW_ORDER_DEBUG",
-                        "BUTTON CLICKED: ${item}"
+                        "BUTTON CLICKED: $item"
                     )
+
                     listener.onProductClick(item)
                 }
             }
         }
 
-        private fun bindStep(
-            imageView: ImageView,
-            labelView: TextView,
-            dateView: TextView,
-            step: StatusGroup?
+        private fun bindStatusBadge(
+            steps: List<com.akhnaton.atrapp.data.model.orderHistory.StatusGroup>
         ) {
-            if (step == null) {
-                imageView.visibility = View.INVISIBLE
-                labelView.text = ""
-                dateView.text = ""
-                return
-            }
 
-            imageView.visibility = View.VISIBLE
-            labelView.text = step.name.orEmpty()
-            dateView.text = step.date.orEmpty()
-
-            val color = parseColor(step.color, Color.LTGRAY)
-
-            if (step.isCompleted == true) {
-                imageView.background = createCircleDrawable(color)
-
-                imageView.setImageResource(R.drawable.ic_checked)
-                imageView.setColorFilter(Color.WHITE)
-                labelView.setTextColor(color)
-
-            } else {
-                imageView.background = createCircleDrawable(
-                    Color.WHITE,
-                    ContextCompat.getColor(labelView.context, R.color.light_gray)
-                )
-                imageView.setImageDrawable(null)
-                imageView.clearColorFilter()
-                labelView.setTextColor(ContextCompat.getColor(labelView.context, R.color.firstColor))
-            }
-        }
-
-        private fun bindLine(line: View, step: StatusGroup?) {
-            if (step?.isCompleted == true) {
-                line.setBackgroundColor(
-                    parseColor(step.color, ContextCompat.getColor(line.context, R.color.secondColor))
-                )
-            } else {
-                line.setBackgroundColor(ContextCompat.getColor(line.context, R.color.thirdColor))
-            }
-        }
-
-        private fun bindStatusBadge(steps: List<StatusGroup>) {
-            val currentStep = steps.filter { it.isCompleted == true }.lastOrNull()
-                ?: steps.firstOrNull()
+            val currentStep =
+                steps
+                    .filter {
+                        it.isCompleted == true
+                    }
+                    .lastOrNull()
+                    ?: steps.firstOrNull()
 
             if (currentStep == null) {
-                binding.tvBadgeStatus.visibility = View.GONE
+
+                binding.tvBadgeStatus.visibility =
+                    View.GONE
+
                 return
             }
 
-            binding.tvBadgeStatus.visibility = View.VISIBLE
+            binding.tvBadgeStatus.visibility =
+                View.VISIBLE
 
-            val color = parseColor(currentStep.color, Color.parseColor("#FF9500"))
-
-            binding.tvBadgeStatus.text = "• ${currentStep.name.orEmpty()}"
-            binding.tvBadgeStatus.setTextColor(color)
-
-            binding.tvBadgeStatus.background = createRoundedBackground(
-                color = color,
-                cornerRadius = 30f,
-                alpha = 35
+            val color = parseColor(
+                currentStep.color,
+                Color.parseColor("#FF9500")
             )
-        }
 
-        private fun createCircleDrawable(
-            color: Int,
-            strokeColor: Int? = null
-        ): GradientDrawable {
+            binding.tvBadgeStatus.text =
+                "• ${currentStep.name.orEmpty()}"
 
-            return GradientDrawable().apply {
+            binding.tvBadgeStatus.setTextColor(
+                color
+            )
 
-                shape = GradientDrawable.OVAL
-
-                setColor(color)
-
-                strokeColor?.let {
-                    setStroke(2, it)
-                }
-            }
+            binding.tvBadgeStatus.background =
+                createRoundedBackground(
+                    color = color,
+                    cornerRadius = 30f,
+                    alpha = 35
+                )
         }
 
         private fun createRoundedBackground(
@@ -183,11 +142,13 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
 
             return GradientDrawable().apply {
 
-                shape = GradientDrawable.RECTANGLE
+                shape =
+                    GradientDrawable.RECTANGLE
 
                 setColor(backgroundColor)
 
-                this.cornerRadius = cornerRadius
+                this.cornerRadius =
+                    cornerRadius
             }
         }
 
@@ -197,8 +158,13 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
         ): Int {
 
             return try {
-                Color.parseColor(color ?: "")
+
+                Color.parseColor(
+                    color ?: ""
+                )
+
             } catch (e: Exception) {
+
                 defaultColor
             }
         }
@@ -209,26 +175,38 @@ class OrderHistoryAdapter : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>
         viewType: Int
     ): ViewHolder {
 
-        val binding = LayoutOrderBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+        val binding =
+            LayoutOrderBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+
+        return ViewHolder(
+            binding,
+            listener
         )
-        return ViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
         position: Int
     ) {
-        holder.bind(mList[position])
+
+        holder.bind(
+            mList[position]
+        )
     }
 
     override fun getItemCount(): Int {
+
         return mList.size
     }
 
     interface OnProductClickListener {
-        fun onProductClick(data: OrderHistoryModel)
+
+        fun onProductClick(
+            data: OrderHistoryModel
+        )
     }
 }

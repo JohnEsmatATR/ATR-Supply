@@ -24,7 +24,6 @@ import androidx.core.view.WindowInsetsCompat
 class ProfileFragment : BaseFragment(), View.OnClickListener {
 
 
-
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -198,12 +197,14 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             binding.accountLayout.id -> {
                 startActivity(Intent(requireContext(), AccountDetailsActivity::class.java))
             }
+
             binding.orderLayout.id -> {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.flFragment, TrackingFragment())
                     .addToBackStack(null)
                     .commit()
             }
+
             binding.cardMoreCredit.id -> {
                 val intent = Intent(requireContext(), CreditInfoActivity::class.java).apply {
 
@@ -215,15 +216,19 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                 }
                 startActivity(intent)
             }
+
             binding.languagesLayout.id -> {
                 startActivity(Intent(requireContext(), LanguageActivity::class.java))
             }
+
             binding.privacyLayout.id -> {
                 startActivity(Intent(requireContext(), PrivacyActivity::class.java))
             }
+
             binding.aboutLayout.id -> {
                 startActivity(Intent(requireContext(), AboutUsActivity::class.java))
             }
+
             binding.contactLayout.id -> {
                 startActivity(Intent(requireContext(), ContactUsActivity::class.java))
             }

@@ -187,7 +187,7 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
                             mList.addAll(it.data.data!!)
                             mAdapter.setData(mList, this@TrackingFragment)
                             if (mList.size == 0) {
-                                binding.txtNoTrackingHistory.visibility=View.VISIBLE
+                                binding.txtNoTrackingHistory.visibility = View.VISIBLE
                             }
 
                         } else {
