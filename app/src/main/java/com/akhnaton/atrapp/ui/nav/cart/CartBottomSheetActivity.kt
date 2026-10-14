@@ -28,8 +28,12 @@ class CartBottomSheetActivity : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         val itemTotal = arguments?.getDouble(ARG_ITEM_TOTAL, 0.0) ?: 0.0
         val totalDiscount = arguments?.getDouble(ARG_DISCOUNT, 0.0) ?: 0.0
+        //malak task
+        val shippingFees = arguments?.getDouble(ARG_SHIPPING_FEES, 0.0) ?: 0.0
         val grandTotal = arguments?.getDouble(ARG_GRAND_TOTAL, 0.0) ?: 0.0
 
         val currency = getString(R.string.currency)
@@ -37,6 +41,7 @@ class CartBottomSheetActivity : BottomSheetDialogFragment() {
 
         binding.txtItemTotal.text = String.format(currentLocale, "%.2f %s", itemTotal, currency)
         binding.txtDiscount.text = String.format(currentLocale, "-%.2f %s", totalDiscount, currency)
+        binding.txtDeliveryFee.text = String.format(currentLocale, "%.2f %s", shippingFees, currency)
         binding.txtGrandTotal.text = String.format(currentLocale, "%.2f %s", grandTotal, currency)
 
         binding.cardCheckout.setOnClickListener {
@@ -54,13 +59,15 @@ class CartBottomSheetActivity : BottomSheetDialogFragment() {
     companion object {
         const val ARG_ITEM_TOTAL = "ITEM_TOTAL"
         const val ARG_DISCOUNT = "DISCOUNT"
+        const val ARG_SHIPPING_FEES = "SHIPPING_FEES"
         const val ARG_GRAND_TOTAL = "GRAND_TOTAL"
 
-        fun newInstance(itemTotal: Double, discount: Double, grandTotal: Double): CartBottomSheetActivity {
+        fun newInstance(itemTotal: Double, discount: Double, grandTotal: Double, shippingFees: Double,): CartBottomSheetActivity {
             val fragment = CartBottomSheetActivity()
             val args = Bundle().apply {
                 putDouble(ARG_ITEM_TOTAL, itemTotal)
                 putDouble(ARG_DISCOUNT, discount)
+                putDouble(ARG_SHIPPING_FEES, shippingFees)
                 putDouble(ARG_GRAND_TOTAL, grandTotal)
             }
             fragment.arguments = args

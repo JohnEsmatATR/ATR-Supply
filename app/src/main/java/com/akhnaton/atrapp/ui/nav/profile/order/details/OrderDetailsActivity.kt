@@ -22,6 +22,8 @@ import kotlinx.coroutines.launch
 
 class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderDetailsBinding
+
+
     private val orderDetailsViewModel: MyOrderDetailsViewModel by viewModels()
     private var mAdapter = OrderDetailsAdapter()
     var mList = mutableListOf<Item>()
@@ -49,6 +51,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                 LinearLayoutManager.VERTICAL, false
             )
         }
+
         binding.productRecycler.adapter = mAdapter
 
         binding.orderNumber.text = "#$ORDER_ID"

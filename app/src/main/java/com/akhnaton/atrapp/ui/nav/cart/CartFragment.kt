@@ -54,6 +54,9 @@ class CartFragment : BaseFragment() {
     private var cartData: List<CartResponse> = emptyList()
     private var cartSummary: TotalCartsData = TotalCartsData(cartTotal = 0.0, totalDiscount = 0.0)
 
+    //malak task
+    private var shippingFeesValue: Double = 0.0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -207,6 +210,7 @@ class CartFragment : BaseFragment() {
             showCartBottomSheet(
                 itemTotal = totalBeforeDiscount,
                 discount = discount,
+                shippingFees = shippingFeesValue,
                 grandTotal = grandTotal
             )
         }
@@ -230,8 +234,9 @@ class CartFragment : BaseFragment() {
 
                         cartData = state.data.data.firstOrNull()?.carts ?: emptyList()
 
-                        val allProducts = cartData.flatMap { it.items.products }
+                        shippingFeesValue = cartData.firstOrNull()?.items?.extraData?.shippingFees ?: 0.0
 
+                        val allProducts = cartData.flatMap { it.items.products }
                         val calculatedTotal = allProducts.sumOf { it.myQuantityTotalPrice }
                         val calculatedDiscount = allProducts.sumOf { (it.priceDiscount * it.myQuantity) }
 
@@ -413,10 +418,11 @@ class CartFragment : BaseFragment() {
         updateCartSummaryUI()
     }
 
-    private fun showCartBottomSheet(itemTotal: Double, discount: Double, grandTotal: Double) {
+    private fun showCartBottomSheet(itemTotal: Double, discount: Double, shippingFees: Double, grandTotal: Double) {
         val bottomSheet = CartBottomSheetActivity.newInstance(
             itemTotal = itemTotal,
             discount = discount,
+            shippingFees = shippingFees,
             grandTotal = grandTotal
         )
         bottomSheet.show(childFragmentManager, "CartBottomSheetActivity")

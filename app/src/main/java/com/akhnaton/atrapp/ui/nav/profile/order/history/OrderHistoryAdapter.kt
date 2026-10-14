@@ -193,9 +193,12 @@ class OrderHistoryAdapter :
         position: Int
     ) {
 
-        holder.bind(
-            mList[position]
-        )
+        holder.bind(mList[position])
+
+        // malak task
+        holder.itemView.setOnClickListener {
+            listener.onProductClick(mList[position])
+        }
     }
 
     override fun getItemCount(): Int {

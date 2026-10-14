@@ -7,10 +7,14 @@ import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.Item
 import com.akhnaton.atrapp.databinding.LayoutOrderItemBinding
+import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderStatusTimelineHelper
 import java.util.Locale
 
 class OrderDetailsAdapter :
     RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>() {
+
+
+
 
     private var mList = mutableListOf<Item>()
 
@@ -65,6 +69,7 @@ class OrderDetailsAdapter :
             */
 
 
+
             binding.data = item
 
             binding.imgProduct.load(item.IMAGE_URL) {
@@ -117,6 +122,8 @@ class OrderDetailsAdapter :
         holder: ViewHolder,
         position: Int
     ) {
+
+        
         holder.bind(mList[position])
     }
 

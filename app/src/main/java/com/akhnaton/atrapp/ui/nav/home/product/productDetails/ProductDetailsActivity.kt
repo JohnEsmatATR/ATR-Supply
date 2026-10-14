@@ -151,99 +151,102 @@ class ProductDetailsActivity : BaseActivity() {
                     is ProductDetailsStatus.GetProductDetails -> {
                         if (status.data.status == 200) {
                             hideProgressDialog(binding.progressLoading)
-                            productData = status.data.data?.firstOrNull()!!
-                            Log.d(
-                                "DEBUG_PRODUCT",
-                                "Returned Weight = '${productData?.WEIGHT}' | Returned Stock = ${productData?.IN_STOCK}"
-                            )
 
-                            if (productData != null) {
-                                if (productData.IS_LIKED) {
-                                    binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
-                                    val orangeColor = Color.parseColor("#EE7907")
-                                    binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
-                                } else {
-                                    binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)
-                                    val grayColor = Color.parseColor("#C1C1C1")
-                                    binding.btnFavIcon.imageTintList =
-                                        ColorStateList.valueOf(grayColor)
-                                }
-                                binding.txtItemName.text = productData.TITLE ?: ""
-                                binding.txtCategory.text = productData.category?.TITLE ?: ""
-                                binding.txtPriceValue.text =
-                                    "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
-                                binding.tvPriceWithoutTax.text =
-                                    "${getString(R.string.price_without_tax)}: ${productData.PRICE_WITHOUT_TAX ?: 0.0} ${
-                                        getString(
-                                            R.string.currency
-                                        )
-                                    }"
-                                binding.tvTax.text =
-                                    "${getString(R.string.tax)}: ${productData.TAX ?: 0.0} ${
-                                        getString(
-                                            R.string.currency
-                                        )
-                                    }"
-                                // 1. Dosage / Size Handling from API
-                                val dosageText = productData.WEIGHT
-                                if (!dosageText.isNullOrEmpty()) {
-                                    binding.txtSize.text = dosageText
-                                } else {
-                                    binding.txtSize.text = "N/A"
-                                }
+                            val fetchedList = status.data.data
+                            if (!fetchedList.isNullOrEmpty()) {
+                                productData = fetchedList.firstOrNull()!!
 
-                                productQuantity = productData.QUANTITY
-
-                                // Quantity Setup
-                                if (productData.MY_QUANTITY != 0) {
-                                    binding.txtQuantity.setText(productData.MY_QUANTITY.toString())
-                                    quantity = productData.MY_QUANTITY
-                                } else {
-                                    binding.txtQuantity.setText("1")
-                                    quantity = 1
-                                }
-
-                                inStoke = productData.IN_STOCK
-                                binding.isStock.text = if (inStoke) {
-                                    getString(R.string.in_stock)
-                                } else {
-                                    getString(R.string.out_of_stock)
-                                }
-
-                                binding.isStock.setTextColor(
-                                    ContextCompat.getColor(
-                                        binding.root.context,
-                                        if (inStoke) R.color.snack_green else R.color.snack_red
-                                    )
+                                Log.d(
+                                    "DEBUG_PRODUCT",
+                                    "Returned Weight = '${productData?.WEIGHT}' | Returned Stock = ${productData?.IN_STOCK}"
                                 )
 
-                                binding.btnPlus.isEnabled = inStoke
-                                binding.btnMinus.isEnabled = inStoke
+                                if (productData != null) {
+                                    if (productData.IS_LIKED) {
+                                        binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
+                                        val orangeColor = Color.parseColor("#EE7907")
+                                        binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
+                                    } else {
+                                        binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)
+                                        val grayColor = Color.parseColor("#C1C1C1")
+                                        binding.btnFavIcon.imageTintList =
+                                            ColorStateList.valueOf(grayColor)
+                                    }
+                                    binding.txtItemName.text = productData.TITLE ?: ""
+                                    binding.txtCategory.text = productData.category?.TITLE ?: ""
+                                    binding.txtPriceValue.text =
+                                        "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
+                                    binding.tvPriceWithoutTax.text =
+                                        "${getString(R.string.price_without_tax)}: ${productData.PRICE_WITHOUT_TAX ?: 0.0} ${
+                                            getString(
+                                                R.string.currency
+                                            )
+                                        }"
+                                    binding.tvTax.text =
+                                        "${getString(R.string.tax)}: ${productData.TAX ?: 0.0} ${
+                                            getString(
+                                                R.string.currency
+                                            )
+                                        }"
+                                    val dosageText = productData.WEIGHT
+                                    if (!dosageText.isNullOrEmpty()) {
+                                        binding.txtSize.text = dosageText
+                                    } else {
+                                        binding.txtSize.text = "N/A"
+                                    }
 
-                                // Bonus Recycler
-                                val bonusList = productData.BONUS_DATA
-                                if (!bonusList.isNullOrEmpty()) {
-                                    binding.cardBonus.visibility = View.VISIBLE
-                                    val bonusString =
-                                        productData.BONUS_DATA.orEmpty().joinToString("\n") {
-                                            "Buy ${it.BUY}, GET ${it.GET}"
-                                        }
-                                    binding.tvBonus.text = bonusString
-//                                    binding.bonusRecycler.visibility = View.VISIBLE
-//                                    bonusAdapter.setData(bonusList)
+                                    productQuantity = productData.QUANTITY
+
+                                    if (productData.MY_QUANTITY != 0) {
+                                        binding.txtQuantity.setText(productData.MY_QUANTITY.toString())
+                                        quantity = productData.MY_QUANTITY
+                                    } else {
+                                        binding.txtQuantity.setText("1")
+                                        quantity = 1
+                                    }
+
+                                    inStoke = productData.IN_STOCK
+                                    binding.isStock.text = if (inStoke) {
+                                        getString(R.string.in_stock)
+                                    } else {
+                                        getString(R.string.out_of_stock)
+                                    }
+
+                                    binding.isStock.setTextColor(
+                                        ContextCompat.getColor(
+                                            binding.root.context,
+                                            if (inStoke) R.color.snack_green else R.color.snack_red
+                                        )
+                                    )
+
+                                    binding.btnPlus.isEnabled = inStoke
+                                    binding.btnMinus.isEnabled = inStoke
+
+                                    val bonusList = productData.BONUS_DATA
+                                    if (!bonusList.isNullOrEmpty()) {
+                                        binding.cardBonus.visibility = View.VISIBLE
+                                        val bonusString =
+                                            productData.BONUS_DATA.orEmpty().joinToString("\n") {
+                                                "Buy ${it.BUY}, GET ${it.GET}"
+                                            }
+                                        binding.tvBonus.text = bonusString
+                                    }
+
+                                    binding.productNotFound.visibility = View.GONE
+
+                                    updateTotalPrice(productData.PRICE_AFTER_DISCOUNT)
+
                                 } else {
-//                                    binding.bonusRecycler.visibility = View.GONE
+                                    binding.productNotFound.visibility = View.VISIBLE
                                 }
-
-//                                binding.nestedScrollView.visibility = View.VISIBLE
-                                binding.productNotFound.visibility = View.GONE
-
-                                // Update Total Price Bottom
-                                updateTotalPrice(productData.PRICE_AFTER_DISCOUNT)
-
                             } else {
-//                                binding.nestedScrollView.visibility = View.GONE
+                                hideProgressDialog(binding.progressLoading)
                                 binding.productNotFound.visibility = View.VISIBLE
+                                Toast.makeText(
+                                    this@ProductDetailsActivity,
+                                    "Product details not available",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
