@@ -726,6 +726,8 @@ class HomeFragment : BaseFragment() {
 
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
+                        //malak task
+                        binding.tvCartCount.visibility = View.VISIBLE
                         binding.tvCartCount.text = state.data.data.get(0).carts
                             .sumOf { it.items.pagination.totalRows.toInt() }
                             .toString()

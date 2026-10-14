@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.profile.orderHistory.myOrders.MyOrdersIntent
@@ -21,6 +23,8 @@ import com.akhnaton.atrapp.shared.BaseFragment
 import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
+import com.akhnaton.atrapp.ui.nav.cart.CartFragment
+import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.profile.order.details.OrderDetailsActivity
@@ -38,6 +42,8 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
     private var mAdapter = OrderHistoryAdapter()
     private val viewModel: AddressesViewModel by viewModels()
     private var mList = mutableListOf<OrderHistoryModel>()
+
+    private val cartViewModel: CartViewModel by viewModels()
     private val calendar = Calendar.getInstance()
 
     override fun onCreateView(
@@ -53,6 +59,10 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
             getMyOrders()
             getAddress()
             observeAddress()
+
+            getCart()
+            observeCart()
+
             binding.cardAddress.setOnClickListener {
                 val intent = Intent(requireContext(), AddressesActivity::class.java)
                 startActivity(intent)
@@ -72,6 +82,15 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
         binding.btnLogin.setOnClickListener {
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
+        }
+
+
+        //malak task
+        binding.layoutCart.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.flFragment, CartFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -228,6 +247,45 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
         private const val TAG = "TrackingFragment"
         const val EXTRA_ORDER_ID = "ORDER_ID"
         private const val DATE_FORMAT_PATTERN = "dd/MM/yyyy"
+    }
+
+
+    //malak task
+    private fun getCart() {
+        lifecycleScope.launch {
+            val lang = SharedPreferenceHelper.language ?: "ar"
+            cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
+        }
+    }
+
+
+    //malak task
+    private fun observeCart() {
+        lifecycleScope.launch {
+            cartViewModel.state.collect { state ->
+                when (state) {
+                    is CartStatus.Idle -> {}
+                    is CartStatus.Loading -> {
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is CartStatus.GetMyCart -> {
+                        hideProgressDialog(binding.progressLoading)
+                        //malak task
+                        binding.tvCartCount.visibility = View.VISIBLE
+                        binding.tvCartCount.text = state.data.data.get(0).carts
+                            .sumOf { it.items.pagination.totalRows.toInt() }
+                            .toString()
+                    }
+
+                    is CartStatus.Error -> {
+                        Log.d("TAG", "observeCart: ${state.error.toString()}")
+                        showToastSnack(state.error.toString(), true)
+                        binding.tvCartCount.visibility = View.GONE
+                    }
+                }
+            }
+        }
     }
 
 }

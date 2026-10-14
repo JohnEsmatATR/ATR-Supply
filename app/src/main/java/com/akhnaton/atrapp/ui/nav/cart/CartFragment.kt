@@ -41,6 +41,8 @@ import java.util.Locale
 
 class CartFragment : BaseFragment() {
 
+
+
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by viewModels()
     private val addToCartViewModel: AddToCartViewModel by viewModels()
@@ -56,6 +58,22 @@ class CartFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
+
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (!findNavController().popBackStack()) {
+                        parentFragmentManager.popBackStack()
+                    }
+                }
+            }
+        )
+
+
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
         handleTopBottomKeyboard()
@@ -182,8 +200,19 @@ class CartFragment : BaseFragment() {
 
     private fun setupClickListeners() {
         binding.btnCheckout.setOnClickListener {
-            val intent = Intent(requireContext(), CheckoutActivity::class.java)
-            startActivity(intent)
+            val totalBeforeDiscount = cartSummary.cartTotal + cartSummary.totalDiscount
+            val discount = cartSummary.totalDiscount
+            val grandTotal = cartSummary.cartTotal
+
+            showCartBottomSheet(
+                itemTotal = totalBeforeDiscount,
+                discount = discount,
+                grandTotal = grandTotal
+            )
+        }
+
+        binding.btnBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -198,18 +227,31 @@ class CartFragment : BaseFragment() {
 
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
+
                         cartData = state.data.data.firstOrNull()?.carts ?: emptyList()
-                        cartSummary =
-                            state.data.data.firstOrNull()?.totalCartsData ?: TotalCartsData(
-                                0.0,
-                                0.0
-                            )
-                        binding.tvTotal.text =
-                            "${state.data.data.firstOrNull()?.totalCartsData?.cartTotal} ${
-                                getString(R.string.currency)
-                            }"
+
+                        val allProducts = cartData.flatMap { it.items.products }
+
+                        val calculatedTotal = allProducts.sumOf { it.myQuantityTotalPrice }
+                        val calculatedDiscount = allProducts.sumOf { (it.priceDiscount * it.myQuantity) }
+
+                        cartSummary = TotalCartsData(
+                            cartTotal = calculatedTotal,
+                            totalDiscount = calculatedDiscount
+                        )
+
+                        binding.tvTotal.text = "$calculatedTotal ${getString(R.string.currency)}"
+
                         if (cartData.isNotEmpty()) {
-                            setupParentRecycler(cartData)
+                            val recyclerViewState = binding.recycler.layoutManager?.onSaveInstanceState()
+
+                            if (binding.recycler.adapter !is CartParentAdapter) {
+                                setupParentRecycler(cartData)
+                            } else {
+                                parentAdapter.setData(cartData)
+                            }
+
+                            binding.recycler.layoutManager?.onRestoreInstanceState(recyclerViewState)
                             updateCartSummaryUI()
                         } else {
                             showEmptyState()
@@ -227,6 +269,7 @@ class CartFragment : BaseFragment() {
     }
 
     private fun observeCartQuantity() {
+
         lifecycleScope.launch {
             addToCartViewModel.state.collect { state ->
                 when (state) {
@@ -281,6 +324,7 @@ class CartFragment : BaseFragment() {
         parentAdapter.setData(list)
 //        binding.layoutCart.visibility = View.VISIBLE
     }
+
 
     private fun updateCartSummaryUI() {
         val context = binding.root.context
@@ -367,6 +411,15 @@ class CartFragment : BaseFragment() {
         binding.txtNoProducts.visibility = View.VISIBLE
         binding.clGuest.visibility = View.GONE
         updateCartSummaryUI()
+    }
+
+    private fun showCartBottomSheet(itemTotal: Double, discount: Double, grandTotal: Double) {
+        val bottomSheet = CartBottomSheetActivity.newInstance(
+            itemTotal = itemTotal,
+            discount = discount,
+            grandTotal = grandTotal
+        )
+        bottomSheet.show(childFragmentManager, "CartBottomSheetActivity")
     }
 
     companion object {

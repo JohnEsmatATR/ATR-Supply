@@ -309,7 +309,7 @@
     <string name="price_format">%1$s ج.م</string>
     <string name="LE_format">ج.م</string>
 
-    <string name="price_with_tax">السعر مع الضريبه:</string>
+    <string name="price_with_tax">السعر مع الضريبة: %s</string>
     <string name="unit">للقطعه</string>
 
     <string name="credit_details">تفاصيل بطاقة الائتمان</string>
@@ -383,5 +383,12 @@
     <string name="error_invalid_credentials">البريد الإلكتروني أو كلمة المرور غير صحيحة</string>
     <string name="logout_confirmation">هل تريد تسجيل الخروج؟</string>
 
+
+    <string name="invoice_details">تفاصيل الفاتورة</string>
+    <string name="delivery_fee">رسوم التوصيل</string>
+    <string name="confirm_checkout">تأكيد الدفع</string>
+    <string name="default_price">٠٫٠٠ ج.م</string>
+    <string name="default_discount_price">-٠٫٠٠ ج.م</string>
+    <string name="tax_format_cart">الضريبة: %s</string>
 
 </resources>

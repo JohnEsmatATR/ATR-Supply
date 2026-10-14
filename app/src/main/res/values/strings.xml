@@ -364,7 +364,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="price_format">%1$s L.E</string>
     <string name="LE_format">L.E</string>
 
-    <string name="price_with_tax">With Tax</string>
+    <string name="price_with_tax">With Tax: %s</string>
     <string name="unit">unit</string>
 
     <string name="credit_details">Credit Details</string>
@@ -442,6 +442,14 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="logout_confirmation">Are you sure you want to logout?</string>
 
 
+
+    <string name="invoice_details">Invoice Details</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="confirm_checkout">Confirm Checkout</string>
+    <string name="default_price">0.00 EGP</string>
+    <string name="default_discount_price">-0.00 EGP</string>
+
+    <string name="tax_format_cart">Tax: %s</string>
 
 
 </resources>

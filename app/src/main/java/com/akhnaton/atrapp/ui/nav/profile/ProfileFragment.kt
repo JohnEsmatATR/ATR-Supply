@@ -41,6 +41,20 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
 
 
 
+        //malak task
+        val window = requireActivity().window
+
+        window.statusBarColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.order_details_orange
+        )
+
+        WindowCompat.getInsetsController(
+            window,
+            window.decorView
+        ).isAppearanceLightStatusBars = false
+
+
         WindowCompat.setDecorFitsSystemWindows(
             requireActivity().window,
             false

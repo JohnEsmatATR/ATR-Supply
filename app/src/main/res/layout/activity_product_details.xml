@@ -4,11 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:fillViewport="true"
-    android:layout_height="match_parent">
+    android:usesCleartextTraffic="true"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#F9FAFB"
         android:orientation="vertical"
         tools:context=".ui.nav.home.product.productDetails.ProductDetailsActivity">
@@ -482,7 +485,7 @@
                             android:background="@null"
                             android:gravity="center"
                             android:inputType="number"
-                            android:maxLength="4"
+                            android:maxLength="5"
                             android:text="1"
                             android:textColor="#000000"
                             android:textSize="15sp"

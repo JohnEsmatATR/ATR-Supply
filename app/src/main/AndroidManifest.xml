@@ -104,7 +104,8 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.nav.home.product.productDetails.ProductDetailsActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true" />
         <activity
             android:name=".ui.nav.HomeActivity"
             android:exported="false"

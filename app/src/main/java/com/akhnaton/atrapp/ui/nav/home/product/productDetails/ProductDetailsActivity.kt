@@ -54,6 +54,11 @@ class ProductDetailsActivity : BaseActivity() {
     lateinit var product: ProductModel
     var quantity: Int = 1
     private var productQuantity: Int = 0
+
+
+    //malak task
+    private var isUpdatingQuantity = false
+
     private lateinit var flag: String
     var productId: Int = 0
     private var inStoke: Boolean = false
@@ -65,6 +70,7 @@ class ProductDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         handleTopBottomKeyboard()
         init()
@@ -78,11 +84,13 @@ class ProductDetailsActivity : BaseActivity() {
             val imeInsets = insets.getInsets(
                 WindowInsetsCompat.Type.ime()
             )
-            view.setPadding(
-                view.paddingLeft, systemBars.top, view.paddingRight, maxOf(
-                    imeInsets.bottom, systemBars.bottom
-                )
+            binding.root.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                maxOf(imeInsets.bottom, systemBars.bottom)
             )
+
             insets
         }
     }
@@ -446,27 +454,28 @@ class ProductDetailsActivity : BaseActivity() {
             showToastSnack("Product Out Of Stock", true)
         }
     }
-
     private fun setupQuantityEditText() {
 
         binding.txtQuantity.doAfterTextChanged { editable ->
-
+            if(isUpdatingQuantity) return@doAfterTextChanged
             val value = editable?.toString()?.toIntOrNull()
-
-            Log.d("WHATquantity", "typed value = $value")
-
             quantity = when {
                 value == null -> 0
                 value < 1 -> 1
                 value > productQuantity -> productQuantity
                 else -> value
             }
+            if (value != null && value > productQuantity) {
+                binding.txtQuantity.setText(productQuantity.toString())
+                binding.txtQuantity.setSelection(
+                    binding.txtQuantity.text?.length ?: 0
 
-            Log.d("WHATquantity", "quantity = $quantity")
-
+                )
+            }
             updateTotalPrice()
         }
     }
+
 
     private fun addProductToFavorite(
         productId: Int,

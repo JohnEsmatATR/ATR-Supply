@@ -37,6 +37,12 @@ open class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
+        val window = requireActivity().window
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = Color.TRANSPARENT
+
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
