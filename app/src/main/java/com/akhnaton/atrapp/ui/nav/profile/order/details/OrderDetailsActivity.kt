@@ -18,7 +18,9 @@ import com.akhnaton.atrapp.databinding.ActivityOrderDetailsBinding
 import com.akhnaton.atrapp.domain.OrderStateRepository
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
+import com.akhnaton.atrapp.ui.nav.profile.order.history.OrderStatusTimelineHelper
 import kotlinx.coroutines.launch
+import kotlin.collections.orEmpty
 
 class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderDetailsBinding
@@ -75,22 +77,22 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     is MyOrderDetailsStatus.GetMyOrderDetails -> {
-                        if (status.ahmed.status == 200) {
+                        if (status.myOrderDetailsRes.status == 200) {
                             hideProgressDialog(binding.progressLoading)
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
                             mList.clear()
-                            mList.addAll(status.ahmed.item)
+                            mList.addAll(status.myOrderDetailsRes.item)
                             mAdapter.setData(mList)
 
-                            val itemsCount = status.ahmed.item?.size ?: 0
-                            val totalPieces = status.ahmed.item?.sumOf { it.QUANTITY ?: 1 } ?: 0
+                            val itemsCount = status.myOrderDetailsRes.item?.size ?: 0
+                            val totalPieces = status.myOrderDetailsRes.item?.sumOf { it.QUANTITY ?: 1 } ?: 0
 
                             val subtotalVal =
-                                status.ahmed.totalOrderPriceWithoutTax?.toDouble() ?: 0.0
-                            val taxVal = status.ahmed.totalOrderTax?.toDouble() ?: 0.0
+                                status.myOrderDetailsRes.totalOrderPriceWithoutTax?.toDouble() ?: 0.0
+                            val taxVal = status.myOrderDetailsRes.totalOrderTax?.toDouble() ?: 0.0
                             val grandTotalVal =
-                                status.ahmed.totalOrderPriceWithTax?.toDouble() ?: 0.0
+                                status.myOrderDetailsRes.totalOrderPriceWithTax?.toDouble() ?: 0.0
 
                             binding.total.text =
                                 "${grandTotalVal.toInt()} ${getString(R.string.currency)}"
@@ -108,9 +110,18 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                                 bottomSheet.show(supportFragmentManager, "OrderBottomSheet")
                             }
 
+                            val statusTimelineHelper =
+                                OrderStatusTimelineHelper(
+                                    binding.statusContainer
+                                )
+
+                            val steps = status.myOrderDetailsRes.statusGroup
+
+                            statusTimelineHelper.bind(steps)
+
                         } else {
                             hideProgressDialog(binding.progressLoading)
-                            showToastSnack(status.ahmed.message, true)
+                            showToastSnack(status.myOrderDetailsRes.message, true)
                         }
                     }
 

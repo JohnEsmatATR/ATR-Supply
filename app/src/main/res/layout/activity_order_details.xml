@@ -143,6 +143,27 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <LinearLayout
+                    android:id="@+id/stepperContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_75sdp"
+                    android:layout_marginTop="16dp"
+                    android:background="#FAF9F9"
+                    android:orientation="vertical"
+                    android:padding="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvOrderNoTitle">
+
+                    <LinearLayout
+                        android:id="@+id/statusContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
