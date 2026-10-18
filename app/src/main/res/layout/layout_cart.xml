@@ -122,15 +122,15 @@
                 android:id="@+id/priceWithTax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:text="@{@string/price_with_tax(cart.priceWithTax + ``)}"
+                android:layout_marginStart="26dp"
+                android:text="@{@string/price_with_tax(cart.priceWithTax + ``) + ` ` + @string/currency}"
                 android:textColor="@color/orange"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/layout_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/layout_size"
-                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintBottom_toBottomOf="@id/txt_price"
+                app:layout_constraintStart_toEndOf="@id/txt_price"
+                app:layout_constraintTop_toTopOf="@id/txt_price"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="With Tax: 4,134.00 L.E" />
 
             <TextView
@@ -139,9 +139,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="6dp"
-                android:text="@{@string/price_format(cart.priceWithoutTax + ``)}"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:text="@{@string/price_without_tax(cart.priceWithoutTax + ``) + ` ` + @string/currency}"
+                android:textColor="@color/orange"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/card_image"
                 app:layout_constraintTop_toBottomOf="@id/layout_size"
@@ -152,13 +152,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="116dp"
-                android:text="@{@string/tax_format_cart(cart.tax + ``)}"
-                android:textColor="#E8750A"
+                android:text="@{@string/tax_format_cart(cart.tax) + ` ` + @string/currency}"
+                android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/txt_price"
-                app:layout_constraintStart_toEndOf="@id/txt_price"
-                app:layout_constraintTop_toTopOf="@id/txt_price"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintBottom_toBottomOf="@id/layout_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/layout_size"
+                app:layout_constraintVertical_bias="1.0"
                 tools:text="Tax: 50.00 L.E" />
 
 
@@ -178,15 +178,15 @@
                     android:id="@+id/txt_total_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="98dp"
+                    android:layout_weight="1"
                     android:gravity="start"
-                    android:text="@{`(` + @string/price_format(cart.myQuantityTotalPrice + ``) + `)`}"
-                    android:textColor="#FF6B00"
+                    android:text="@{@string/total + ` ` + (cart.myQuantityTotalPrice + ` `) + ` ` + @string/currency}"
+                    android:textColor="@color/black"
                     android:textFontWeight="700"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    tools:text="(103.8 EGP)" />
+                    tools:text="Total 103.8 EGP" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_quantity_container"
@@ -284,3 +284,6 @@
 
     </com.google.android.material.card.MaterialCardView>
 </layout>
+
+
+

@@ -134,6 +134,15 @@ class FavoriteFragment : BaseFragment() {
         binding.recycler.adapter = adapter
 
 
+        //malak task
+        if (productList.isEmpty()) {
+            binding.txtNoProducts.visibility = View.VISIBLE
+            binding.recycler.visibility = View.GONE
+        } else {
+            binding.txtNoProducts.visibility = View.GONE
+            binding.recycler.visibility = View.VISIBLE
+        }
+
         if (productList.size == 0) {
             binding.txtNoProducts.visibility = View.VISIBLE
         }
@@ -225,10 +234,15 @@ class FavoriteFragment : BaseFragment() {
 
 
     private fun favoriteObserve() {
+
         lifecycleScope.launch {
             favoriteViewModel.state.collect {
                 when (it) {
-                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is FavoriteStatus.Idle -> {
+                        Log.d(Common.KeroDebug, "observeHome: Idle")
+                        //malak task
+                        binding.txtNoProducts.visibility = View.GONE
+                    }
                     is FavoriteStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         //showProgressDialog(binding.progressLoading)
@@ -245,8 +259,9 @@ class FavoriteFragment : BaseFragment() {
                         } else if (it.data.status == 401) {
                             hideProgressDialog(binding.progressLoading)
 //                            onTokenExpired(it.data.errors!![0])
+                        }
 
-                        } else {
+                        else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
                         }
@@ -278,18 +293,43 @@ class FavoriteFragment : BaseFragment() {
                             }
 
                             adapter.setData(productList, false, flag)
+
+                            //malak task
+                            if (productList.isEmpty()) {
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                                binding.recycler.visibility = View.GONE
+                            }
+                            else {
+                                binding.txtNoProducts.visibility = View.GONE
+                                binding.recycler.visibility = View.VISIBLE
+                            }
+
                             if (productList.size == 0) {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                             }
 
                         } else if (it.data.status == 401) {
                             // onTokenExpired(it.data.errors!![0])
-                        } else {
+                        }
+
+                        else if (productList.isEmpty()) {
+                            binding.txtNoProducts.visibility = View.VISIBLE
+                            showToastSnack(it.data.message ?: "", true)
+                            setupProductsRecycler(productList)
+                        }
+
+                        else {
                             // showToastSnack(it.data.message, true)
+
+                            //malak task
+                            if (productList.isEmpty()) {
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                                binding.recycler.visibility = View.GONE
+                                showToastSnack(it.data.message ?: "", true)
+                                setupProductsRecycler(productList)
+                            }
                         }
                     }
-
-
                 }
             }
         }
@@ -350,6 +390,11 @@ class FavoriteFragment : BaseFragment() {
                         product.TITLE.lowercase(Locale.getDefault()).contains(query) ||
                                 product.DESCRIPTION.lowercase(Locale.getDefault()).contains(query)
                     }
+                }
+
+                if(filteredList.isEmpty()) binding.txtNoProducts.visibility = View.VISIBLE
+                else {
+                    binding.txtNoProducts.visibility = View.GONE
                 }
 
                 if (::adapter.isInitialized) {

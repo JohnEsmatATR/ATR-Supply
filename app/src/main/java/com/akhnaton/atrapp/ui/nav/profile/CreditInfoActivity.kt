@@ -77,7 +77,7 @@ class CreditInfoActivity : BaseActivity() {
     }
 
     companion object {
-        private const val AMOUNT_FORMAT = "%.2f %s"
+        private const val AMOUNT_FORMAT = "%,.3f %s"
         private const val DEFAULT_AMOUNT = 0.0
     }
 }

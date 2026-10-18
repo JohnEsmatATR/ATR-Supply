@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="com.akhnaton.atrapp.data.model.orderHistory.Item" />
@@ -100,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:text=""
+                android:text="@{@string/tax_format_cart(data.TAX_VALUE) + ` ` + @string/currency}"
                 android:textColor="#E8750A"
                 android:textSize="11sp"
                 app:layout_constraintStart_toStartOf="@+id/productName"
@@ -139,6 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/order_details_orange"
+                    android:text="@{@string/price_with_tax(data.TOTAL_UNIT_PRICE_WITHOUT_TAX + ``) + ` ` + @string/currency}"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="With Tax: 4,134.00 L.E" />

@@ -118,6 +118,14 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
 
+
+                    <ImageView
+
+                        android:layout_width="10dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/im_location_background"
+                        app:tint="@color/hint_gray" />
+
                     <TextView
                         android:id="@+id/default_address"
                         android:layout_width="0dp"
@@ -132,11 +140,7 @@
                         android:textColorHint="@color/hint_gray"
                         android:textSize="16sp" />
 
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/im_location_background"
-                        app:tint="@color/hint_gray" />
+
 
                 </LinearLayout>
 

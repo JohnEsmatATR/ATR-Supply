@@ -237,7 +237,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="choose_your_language">Choose Your Language</string>
     <string name="order_number_53453">Order Number 53453</string>
     <string name="price">Price:</string>
-    <string name="order_number">Order Number</string>
+    <string name="order_number">Order No.</string>
     <string name="pricee">Price:</string>
     <string name="quantity">Quantity:</string>
     <string name="privacy_and_terms">Privacy and Terms</string>
@@ -372,7 +372,9 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="total_credit_limit">Total Credit Limit</string>
     <string name="used_credit">Used Credit</string>
     <string name="special_offer">Special Offer</string>
-    <string name="price_without_tax">Price Without Tax</string>
+    <string name="price_without_tax">Without Tax: %s</string>
+
+    <string name="price_without_tax_product_det">Without Tax</string>
 
     <string name="in_cart">In Cart</string>
 

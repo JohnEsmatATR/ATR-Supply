@@ -218,6 +218,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:text="@{@string/price_without_tax(cart.priceWithoutTax + ``) + ` ` + @string/currency}"
                         android:layout_marginBottom="2dp"
                         android:textColor="#757575"
                         android:textSize="14sp" />

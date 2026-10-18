@@ -39,9 +39,9 @@ class OrderBottomSheet : BottomSheetDialogFragment() {
         binding.txtTotalPieces.text = getString(R.string.pieces_unit_format, totalPieces)
 
         val currentLocale = Locale.getDefault()
-        binding.txtSubtotal.text = String.format(currentLocale, "%.2f %s", subtotal, currency)
-        binding.txtTax.text = String.format(currentLocale, "%.2f %s", tax, currency)
-        binding.txtGrandTotal.text = String.format(currentLocale, "%.2f %s", grandTotal, currency)
+        binding.txtSubtotal.text = String.format(currentLocale, "%,.3f %s", subtotal, currency)
+        binding.txtTax.text = String.format(currentLocale, "%,.3f %s", tax, currency)
+        binding.txtGrandTotal.text = String.format(currentLocale, "%,.3f %s", grandTotal, currency)
     }
 
     override fun onDestroyView() {

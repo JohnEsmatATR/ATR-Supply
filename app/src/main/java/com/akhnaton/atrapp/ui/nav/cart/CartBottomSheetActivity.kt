@@ -39,11 +39,12 @@ class CartBottomSheetActivity : BottomSheetDialogFragment() {
         val currency = getString(R.string.currency)
         val currentLocale = Locale.getDefault()
 
-        binding.txtItemTotal.text = String.format(currentLocale, "%.2f %s", itemTotal, currency)
-        binding.txtDiscount.text = String.format(currentLocale, "-%.2f %s", totalDiscount, currency)
-        binding.txtDeliveryFee.text = String.format(currentLocale, "%.2f %s", shippingFees, currency)
-        binding.txtGrandTotal.text = String.format(currentLocale, "%.2f %s", grandTotal, currency)
+//        binding.txtGrandTotal.text = "%,d".format(grandTotal, currency)
 
+        binding.txtItemTotal.text = String.format(currentLocale, "%,.3f %s", itemTotal, currency)
+        binding.txtDiscount.text = String.format(currentLocale, "%,.3f %s", totalDiscount, currency)
+        binding.txtDeliveryFee.text = String.format(currentLocale, "%,.3f %s", shippingFees, currency)
+        binding.txtGrandTotal.text = String.format(currentLocale, "%,.3f %s", grandTotal, currency)
         binding.cardCheckout.setOnClickListener {
             dismiss()
             val intent = Intent(requireContext(), CheckoutActivity::class.java)

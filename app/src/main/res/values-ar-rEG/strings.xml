@@ -310,6 +310,9 @@
     <string name="LE_format">ج.م</string>
 
     <string name="price_with_tax">السعر مع الضريبة: %s</string>
+
+    <string name="price_without_tax_product_det">بدون ضريبة</string>
+
     <string name="unit">للقطعه</string>
 
     <string name="credit_details">تفاصيل بطاقة الائتمان</string>
@@ -317,7 +320,7 @@
     <string name="total_credit_limit">إجمالي حد الائتمان</string>
     <string name="used_credit">الائتمان المستهلك</string>
     <string name="special_offer">عرض خاص</string>
-    <string name="price_without_tax">السعر بدون ضريبة</string>
+    <string name="price_without_tax">السعر بدون ضريبة: %s</string>
 
     <string name="in_cart">في سلة التسوق</string>
 

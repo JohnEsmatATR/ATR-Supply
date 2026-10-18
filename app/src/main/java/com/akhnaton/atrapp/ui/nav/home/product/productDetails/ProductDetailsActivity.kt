@@ -177,7 +177,7 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.txtPriceValue.text =
                                         "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
                                     binding.tvPriceWithoutTax.text =
-                                        "${getString(R.string.price_without_tax)}: ${productData.PRICE_WITHOUT_TAX ?: 0.0} ${
+                                        "${getString(R.string.price_without_tax_product_det)}: ${productData.PRICE_WITHOUT_TAX ?: 0.0} ${
                                             getString(
                                                 R.string.currency
                                             )

@@ -86,19 +86,19 @@ class OrderDetailsAdapter :
 
             val taxValue = item.TOTAL_TAX?.toDouble() ?: 0.0
             binding.itemTax.text =
-                "$taxLabel: ${String.format(Locale.US, "%.2f", taxValue)} $currency"
+                "$taxLabel: ${String.format(Locale.US, "%,.3f", taxValue)} $currency"
 
             val totalPrice = item.TOTAL_UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
             binding.price.text =
-                "${String.format(Locale.US, "%.2f", totalPrice)} $currency"
+                "${String.format(Locale.US, "%,.3f", totalPrice)} $currency"
 
             val unitPrice = item.UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
             binding.unitPriceDisplay.text =
-                "(${String.format(Locale.US, "%.2f", unitPrice)} $unitSuffix)"
+                "(${String.format(Locale.US, "%,.3f", unitPrice)} $unitSuffix)"
 
             val priceWithTaxValue = item.UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
             binding.priceWithTax.text =
-                "$priceWithTaxLabel: ${String.format(Locale.US, "%.2f", priceWithTaxValue)} $currency"
+                "$priceWithTaxLabel: ${String.format(Locale.US, "%,.3f", priceWithTaxValue)} $currency"
 
             binding.executePendingBindings()
         }

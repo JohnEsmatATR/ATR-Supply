@@ -63,6 +63,7 @@ class CartFragment : BaseFragment() {
     ): View {
 
 
+        setupOnBackPressed()
 
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -192,6 +193,22 @@ class CartFragment : BaseFragment() {
         }
     }
 
+    private fun navigateBack() {
+        if (!findNavController().popBackStack()) {
+            parentFragmentManager.popBackStack()
+        }
+    }
+    private fun setupOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navigateBack()
+                }
+            }
+        )
+    }
+
     private fun initCart() {
         shimmerAdapter = ShimmerAdapterCart(10)
         binding.recycler.apply {
@@ -216,7 +233,7 @@ class CartFragment : BaseFragment() {
         }
 
         binding.btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            navigateBack()
         }
     }
 
