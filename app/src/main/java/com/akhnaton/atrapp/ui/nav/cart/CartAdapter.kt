@@ -27,6 +27,7 @@ class CartAdapter(
     private val onDeleteClick: (product: CartProduct, position: Int) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
+
     private var productsList = ArrayList<CartProduct>()
     private var isVisible: Boolean = true
     private var type: String = ""

@@ -147,12 +147,12 @@ class LoginActivity : BaseActivity() {
         val password = binding.layoutPassword.editText?.text?.toString()?.trim() ?: ""
 
         if (email.isEmpty()) {
-            Toast.makeText(this, "Please enter your email or phone number", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,  getString(R.string.error_email_or_phone_empty), Toast.LENGTH_SHORT).show()
             return
         }
 
         if (email.contains("@") && !isValidEmail(email.lowercase())) {
-            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,   getString(R.string.error_invalid_email), Toast.LENGTH_SHORT).show()
             return
         }
 

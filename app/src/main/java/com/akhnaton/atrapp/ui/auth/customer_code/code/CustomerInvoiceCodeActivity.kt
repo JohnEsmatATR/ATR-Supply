@@ -21,6 +21,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CustomerInvoiceCodeActivity : BaseActivity() {
+
+    companion object {
+        const val KEY_INVOICE_CODE = "key_customer_invoice_code"
+        const val KEY_PHONE_NUMBER = "key_customer_phone_number"
+        const val KEY_EMAIL = "key_customer_email"
+    }
+
+
     private lateinit var binding: ActivityCustomerInvoiceCodeBinding
     private val viewModel: SentOtpViewModel by viewModels()
     private val appSettingViewModel: AppSettingViewModel by viewModels()
@@ -70,22 +78,22 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
     private fun validateInputs(invoiceCode: String, phone: String, email: String): Boolean {
         return when {
             invoiceCode.isEmpty() -> {
-                binding.txtCustomerInvoiceCode.error = "ادخل كود العميل"
+                binding.txtCustomerInvoiceCode.error = getString(R.string.error_enter_customer_code)
                 false
             }
 
             phone.isEmpty() -> {
-                binding.txtCustomerPhoneNumber.error = "ادخل رقم الهاتف"
+                binding.txtCustomerPhoneNumber.error = getString(R.string.error_enter_phone_number)
                 false
             }
 
             phone.length != 11 -> {
-                binding.txtCustomerPhoneNumber.error = "رقم الهاتف يجب أن يكون 11 رقم"
+                binding.txtCustomerPhoneNumber.error = getString(R.string.error_phone_length_invalid)
                 false
             }
 
             email.isEmpty() -> {
-                binding.txtCustomerEmail.error = "ادخل البريد الالكتروني"
+                binding.txtCustomerEmail.error = getString(R.string.error_enter_email)
                 false
             }
 
@@ -117,9 +125,9 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                                 this@CustomerInvoiceCodeActivity,
                                 OTPCustomerCodeActivity::class.java
                             ).apply {
-                                putExtra("invoice_code", invoiceCode)
-                                putExtra("phone_number", phoneNumber)
-                                putExtra("email", email)
+                                putExtra(KEY_INVOICE_CODE, invoiceCode)
+                                putExtra(KEY_PHONE_NUMBER, phoneNumber)
+                                putExtra(KEY_EMAIL, email)
                             }
 
                             startActivity(intent)

@@ -13,9 +13,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.databinding.FragmentFavoriteBinding
@@ -27,11 +30,17 @@ import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.home.ProductAdapter
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.akhnaton.atrapp.ui.nav.cart.CartFragment
+import com.akhnaton.atrapp.ui.nav.cart.CartViewModel
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 class FavoriteFragment : BaseFragment() {
+
+    //malak task
+    private val cartViewModel: CartViewModel by viewModels()
+
     lateinit var binding: FragmentFavoriteBinding
     lateinit var adapter: ProductAdapter
     private var flag = ""
@@ -51,6 +60,9 @@ class FavoriteFragment : BaseFragment() {
             favoriteObserve()
             search()
             init()
+
+            getCart()
+            observeCart()
         }
 
         return binding.root
@@ -69,7 +81,16 @@ class FavoriteFragment : BaseFragment() {
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }
+
+        //malak task
+        binding.layoutCart.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.flFragment, CartFragment())
+                .addToBackStack(null)
+                .commit()
+        }
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,6 +133,7 @@ class FavoriteFragment : BaseFragment() {
         binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
 
+
         if (productList.size == 0) {
             binding.txtNoProducts.visibility = View.VISIBLE
         }
@@ -128,6 +150,12 @@ class FavoriteFragment : BaseFragment() {
                             hideProgressDialog(binding.progressLoading)
                             if (state.data.status == 200) {
                                 showToastSnack(state.data.message ?: "", false)
+
+                                val addedItemId = state.data.data?.item_id?.toIntOrNull()
+
+                                if (addedItemId != null) {
+                                    adapter.updateProductInCart(addedItemId, quantity = 1)
+                                }
                             } else {
                                 showToastSnack(state.data.message ?: "", true)
                             }
@@ -333,4 +361,43 @@ class FavoriteFragment : BaseFragment() {
         })
     }
 
+
+
+    //malak task
+    private fun getCart() {
+        lifecycleScope.launch {
+            val lang = SharedPreferenceHelper.language ?: "ar"
+            cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
+        }
+    }
+
+
+    //malak task
+    private fun observeCart() {
+        lifecycleScope.launch {
+            cartViewModel.state.collect { state ->
+                when (state) {
+                    is CartStatus.Idle -> {}
+                    is CartStatus.Loading -> {
+                        showProgressDialog(binding.progressLoading)
+                    }
+
+                    is CartStatus.GetMyCart -> {
+                        hideProgressDialog(binding.progressLoading)
+                        //malak task
+                        binding.tvCartCount.visibility = View.VISIBLE
+                        binding.tvCartCount.text = state.data.data.get(0).carts
+                            .sumOf { it.items.pagination.totalRows.toInt() }
+                            .toString()
+                    }
+
+                    is CartStatus.Error -> {
+                        Log.d("TAG", "observeCart: ${state.error.toString()}")
+                        showToastSnack(state.error.toString(), true)
+                        binding.tvCartCount.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
 }

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 class AppSettingViewModel : ViewModel() {
+
     private val _state = MutableStateFlow<AppSettingState>(AppSettingState.Idle)
     val state: StateFlow<AppSettingState> = _state
 

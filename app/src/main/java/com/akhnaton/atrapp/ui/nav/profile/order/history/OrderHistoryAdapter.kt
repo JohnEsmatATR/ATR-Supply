@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.orderHistory.OrderHistoryModel
@@ -190,9 +193,12 @@ class OrderHistoryAdapter :
         position: Int
     ) {
 
-        holder.bind(
-            mList[position]
-        )
+        holder.bind(mList[position])
+
+        // malak task
+        holder.itemView.setOnClickListener {
+            listener.onProductClick(mList[position])
+        }
     }
 
     override fun getItemCount(): Int {

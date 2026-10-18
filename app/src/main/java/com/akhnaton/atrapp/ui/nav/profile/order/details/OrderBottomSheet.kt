@@ -49,21 +49,3 @@ class OrderBottomSheet : BottomSheetDialogFragment() {
         _binding = null
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

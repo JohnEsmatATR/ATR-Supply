@@ -241,7 +241,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="pricee">Price:</string>
     <string name="quantity">Quantity:</string>
     <string name="privacy_and_terms">Privacy and Terms</string>
-    <string name="dosagasc">Dosagasc :</string>
+    <string name="dosagasc">Dosages:</string>
     <string name="order_confirmed">Order Confirmed</string>
     <string name="your_order_has_been_confirmed_we_will_send_you_a_confirmation_email_shortly">Your order has been confirmed, we will send you a confirmation email shortly.</string>
     <string name="track_order">Track Order</string>
@@ -364,7 +364,7 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="price_format">%1$s L.E</string>
     <string name="LE_format">L.E</string>
 
-    <string name="price_with_tax">With Tax</string>
+    <string name="price_with_tax">With Tax: %s</string>
     <string name="unit">unit</string>
 
     <string name="credit_details">Credit Details</string>
@@ -385,5 +385,71 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="search_for_mounjaro">Search For Mounjaro</string>
     <string name="product_out_of_stock">Product Out Of Stock</string>
     <string name="added_to_cart">Added To Cart</string>
+
+    <string name="failed_to_load_data">Failed to load data</string>
+    <string name="unknown_error">Unknown error occurred</string>
+
+    <string name="product_not_found">Product not found</string>
+
+    <string name="view_all_reviews">View all reviews</string>
+
+    <string name="company_name">ATR Akhnaton Trading and Distribution</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="facebook">Facebook</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="youtube">YouTube</string>
+    <string name="or_continue_with">Or Continue With</string>
+
+    <string name="dummy_text">jbejcbec</string>
+
+
+    <string name="from">From</string>
+    <string name="to">To</string>
+
+    <string name="return_summary">Return summary</string>
+    <string name="estimated_refund_value">Estimated refund value</string>
+
+    <string name="error_enter_customer_code">Please enter customer code</string>
+    <string name="error_enter_phone_number">Please enter phone number</string>
+    <string name="error_phone_length_invalid">Phone number must be 11 digits</string>
+    <string name="error_enter_email">Please enter email address</string>
+
+    <string name="otp_sent">OTP Sent</string>
+    <string name="error_fcm_token_failed">Fetching FCM registration token failed</string>
+    <string name="error_notification_permission_denied">Notification permission denied</string>
+
+    <string name="filter_badge_count">%1$d</string>
+    <string name="facebook_followers_posts">3,8K Followers   •   136 Posts</string>
+
+    <string name="social_followers_posts">20.3K Followers   •   136 Posts</string>
+    <string name="no_customer_found_message">No phone number is registered with us. Please contact the representative.</string>
+
+    <string name="default_quantity">1</string>
+    <string name="suggested_address">Suggested Address</string>
+    <string name="alert">Alert!</string>
+    <string name="are_you_sure_you_want_to_sign_out">Are you sure you want to sign out?</string>
+    <string name="ok">OK</string>
+    <string name="free">Free</string>
+    <string name="empty_cart_message">Your cart is empty. Add some items to \n get started!</string>
+    <string name="category_title">Category Title</string>
+    <string name="generic_name">1st Generic Name</string>
+    <string name="two">2</string>
+    <string name="review_text">The product is excellent for the price</string>
+    <string name="error_invalid_email">Please enter a valid email address.</string>
+    <string name="error_email_or_phone_empty">Please enter your email or phone number</string>
+    <string name="error_invalid_credentials">Email or password is invalid</string>
+
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
+
+
+
+    <string name="invoice_details">Invoice Details</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="confirm_checkout">Confirm Checkout</string>
+    <string name="default_price">0.00 EGP</string>
+    <string name="default_discount_price">-0.00 EGP</string>
+
+    <string name="tax_format_cart">Tax: %s</string>
+
 
 </resources>

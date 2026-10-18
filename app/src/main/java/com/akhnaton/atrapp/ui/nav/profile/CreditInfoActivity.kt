@@ -61,9 +61,9 @@ class CreditInfoActivity : BaseActivity() {
                     if (creditData != null) {
                         val currency = getString(R.string.currency)
 
-                        binding.tvCreditLimit.text = String.format(Locale.getDefault(), "%.2f %s", creditData.creditLimit ?: 0.0, currency)
-                        binding.tvUsedCredit.text = String.format(Locale.getDefault(), "%.2f %s", creditData.usedCredit ?: 0.0, currency)
-                        binding.tvAvailableCredit.text = String.format(Locale.getDefault(), "%.2f %s", creditData.availableCredit ?: 0.0, currency)
+                        binding.tvCreditLimit.text = String.format(Locale.getDefault(), AMOUNT_FORMAT, creditData.creditLimit ?: DEFAULT_AMOUNT, currency)
+                        binding.tvUsedCredit.text = String.format(Locale.getDefault(), AMOUNT_FORMAT, creditData.usedCredit ?: DEFAULT_AMOUNT, currency)
+                        binding.tvAvailableCredit.text = String.format(Locale.getDefault(), AMOUNT_FORMAT, creditData.availableCredit ?: DEFAULT_AMOUNT, currency)
                     } else {
                         Log.e("API_ERROR", "Data object inside response is NULL. Message: ${baseResponse.message}")
                     }
@@ -74,5 +74,10 @@ class CreditInfoActivity : BaseActivity() {
                 Log.e("API_ERROR", "Exception: ${e.localizedMessage}")
             }
         }
+    }
+
+    companion object {
+        private const val AMOUNT_FORMAT = "%.2f %s"
+        private const val DEFAULT_AMOUNT = 0.0
     }
 }

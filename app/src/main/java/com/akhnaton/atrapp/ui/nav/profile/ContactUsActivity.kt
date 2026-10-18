@@ -23,7 +23,7 @@ class ContactUsActivity : BaseActivity() {
     private fun setupBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contact_us)
 
-        var isArabic = SharedPreferenceHelper.language == "ar"
+        val isArabic = SharedPreferenceHelper.language == LANG_AR
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
@@ -33,23 +33,25 @@ class ContactUsActivity : BaseActivity() {
 
         binding.whatsAppCard.setOnClickListener {
             val phone = "+20 217125"
-            val url = "https://wa.me/$phone"
+
+
+            val url = WHATSAPP_BASE_URL + MY_PHONE_NUMBER
             openLink(url)
         }
 
 
         binding.facebookCard.setOnClickListener {
-            openLink("https://www.facebook.com/share/1FGQyT7r9k/")
+            openLink(FACEBOOK_URL)
         }
 
 
         binding.linkedinCard.setOnClickListener {
-            openLink("https://www.linkedin.com/company/akhnaton-trading-and-distribution/posts/?feedView=all")
+            openLink(LINKEDIN_URL)
         }
 
 
         binding.linkedasdinCard.setOnClickListener {
-            openLink("https://youtube.com/@atr-akhnatontradinganddist9112")
+            openLink(YOUTUBE_URL)
         }
 
 
@@ -61,5 +63,15 @@ class ContactUsActivity : BaseActivity() {
     private fun openLink(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         startActivity(intent)
+    }
+
+
+    companion object {
+        private const val LANG_AR = "ar"
+        private const val MY_PHONE_NUMBER = "+20 217125"
+        private const val WHATSAPP_BASE_URL = "https://wa.me/"
+        private const val FACEBOOK_URL = "https://www.facebook.com/share/1FGQyT7r9k/"
+        private const val LINKEDIN_URL = "https://www.linkedin.com/company/akhnaton-trading-and-distribution/posts/?feedView=all"
+        private const val YOUTUBE_URL = "https://youtube.com/@atr-akhnatontradinganddist9112"
     }
 }

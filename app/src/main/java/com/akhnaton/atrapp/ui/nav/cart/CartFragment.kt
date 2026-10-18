@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.R.attr.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
@@ -39,6 +41,8 @@ import java.util.Locale
 
 class CartFragment : BaseFragment() {
 
+
+
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by viewModels()
     private val addToCartViewModel: AddToCartViewModel by viewModels()
@@ -50,10 +54,29 @@ class CartFragment : BaseFragment() {
     private var cartData: List<CartResponse> = emptyList()
     private var cartSummary: TotalCartsData = TotalCartsData(cartTotal = 0.0, totalDiscount = 0.0)
 
+    //malak task
+    private var shippingFeesValue: Double = 0.0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
+
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (!findNavController().popBackStack()) {
+                        parentFragmentManager.popBackStack()
+                    }
+                }
+            }
+        )
+
+
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
         handleTopBottomKeyboard()
@@ -81,7 +104,7 @@ class CartFragment : BaseFragment() {
            startActivity(intent)
        }*/ // malak
         val currentLang = SharedPreferenceHelper.language
-        if (currentLang == "ar") {
+        if (currentLang == LANGUAGE_AR) {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
         } else {
             binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_LTR
@@ -180,8 +203,20 @@ class CartFragment : BaseFragment() {
 
     private fun setupClickListeners() {
         binding.btnCheckout.setOnClickListener {
-            val intent = Intent(requireContext(), CheckoutActivity::class.java)
-            startActivity(intent)
+            val totalBeforeDiscount = cartSummary.cartTotal + cartSummary.totalDiscount
+            val discount = cartSummary.totalDiscount
+            val grandTotal = cartSummary.cartTotal
+
+            showCartBottomSheet(
+                itemTotal = totalBeforeDiscount,
+                discount = discount,
+                shippingFees = shippingFeesValue,
+                grandTotal = grandTotal
+            )
+        }
+
+        binding.btnBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -196,18 +231,32 @@ class CartFragment : BaseFragment() {
 
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
+
                         cartData = state.data.data.firstOrNull()?.carts ?: emptyList()
-                        cartSummary =
-                            state.data.data.firstOrNull()?.totalCartsData ?: TotalCartsData(
-                                0.0,
-                                0.0
-                            )
-                        binding.tvTotal.text =
-                            "${state.data.data.firstOrNull()?.totalCartsData?.cartTotal} ${
-                                getString(R.string.currency)
-                            }"
+
+                        shippingFeesValue = cartData.firstOrNull()?.items?.extraData?.shippingFees ?: 0.0
+
+                        val allProducts = cartData.flatMap { it.items.products }
+                        val calculatedTotal = allProducts.sumOf { it.myQuantityTotalPrice }
+                        val calculatedDiscount = allProducts.sumOf { (it.priceDiscount * it.myQuantity) }
+
+                        cartSummary = TotalCartsData(
+                            cartTotal = calculatedTotal,
+                            totalDiscount = calculatedDiscount
+                        )
+
+                        binding.tvTotal.text = "$calculatedTotal ${getString(R.string.currency)}"
+
                         if (cartData.isNotEmpty()) {
-                            setupParentRecycler(cartData)
+                            val recyclerViewState = binding.recycler.layoutManager?.onSaveInstanceState()
+
+                            if (binding.recycler.adapter !is CartParentAdapter) {
+                                setupParentRecycler(cartData)
+                            } else {
+                                parentAdapter.setData(cartData)
+                            }
+
+                            binding.recycler.layoutManager?.onRestoreInstanceState(recyclerViewState)
                             updateCartSummaryUI()
                         } else {
                             showEmptyState()
@@ -225,6 +274,7 @@ class CartFragment : BaseFragment() {
     }
 
     private fun observeCartQuantity() {
+
         lifecycleScope.launch {
             addToCartViewModel.state.collect { state ->
                 when (state) {
@@ -248,7 +298,7 @@ class CartFragment : BaseFragment() {
 
     private fun getMyCart() {
         lifecycleScope.launch {
-            val lang = SharedPreferenceHelper.language ?: "ar"
+            val lang = SharedPreferenceHelper.language ?: DEFAULT_LANGUAGE
             cartViewModel.cartIntent.send(CartIntent.GetMyCart(lang))
         }
     }
@@ -280,9 +330,10 @@ class CartFragment : BaseFragment() {
 //        binding.layoutCart.visibility = View.VISIBLE
     }
 
+
     private fun updateCartSummaryUI() {
         val context = binding.root.context
-        val appLocaleCode = SharedPreferenceHelper.language ?: "ar"
+        val appLocaleCode = SharedPreferenceHelper.language ?: DEFAULT_LANGUAGE
         val appLocale = Locale(appLocaleCode)
 
         if (cartData.isEmpty()) {
@@ -296,16 +347,14 @@ class CartFragment : BaseFragment() {
 //        val totals = cartViewModel.calculateCartTotals(allProducts)
         val totals = cartSummary
         val totalBeforeDiscount = totals.cartTotal + totals.totalDiscount
-        if (appLocaleCode == "ar") {
+        if (appLocaleCode == LANGUAGE_AR) {
             binding.txtItemTotal.gravity = Gravity.START
             binding.txtDiscount.gravity = Gravity.START
             binding.txtGrandTotal.gravity = Gravity.START
         }
 
         binding.txtItemTotal.text =
-            formatNumber(totalBeforeDiscount, appLocale) + " " + resources.getString(
-                R.string.currency
-            )
+            formatNumber(totalBeforeDiscount, appLocale) + " " + resources.getString(R.string.currency)
         binding.txtDiscount.text =
             formatNumber(totals.totalDiscount, appLocale) + " " + resources.getString(
                 R.string.currency
@@ -369,6 +418,20 @@ class CartFragment : BaseFragment() {
         updateCartSummaryUI()
     }
 
+    private fun showCartBottomSheet(itemTotal: Double, discount: Double, shippingFees: Double, grandTotal: Double) {
+        val bottomSheet = CartBottomSheetActivity.newInstance(
+            itemTotal = itemTotal,
+            discount = discount,
+            shippingFees = shippingFees,
+            grandTotal = grandTotal
+        )
+        bottomSheet.show(childFragmentManager, "CartBottomSheetActivity")
+    }
+
+    companion object {
+        private const val LANGUAGE_AR = "ar"
+        private const val DEFAULT_LANGUAGE = "ar"
+    }
     private fun handleTopBottomKeyboard() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

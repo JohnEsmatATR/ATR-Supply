@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.FragmentProfileBinding
 import com.akhnaton.atrapp.shared.BaseFragment
@@ -15,6 +17,9 @@ import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.tracking.TrackingFragment
 import java.util.Locale
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 
 class ProfileFragment : BaseFragment(), View.OnClickListener {
 
@@ -32,14 +37,51 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
 
-        requireActivity().window.statusBarColor =
-            Color.parseColor("#EE6D18")
-
-        requireActivity().window.decorView.systemUiVisibility =
-            requireActivity().window.decorView.systemUiVisibility and
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+
+
+        //malak task
+        val window = requireActivity().window
+
+        window.statusBarColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.order_details_orange
+        )
+
+        WindowCompat.getInsetsController(
+            window,
+            window.decorView
+        ).isAppearanceLightStatusBars = false
+
+
+        WindowCompat.setDecorFitsSystemWindows(
+            requireActivity().window,
+            false
+        )
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+
+            val systemBars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+            )
+
+            binding.root.setPadding(
+                systemBars.left,
+                0,
+                systemBars.right,
+                systemBars.bottom
+            )
+
+            insets
+        }
+
+        WindowCompat.getInsetsController(
+            requireActivity().window,
+            requireActivity().window.decorView
+        ).isAppearanceLightStatusBars = false
+
+
 
         guestHandling()
 
@@ -53,7 +95,32 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
 
         binding.cardMoreCredit.setOnClickListener(this)
 
+        //new malak
+        binding.rateLayout.setOnClickListener(this)
+
         return binding.root
+    }
+
+
+
+    //new malak
+    private fun myPlayStore(){
+        val appPackageName = requireContext().packageName
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    android.net.Uri.parse("market://details?id=$appPackageName")
+                ).setPackage("com.android.vending")
+            )
+        } catch (e: android.content.ActivityNotFoundException){
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    android.net.Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+                )
+            )
+        }
     }
 
     private fun guestHandling() {
@@ -85,6 +152,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val user = SharedPreferenceHelper.userObj
         if (user != null) {
             val userName = "${user.first_name} ${user.last_name}".trim()
@@ -99,8 +167,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         val lang = SharedPreferenceHelper.language?.takeIf { it.isNotBlank() }
             ?: Locale.getDefault().language
 
-        val chevronIcon =
-            if (lang == "ar") R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
+        //no hardcoded
+        val chevronIcon = if (lang == LANG_AR) R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
 
         binding.imageView6.setImageResource(chevronIcon)
         binding.icProfile.setImageResource(R.drawable.ic_profile)
@@ -153,12 +221,12 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
 
             binding.cardMoreCredit.id -> {
                 val intent = Intent(requireContext(), CreditInfoActivity::class.java).apply {
-                    putExtra("EXTRA_CREDIT_LIMIT", "$creditLimit ${getString(R.string.currency)}")
-                    putExtra("EXTRA_USED_CREDIT", "$usedCredit ${getString(R.string.currency)}")
-                    putExtra(
-                        "EXTRA_AVAILABLE_CREDIT",
-                        "$availableCredit ${getString(R.string.currency)}"
-                    )
+
+                    //no hardcoded
+                    val currencySymbol = getString(R.string.currency)
+                    putExtra(EXTRA_CREDIT_LIMIT, "$creditLimit $currencySymbol")
+                    putExtra(EXTRA_USED_CREDIT, "$usedCredit $currencySymbol")
+                    putExtra(EXTRA_AVAILABLE_CREDIT, "$availableCredit $currencySymbol")
                 }
                 startActivity(intent)
             }
@@ -179,18 +247,34 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                 startActivity(Intent(requireContext(), ContactUsActivity::class.java))
             }
 
-            binding.logoutLayout.id -> {
-                SharedPreferenceHelper.apply {
-                    isLogged = false
-                    userObj = null
-                    userToken = null
-                    language = "en"
-                }
+            //new malak
+            binding.rateLayout.id -> {
+                myPlayStore()
+            }
 
-                val intent = Intent(requireContext(), LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                requireActivity().finish()
+
+            binding.logoutLayout.id -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.logout)
+                    .setMessage(R.string.logout_confirmation)
+                    .setPositiveButton(R.string.yes) { _, _ ->
+
+                        SharedPreferenceHelper.apply {
+                            isLogged = false
+                            userObj = null
+                            userToken = null
+                            language = DEFAULT_LANG
+                        }
+
+                        val intent = Intent(requireContext(), LoginActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                    .setNegativeButton(R.string.no, null)
+                    .show()
             }
 
         }
@@ -206,5 +290,13 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         usedCredit = used
         availableCredit = available
         Log.d("CreditInfoData", "Data Updated -> Limit: $limit, Used: $used, Available: $available")
+    }
+
+    companion object {
+        private const val LANG_AR = "ar"
+        private const val DEFAULT_LANG = "en"
+        const val EXTRA_CREDIT_LIMIT = "EXTRA_CREDIT_LIMIT"
+        const val EXTRA_USED_CREDIT = "EXTRA_USED_CREDIT"
+        const val EXTRA_AVAILABLE_CREDIT = "EXTRA_AVAILABLE_CREDIT"
     }
 }

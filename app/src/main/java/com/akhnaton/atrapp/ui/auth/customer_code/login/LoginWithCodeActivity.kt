@@ -108,7 +108,7 @@ class LoginWithCodeActivity : BaseActivity() {
                 }
 
                 !isValidEmail(email) -> {
-                    Toast.makeText(this, "Please enter a valid email address.", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, getString(R.string.error_invalid_email), Toast.LENGTH_SHORT)
                         .show()
                     return@setOnClickListener
                 }

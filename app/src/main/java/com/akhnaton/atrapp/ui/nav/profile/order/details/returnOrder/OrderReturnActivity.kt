@@ -34,6 +34,5 @@ class OrderReturnActivity : AppCompatActivity(), View.OnClickListener {
         if (v.id == binding.btnBack.id) {
             finish()
         }
-
     }
 }

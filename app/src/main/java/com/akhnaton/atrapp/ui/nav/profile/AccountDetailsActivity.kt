@@ -23,7 +23,8 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("SuspiciousIndentation")
     private fun init() {
 
-        var isArabic = SharedPreferenceHelper.language == "ar"
+        //no hardcoded
+        val isArabic = SharedPreferenceHelper.language == LANG_AR
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
 
@@ -63,5 +64,10 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         if (v.id == binding.btnBack.id) {
             finish()
         }
+    }
+
+    companion object {
+        private const val LANG_AR = "ar"
+        private const val DEFAULT_EMPTY_PLACEHOLDER = "-"
     }
 }

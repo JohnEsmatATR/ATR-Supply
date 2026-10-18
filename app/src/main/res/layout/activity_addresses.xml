@@ -113,7 +113,7 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/btn_orange_style"
             android:foreground="?android:attr/selectableItemBackground"
-            android:text="Apply"
+            android:text="@string/apply"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp"
             app:backgroundTint="@null"

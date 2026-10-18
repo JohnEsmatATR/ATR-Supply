@@ -57,13 +57,13 @@ class ProductAdapter(
     }
 
     //new malak
-//    fun updateProductInCart(productId: Int, quantity: Int = 1) {
-//        val index = productsList.indexOfFirst { it.ID == productId }
-//        if (index != -1) {
-//            productsList[index].MY_QUANTITY = quantity
-//            notifyItemChanged(index)
-//        }
-//    }
+    fun updateProductInCart(productId: Int, quantity: Int = 1) {
+        val index = productsList.indexOfFirst { it.ID == productId }
+        if (index != -1) {
+            productsList[index].MY_QUANTITY = quantity
+            notifyItemChanged(index)
+        }
+    }
 
     fun updateCartQuantity(
         productId: Int,
