@@ -33,15 +33,12 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         dp = resources.displayMetrics.density
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //new malak
 
 
         // Enable edge-to-edge display
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         // Set up window insets controller
-        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = true
+
     }
 
     override fun setContentView(layoutResID: Int) {

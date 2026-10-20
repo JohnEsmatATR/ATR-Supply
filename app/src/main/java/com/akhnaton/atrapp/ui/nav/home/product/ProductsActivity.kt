@@ -81,7 +81,7 @@ class ProductsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        getCart()
         guestHandling()
         init()
         onClick()
@@ -435,7 +435,6 @@ class ProductsActivity : BaseActivity() {
                         is AddToCartStatus.Loading -> {
                             handleLoadingState(isLoading = true, isPagination = false)
                         }
-
                         is AddToCartStatus.AddToCart -> {
                             handleLoadingState(isLoading = false, isPagination = false)
 

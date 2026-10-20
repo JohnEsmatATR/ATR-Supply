@@ -23,29 +23,51 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 open class BaseFragment : Fragment() {
+
+
     var dp = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dp = resources.displayMetrics.density
 
+
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-
-        val window = requireActivity().window
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        window.statusBarColor = Color.TRANSPARENT
-
-
-        return super.onCreateView(inflater, container, savedInstanceState)
+        setupSafeAreaInsets(view)
     }
 
+
+    private fun setupSafeAreaInsets(rootView: View) {
+        rootView.post {
+            val appBar = rootView.findViewById<View>(R.id.app_bar)
+
+            if (appBar != null) {
+                setupWindowInsetsTop(appBar)
+            }
+
+            ViewCompat.requestApplyInsets(rootView)
+        }
+    }
+
+
+
+    protected fun setupWindowInsetsTop(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(
+                v.paddingLeft,
+                systemBars.top,
+                v.paddingRight,
+                v.paddingBottom
+            )
+            insets
+        }
+    }
 
     fun showToastSnack(word: String?, flag: Boolean) {
         try {

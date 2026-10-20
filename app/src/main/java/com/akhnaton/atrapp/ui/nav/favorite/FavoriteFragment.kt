@@ -38,7 +38,8 @@ import java.util.Locale
 
 class FavoriteFragment : BaseFragment() {
 
-    //malak task
+    //malak task new
+    private val cartItems = mutableMapOf<Int, Int>()
     private val cartViewModel: CartViewModel by viewModels()
 
     lateinit var binding: FragmentFavoriteBinding
@@ -103,6 +104,7 @@ class FavoriteFragment : BaseFragment() {
 
         val layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = ProductAdapter(
+            cartItems = cartItems.toMap(),
             onClick = { product, position, sharedView, transitionName ->
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
                     putExtra("flag", product.ITEM_TYPE)
@@ -148,26 +150,40 @@ class FavoriteFragment : BaseFragment() {
         }
     }
 
+
+    private fun handleLoadingState(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressLoading.visibility = View.VISIBLE
+        } else {
+            binding.progressLoading.visibility = View.GONE
+        }
+    }
+
     private fun observeAddToCart() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 addCartViewModel.state.collect { state ->
                     when (state) {
                         is AddToCartStatus.Idle -> Unit
-                        is AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
+                        is AddToCartStatus.Loading -> {
+                            showProgressDialog(binding.progressLoading)
+                        }
+
                         is AddToCartStatus.AddToCart -> {
                             hideProgressDialog(binding.progressLoading)
+
                             if (state.data.status == 200) {
-                                showToastSnack(state.data.message ?: "", false)
+                                showToastSnack(state.data.message ?: "Added successfully", false)
 
                                 val addedItemId = state.data.data?.item_id?.toIntOrNull()
-
                                 if (addedItemId != null) {
-                                    adapter.updateProductInCart(addedItemId, quantity = 1)
+                                    adapter.updateCartQuantity(addedItemId, quantity = 1)
+//                                    adapter.updateProductInCart(addedItemId, quantity = 1)
                                 }
                             } else {
                                 showToastSnack(state.data.message ?: "", true)
                             }
+
                             addCartViewModel.resetState()
                         }
 
@@ -189,8 +205,8 @@ class FavoriteFragment : BaseFragment() {
         }
 
         val categoryForRequest = when {
-            product.ITEM_TYPE.isNotEmpty() -> product.ITEM_TYPE
             flag.isNotEmpty() -> flag
+            product.ITEM_TYPE.isNotEmpty() -> product.ITEM_TYPE
             else -> null
         }
 
@@ -243,6 +259,7 @@ class FavoriteFragment : BaseFragment() {
                         //malak task
                         binding.txtNoProducts.visibility = View.GONE
                     }
+
                     is FavoriteStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         //showProgressDialog(binding.progressLoading)
@@ -259,9 +276,7 @@ class FavoriteFragment : BaseFragment() {
                         } else if (it.data.status == 401) {
                             hideProgressDialog(binding.progressLoading)
 //                            onTokenExpired(it.data.errors!![0])
-                        }
-
-                        else {
+                        } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
                         }
@@ -298,8 +313,7 @@ class FavoriteFragment : BaseFragment() {
                             if (productList.isEmpty()) {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                                 binding.recycler.visibility = View.GONE
-                            }
-                            else {
+                            } else {
                                 binding.txtNoProducts.visibility = View.GONE
                                 binding.recycler.visibility = View.VISIBLE
                             }
@@ -310,15 +324,11 @@ class FavoriteFragment : BaseFragment() {
 
                         } else if (it.data.status == 401) {
                             // onTokenExpired(it.data.errors!![0])
-                        }
-
-                        else if (productList.isEmpty()) {
+                        } else if (productList.isEmpty()) {
                             binding.txtNoProducts.visibility = View.VISIBLE
                             showToastSnack(it.data.message ?: "", true)
                             setupProductsRecycler(productList)
-                        }
-
-                        else {
+                        } else {
                             // showToastSnack(it.data.message, true)
 
                             //malak task
@@ -392,7 +402,7 @@ class FavoriteFragment : BaseFragment() {
                     }
                 }
 
-                if(filteredList.isEmpty()) binding.txtNoProducts.visibility = View.VISIBLE
+                if (filteredList.isEmpty()) binding.txtNoProducts.visibility = View.VISIBLE
                 else {
                     binding.txtNoProducts.visibility = View.GONE
                 }
@@ -405,7 +415,6 @@ class FavoriteFragment : BaseFragment() {
             }
         })
     }
-
 
 
     //malak task
@@ -424,22 +433,33 @@ class FavoriteFragment : BaseFragment() {
                 when (state) {
                     is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = true)
                     }
 
                     is CartStatus.GetMyCart -> {
-                        hideProgressDialog(binding.progressLoading)
-                        //malak task
-                        binding.tvCartCount.visibility = View.VISIBLE
-                        binding.tvCartCount.text = state.data.data.get(0).carts
-                            .sumOf { it.items.pagination.totalRows.toInt() }
-                            .toString()
+                        if (state.data.status == 200) {
+
+                            cartItems.clear()
+
+                            state.data.data.orEmpty().forEach { cartData ->
+                                cartData.carts.orEmpty().forEach { cart ->
+                                    cart.items?.products.orEmpty().forEach { product ->
+                                        cartItems[product.id] = product.myQuantity
+                                    }
+                                }
+                            }
+
+                            Log.d("CART", "cartItems = $cartItems")
+
+                            if (::adapter.isInitialized) {
+                                adapter.updateCartItems(cartItems)
+                            }
+                        }
                     }
 
                     is CartStatus.Error -> {
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
                         showToastSnack(state.error.toString(), true)
-                        binding.tvCartCount.visibility = View.GONE
                     }
                 }
             }

@@ -52,107 +52,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text='@{String.valueOf(data.TITLE)}'
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cardImg"
-                app:layout_constraintTop_toTopOf="@+id/cardImg"
-                tools:text="Betmiga 50 mg" />
-
-            <LinearLayout
-                android:id="@+id/qtyContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/order_item_quantity_background"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                app:layout_constraintStart_toStartOf="@+id/productName"
-                app:layout_constraintTop_toBottomOf="@+id/productName">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/qty_label"
-                    android:textColor="@color/order_number_gray"
-                    android:textSize="12sp"
-                    tools:text="Qty: " />
-
-                <TextView
-                    android:id="@+id/quantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(data.QUANTITY)}"
-                    android:textColor="@color/order_number_gray"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="10" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/itemTax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@{@string/tax_format_cart(data.TAX_VALUE) + ` ` + @string/currency}"
-                android:textColor="#E8750A"
-                android:textSize="11sp"
-                app:layout_constraintStart_toStartOf="@+id/productName"
-                app:layout_constraintTop_toBottomOf="@+id/qtyContainer"
-                tools:text="Tax: 50.00 L.E" />
-
-            <LinearLayout
-                android:id="@+id/priceLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="4,084.00 L.E" />
-
-                <TextView
-                    android:id="@+id/unitPriceDisplay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/order_number_gray"
-                    android:textSize="11sp"
-                    tools:text="(408.40 / unit)" />
-
-                <TextView
-                    android:id="@+id/priceWithTax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/order_details_orange"
-                    android:text="@{@string/price_with_tax(data.TOTAL_UNIT_PRICE_WITHOUT_TAX + ``) + ` ` + @string/currency}"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="With Tax: 4,134.00 L.E" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/productName3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text='@{String.valueOf(data.TITLE)}'
@@ -164,7 +63,210 @@
                 app:layout_constraintTop_toTopOf="@+id/cardImg"
                 tools:text="Betmiga 50 mg Prolonged Release Tablets" />
 
+            <LinearLayout
+                android:id="@+id/leftValuesContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/productName">
 
+                <LinearLayout
+                    android:id="@+id/qtyContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:background="@color/order_item_quantity_background"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="5dp">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/qty_label"
+                        android:textColor="@color/order_number_gray"
+                        android:textSize="9sp"
+                        tools:text="Qty: " />
+
+                    <TextView
+                        android:id="@+id/quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.QUANTITY)}"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:background="@color/order_item_quantity_background"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_without_tax_product_det"
+                        android:textColor="@color/order_number_gray"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/unitPriceDisplay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.UNIT_PRICE_WITHOUT_TAX + ``) + ` ` + @string/currency}"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="135 EGP" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:background="@color/order_item_quantity_background"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_item_price_with_tax"
+                        android:textColor="@color/order_number_gray"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/unitPriceWithTax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.UNIT_PRICE_WITH_TAX + ``) + ` ` + @string/currency}"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="135 EGP" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/order_item_quantity_background"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tax"
+                        android:textColor="#E8750A"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/taxValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.TAX_VALUE + ``) + ` ` + @string/currency}"
+                        android:textColor="#E8750A"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="0 EGP" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/priceLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/productName"
+                app:layout_constraintTop_toBottomOf="@+id/leftValuesContainer">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/order_item_total_without_tax"
+                        android:textColor="@color/order_number_gray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.TOTAL_UNIT_PRICE_WITHOUT_TAX + ``) + ` ` + @string/currency}"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        tools:text="1485 EGP" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/order_item_total_with_tax"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.TOTAL_UNIT_PRICE_WITH_TAX + ``) + ` ` + @string/currency}"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="1485 EGP" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/order_item_total_tax"
+                        android:textColor="#E8750A"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.TOTAL_TAX + ``) + ` ` + @string/currency}"
+                        android:textColor="#E8750A"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="0 EGP" />
+                </LinearLayout>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

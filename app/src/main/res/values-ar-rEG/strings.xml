@@ -394,4 +394,13 @@
     <string name="default_discount_price">-٠٫٠٠ ج.م</string>
     <string name="tax_format_cart">الضريبة: %s</string>
 
+    <string name="total_without_tax">الاجمالي بدون ضريبه: %s</string>
+    <string name="total_with_tax">الاجمالي بالضريبه: %s</string>
+    <string name="icon_desc">$</string>
+    <string name="order_item_price_with_tax">بالضريبه</string>
+    <string name="order_item_total_without_tax">الاجمالي بدون الضريبه:</string>
+    <string name="order_item_total_with_tax">الاجمالي بالضريبه:</string>
+    <string name="order_item_total_tax">اجمالي الضريبه:</string>
+
+
 </resources>

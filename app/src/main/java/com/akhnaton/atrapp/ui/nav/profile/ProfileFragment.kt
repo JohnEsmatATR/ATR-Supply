@@ -40,48 +40,24 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
 
-
-        //malak task
-        val window = requireActivity().window
-
-        window.statusBarColor = ContextCompat.getColor(
-            requireContext(),
-            R.color.order_details_orange
+        WindowCompat.setDecorFitsSystemWindows(
+            requireActivity().window,
+            false
         )
 
-        WindowCompat.getInsetsController(
-            window,
-            window.decorView
-        ).isAppearanceLightStatusBars = false
-
+        requireActivity().window.statusBarColor = Color.TRANSPARENT
 
         WindowCompat.setDecorFitsSystemWindows(
             requireActivity().window,
             false
         )
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-
-            val systemBars = insets.getInsets(
-                WindowInsetsCompat.Type.systemBars()
-            )
-
-            binding.root.setPadding(
-                systemBars.left,
-                0,
-                systemBars.right,
-                systemBars.bottom
-            )
-
-            insets
-        }
+        requireActivity().window.statusBarColor = Color.TRANSPARENT
 
         WindowCompat.getInsetsController(
             requireActivity().window,
             requireActivity().window.decorView
-        ).isAppearanceLightStatusBars = false
-
-
+        ).isAppearanceLightStatusBars = true
 
         guestHandling()
 

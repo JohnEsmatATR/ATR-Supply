@@ -84,21 +84,32 @@ class OrderDetailsAdapter :
             val priceWithTaxLabel = context.getString(R.string.price_with_tax)
             val unitSuffix = context.getString(R.string.unit_price_suffix)
 
-            val taxValue = item.TOTAL_TAX?.toDouble() ?: 0.0
-            binding.itemTax.text =
-                "$taxLabel: ${String.format(Locale.US, "%,.3f", taxValue)} $currency"
 
-            val totalPrice = item.TOTAL_UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
-            binding.price.text =
-                "${String.format(Locale.US, "%,.3f", totalPrice)} $currency"
+            //malak task
+//            val unitTaxValue = item.TAX_VALUE?.toDouble() ?: 0.0
+//            binding.itemTax.text =
+//                "$taxLabel: ${String.format(Locale.US, "%,.3f", unitTaxValue)} $currency"
+//
+//            val taxValue = item.TOTAL_TAX?.toDouble() ?: 0.0
+//            binding.itemTax.text =
+//                "$taxLabel: ${String.format(Locale.US, "%,.3f", taxValue)} $currency"
+//
+//            //malak task
+//            val totalPrice_without_tax = item.TOTAL_UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
+//            binding.price.text =
+//                "${String.format(Locale.US, "%,.3f", totalPrice_without_tax)} $currency"
+
+//            val totalPrice = item.TOTAL_UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
+//            binding.price.text =
+//                "${String.format(Locale.US, "%,.3f", totalPrice)} $currency"
 
             val unitPrice = item.UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
             binding.unitPriceDisplay.text =
                 "(${String.format(Locale.US, "%,.3f", unitPrice)} $unitSuffix)"
 
-            val priceWithTaxValue = item.UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
-            binding.priceWithTax.text =
-                "$priceWithTaxLabel: ${String.format(Locale.US, "%,.3f", priceWithTaxValue)} $currency"
+//            val priceWithTaxValue = item.UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
+//            binding.priceWithTax.text =
+//                "$priceWithTaxLabel: ${String.format(Locale.US, "%,.3f", priceWithTaxValue)} $currency"
 
             binding.executePendingBindings()
         }

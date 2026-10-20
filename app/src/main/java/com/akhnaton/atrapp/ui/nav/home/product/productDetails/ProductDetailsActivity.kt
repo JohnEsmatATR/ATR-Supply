@@ -264,7 +264,8 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun updateTotalPrice(pricePerUnit: Double? = null) {
-        val unitPrice = pricePerUnit ?: product.PRICE_AFTER_DISCOUNT
+        //malak task
+        val unitPrice = pricePerUnit ?: productData.PRICE_AFTER_DISCOUNT ?: 0.0
         val currentQty = binding.txtQuantity.text.toString().toIntOrNull() ?: quantity //malaaaaaak
         val total = unitPrice * currentQty // malakkkkkkkk
         binding.txtBottomTotalPrice.text = "$total ${getString(R.string.currency)}"

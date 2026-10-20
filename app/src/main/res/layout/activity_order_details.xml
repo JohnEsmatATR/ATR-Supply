@@ -219,7 +219,7 @@
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        tools:text="5,569 L.E" />
+                        tools:text="5,569 EGP" />
                 </LinearLayout>
 
                 <LinearLayout
