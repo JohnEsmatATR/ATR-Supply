@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardInvoiceDetails"
@@ -44,7 +45,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_shopping_cart"
+                    android:src="@drawable/ic_tax"
                     app:tint="@color/hint_gray" />
 
                 <TextView
@@ -53,18 +54,54 @@
                     android:layout_weight="1"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
-                    android:text="@string/item_total"
+                    android:text="@string/cart_total_tax"
                     android:textColor="@color/hint_gray"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/txtItemTotal"
+                    android:id="@+id/total_tax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/default_price"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="0.00 EGP"/>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_grand_total"
+                    app:tint="@color/hint_gray" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:text="@string/cart_total_without_tax"
+                    android:textColor="@color/hint_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/total_without_tax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="0.00 EGP"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -86,18 +123,18 @@
                     android:layout_weight="1"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
-                    android:text="@string/discount"
+                    android:text="@string/cart_total_discount"
                     android:textColor="@color/hint_gray"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/txtDiscount"
+                    android:id="@+id/total_discount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/default_discount_price"
                     android:textColor="#4CAF50"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="0.00 EGP"/>
             </LinearLayout>
 
             <LinearLayout
@@ -119,18 +156,18 @@
                     android:layout_weight="1"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
-                    android:text="@string/delivery_fee"
+                    android:text="@string/cart_total_shipping_fees"
                     android:textColor="@color/hint_gray"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/txtDeliveryFee"
+                    android:id="@+id/total_shipping_fees"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/default_price"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="0.00 EGP"/>
             </LinearLayout>
 
             <View
@@ -157,19 +194,19 @@
                     android:layout_weight="1"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
-                    android:text="@string/grand_total"
+                    android:text="@string/cart_total_with_tax"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txtGrandTotal"
+                    android:id="@+id/total_with_tax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/default_price"
                     android:textColor="@color/orange"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="0.00 EGP"/>
             </LinearLayout>
 
         </LinearLayout>

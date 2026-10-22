@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.model.CartResponse
-import com.akhnaton.atrapp.data.model.TotalCartsData
+import com.akhnaton.atrapp.data.model._ExtraData
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
@@ -52,7 +52,13 @@ class CartFragment : BaseFragment() {
     private val viewModel: AddressesViewModel by viewModels()
 
     private var cartData: List<CartResponse> = emptyList()
-    private var cartSummary: TotalCartsData = TotalCartsData(cartTotal = 0.0, totalDiscount = 0.0)
+    private var cartSummary: _ExtraData = _ExtraData(
+        cartTotalTax = 0,
+        cartTotalWithoutTax = 0.0,
+        cartTotalDiscount = 0,
+        cartTotalShippingFess = 0,
+        cartTotalWithTax = 0.0
+    )
 
     //malak task
     private var shippingFeesValue: Double = 0.0
@@ -99,17 +105,6 @@ class CartFragment : BaseFragment() {
                 }
             }
         )
-
-        /* binding.cardAddress.setOnClickListener {
-           val intent = Intent(requireContext(), AddressesActivity::class.java)
-           startActivity(intent)
-       }*/ // malak
-        val currentLang = SharedPreferenceHelper.language
-        if (currentLang == LANGUAGE_AR) {
-            binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_RTL
-        } else {
-            binding.layoutCart.layoutDirection = View.LAYOUT_DIRECTION_LTR
-        }
         return binding.root
     }
 
@@ -118,8 +113,6 @@ class CartFragment : BaseFragment() {
             binding.txtNoProducts.visibility = View.GONE
             binding.clGuest.visibility = View.VISIBLE
             binding.recycler.visibility = View.GONE
-
-            binding.layoutCart.visibility = View.GONE
             binding.cardCheckout.visibility = View.GONE
             // binding.cardAddress.visibility = View.GONE
         }
@@ -220,15 +213,18 @@ class CartFragment : BaseFragment() {
 
     private fun setupClickListeners() {
         binding.btnCheckout.setOnClickListener {
-            val totalBeforeDiscount = cartSummary.cartTotal + cartSummary.totalDiscount
-            val discount = cartSummary.totalDiscount
-            val grandTotal = cartSummary.cartTotal
+            val totalTax = cartSummary.cartTotalTax
+            val totalWithoutTax = cartSummary.cartTotalWithoutTax
+            val totalDiscount = cartSummary.cartTotalDiscount
+            val totalShippingFees = cartSummary.cartTotalShippingFess
+            val totalWithTax = cartSummary.cartTotalWithTax
 
             showCartBottomSheet(
-                itemTotal = totalBeforeDiscount,
-                discount = discount,
-                shippingFees = shippingFeesValue,
-                grandTotal = grandTotal
+                totalTax = totalTax,
+                totalWithoutTax = totalWithoutTax,
+                totalDiscount = totalDiscount,
+                totalShippingFees = totalShippingFees,
+                totalWithTax = totalWithTax
             )
         }
 
@@ -246,26 +242,27 @@ class CartFragment : BaseFragment() {
                         showProgressDialog(binding.progressLoading)
                     }
 
+
                     is CartStatus.GetMyCart -> {
+
+                        val appLocaleCode = SharedPreferenceHelper.language ?: DEFAULT_LANGUAGE
+                        val appLocale = Locale(appLocaleCode)
                         hideProgressDialog(binding.progressLoading)
 
-                        cartData = state.data.data.firstOrNull()?.carts ?: emptyList()
+                        val cartResponseItem = state.data.data.firstOrNull()
 
-                        shippingFeesValue = cartData.firstOrNull()?.items?.extraData?.shippingFees ?: 0.0
+                        cartData = cartResponseItem?.carts ?: emptyList()
 
-                        val allProducts = cartData.flatMap { it.items.products }
-                        val calculatedTotal = allProducts.sumOf { it.myQuantityTotalPrice }
-                        val calculatedDiscount = allProducts.sumOf { (it.priceDiscount * it.myQuantity) }
+                        val extra = cartResponseItem?.extraData
+                        if (extra != null) {
+                            cartSummary = extra
+                        }
 
-                        cartSummary = TotalCartsData(
-                            cartTotal = calculatedTotal,
-                            totalDiscount = calculatedDiscount
-                        )
-
-                        binding.tvTotal.text = "$calculatedTotal ${getString(R.string.currency)}"
+                        binding.tvTotal.text = formatNumber(cartSummary.cartTotalWithTax, appLocale) + " " + resources.getString(R.string.currency)
 
                         if (cartData.isNotEmpty()) {
                             val recyclerViewState = binding.recycler.layoutManager?.onSaveInstanceState()
+
 
                             if (binding.recycler.adapter !is CartParentAdapter) {
                                 setupParentRecycler(cartData)
@@ -351,36 +348,14 @@ class CartFragment : BaseFragment() {
     private fun updateCartSummaryUI() {
         val context = binding.root.context
         val appLocaleCode = SharedPreferenceHelper.language ?: DEFAULT_LANGUAGE
-        val appLocale = Locale(appLocaleCode)
+        val currentLocale = Locale.getDefault()
 
         if (cartData.isEmpty()) {
-            binding.txtItemTotal.text = formatNumber(0.0, appLocale)
-            binding.txtDiscount.text = formatNumber(0.0, appLocale)
-            binding.txtGrandTotal.text = formatNumber(0.0, appLocale)
+            binding.tvTotal.text = formatNumber(0.0, currentLocale) + " " + resources.getString(R.string.currency)
             return
         }
 
-        val allProducts = cartData.flatMap { it.items.products }
-//        val totals = cartViewModel.calculateCartTotals(allProducts)
-        val totals = cartSummary
-        val totalBeforeDiscount = totals.cartTotal + totals.totalDiscount
-        if (appLocaleCode == LANGUAGE_AR) {
-            binding.txtItemTotal.gravity = Gravity.START
-            binding.txtDiscount.gravity = Gravity.START
-            binding.txtGrandTotal.gravity = Gravity.START
-        }
-
-        binding.txtItemTotal.text =
-            formatNumber(totalBeforeDiscount, appLocale) + " " + resources.getString(R.string.currency)
-        binding.txtDiscount.text =
-            formatNumber(totals.totalDiscount, appLocale) + " " + resources.getString(
-                R.string.currency
-            )
-        binding.txtGrandTotal.text =
-            formatNumber(totals.cartTotal, appLocale) + " " + resources.getString(
-                R.string.currency
-            )
-    }
+        binding.tvTotal.text = String.format(currentLocale, "%,.3f %s", cartSummary.cartTotalWithTax.toDouble(), resources.getString(R.string.currency))    }
 
 
     fun formatNumber(value: Double, locale: Locale): String {
@@ -429,18 +404,20 @@ class CartFragment : BaseFragment() {
 
     private fun showEmptyState() {
         binding.recycler.visibility = View.GONE
-        binding.layoutCart.visibility = View.GONE
         binding.txtNoProducts.visibility = View.VISIBLE
         binding.clGuest.visibility = View.GONE
         updateCartSummaryUI()
     }
 
-    private fun showCartBottomSheet(itemTotal: Double, discount: Double, shippingFees: Double, grandTotal: Double) {
+    private fun showCartBottomSheet(totalTax: Int, totalWithoutTax: Double, totalDiscount: Int, totalShippingFees: Int, totalWithTax: Double) {
         val bottomSheet = CartBottomSheetActivity.newInstance(
-            itemTotal = itemTotal,
-            discount = discount,
-            shippingFees = shippingFees,
-            grandTotal = grandTotal
+            extraData = _ExtraData(
+                cartTotalTax = totalTax,
+                cartTotalWithoutTax = totalWithoutTax,
+                cartTotalDiscount = totalDiscount,
+                cartTotalShippingFess = totalShippingFees,
+                cartTotalWithTax = totalWithTax
+            )
         )
         bottomSheet.show(childFragmentManager, "CartBottomSheetActivity")
     }

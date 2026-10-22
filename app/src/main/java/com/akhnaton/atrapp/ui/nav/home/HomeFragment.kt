@@ -20,7 +20,6 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CategoriesModel
 import com.akhnaton.atrapp.data.model.Category
 import com.akhnaton.atrapp.data.model.ProductModel
-import com.akhnaton.atrapp.data.model.TotalCartsData
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.address.AddressIntent

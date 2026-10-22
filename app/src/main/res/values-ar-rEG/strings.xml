@@ -402,5 +402,11 @@
     <string name="order_item_total_with_tax">الاجمالي بالضريبه:</string>
     <string name="order_item_total_tax">اجمالي الضريبه:</string>
 
+    <string name="cart_total_tax">اجمالي الضريبة:</string>
+    <string name="cart_total_without_tax">الاجمالي بدون ضريبة:</string>
+    <string name="cart_total_discount">اجمالي الخصم:</string>
+    <string name="cart_total_shipping_fees">اجمالي مصاريف الشحن:</string>
+    <string name="cart_total_with_tax">الاجمالي بالضريبة:</string>
+
 
 </resources>

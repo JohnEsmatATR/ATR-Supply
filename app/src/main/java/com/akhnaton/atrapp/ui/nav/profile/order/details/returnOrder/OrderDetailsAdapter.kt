@@ -85,6 +85,28 @@ class OrderDetailsAdapter :
             val unitSuffix = context.getString(R.string.unit_price_suffix)
 
 
+            val totalWithoutTax = item.TOTAL_UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
+            binding.tvTotalWithoutTax.text = String.format(Locale.US, "%,.3f %s", totalWithoutTax, currency)
+
+            val totalWithTax = item.TOTAL_UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
+            binding.tvTotalWithTax.text = String.format(Locale.US, "%,.3f %s", totalWithTax, currency)
+
+            val totalTax = item.TOTAL_TAX?.toDouble() ?: 0.0
+            binding.tvTotalTax.text = String.format(Locale.US, "%,.3f %s", totalTax, currency)
+
+            val quantity = item.QUANTITY ?: 0
+            binding.quantity.text = quantity.toString()
+
+            val unitPriceWithoutTax = item.UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
+            binding.unitPriceDisplay.text = String.format(Locale.US, "%,.3f %s", unitPriceWithoutTax, currency)
+
+            val unitPriceWithTax = item.UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
+            binding.unitPriceWithTax.text = String.format(Locale.US, "%,.3f %s", unitPriceWithTax, currency)
+
+            val taxValue = item.TAX_VALUE?.toDouble() ?: 0.0
+            binding.taxValue.text = String.format(Locale.US, "%,.3f %s", taxValue, currency)
+
+
             //malak task
 //            val unitTaxValue = item.TAX_VALUE?.toDouble() ?: 0.0
 //            binding.itemTax.text =
@@ -103,9 +125,9 @@ class OrderDetailsAdapter :
 //            binding.price.text =
 //                "${String.format(Locale.US, "%,.3f", totalPrice)} $currency"
 
-            val unitPrice = item.UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
-            binding.unitPriceDisplay.text =
-                "(${String.format(Locale.US, "%,.3f", unitPrice)} $unitSuffix)"
+//            val unitPrice = item.UNIT_PRICE_WITHOUT_TAX?.toDouble() ?: 0.0
+//            binding.unitPriceDisplay.text =
+//                "(${String.format(Locale.US, "%,.3f", unitPrice)} $unitSuffix)"
 
 //            val priceWithTaxValue = item.UNIT_PRICE_WITH_TAX?.toDouble() ?: 0.0
 //            binding.priceWithTax.text =

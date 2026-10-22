@@ -395,7 +395,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_please" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Progress Loader -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/progressLoading"
         android:layout_width="0dp"

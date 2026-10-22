@@ -10,8 +10,8 @@ data class CartApiResponse(
 
 data class CartData(
     val carts: List<CartResponse>,
-    @SerializedName("total_carts_data")
-    val totalCartsData: TotalCartsData
+    @SerializedName("extra_data")
+    val extraData: _ExtraData
 )
 
 data class CartResponse(
@@ -112,9 +112,15 @@ data class ExtraData(
     val notFound: List<Any>
 )
 
-data class TotalCartsData(
-    @SerializedName("cart_total")
-    val cartTotal: Double,
-    @SerializedName("total_discount")
-    val totalDiscount: Double
+data class _ExtraData(
+    @SerializedName("cart_total_tax")
+    val cartTotalTax: Int,
+    @SerializedName("cart_total_without_tax")
+    val cartTotalWithoutTax: Double,
+    @SerializedName("cart_total_discount")
+    val cartTotalDiscount: Int,
+    @SerializedName("cart_total_shipping_fees")
+    val cartTotalShippingFess: Int,
+    @SerializedName("cart_total_with_tax")
+    val cartTotalWithTax: Double
 )

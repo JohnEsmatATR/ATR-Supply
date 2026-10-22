@@ -463,5 +463,10 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="order_item_total_with_tax">Total with tax:</string>
     <string name="order_item_total_tax">Total tax:</string>
 
+    <string name="cart_total_tax">Total Tax:</string>
+    <string name="cart_total_without_tax">Total Without Tax:</string>
+    <string name="cart_total_discount">Total Discount:</string>
+    <string name="cart_total_shipping_fees">Total Shipping Fees:</string>
+    <string name="cart_total_with_tax">Total With Tax:</string>
 
 </resources>

@@ -96,7 +96,6 @@
                         android:id="@+id/quantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(data.QUANTITY)}"
                         android:textColor="@color/black"
                         android:textSize="11sp"
                         android:textStyle="bold"
@@ -123,7 +122,6 @@
                         android:id="@+id/unitPriceDisplay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(data.UNIT_PRICE_WITHOUT_TAX + ``) + ` ` + @string/currency}"
                         android:textColor="@color/black"
                         android:textSize="11sp"
                         android:textStyle="bold"
@@ -150,7 +148,6 @@
                         android:id="@+id/unitPriceWithTax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(data.UNIT_PRICE_WITH_TAX + ``) + ` ` + @string/currency}"
                         android:textColor="@color/black"
                         android:textSize="11sp"
                         android:textStyle="bold"
@@ -176,7 +173,6 @@
                         android:id="@+id/taxValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(data.TAX_VALUE + ``) + ` ` + @string/currency}"
                         android:textColor="#E8750A"
                         android:textSize="11sp"
                         android:textStyle="bold"
@@ -210,9 +206,9 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/tvTotalWithoutTax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(data.TOTAL_UNIT_PRICE_WITHOUT_TAX + ``) + ` ` + @string/currency}"
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         tools:text="1485 EGP" />
@@ -234,9 +230,9 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvTotalWithTax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(data.TOTAL_UNIT_PRICE_WITH_TAX + ``) + ` ` + @string/currency}"
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         android:textStyle="bold"
@@ -257,9 +253,9 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/tvTotalTax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(data.TOTAL_TAX + ``) + ` ` + @string/currency}"
                         android:textColor="#E8750A"
                         android:textSize="12sp"
                         android:textStyle="bold"
