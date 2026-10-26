@@ -447,6 +447,11 @@ class FavoriteFragment : BaseFragment() {
                                         cartItems[product.id] = product.myQuantity
                                     }
                                 }
+
+                                binding.tvCartCount.visibility = View.VISIBLE
+                                binding.tvCartCount.text = state.data.data.get(0).carts
+                                    .sumOf { it.items.pagination.totalRows.toInt() }
+                                    .toString()
                             }
 
                             Log.d("CART", "cartItems = $cartItems")

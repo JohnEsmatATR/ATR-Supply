@@ -93,6 +93,9 @@ class CartFragment : BaseFragment() {
             observeAddress()
             observeCartQuantity()
             setupClickListeners()
+
+            //deleted by me
+//            setupOnBackPressed()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(
