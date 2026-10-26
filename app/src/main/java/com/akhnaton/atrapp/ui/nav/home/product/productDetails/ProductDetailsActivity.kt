@@ -1,5 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 
+
+import java.util.Locale
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
@@ -176,18 +178,11 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.txtCategory.text = productData.category?.TITLE ?: ""
                                     binding.txtPriceValue.text =
                                         "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
-                                    binding.tvPriceWithoutTax.text =
-                                        "${getString(R.string.price_without_tax_product_det)}: ${productData.PRICE_WITHOUT_TAX ?: 0.0} ${
-                                            getString(
-                                                R.string.currency
-                                            )
-                                        }"
-                                    binding.tvTax.text =
-                                        "${getString(R.string.tax)}: ${productData.TAX ?: 0.0} ${
-                                            getString(
-                                                R.string.currency
-                                            )
-                                        }"
+
+                                    binding.tvPriceWithoutTax.text = String.format("%s: %,.3f %s", getString(R.string.price_without_tax_product_det), productData.PRICE_WITHOUT_TAX ?: 0.0, getString(R.string.currency))
+
+                                    binding.tvTax.text = String.format("%s: %,.3f %s", getString(R.string.tax), productData.TAX ?: 0.0, getString(R.string.currency))
+
                                     val dosageText = productData.WEIGHT
                                     if (!dosageText.isNullOrEmpty()) {
                                         binding.txtSize.text = dosageText
@@ -268,7 +263,8 @@ class ProductDetailsActivity : BaseActivity() {
         val unitPrice = pricePerUnit ?: productData.PRICE_AFTER_DISCOUNT ?: 0.0
         val currentQty = binding.txtQuantity.text.toString().toIntOrNull() ?: quantity //malaaaaaak
         val total = unitPrice * currentQty // malakkkkkkkk
-        binding.txtBottomTotalPrice.text = "$total ${getString(R.string.currency)}"
+
+        binding.txtBottomTotalPrice.text = String.format("%,.3f %s", total, getString(R.string.currency))
     }
 
     private fun getProductDetails(productId: Int, category: String) {
@@ -357,9 +353,9 @@ class ProductDetailsActivity : BaseActivity() {
         Check out this product!
         
         Product: ${product.TITLE}
-        Price: ${product.PRICE_WITH_TAX} ${getString(R.string.currency)}
-        Price Without Tax: ${product.PRICE_WITHOUT_TAX} ${getString(R.string.currency)}
-        Tax: ${product.TAX} ${getString(R.string.currency)}
+        Price: ${String.format("%,.3f %s" ,product.PRICE_WITH_TAX)} ${getString(R.string.currency)}
+        Price Without Tax: ${String.format("%,.3f %s" ,product.PRICE_WITHOUT_TAX)} ${getString(R.string.currency)}
+        Tax: ${String.format("%,.3f %s" ,product.TAX)} ${getString(R.string.currency)}
     """.trimIndent()
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {

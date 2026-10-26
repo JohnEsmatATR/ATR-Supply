@@ -1,5 +1,6 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import android.icu.number.Precision.currency
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class CartAdapter(
     private val language: String,
@@ -55,6 +57,12 @@ class CartAdapter(
         }
 
         private fun bindCommon(binding: LayoutCartBinding, item: CartProduct) {
+
+            //malak task
+            val context = binding.root.context
+            val currency = context.getString(R.string.currency)
+
+
             binding.cart = item
             binding.quantity = item.myQuantity
             setVisibility(binding.btnPlus, binding.btnMinus, binding.deleteItem)
@@ -81,6 +89,24 @@ class CartAdapter(
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) onClick(item, pos)
             }
+
+
+            //malak task
+            val priceWithTax = item.priceWithTax?.toString()?.toDoubleOrNull() ?: 0.0
+            val formattedPriceWithTax = String.format(Locale.US, "%,.3f", priceWithTax)
+            binding.priceWithTax.text = context.getString(R.string.price_with_tax, formattedPriceWithTax) + " " + currency
+            // malak task
+            val priceWithoutTax = item.priceWithoutTax?.toString()?.toDoubleOrNull() ?: 0.0
+            val formattedPriceWithoutTax = String.format(Locale.US, "%,.3f", priceWithoutTax)
+            binding.txtPrice.text = context.getString(R.string.price_without_tax, formattedPriceWithoutTax) + " " + currency
+            //malak task
+            val totalPrice = item.myQuantityTotalPrice?.toString()?.toDoubleOrNull() ?: 0.0
+            val formattedTotalPrice = String.format(Locale.US, "%,.3f", totalPrice)
+            binding.txtTotalPrice.text = context.getString(R.string.total) + " " + formattedTotalPrice + " " + currency
+            //malak task
+            val tax = item.tax?.toString()?.toDoubleOrNull() ?: 0.0
+            val formattedTax = String.format(Locale.US, "%,.3f", tax)
+            binding.itemTax.text = context.getString(R.string.tax_format_cart, formattedTax) + " " + currency
         }
 
         private fun bindCommon(binding: LayoutCartArBinding, item: CartProduct) {

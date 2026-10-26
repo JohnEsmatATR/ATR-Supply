@@ -29,6 +29,8 @@ class OrderDetailsAdapter :
 
         fun bind(item: Item) {
 
+
+
             // val context = binding.root.context
             // val lang = SharedPreferenceHelper.language ?: "ar"
 

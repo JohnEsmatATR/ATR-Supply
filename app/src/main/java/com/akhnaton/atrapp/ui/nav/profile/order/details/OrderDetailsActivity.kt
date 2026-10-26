@@ -19,6 +19,7 @@ import com.akhnaton.atrapp.domain.OrderStateRepository
 import com.akhnaton.atrapp.shared.BaseActivity
 import com.akhnaton.atrapp.shared.Common
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityOrderDetailsBinding
@@ -95,8 +96,8 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                             val grandTotalVal =
                                 status.ahmed.totalOrderPriceWithTax?.toDouble() ?: 0.0
 
-                            binding.total.text =
-                                "${grandTotalVal.toInt()} ${getString(R.string.currency)}"
+                            val currency = getString(R.string.currency)
+                            binding.total.text = String.format(Locale.US, "%,.3f %s", grandTotalVal, currency)
 
                             binding.btnMoreDetails.setOnClickListener {
                                 val bottomSheet = OrderBottomSheet().apply {

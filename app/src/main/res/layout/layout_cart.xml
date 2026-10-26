@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="cart"
             type="com.akhnaton.atrapp.data.model.CartProduct" />
@@ -39,7 +38,8 @@
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
                 <ImageView
                     android:id="@+id/im_item"
@@ -118,72 +118,75 @@
                     tools:text="100 GM" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/layout_size"
+                app:layout_constraintStart_toEndOf="@id/layout_size"
+                app:layout_constraintTop_toTopOf="@id/layout_size">
+
+                <TextView
+                    android:id="@+id/txt_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="34.6 EGP" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/priceWithTax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:text="@{@string/price_with_tax(cart.priceWithTax + ``) + ` ` + @string/currency}"
-                android:textColor="@color/orange"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/txt_price"
-                app:layout_constraintStart_toEndOf="@id/txt_price"
-                app:layout_constraintTop_toTopOf="@id/txt_price"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="With Tax: 4,134.00 L.E" />
-
-            <TextView
-                android:id="@+id/txt_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="6dp"
-                android:text="@{@string/price_without_tax(cart.priceWithoutTax + ``) + ` ` + @string/currency}"
                 android:textColor="@color/orange"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/card_image"
                 app:layout_constraintTop_toBottomOf="@id/layout_size"
-                tools:text="34.6 EGP" />
-
-            <TextView
-                android:id="@+id/itemTax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="116dp"
-                android:text="@{@string/tax_format_cart(cart.tax) + ` ` + @string/currency}"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/layout_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/layout_size"
-                app:layout_constraintVertical_bias="1.0"
-                tools:text="Tax: 50.00 L.E" />
-
-
-
+                tools:text="With Tax: 4,134.00 L.E" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/priceWithTax"
+                app:layout_constraintStart_toEndOf="@id/priceWithTax"
+                app:layout_constraintTop_toTopOf="@id/priceWithTax">
+
+                <TextView
+                    android:id="@+id/itemTax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    tools:text="Tax: 50.00 L.E" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/card_image"
-                app:layout_constraintTop_toBottomOf="@id/txt_price">
+                app:layout_constraintTop_toBottomOf="@id/priceWithTax">
 
                 <TextView
                     android:id="@+id/txt_total_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="98dp"
+                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:text="@{@string/total + ` ` + (cart.myQuantityTotalPrice + ` `) + ` ` + @string/currency}"
                     android:textColor="@color/black"
-                    android:textFontWeight="700"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="Total 103.8 EGP" />
@@ -209,7 +212,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             app:cardBackgroundColor="@android:color/white"
-                            app:cardCornerRadius="@dimen/_16sdp"
+                            app:cardCornerRadius="12dp"
                             app:cardElevation="0dp">
 
                             <TextView
@@ -240,7 +243,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             app:cardBackgroundColor="@color/orange"
-                            app:cardCornerRadius="@dimen/_16sdp"
+                            app:cardCornerRadius="12dp"
                             app:cardElevation="0dp">
 
                             <TextView
@@ -284,6 +287,3 @@
 
     </com.google.android.material.card.MaterialCardView>
 </layout>
-
-
-

@@ -68,8 +68,7 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
-        setupOnBackPressed()
+        binding = FragmentCartBinding.inflate(inflater, container, false)
 
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -187,8 +186,8 @@ class CartFragment : BaseFragment() {
     }
 
     private fun navigateBack() {
-        if (!findNavController().popBackStack()) {
-            parentFragmentManager.popBackStack()
+        if (isAdded) {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
     private fun setupOnBackPressed() {
