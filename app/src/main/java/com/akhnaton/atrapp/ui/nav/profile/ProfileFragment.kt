@@ -24,6 +24,8 @@ import androidx.core.view.WindowInsetsCompat
 class ProfileFragment : BaseFragment(), View.OnClickListener {
 
 
+
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -199,10 +201,10 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                 val intent = Intent(requireContext(), CreditInfoActivity::class.java).apply {
 
                     //no hardcoded
-                    val currencySymbol = getString(R.string.currency)
-                    putExtra(EXTRA_CREDIT_LIMIT, "$creditLimit $currencySymbol")
-                    putExtra(EXTRA_USED_CREDIT, "$usedCredit $currencySymbol")
-                    putExtra(EXTRA_AVAILABLE_CREDIT, "$availableCredit $currencySymbol")
+                    val currency = getString(R.string.currency)
+                    putExtra(EXTRA_CREDIT_LIMIT, "$creditLimit $currency")
+                    putExtra(EXTRA_USED_CREDIT, "$usedCredit $currency")
+                    putExtra(EXTRA_AVAILABLE_CREDIT, "$availableCredit $currency")
                 }
                 startActivity(intent)
             }

@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
@@ -54,6 +56,10 @@ class FavoriteFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
+
         binding = FragmentFavoriteBinding.inflate(inflater)
 
         guestHandling()
@@ -97,6 +103,8 @@ class FavoriteFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         observeAddToCart()
     }
+
+
 
     private fun setupProductsRecycler(list: List<ProductModel>) {
         productList.clear()
@@ -234,6 +242,9 @@ class FavoriteFragment : BaseFragment() {
             favoriteViewModel.favoriteIntent.send(FavoriteIntent.GetFavorite)
         } /////newwww malakkkk
 
+        // malak task new
+        val bottomNav = requireActivity().findViewById<View>(R.id.bottomNavigationView)
+        bottomNav?.visibility = View.VISIBLE
         //init()
 
     }
@@ -468,6 +479,8 @@ class FavoriteFragment : BaseFragment() {
                     }
                 }
             }
+
         }
+
     }
 }

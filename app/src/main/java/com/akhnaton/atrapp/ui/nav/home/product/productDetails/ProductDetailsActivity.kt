@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.icu.number.Precision.currency
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
@@ -176,10 +177,10 @@ class ProductDetailsActivity : BaseActivity() {
                                     }
                                     binding.txtItemName.text = productData.TITLE ?: ""
                                     binding.txtCategory.text = productData.category?.TITLE ?: ""
-                                    binding.txtPriceValue.text =
-                                        "${productData.PRICE_AFTER_DISCOUNT ?: 0.0}"
 
+                                    // malak task new
                                     binding.tvPriceWithoutTax.text = String.format("%s: %,.3f %s", getString(R.string.price_without_tax_product_det), productData.PRICE_WITHOUT_TAX ?: 0.0, getString(R.string.currency))
+                                    binding.txtPriceValue.text = String.format(Locale.getDefault(), "%,.3f %s", productData.PRICE_AFTER_DISCOUNT ?: 0.0, getString(R.string.currency))
 
                                     binding.tvTax.text = String.format("%s: %,.3f %s", getString(R.string.tax), productData.TAX ?: 0.0, getString(R.string.currency))
 
@@ -222,7 +223,11 @@ class ProductDetailsActivity : BaseActivity() {
                                         binding.cardBonus.visibility = View.VISIBLE
                                         val bonusString =
                                             productData.BONUS_DATA.orEmpty().joinToString("\n") {
-                                                "Buy ${it.BUY}, GET ${it.GET}"
+                                                // malak task new
+                                                val buyText = getString(R.string.buy_label)
+                                                val getText = getString(R.string.get_label)
+                                                "$buyText ${it.BUY}, $getText ${it.GET}"
+
                                             }
                                         binding.tvBonus.text = bonusString
                                     }
@@ -349,14 +354,22 @@ class ProductDetailsActivity : BaseActivity() {
 
         val imageUri: Uri = product.IMAGE_URL.toUri() // your image Uri
 
+
         val shareText = """
         Check out this product!
         
         Product: ${product.TITLE}
-        Price: ${String.format("%,.3f %s" ,product.PRICE_WITH_TAX)} ${getString(R.string.currency)}
-        Price Without Tax: ${String.format("%,.3f %s" ,product.PRICE_WITHOUT_TAX)} ${getString(R.string.currency)}
-        Tax: ${String.format("%,.3f %s" ,product.TAX)} ${getString(R.string.currency)}
+        Price: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITH_TAX, R.string.currency)}
+        Price Without Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITHOUT_TAX, R.string.currency)}
+        Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.TAX, R.string.currency)}
     """.trimIndent()
+
+//        Product: ${product.TITLE}
+//        Price: ${String.format("%,.3f %s" ,product.PRICE_WITH_TAX)} ${getString(R.string.currency)}
+//        Price Without Tax: ${String.format("%,.3f %s" ,product.PRICE_WITHOUT_TAX)} ${getString(R.string.currency)}
+//        Tax: ${String.format("%,.3f %s" ,product.TAX)} ${getString(R.string.currency)}
+//        """.trimIndent()
+
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "image/*"

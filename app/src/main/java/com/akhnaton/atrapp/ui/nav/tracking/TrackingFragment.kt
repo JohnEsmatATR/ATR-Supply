@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,18 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTrackingBinding.inflate(inflater)
+
+
+        //malak task new
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.popBackStack()
+                }
+            }
+        )
+
 
         guestHandling()
         if (SharedPreferenceHelper.isLogged!!) {

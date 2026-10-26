@@ -118,24 +118,30 @@
                     tools:text="100 GM" />
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/itemTax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:orientation="vertical"
+                android:layout_marginStart="75dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/layout_size"
                 app:layout_constraintStart_toEndOf="@id/layout_size"
-                app:layout_constraintTop_toTopOf="@id/layout_size">
+                app:layout_constraintTop_toTopOf="@id/layout_size"
+                tools:text="Tax: 50.00 L.E" />
 
-                <TextView
-                    android:id="@+id/txt_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="34.6 EGP" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/txt_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/orange"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/card_image"
+                app:layout_constraintTop_toBottomOf="@id/layout_size"
+                tools:text="Without Tax: 34.6 EGP" />
 
             <TextView
                 android:id="@+id/priceWithTax"
@@ -147,26 +153,8 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/card_image"
-                app:layout_constraintTop_toBottomOf="@id/layout_size"
+                app:layout_constraintTop_toBottomOf="@id/txt_price"
                 tools:text="With Tax: 4,134.00 L.E" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@id/priceWithTax"
-                app:layout_constraintStart_toEndOf="@id/priceWithTax"
-                app:layout_constraintTop_toTopOf="@id/priceWithTax">
-
-                <TextView
-                    android:id="@+id/itemTax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    tools:text="Tax: 50.00 L.E" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
