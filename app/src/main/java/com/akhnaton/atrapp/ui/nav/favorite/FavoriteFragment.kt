@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -42,7 +43,8 @@ class FavoriteFragment : BaseFragment() {
 
     //malak task new
     private val cartItems = mutableMapOf<Int, Int>()
-    private val cartViewModel: CartViewModel by viewModels()
+    //malak task new:
+    private val cartViewModel: CartViewModel by activityViewModels()
 
     lateinit var binding: FragmentFavoriteBinding
     lateinit var adapter: ProductAdapter
@@ -179,6 +181,7 @@ class FavoriteFragment : BaseFragment() {
 
                         is AddToCartStatus.AddToCart -> {
                             hideProgressDialog(binding.progressLoading)
+                            binding.progressLoading.visibility = View.GONE
 
                             if (state.data.status == 200) {
                                 showToastSnack(state.data.message ?: "Added successfully", false)
@@ -188,8 +191,11 @@ class FavoriteFragment : BaseFragment() {
                                     adapter.updateCartQuantity(addedItemId, quantity = 1)
 //                                    adapter.updateProductInCart(addedItemId, quantity = 1)
                                 }
+                                //malak task new:
+                                getCart()
+
                             } else {
-                                showToastSnack(state.data.message ?: "", true)
+                                showToastSnack(state.data.message?: "", true)
                             }
 
                             addCartViewModel.resetState()
@@ -241,6 +247,12 @@ class FavoriteFragment : BaseFragment() {
         lifecycleScope.launch {
             favoriteViewModel.favoriteIntent.send(FavoriteIntent.GetFavorite)
         } /////newwww malakkkk
+
+
+
+        if (SharedPreferenceHelper.isLogged == true) {
+            getCart()
+        }
 
         // malak task new
         val bottomNav = requireActivity().findViewById<View>(R.id.bottomNavigationView)
@@ -448,6 +460,8 @@ class FavoriteFragment : BaseFragment() {
                     }
 
                     is CartStatus.GetMyCart -> {
+                        //malak task new:
+                        handleLoadingState(isLoading = false)
                         if (state.data.status == 200) {
 
                             cartItems.clear()
@@ -474,6 +488,9 @@ class FavoriteFragment : BaseFragment() {
                     }
 
                     is CartStatus.Error -> {
+
+                        //malak task new:
+                        handleLoadingState(isLoading = false)
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
                         showToastSnack(state.error.toString(), true)
                     }

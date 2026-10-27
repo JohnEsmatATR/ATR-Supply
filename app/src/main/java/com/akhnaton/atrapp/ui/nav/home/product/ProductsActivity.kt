@@ -640,6 +640,9 @@ class ProductsActivity : BaseActivity() {
                             putExtra("flag", flag)
                             putExtra("product", product)
                             putExtra("transitionName", transitionName)
+
+                            //malak task new:
+                            putExtra("isInCart", (cartItems[product.ID] ?: 0) > 0)
                         }
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ProductsActivity,

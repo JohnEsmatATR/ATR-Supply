@@ -470,5 +470,6 @@ In addition to a wide range of other complementary services, that are offered th
     <string name="cart_total_with_tax">Total With Tax:</string>
 
 
+    <string name="no_order_no_received">No order numbers received.</string>
 
 </resources>

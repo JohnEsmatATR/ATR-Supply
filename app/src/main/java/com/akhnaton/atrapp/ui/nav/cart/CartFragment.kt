@@ -75,15 +75,10 @@ class CartFragment : BaseFragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (!findNavController().popBackStack()) {
-                        parentFragmentManager.popBackStack()
-                    }
+                    navigateBack()
                 }
             }
         )
-
-
-        binding = FragmentCartBinding.inflate(inflater, container, false)
 
         handleTopBottomKeyboard()
         guestHandling()
@@ -97,16 +92,6 @@ class CartFragment : BaseFragment() {
             //deleted by me
 //            setupOnBackPressed()
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-
-                override fun handleOnBackPressed() {
-                    parentFragmentManager.popBackStack()
-                }
-            }
-        )
         return binding.root
     }
 
@@ -116,6 +101,12 @@ class CartFragment : BaseFragment() {
             binding.clGuest.visibility = View.VISIBLE
             binding.recycler.visibility = View.GONE
             binding.cardCheckout.visibility = View.GONE
+
+
+            if(SharedPreferenceHelper.isLogged == true){
+                getMyCart()
+            }
+
             // binding.cardAddress.visibility = View.GONE
         }
 
@@ -127,6 +118,9 @@ class CartFragment : BaseFragment() {
 
 
     override fun onResume() {
+
+
+
         super.onResume()
         initCart()
     }
@@ -189,20 +183,27 @@ class CartFragment : BaseFragment() {
     }
 
     private fun navigateBack() {
-        if (isAdded) {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+        try {
+            val navController = findNavController()
+            if (navController.previousBackStackEntry != null) {
+                navController.popBackStack()
+                return
+            }
+        } catch (e: Exception) {
+            Log.e("CartFragment", "No NavController: ${e.message}")
         }
-    }
-    private fun setupOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    navigateBack()
+
+        if (parentFragmentManager.backStackEntryCount > 0) {
+            parentFragmentManager.popBackStack()
+        } else {
+            activity?.let {
+                if (!it.isFinishing) {
+                    it.finish()
                 }
             }
-        )
+        }
     }
+
 
     private fun initCart() {
         shimmerAdapter = ShimmerAdapterCart(10)

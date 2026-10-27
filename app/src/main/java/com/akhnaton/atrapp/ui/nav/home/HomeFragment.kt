@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -82,7 +83,8 @@ class HomeFragment : BaseFragment() {
     var orderTypeIndex = ""
     lateinit var category: CategoriesModel
 
-    private val cartViewModel: CartViewModel by viewModels()
+    //malak task new
+    private val cartViewModel: CartViewModel by activityViewModels()
 
     private lateinit var searchHints: List<String>
 
@@ -199,9 +201,11 @@ class HomeFragment : BaseFragment() {
 
     private fun guestHandling() {
         if (SharedPreferenceHelper.isLogged == false) {
+            binding.tvCartCount.visibility = View.GONE
             binding.cardAddress.visibility = View.GONE
 //            binding.tvWelcome.text = "${getString(R.string.welcome_guest)}"
         } else {
+                getCart()
 //            binding.tvWelcome.text =
 //                "${getString(R.string.welcome)} ${SharedPreferenceHelper.userObj?.first_name}"
         }
@@ -723,13 +727,23 @@ class HomeFragment : BaseFragment() {
                         showProgressDialog(binding.progressLoading)
                     }
 
+
                     is CartStatus.GetMyCart -> {
-                        hideProgressDialog(binding.progressLoading)
-                        //malak task
-                        binding.tvCartCount.visibility = View.VISIBLE
-                        binding.tvCartCount.text = state.data.data.get(0).carts
-                            .sumOf { it.items.pagination.totalRows.toInt() }
-                            .toString()
+
+                        //malak task new:
+                        val cartData = state.data
+
+                        //malak task new:
+                        if(!cartData.data.isNullOrEmpty()){
+
+                            hideProgressDialog(binding.progressLoading)
+                            //malak task
+                            binding.tvCartCount.visibility = View.VISIBLE
+                            binding.tvCartCount.text = state.data.data.get(0).carts
+                                .sumOf { it.items.pagination.totalRows.toInt() }
+                                .toString()
+                        }
+
                     }
 
                     is CartStatus.Error -> {

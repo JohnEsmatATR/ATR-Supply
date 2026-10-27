@@ -408,5 +408,7 @@
     <string name="cart_total_shipping_fees">اجمالي مصاريف الشحن:</string>
     <string name="cart_total_with_tax">الاجمالي بالضريبة:</string>
 
+    <string name="no_order_no_received">لا توجد أرقام طلبات مستلمة.</string>
+
 
 </resources>

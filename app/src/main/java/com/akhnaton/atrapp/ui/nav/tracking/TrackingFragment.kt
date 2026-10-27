@@ -64,6 +64,10 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
             }
         )
 
+        //malak task new:
+        val bottomNav = requireActivity().findViewById<View>(R.id.bottomNavigationView)
+        bottomNav?.visibility = View.VISIBLE
+
 
         guestHandling()
         if (SharedPreferenceHelper.isLogged!!) {

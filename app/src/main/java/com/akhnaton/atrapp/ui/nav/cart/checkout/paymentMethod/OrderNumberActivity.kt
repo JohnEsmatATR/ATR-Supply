@@ -2,6 +2,7 @@ package com.akhnaton.atrapp.ui.nav.cart.checkout.paymentMethod
 
 import android.os.Bundle
 import android.util.Log
+import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityFawryBinding
 import com.akhnaton.atrapp.shared.BaseActivity
 
@@ -29,7 +30,8 @@ class OrderNumberActivity : BaseActivity() {
             binding.txtOrderNumber.text = orderNumbers
 
         } else {
-            binding.txtOrderNumber.text = "No order numbers received."
+            //malak task new
+            binding.txtOrderNumber.text = getString(R.string.no_order_no_received)
         }
     }
 
