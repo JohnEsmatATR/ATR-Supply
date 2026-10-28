@@ -102,6 +102,10 @@ class ProductDetailsActivity : BaseActivity() {
     private fun init() {
         setupQuantityEditText()
 
+
+        //malak task inCart
+        val isInCart = intent.getBooleanExtra("isInCart", false)
+
         flag = intent.getStringExtra("flag") ?: ""
 
         product = intent.getSerializableExtra("product") as ProductModel
@@ -165,6 +169,11 @@ class ProductDetailsActivity : BaseActivity() {
                                 )
 
                                 if (productData != null) {
+
+                                    //malak task inCart
+                                    val isProductInCart = (productData.MY_QUANTITY > 0) || intent.getBooleanExtra("isInCart", false)
+                                    updateAddToCartBTN(isProductInCart, productData.IN_STOCK)
+
                                     if (productData.IS_LIKED) {
                                         binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
                                         val orangeColor = Color.parseColor("#EE7907")
@@ -262,6 +271,43 @@ class ProductDetailsActivity : BaseActivity() {
             }
         }
     }
+
+
+    //malak task inCart
+    fun updateAddToCartBTN(isInCart: Boolean, inStock: Boolean){
+        val btnCart = binding.btnBottomAddToCart ?: return
+
+        when {
+            !inStock -> {
+                btnCart.isEnabled = false
+                btnCart.text = getString(R.string.out_of_stock)
+                btnCart.visibility = View.VISIBLE
+                btnCart.setTextColor(getColorStateList(R.color.white))
+                btnCart.background = getDrawable(R.drawable.btn_out_of_stock)
+                btnCart.icon = ContextCompat.getDrawable(this, R.drawable.ic_circle_close)
+                btnCart.iconTint = getColorStateList(R.color.snack_red)
+            }
+
+            isInCart -> {
+                btnCart.isEnabled = false
+                btnCart.text = getString(R.string.in_cart)
+                btnCart.visibility = View.VISIBLE
+                btnCart.setTextColor(getColorStateList(R.color.snack_green))
+                btnCart.background = getDrawable(R.drawable.bg_in_cart_btn)
+                btnCart.icon = ContextCompat.getDrawable(this, R.drawable.ic_check_circle)
+                btnCart.iconTint = getColorStateList(R.color.snack_green)
+            }
+            else -> {
+                btnCart.isEnabled = true
+                btnCart.visibility = View.VISIBLE
+                btnCart.setTextColor(getColorStateList(R.color.white))
+                btnCart.background = getDrawable(R.drawable.btn_orange_style)
+                btnCart.icon = ContextCompat.getDrawable(this, R.drawable.ic_cart)
+                btnCart.iconTint = getColorStateList(R.color.white)
+            }
+        }
+    }
+
 
     private fun updateTotalPrice(pricePerUnit: Double? = null) {
         //malak task
@@ -398,6 +444,7 @@ class ProductDetailsActivity : BaseActivity() {
                     }
 
                     is AddToCartStatus.AddToCart -> {
+                        updateAddToCartBTN(true, true)
                         hideProgressDialog(binding.progressLoading)
                         if (status.data.status == 200) {
                             showAddToCartDialog(status.data)
@@ -447,12 +494,15 @@ class ProductDetailsActivity : BaseActivity() {
             dialog.dismiss()
             val intent = Intent(this, HomeActivity::class.java)
             intent.putExtra("open_cart", true)
+            //malak task btnBack
+            intent.putExtra("from_details", true)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
         }
 
         dialog.show()
     }
+
 
     private fun addProductToCart() {
         if (inStoke) {

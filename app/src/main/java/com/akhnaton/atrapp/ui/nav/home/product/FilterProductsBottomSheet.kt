@@ -67,8 +67,11 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             selectedChildIdParam = args.getInt(ARG_SELECTED_CHILD_ID)
 
             // new malak
-            val initialCategory = orderTypes.find { it.order_type_index == selectedOrderTypeParam }
-                ?.categories?.find { it.CHILD_ID?.toString()?.toIntOrNull() == selectedChildIdParam }
+            val currentOrderTypeObj = orderTypes.find {
+                it.order_type_index == selectedOrderTypeParam
+            }
+
+            val initialCategory = currentOrderTypeObj?.categories?.find { it.ID == selectedChildIdParam && selectedChildIdParam != 0 }
 
             selectedCategoryIdParam = initialCategory?.ID //new malak
 
@@ -203,17 +206,12 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
             // new malak
             selectedPosition = selectedCategories.indexOfFirst { select ->
-                val catChildId = select.CHILD_ID?.toString()?.toIntOrNull()
+
+                //malak task filter selection
                 val catId = select.ID
+                val targetId = savedChildId ?: savedCategoryId
 
-
-                if (savedCategoryId != null && savedChildId != null) {
-                    catId == savedCategoryId && catChildId == savedChildId
-                } else if (savedCategoryId != null) {
-                    catId == savedCategoryId
-                } else {
-                    catChildId == savedChildId
-                }
+                targetId != null && targetId != 0 && catId == targetId
             }
 
             if (selectedPosition >= 0) {
@@ -234,13 +232,15 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             if (selected) {
                 selectedCategoryData.clear() //new malak
 
-                val selectedCategory = selectedCategories[position] //new malak
-                val childId = selectedCategory.CHILD_ID?.toString()?.toIntOrNull() //new malak
-                val categoryId = selectedCategory.ID //new malak
 
-                selectedCategoryData[currentOrderTypeKey] = Pair(categoryId, childId) //new malak
-                selectedChildIdParam = childId //new malak
-                selectedCategoryIdParam = categoryId //new malak
+                //malak task filter selection
+                val selectedCategory = selectedCategories[position]
+                val childId = selectedCategory.ID
+                val categoryId = selectedCategory.ID
+
+                selectedCategoryData[currentOrderTypeKey] = Pair(categoryId, childId)
+                selectedChildIdParam = childId
+                selectedCategoryIdParam = categoryId
 
                 selectedCategories.forEachIndexed { index, item ->
                     item.selected = (index == position)

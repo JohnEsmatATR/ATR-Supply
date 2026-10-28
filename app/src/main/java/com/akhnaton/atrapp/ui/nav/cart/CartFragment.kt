@@ -71,14 +71,17 @@ class CartFragment : BaseFragment() {
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    navigateBack()
-                }
-            }
-        )
+//        requireActivity().onBackPressedDispatcher.addCallback(
+//            viewLifecycleOwner,
+//            object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//                    if (!findNavController().popBackStack()) {
+//                        parentFragmentManager.popBackStack()
+//                    }
+//                }
+//            }
+//        )
+
 
         handleTopBottomKeyboard()
         guestHandling()
@@ -92,8 +95,28 @@ class CartFragment : BaseFragment() {
             //deleted by me
 //            setupOnBackPressed()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (parentFragmentManager.backStackEntryCount > 0) {
+                        parentFragmentManager.popBackStack()
+                    } else {
+                        isEnabled = false
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+        )
         return binding.root
     }
+
+
+
+    //malak task btnBack
+    private val openFromActivity: Boolean
+        get() = requireActivity().intent?.getBooleanExtra("from_details", false) == true
 
     private fun guestHandling() {
         if (SharedPreferenceHelper.isLogged == false) {
@@ -118,9 +141,6 @@ class CartFragment : BaseFragment() {
 
 
     override fun onResume() {
-
-
-
         super.onResume()
         initCart()
     }
@@ -183,27 +203,38 @@ class CartFragment : BaseFragment() {
     }
 
     private fun navigateBack() {
-        try {
-            val navController = findNavController()
-            if (navController.previousBackStackEntry != null) {
-                navController.popBackStack()
-                return
-            }
-        } catch (e: Exception) {
-            Log.e("CartFragment", "No NavController: ${e.message}")
-        }
 
-        if (parentFragmentManager.backStackEntryCount > 0) {
-            parentFragmentManager.popBackStack()
-        } else {
-            activity?.let {
-                if (!it.isFinishing) {
-                    it.finish()
-                }
-            }
+//        try {
+//            if(isAdded && findNavController().popBackStack()) return
+//            if(!isAdded && parentFragmentManager.backStackEntryCount > 0){
+//                parentFragmentManager.popBackStack()
+//                return
+//            }
+//            requireActivity().finish()
+//        } catch (e: Exception){
+//            requireActivity().finish()
+//        }
+
+//        if (isAdded) {
+//            requireActivity().onBackPressedDispatcher.onBackPressed()
+//        }
+
+        if(!isAdded) return
+        if(openFromActivity){
+            requireActivity().finish()
+            return
         }
     }
-
+    private fun setupOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navigateBack()
+                }
+            }
+        )
+    }
 
     private fun initCart() {
         shimmerAdapter = ShimmerAdapterCart(10)

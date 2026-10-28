@@ -309,8 +309,8 @@ class ProductsActivity : BaseActivity() {
                     flag = orderType
                 }
 
-                val selectedCount =
-                    if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
+                val queryCategoryId = childId ?: categoryId
+                val selectedCount = if (!orderType.isNullOrEmpty() || (childId != null && childId != 0)) 1 else 0
 
                 updateFilterUiState(selectedCount)
 
