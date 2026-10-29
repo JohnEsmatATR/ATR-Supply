@@ -109,6 +109,8 @@ class CartAdapter(
             binding.itemTax.text = context.getString(R.string.tax_format_cart, formattedTax) + " " + currency
         }
 
+
+
         private fun bindCommon(binding: LayoutCartArBinding, item: CartProduct) {
             binding.cart = item
             binding.quantity = item.myQuantity

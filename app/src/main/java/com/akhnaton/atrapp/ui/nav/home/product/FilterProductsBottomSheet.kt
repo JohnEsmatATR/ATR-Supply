@@ -19,12 +19,19 @@ import com.google.android.material.button.MaterialButton
 
 class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
+    private var selectedOrderTypeKey: String? = null
+    private var selectedChildId: Int? = null
+    private var selectedPositionInTap: Int = -1
+    private var viewedOrderTypeKey: String? = null
+    var onSelectionChanged: ((orderType: String?, childId: Int?) -> Unit)? = null
+
+
     private lateinit var orderTypes: ArrayList<OrderTypeModel>
-    private var selectedCategoryIdParam: Int? = null //new malak
-    private val selectedCategoryData = mutableMapOf<String, Pair<Int?, Int?>>() //new malak
+//    private var selectedCategoryIdParam: Int? = null //new malak
+//    private val selectedCategoryData = mutableMapOf<String, Pair<Int?, Int?>>() //new malak
     private val selectedCategories = mutableListOf<CategoriesModel>()
-    private var selectedOrderTypeParam: String? = null //malak
-    private var selectedChildIdParam: Int? = null
+//    private var selectedOrderTypeParam: String? = null //malak
+//    private var selectedChildIdParam: Int? = null
     var onFilterAppliedListeners: ((orderType: String?, childId: Int?) -> Unit)? = null //malak
     private lateinit var rvCategories: RecyclerView
     private lateinit var rvProducts: RecyclerView
@@ -61,32 +68,61 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         orderTypes = args.getParcelableArrayList<OrderTypeModel>(ARG_ORDER_TYPES)
             ?: throw IllegalArgumentException("orderTypes is required")
 
-        selectedOrderTypeParam = args.getString(ARG_SELECTED_ORDER_TYPE)
+//        selectedOrderTypeParam = args.getString(ARG_SELECTED_ORDER_TYPE)
+        if (savedInstanceState != null) {
+            selectedOrderTypeKey = savedInstanceState.getString("sel_order_type")
+            selectedChildId = if (savedInstanceState.containsKey("sel_child_id"))
+                savedInstanceState.getInt("sel_child_id") else null
 
-        if (args.containsKey(ARG_SELECTED_CHILD_ID)) {
-            selectedChildIdParam = args.getInt(ARG_SELECTED_CHILD_ID)
+            selectedPositionInTap = savedInstanceState.getInt("sel_position", -1)
+            viewedOrderTypeKey = savedInstanceState.getString("viewed_order_type")
+        } else {
+            selectedOrderTypeKey = args.getString(ARG_SELECTED_ORDER_TYPE)
+            selectedChildId = if (args.containsKey(ARG_SELECTED_CHILD_ID))
+                args.getInt(ARG_SELECTED_CHILD_ID) else null
 
-            // new malak
-            val currentOrderTypeObj = orderTypes.find {
-                it.order_type_index == selectedOrderTypeParam
-            }
+            viewedOrderTypeKey = selectedOrderTypeKey
 
-            val initialCategory = currentOrderTypeObj?.categories?.find { it.ID == selectedChildIdParam && selectedChildIdParam != 0 }
+            val tab = orderTypes.find { it.order_type_index == selectedOrderTypeKey }
+            val myIndex = tab?.categories?.indexOfFirst { it.selected && it.ID == selectedChildId } ?: -1
 
-            selectedCategoryIdParam = initialCategory?.ID //new malak
-
-            selectedOrderTypeParam?.let { key ->
-                selectedChildIdParam?.let { childId ->
-                    selectedCategoryData[key] = Pair(selectedCategoryIdParam, childId) //new malak
-                }
+            selectedPositionInTap = if (myIndex >= 0) {
+                myIndex
+            } else {
+                tab?.categories?.indexOfFirst { it.ID == selectedChildId } ?: -1
             }
         }
 
-        Log.d(
-            "filter_restore",
-            "BottomSheet opened -> orderType=$selectedOrderTypeParam, childId=$selectedChildIdParam"
-        )
+//        if (args.containsKey(ARG_SELECTED_CHILD_ID)) {
+//            selectedChildIdParam = args.getInt(ARG_SELECTED_CHILD_ID)
+//
+//            // new malak
+//            val currentOrderTypeObj = orderTypes.find {
+//                it.order_type_index == selectedOrderTypeParam
+//            }
+//
+//            val initialCategory = currentOrderTypeObj?.categories?.find { it.ID == selectedChildIdParam && selectedChildIdParam != 0 }
+//
+//            selectedCategoryIdParam = initialCategory?.ID //new malak
+//
+//            selectedOrderTypeParam?.let { key ->
+//                selectedChildIdParam?.let { childId ->
+//                    selectedCategoryData[key] = Pair(selectedCategoryIdParam, childId) //new malak
+//                }
+//            }
+//        }
     }
+
+
+    //malak task filter selection
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("sel_order_type", selectedOrderTypeKey)
+        selectedChildId?.let { outState.putInt("sel_child_id", it) }
+        outState.putInt("sel_position", selectedPositionInTap)
+        outState.putString("viewed_order_type", viewedOrderTypeKey)
+    }
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -129,31 +165,48 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         }
 
         btnReset.setOnClickListener {
-            selectedCategoryData.clear() //new malak
-            selectedChildIdParam = null
-            selectedCategoryIdParam = null //new malak
-            selectedOrderTypeParam = null //new malak
+//            selectedCategoryData.clear() //new malak
+//            selectedChildIdParam = null
+//            selectedCategoryIdParam = null //new malak
+//            selectedOrderTypeParam = null //new malak
 
-            selectedCategories.forEach { it.selected = false }
+            //task malak filter selection
+            selectedOrderTypeKey = null
+            selectedChildId = null
+            selectedPositionInTap = -1
 
-            if (::productAdapter.isInitialized) {
-                productAdapter.setSelectedPosition(-1)
-                productAdapter.notifyDataSetChanged()
-            }
+//            selectedCategories.forEach { it.selected = false }
+            orderTypes.forEach { type -> type.categories.forEach { it.selected = false } }
+            productAdapter.setSelectedPosition(-1)
+            productAdapter.notifyDataSetChanged()
+
+            onSelectionChanged?.invoke(null, null)
+
+
+//            if (::productAdapter.isInitialized) {
+//                productAdapter.setSelectedPosition(-1)
+//                productAdapter.notifyDataSetChanged()
+//            }
 
             Log.d("filter_reset", "Filters reset")
         }
 
         btnApply.setOnClickListener {
-            val selectedPair = selectedOrderTypeParam?.let { selectedCategoryData[it] } //new malak
-            val currentChildId = selectedPair?.second //new malak
-            val currentCategoryId = selectedPair?.first //new malak
+//            val selectedPair = selectedOrderTypeParam?.let { selectedCategoryData[it] } //new malak
+//            val currentChildId = selectedPair?.second //new malak
+//            val currentCategoryId = selectedPair?.first //new malak
+//
+//            val finalOrderType = if (currentChildId != null) selectedOrderTypeParam else null //new malak
+//
+//            Log.d("filter_test", "Apply clicked -> orderTypeIndex: $selectedOrderTypeParam, categoryId: $currentCategoryId, childId: $currentChildId")
+//
+//            onFilterAppliedListeners?.invoke(finalOrderType, currentChildId) //malak
+//            dismiss()
+//        }
 
-            val finalOrderType = if (currentChildId != null) selectedOrderTypeParam else null //new malak
-
-            Log.d("filter_test", "Apply clicked -> orderTypeIndex: $selectedOrderTypeParam, categoryId: $currentCategoryId, childId: $currentChildId")
-
-            onFilterAppliedListeners?.invoke(finalOrderType, currentChildId) //malak
+            val childId = selectedChildId
+            val orderType = if (childId != null) selectedOrderTypeKey else null
+            onFilterAppliedListeners?.invoke(orderType, childId)
             dismiss()
         }
     }
@@ -161,17 +214,22 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
     private fun restorePreviousSelection() {
         if (orderTypes.isEmpty()) return
 
-        val selectedOrderTypePosition = orderTypes.indexOfFirst {
-            it.order_type_index == selectedOrderTypeParam
-        }
+//        val selectedOrderTypePosition = orderTypes.indexOfFirst {
+//            it.order_type_index == selectedOrderTypeParam
+//        }
+//
+//        if (selectedOrderTypePosition >= 0) {
+//            categoryAdapter.setSelectedPosition(selectedOrderTypePosition)
+//            onOrderTypeSelected(selectedOrderTypePosition)
+//        } else {
+//            categoryAdapter.setSelectedPosition(0)
+//            onOrderTypeSelected(0)
+//        }
+        val myPosition = orderTypes.indexOfFirst { it.order_type_index == viewedOrderTypeKey }
+            .takeIf { it >= 0 } ?: 0
 
-        if (selectedOrderTypePosition >= 0) {
-            categoryAdapter.setSelectedPosition(selectedOrderTypePosition)
-            onOrderTypeSelected(selectedOrderTypePosition)
-        } else {
-            categoryAdapter.setSelectedPosition(0)
-            onOrderTypeSelected(0)
-        }
+        categoryAdapter.setSelectedPosition(myPosition)
+        onOrderTypeSelected(myPosition)
     }
 
     private fun setupCategories() {
@@ -188,73 +246,106 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun onOrderTypeSelected(position: Int) {
-        val selectedOrderType = orderTypes[position]
-        val currentOrderTypeKey = selectedOrderType.order_type_index ?: ""
+//        val selectedOrderType = orderTypes[position]
+//        val currentOrderTypeKey = selectedOrderType.order_type_index ?: ""
 
-        selectedOrderTypeParam = currentOrderTypeKey
+//        selectedOrderTypeParam = currentOrderTypeKey
+//
+//        selectedCategories.clear()
+//        selectedCategories.addAll(selectedOrderType.categories)
+//
+//        selectedCategories.forEach { it.selected = false }
+//
+//        val dataPair = selectedCategoryData[currentOrderTypeKey] //new malak
+//        var selectedPosition = -1
+//
+//        if (dataPair != null) {
+//            val (savedCategoryId, savedChildId) = dataPair //new malak
+//
+//            // new malak
+//            selectedPosition = selectedCategories.indexOfFirst { select ->
+//
+//                //malak task filter selection
+//                val catId = select.ID
+//                val targetId = savedChildId ?: savedCategoryId
+//
+//                targetId != null && targetId != 0 && catId == targetId
+//            }
+//
+//            if (selectedPosition >= 0) {
+//                selectedCategories[selectedPosition].selected = true
+//            }
+//        }
+//
+//        productAdapter.setSelectedPosition(selectedPosition)
+//        productAdapter.notifyDataSetChanged()
 
+        val orderType = orderTypes[position]
+        viewedOrderTypeKey = orderType.order_type_index
         selectedCategories.clear()
-        selectedCategories.addAll(selectedOrderType.categories)
+        selectedCategories.addAll(orderType.categories)
 
-        selectedCategories.forEach { it.selected = false }
+        val isSelectionInThisTab = viewedOrderTypeKey == selectedOrderTypeKey
+        val mySelectedPosition = if (
+            isSelectionInThisTab && selectedChildId != null && selectedPositionInTap in selectedCategories.indices
+            && selectedCategories[selectedPositionInTap].ID == selectedChildId
+        ) selectedPositionInTap else -1
 
-        val dataPair = selectedCategoryData[currentOrderTypeKey] //new malak
-        var selectedPosition = -1
+        selectedCategories.forEachIndexed { index, item ->
+            item.selected = (index == mySelectedPosition)
 
-        if (dataPair != null) {
-            val (savedCategoryId, savedChildId) = dataPair //new malak
-
-            // new malak
-            selectedPosition = selectedCategories.indexOfFirst { select ->
-
-                //malak task filter selection
-                val catId = select.ID
-                val targetId = savedChildId ?: savedCategoryId
-
-                targetId != null && targetId != 0 && catId == targetId
-            }
-
-            if (selectedPosition >= 0) {
-                selectedCategories[selectedPosition].selected = true
-            }
+            productAdapter.setSelectedPosition(mySelectedPosition)
+            productAdapter.notifyDataSetChanged()
         }
-
-        productAdapter.setSelectedPosition(selectedPosition)
-        productAdapter.notifyDataSetChanged()
     }
 
     private fun setupProducts() {
         productAdapter = FilterProductAdapter(selectedCategories) { position, selected ->
             if (position < 0 || position >= selectedCategories.size) return@FilterProductAdapter
 
-            val currentOrderTypeKey = selectedOrderTypeParam ?: return@FilterProductAdapter
+            //malak task filter selection
+            val currentTypeKey = viewedOrderTypeKey ?: return@FilterProductAdapter
+
+//            val currentOrderTypeKey = selectedOrderTypeParam ?: return@FilterProductAdapter
 
             if (selected) {
-                selectedCategoryData.clear() //new malak
+//                selectedCategoryData.clear() //new malak
+                selectedOrderTypeKey = currentTypeKey
+                selectedChildId = selectedCategories[position].ID
+                selectedPositionInTap = position
+
+                selectedCategories.forEachIndexed { index, item -> item.selected = (index == position) }
+                productAdapter.setSelectedPosition(position)
 
 
                 //malak task filter selection
-                val selectedCategory = selectedCategories[position]
-                val childId = selectedCategory.ID
-                val categoryId = selectedCategory.ID
-
-                selectedCategoryData[currentOrderTypeKey] = Pair(categoryId, childId)
-                selectedChildIdParam = childId
-                selectedCategoryIdParam = categoryId
-
-                selectedCategories.forEachIndexed { index, item ->
-                    item.selected = (index == position)
-                }
-                productAdapter.setSelectedPosition(position)
+//                val selectedCategory = selectedCategories[position]
+//                val childId = selectedCategory.ID
+//                val categoryId = selectedCategory.ID
+//
+//                selectedCategoryData[currentOrderTypeKey] = Pair(categoryId, childId)
+//                selectedChildIdParam = childId
+//                selectedCategoryIdParam = categoryId
+//
+//                selectedCategories.forEachIndexed { index, item ->
+//                    item.selected = (index == position)
+//                }
+//                productAdapter.setSelectedPosition(position)
 
             } else {
-                selectedCategoryData.remove(currentOrderTypeKey) //new malak
-                selectedChildIdParam = null
-                selectedCategoryIdParam = null //new malak
+//                selectedCategoryData.remove(currentOrderTypeKey) //new malak
+//                selectedChildIdParam = null
+//                selectedCategoryIdParam = null //new malak
+//                selectedCategories[position].selected = false
+//                productAdapter.setSelectedPosition(-1)
+                selectedOrderTypeKey = null
+                selectedChildId = null
+                selectedPositionInTap = -1
                 selectedCategories[position].selected = false
                 productAdapter.setSelectedPosition(-1)
             }
 
+            onSelectionChanged?.invoke(selectedOrderTypeKey, selectedChildId)
             productAdapter.notifyDataSetChanged()
         }
 
@@ -271,7 +362,7 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         bottomSheet?.let { sheet ->
             val behavior = BottomSheetBehavior.from(sheet)
             val screenHeight = resources.displayMetrics.heightPixels
-            val bottomSheetHeight = (screenHeight * 0.75).toInt()
+            val bottomSheetHeight = (screenHeight * 0.76).toInt()
 
             sheet.layoutParams.height = bottomSheetHeight
             sheet.requestLayout()

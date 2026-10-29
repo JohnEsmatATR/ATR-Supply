@@ -46,6 +46,24 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnClearAll"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/red"
+        android:text="@string/clear_all"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
+        app:iconGravity="textEnd"
+        app:iconPadding="8dp"
+        app:iconTint="@color/white"
+        tools:layout_editor_absoluteX="21dp"
+        tools:layout_editor_absoluteY="60dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
@@ -282,6 +300,8 @@
             android:paddingHorizontal="20dp"
             android:paddingTop="16dp">
 
+
+
             <LinearLayout
                 android:id="@+id/layout_item_total2"
                 android:layout_width="0dp"
@@ -290,6 +310,8 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
+
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -308,10 +330,12 @@
                     tools:text="26203.50 EGP" />
             </LinearLayout>
 
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCheckout"
                 android:layout_width="wrap_content"
-                android:layout_height="52dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="18dp"
                 android:backgroundTint="@color/orange"
                 android:text="@string/checkout"
                 android:textAllCaps="false"
@@ -323,6 +347,7 @@
                 app:iconGravity="textEnd"
                 app:iconPadding="8dp"
                 app:iconTint="@color/white" />
+
 
         </LinearLayout>
 

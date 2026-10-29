@@ -112,12 +112,6 @@ class CartFragment : BaseFragment() {
         return binding.root
     }
 
-
-
-    //malak task btnBack
-    private val openFromActivity: Boolean
-        get() = requireActivity().intent?.getBooleanExtra("from_details", false) == true
-
     private fun guestHandling() {
         if (SharedPreferenceHelper.isLogged == false) {
             binding.txtNoProducts.visibility = View.GONE
@@ -203,27 +197,10 @@ class CartFragment : BaseFragment() {
     }
 
     private fun navigateBack() {
-
-//        try {
-//            if(isAdded && findNavController().popBackStack()) return
-//            if(!isAdded && parentFragmentManager.backStackEntryCount > 0){
-//                parentFragmentManager.popBackStack()
-//                return
-//            }
-//            requireActivity().finish()
-//        } catch (e: Exception){
-//            requireActivity().finish()
-//        }
-
-//        if (isAdded) {
-//            requireActivity().onBackPressedDispatcher.onBackPressed()
-//        }
-
-        if(!isAdded) return
-        if(openFromActivity){
-            requireActivity().finish()
-            return
+        if (isAdded) {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
     }
     private fun setupOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -265,6 +242,11 @@ class CartFragment : BaseFragment() {
         binding.btnBack.setOnClickListener {
             navigateBack()
         }
+
+        binding.btnClearAll.setOnClickListener {
+            parentAdapter.clearAll()
+        }
+
     }
 
     private fun observeCart() {

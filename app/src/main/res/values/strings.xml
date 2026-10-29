@@ -471,5 +471,6 @@ In addition to a wide range of other complementary services, that are offered th
 
 
     <string name="no_order_no_received">No order numbers received.</string>
+    <string name="clear_all">Clear All</string>
 
 </resources>
