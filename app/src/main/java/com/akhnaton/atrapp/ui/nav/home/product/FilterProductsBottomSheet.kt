@@ -16,6 +16,7 @@ import com.akhnaton.atrapp.data.model.OrderTypeModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.flow.combine
 
 class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 
@@ -24,6 +25,9 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
     private var selectedPositionInTap: Int = -1
     private var viewedOrderTypeKey: String? = null
     var onSelectionChanged: ((orderType: String?, childId: Int?) -> Unit)? = null
+
+    //malak task
+    var onResetListener: (() -> Unit)? = null
 
 
     private lateinit var orderTypes: ArrayList<OrderTypeModel>
@@ -80,16 +84,12 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             selectedOrderTypeKey = args.getString(ARG_SELECTED_ORDER_TYPE)
             selectedChildId = if (args.containsKey(ARG_SELECTED_CHILD_ID))
                 args.getInt(ARG_SELECTED_CHILD_ID) else null
-
             viewedOrderTypeKey = selectedOrderTypeKey
 
-            val tab = orderTypes.find { it.order_type_index == selectedOrderTypeKey }
-            val myIndex = tab?.categories?.indexOfFirst { it.selected && it.ID == selectedChildId } ?: -1
-
-            selectedPositionInTap = if (myIndex >= 0) {
-                myIndex
-            } else {
-                tab?.categories?.indexOfFirst { it.ID == selectedChildId } ?: -1
+            Log.d("filter_debug", "received type=$selectedOrderTypeKey childId=$selectedChildId")
+            Log.d("filter_debug", "keys=${orderTypes.map { it.order_type_index }}")
+            orderTypes.forEach { t ->
+                Log.d("filter_debug", "${t.order_type_index} ids=${t.categories.map { it.ID }}")
             }
         }
 
@@ -171,6 +171,10 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
 //            selectedOrderTypeParam = null //new malak
 
             //task malak filter selection
+
+
+
+
             selectedOrderTypeKey = null
             selectedChildId = null
             selectedPositionInTap = -1
@@ -181,6 +185,7 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
             productAdapter.notifyDataSetChanged()
 
             onSelectionChanged?.invoke(null, null)
+            onResetListener?.invoke()
 
 
 //            if (::productAdapter.isInitialized) {
@@ -285,18 +290,17 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         selectedCategories.clear()
         selectedCategories.addAll(orderType.categories)
 
-        val isSelectionInThisTab = viewedOrderTypeKey == selectedOrderTypeKey
-        val mySelectedPosition = if (
-            isSelectionInThisTab && selectedChildId != null && selectedPositionInTap in selectedCategories.indices
-            && selectedCategories[selectedPositionInTap].ID == selectedChildId
-        ) selectedPositionInTap else -1
+        val mySelectedPosition =
+            if (viewedOrderTypeKey == selectedOrderTypeKey && selectedChildId != null)
+                selectedCategories.indexOfFirst { it.ID == selectedChildId }
+            else -1
 
+        selectedPositionInTap = mySelectedPosition
         selectedCategories.forEachIndexed { index, item ->
             item.selected = (index == mySelectedPosition)
-
-            productAdapter.setSelectedPosition(mySelectedPosition)
-            productAdapter.notifyDataSetChanged()
         }
+        productAdapter.setSelectedPosition(mySelectedPosition)
+        productAdapter.notifyDataSetChanged()
     }
 
     private fun setupProducts() {
@@ -362,7 +366,7 @@ class FilterProductsBottomSheet : BottomSheetDialogFragment() {
         bottomSheet?.let { sheet ->
             val behavior = BottomSheetBehavior.from(sheet)
             val screenHeight = resources.displayMetrics.heightPixels
-            val bottomSheetHeight = (screenHeight * 0.76).toInt()
+            val bottomSheetHeight = (screenHeight * 0.75).toInt()
 
             sheet.layoutParams.height = bottomSheetHeight
             sheet.requestLayout()

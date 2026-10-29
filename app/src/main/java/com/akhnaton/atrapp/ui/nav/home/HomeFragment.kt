@@ -236,6 +236,9 @@ class HomeFragment : BaseFragment() {
             intent.putExtra("categoryId", category.ID)
             intent.putExtra("show_card", false)
 
+            //malak task cardSuggestion
+            intent.putExtra("from_category", true)
+
             startActivity(intent)
         }
 

@@ -125,6 +125,9 @@ class ProductsActivity : BaseActivity() {
         flag = intent.getStringExtra("flag") ?: ""
         categoryId = intent.getIntExtra("categoryId", 0)
 
+        //malak task cardSuggestion
+        selectedChildId = if (intent.hasExtra("categoryId")) categoryId else null
+
         val isArabic = SharedPreferenceHelper.language == "ar"
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
@@ -199,10 +202,10 @@ class ProductsActivity : BaseActivity() {
     }
 
     fun updateFilterUiState(selectedCount: Int) {
+
         isFiltered = selectedCount > 0
 
-        binding.cardSearchingPharma.visibility =
-            if (isFiltered) View.GONE else View.VISIBLE
+        binding.cardSearchingPharma.visibility = View.GONE
 
         if (isFiltered) {
             binding.tvFilterBadge.text = selectedCount.toString()
@@ -291,6 +294,13 @@ class ProductsActivity : BaseActivity() {
                 )
 
             bottomSheet.onFilterAppliedListeners = { orderType, childId ->
+
+                // malak task cardSuggestion
+                bottomSheet.onResetListener = {
+                    binding.cardSearchingPharma.visibility = View.GONE
+                }
+
+
                 currentPage = 1
                 viewModel.currentPage = 1 //new malak
                 products.clear()

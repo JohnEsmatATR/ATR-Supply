@@ -119,18 +119,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/itemTax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="75dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@id/layout_size"
-                app:layout_constraintStart_toEndOf="@id/layout_size"
-                app:layout_constraintTop_toTopOf="@id/layout_size"
-                tools:text="Tax: 50.00 L.E" />
-
-            <TextView
                 android:id="@+id/txt_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -156,6 +144,18 @@
                 app:layout_constraintTop_toBottomOf="@id/txt_price"
                 tools:text="With Tax: 4,134.00 L.E" />
 
+            <TextView
+                android:id="@+id/itemTax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/card_image"
+                app:layout_constraintTop_toBottomOf="@id/priceWithTax"
+                tools:text="Tax: 50.00 L.E" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/card_image"
-                app:layout_constraintTop_toBottomOf="@id/priceWithTax">
+                app:layout_constraintTop_toBottomOf="@id/itemTax">
 
                 <TextView
                     android:id="@+id/txt_total_price"

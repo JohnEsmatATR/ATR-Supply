@@ -71,6 +71,7 @@ class CartFragment : BaseFragment() {
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
 
+
 //        requireActivity().onBackPressedDispatcher.addCallback(
 //            viewLifecycleOwner,
 //            object : OnBackPressedCallback(true) {
@@ -100,12 +101,7 @@ class CartFragment : BaseFragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (parentFragmentManager.backStackEntryCount > 0) {
-                        parentFragmentManager.popBackStack()
-                    } else {
-                        isEnabled = false
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
-                    }
+                    parentFragmentManager.popBackStack()
                 }
             }
         )

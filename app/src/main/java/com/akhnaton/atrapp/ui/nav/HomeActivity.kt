@@ -259,6 +259,7 @@ class HomeActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        setIntent(intent)
         if (intent.getBooleanExtra("open_cart", false)) {
             val cartFragment = CartFragment()
             setCurrentFragment(cartFragment)

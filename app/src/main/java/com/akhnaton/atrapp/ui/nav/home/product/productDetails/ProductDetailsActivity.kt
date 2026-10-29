@@ -1,6 +1,7 @@
 package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 
 
+import android.R.attr.visible
 import java.util.Locale
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -363,6 +364,17 @@ class ProductDetailsActivity : BaseActivity() {
             )
         }
         binding.btnBottomAddToCart?.setOnClickListener {
+
+
+            Log.d(
+                "AddToCartDebug",
+                "visible=$visible, " +
+                        "screenHeight=${resources.displayMetrics.heightPixels}, " +
+                        "rootHeight=${binding.root.height}, " +
+                        "buttonX=${binding.btnBottomAddToCart.x}, " +
+                        "buttonY=${binding.btnBottomAddToCart.y}"
+            )
+
             if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
                 context = this@ProductDetailsActivity,
                 isDismissable = true,
@@ -494,9 +506,8 @@ class ProductDetailsActivity : BaseActivity() {
             dialog.dismiss()
             val intent = Intent(this, HomeActivity::class.java)
             intent.putExtra("open_cart", true)
+            intent.putExtra("from_product_details", true) //malak task btnBack
             //malak task btnBack
-            intent.putExtra("from_details", true)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
         }
 
