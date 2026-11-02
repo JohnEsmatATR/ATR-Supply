@@ -52,8 +52,7 @@ class BestSellerDetailsActivity : BaseActivity() {
 
         binding.btnGoToCart.setOnClickListener {
             val intent = Intent(this@BestSellerDetailsActivity, HomeActivity::class.java)
-            intent.putExtra("open_cart", true)
-            intent.putExtra("from_best_seller_details", true) // 👈 هنا بدل from_product_details
+            intent.putExtra("from_best_seller_details", true)
             intent.putExtra("product", product)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)

@@ -46,6 +46,7 @@ import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
 import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.AddToCartViewModel
+import com.akhnaton.atrapp.ui.nav.cart.CartFragment
 import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 import com.google.android.material.button.MaterialButton
@@ -409,40 +410,23 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun shareProduct() {
-
-        val imageUri: Uri = product.IMAGE_URL.toUri() // your image Uri
-
-
+        val currency = getString(R.string.currency)
         val shareText = """
         Check out this product!
-        
+
         Product: ${product.TITLE}
-        Price: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITH_TAX, R.string.currency)}
-        Price Without Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITHOUT_TAX, R.string.currency)}
-        Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.TAX, R.string.currency)}
+        Price: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITH_TAX, currency)}
+        Price Without Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITHOUT_TAX, currency)}
+        Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.TAX, currency)}
+        ${product.IMAGE_URL}
     """.trimIndent()
 
-//        Product: ${product.TITLE}
-//        Price: ${String.format("%,.3f %s" ,product.PRICE_WITH_TAX)} ${getString(R.string.currency)}
-//        Price Without Tax: ${String.format("%,.3f %s" ,product.PRICE_WITHOUT_TAX)} ${getString(R.string.currency)}
-//        Tax: ${String.format("%,.3f %s" ,product.TAX)} ${getString(R.string.currency)}
-//        """.trimIndent()
-
-
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "image/*"
-
+            type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, shareText)
-            putExtra(Intent.EXTRA_STREAM, imageUri)
-
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        startActivity(
-            Intent.createChooser(
-                shareIntent, "Share product"
-            )
-        )
+        startActivity(Intent.createChooser(shareIntent, "Share product"))
     }
 
     private fun addToCartObserve() {
@@ -506,8 +490,7 @@ class ProductDetailsActivity : BaseActivity() {
             dialog.dismiss()
             val intent = Intent(this, HomeActivity::class.java)
             intent.putExtra("open_cart", true)
-            intent.putExtra("from_product_details", true) //malak task btnBack
-            //malak task btnBack
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
         }
 
