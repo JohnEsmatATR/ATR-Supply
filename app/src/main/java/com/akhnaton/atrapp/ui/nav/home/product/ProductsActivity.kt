@@ -51,6 +51,10 @@ import kotlinx.coroutines.launch
 import kotlin.collections.emptyList
 
 class ProductsActivity : BaseActivity() {
+
+
+    //m
+    private var selectedChildKey: Int? = null
     lateinit var binding: ActivityProductsBinding
     private val viewModel: ProductsViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
@@ -126,7 +130,13 @@ class ProductsActivity : BaseActivity() {
         categoryId = intent.getIntExtra("categoryId", 0)
 
         //malak task cardSuggestion
-        selectedChildId = if (intent.hasExtra("categoryId")) categoryId else null
+
+        //m
+        val fromCategory = intent.getBooleanExtra("from_category", false)
+        selectedChildId = if (fromCategory) categoryId else null
+        selectedChildKey = if (fromCategory) intent.getIntExtra("childId", 0) else null
+        //m
+        selectedChildKey = if (intent.hasExtra("childId")) intent.getIntExtra("childId", 0) else null // Malak task new
 
         val isArabic = SharedPreferenceHelper.language == "ar"
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
@@ -286,19 +296,20 @@ class ProductsActivity : BaseActivity() {
             // (deleted by malakkk) val selectedChildId = categoryId.takeIf { it != 0 }
             val selectedOrderType = flag.takeIf { it.isNotEmpty() }
 
-            val bottomSheet =
-                FilterProductsBottomSheet.newInstance(
+            val bottomSheet = FilterProductsBottomSheet.newInstance(
                     orderTypes = categories,
                     selectedOrderType = selectedOrderType,
-                    selectedChildId = selectedChildId
+                    selectedChildId = selectedChildId,
+                    selectedChildKey = selectedChildKey
                 )
 
-            bottomSheet.onFilterAppliedListeners = { orderType, childId ->
+            bottomSheet.onResetListener = { // Malak task new
+                binding.cardSearchingPharma.visibility = View.GONE
+            }
+
+            bottomSheet.onFilterAppliedListeners = { orderType, childId, childKey ->
 
                 // malak task cardSuggestion
-                bottomSheet.onResetListener = {
-                    binding.cardSearchingPharma.visibility = View.GONE
-                }
 
 
                 currentPage = 1
@@ -310,6 +321,7 @@ class ProductsActivity : BaseActivity() {
                 }
 
                 selectedChildId = childId
+                selectedChildKey = childKey
 
                 //new malak
                 if (childId != null) {
@@ -334,7 +346,8 @@ class ProductsActivity : BaseActivity() {
 
             bottomSheet.show(
                 supportFragmentManager,
-                "FilterProductsBottomSheet"
+                "FilterProductsBottomSheet",
+
             )
         }
 

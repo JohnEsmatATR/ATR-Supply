@@ -233,6 +233,9 @@ class HomeFragment : BaseFragment() {
         orderTypeAdapter2 = OrderTypeAdapter2 { category, orderTypeIndex, _ ->
             val intent = Intent(requireContext(), ProductsActivity::class.java)
             intent.putExtra("flag", orderTypeIndex)
+
+            //m
+            intent.putExtra("childId", category.CHILD_ID ?: 0)
             intent.putExtra("categoryId", category.ID)
             intent.putExtra("show_card", false)
 

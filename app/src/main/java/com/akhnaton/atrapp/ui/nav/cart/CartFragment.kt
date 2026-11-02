@@ -435,7 +435,6 @@ class CartFragment : BaseFragment() {
     }
 
     companion object {
-        private const val LANGUAGE_AR = "ar"
         private const val DEFAULT_LANGUAGE = "ar"
     }
     private fun handleTopBottomKeyboard() {
@@ -457,7 +456,6 @@ class CartFragment : BaseFragment() {
             insets
         }
     }
-
 }
 
 
