@@ -93,6 +93,8 @@ class FilterProductAdapter(
 
         if (selected) {
 
+
+
             holder.container.background =
                 ContextCompat.getDrawable(
                     holder.itemView.context,

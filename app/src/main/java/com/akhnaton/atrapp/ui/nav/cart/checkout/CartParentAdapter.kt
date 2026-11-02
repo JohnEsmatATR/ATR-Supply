@@ -58,6 +58,11 @@ class CartParentAdapter(
         return ParentViewHolder(binding)
     }
 
+    fun clearAll(){
+        cartList.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ParentViewHolder, position: Int) {
         holder.bind(cartList[position])
     }

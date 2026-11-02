@@ -48,20 +48,33 @@ class CartViewModel : ViewModel() {
             _state.value = CartStatus.Loading
             _state.value = try {
                 val response = CartRepository().getMyCart(language)
+
+                //malak task
+                if(response.isSuccessful && response.body() != null){
+
+                    CartStatus.GetMyCart(response.body()!!)
+                } else if(response.code() == 401){
+
+                }
+
                 if (response.code() == 200) {
                     CartStatus.GetMyCart(response.body()!!)
                 } else if (response.code() == 401) {
-                    CartStatus.Error(response.body()!!.message)
+                    val errorMessage  = response.errorBody()?.string() ?: "Unauthorized"
+                    CartStatus.Error(errorMessage)
+
+//                    CartStatus.Error(response.body()!!.message)
                 } else {
-                    CartStatus.Error(response.message())
+                    CartStatus.Error(response.message() ?: "Unknown error")
                 }
+
+
             } catch (e: Exception) {
                 CartStatus.Error(e.message)
             }
         }
     }
 
-    // 🟢 الحساب بالموديل الجديد CartProduct
     fun calculateCartTotals(products: List<CartProduct>): CartTotals {
         var totalPriceBeforeDiscount = 0.0
         var totalDiscount = 0.0

@@ -24,6 +24,8 @@ import androidx.core.view.WindowInsetsCompat
 class ProfileFragment : BaseFragment(), View.OnClickListener {
 
 
+
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -40,48 +42,24 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
 
-
-        //malak task
-        val window = requireActivity().window
-
-        window.statusBarColor = ContextCompat.getColor(
-            requireContext(),
-            R.color.order_details_orange
+        WindowCompat.setDecorFitsSystemWindows(
+            requireActivity().window,
+            false
         )
 
-        WindowCompat.getInsetsController(
-            window,
-            window.decorView
-        ).isAppearanceLightStatusBars = false
-
+        requireActivity().window.statusBarColor = Color.TRANSPARENT
 
         WindowCompat.setDecorFitsSystemWindows(
             requireActivity().window,
             false
         )
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-
-            val systemBars = insets.getInsets(
-                WindowInsetsCompat.Type.systemBars()
-            )
-
-            binding.root.setPadding(
-                systemBars.left,
-                0,
-                systemBars.right,
-                systemBars.bottom
-            )
-
-            insets
-        }
+        requireActivity().window.statusBarColor = Color.TRANSPARENT
 
         WindowCompat.getInsetsController(
             requireActivity().window,
             requireActivity().window.decorView
-        ).isAppearanceLightStatusBars = false
-
-
+        ).isAppearanceLightStatusBars = true
 
         guestHandling()
 
@@ -223,10 +201,10 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                 val intent = Intent(requireContext(), CreditInfoActivity::class.java).apply {
 
                     //no hardcoded
-                    val currencySymbol = getString(R.string.currency)
-                    putExtra(EXTRA_CREDIT_LIMIT, "$creditLimit $currencySymbol")
-                    putExtra(EXTRA_USED_CREDIT, "$usedCredit $currencySymbol")
-                    putExtra(EXTRA_AVAILABLE_CREDIT, "$availableCredit $currencySymbol")
+                    val currency = getString(R.string.currency)
+                    putExtra(EXTRA_CREDIT_LIMIT, "$creditLimit $currency")
+                    putExtra(EXTRA_USED_CREDIT, "$usedCredit $currency")
+                    putExtra(EXTRA_AVAILABLE_CREDIT, "$availableCredit $currency")
                 }
                 startActivity(intent)
             }

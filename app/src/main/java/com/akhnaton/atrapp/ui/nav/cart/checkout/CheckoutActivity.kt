@@ -37,6 +37,8 @@ class CheckoutActivity : BaseActivity() {
         binding.imBack.setOnClickListener {
             finish()
         }
+
+        //first malak
         binding.btnConfirmOrder.setOnClickListener {
             selectedPaymentId?.let { paymentId ->
                 checkOut(paymentId)
@@ -103,6 +105,8 @@ class CheckoutActivity : BaseActivity() {
         }
     }
 
+
+    //third malak
     private fun checkOut(paymentId : Int) {
         lifecycleScope.launch {
             checkoutViewModel.checkoutIntent.send(
@@ -112,6 +116,8 @@ class CheckoutActivity : BaseActivity() {
     }
 
     private fun setupPaymentRecycler() {
+
+        //second malak
         paymentAdapter = PaymentAdapter { selectedPayment, position ->
             // Store selected payment ID
             selectedPaymentId = selectedPayment.paymentId

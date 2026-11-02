@@ -30,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_24sdp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,6 +117,14 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
 
+
+                    <ImageView
+
+                        android:layout_width="10dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/im_location_background"
+                        app:tint="@color/hint_gray" />
+
                     <TextView
                         android:id="@+id/default_address"
                         android:layout_width="0dp"
@@ -132,11 +139,7 @@
                         android:textColorHint="@color/hint_gray"
                         android:textSize="16sp" />
 
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/im_location_background"
-                        app:tint="@color/hint_gray" />
+
 
                 </LinearLayout>
 

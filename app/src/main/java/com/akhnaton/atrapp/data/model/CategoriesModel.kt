@@ -10,8 +10,6 @@ data class CategoriesModel(
     val ID: Int? = null,
     val TITLE: String? = null,
     val IMAGE_URL: String? = null,
-    val CHILD_ID: String? = null,
+    val CHILD_ID: Int? = null,
     var selected: Boolean = false
 ) : Serializable
-
-

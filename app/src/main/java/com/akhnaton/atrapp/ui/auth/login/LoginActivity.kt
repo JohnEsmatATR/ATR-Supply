@@ -60,10 +60,13 @@ class LoginActivity : BaseActivity() {
             val intent = Intent(baseContext, ForgetPasswordActivity::class.java)
             startActivity(intent)
         }
-        binding.txtSignUp.setOnClickListener {
-            val intent = Intent(baseContext, SignUpInfoActivity::class.java)
-            startActivity(intent)
-        }
+
+        //deleted by malak
+
+//        binding.txtSignUp.setOnClickListener {
+//            val intent = Intent(baseContext, SignUpInfoActivity::class.java)
+//            startActivity(intent)
+//        }
         binding.btnLogin.setOnClickListener {
             postLogin()
         }

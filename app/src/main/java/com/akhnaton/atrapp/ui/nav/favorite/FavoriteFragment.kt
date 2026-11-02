@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.ProductModel
@@ -38,8 +41,10 @@ import java.util.Locale
 
 class FavoriteFragment : BaseFragment() {
 
-    //malak task
-    private val cartViewModel: CartViewModel by viewModels()
+    //malak task new
+    private val cartItems = mutableMapOf<Int, Int>()
+    //malak task new:
+    private val cartViewModel: CartViewModel by activityViewModels()
 
     lateinit var binding: FragmentFavoriteBinding
     lateinit var adapter: ProductAdapter
@@ -53,6 +58,10 @@ class FavoriteFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
+
         binding = FragmentFavoriteBinding.inflate(inflater)
 
         guestHandling()
@@ -97,12 +106,15 @@ class FavoriteFragment : BaseFragment() {
         observeAddToCart()
     }
 
+
+
     private fun setupProductsRecycler(list: List<ProductModel>) {
         productList.clear()
         productList.addAll(list)
 
         val layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = ProductAdapter(
+            cartItems = cartItems.toMap(),
             onClick = { product, position, sharedView, transitionName ->
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
                     putExtra("flag", product.ITEM_TYPE)
@@ -134,8 +146,26 @@ class FavoriteFragment : BaseFragment() {
         binding.recycler.adapter = adapter
 
 
+        //malak task
+        if (productList.isEmpty()) {
+            binding.txtNoProducts.visibility = View.VISIBLE
+            binding.recycler.visibility = View.GONE
+        } else {
+            binding.txtNoProducts.visibility = View.GONE
+            binding.recycler.visibility = View.VISIBLE
+        }
+
         if (productList.size == 0) {
             binding.txtNoProducts.visibility = View.VISIBLE
+        }
+    }
+
+
+    private fun handleLoadingState(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressLoading.visibility = View.VISIBLE
+        } else {
+            binding.progressLoading.visibility = View.GONE
         }
     }
 
@@ -145,20 +175,29 @@ class FavoriteFragment : BaseFragment() {
                 addCartViewModel.state.collect { state ->
                     when (state) {
                         is AddToCartStatus.Idle -> Unit
-                        is AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
+                        is AddToCartStatus.Loading -> {
+                            showProgressDialog(binding.progressLoading)
+                        }
+
                         is AddToCartStatus.AddToCart -> {
                             hideProgressDialog(binding.progressLoading)
+                            binding.progressLoading.visibility = View.GONE
+
                             if (state.data.status == 200) {
-                                showToastSnack(state.data.message ?: "", false)
+                                showToastSnack(state.data.message ?: "Added successfully", false)
 
                                 val addedItemId = state.data.data?.item_id?.toIntOrNull()
-
                                 if (addedItemId != null) {
-                                    adapter.updateProductInCart(addedItemId, quantity = 1)
+                                    adapter.updateCartQuantity(addedItemId, quantity = 1)
+//                                    adapter.updateProductInCart(addedItemId, quantity = 1)
                                 }
+                                //malak task new:
+                                getCart()
+
                             } else {
-                                showToastSnack(state.data.message ?: "", true)
+                                showToastSnack(state.data.message?: "", true)
                             }
+
                             addCartViewModel.resetState()
                         }
 
@@ -180,8 +219,8 @@ class FavoriteFragment : BaseFragment() {
         }
 
         val categoryForRequest = when {
-            product.ITEM_TYPE.isNotEmpty() -> product.ITEM_TYPE
             flag.isNotEmpty() -> flag
+            product.ITEM_TYPE.isNotEmpty() -> product.ITEM_TYPE
             else -> null
         }
 
@@ -209,6 +248,15 @@ class FavoriteFragment : BaseFragment() {
             favoriteViewModel.favoriteIntent.send(FavoriteIntent.GetFavorite)
         } /////newwww malakkkk
 
+
+
+        if (SharedPreferenceHelper.isLogged == true) {
+            getCart()
+        }
+
+        // malak task new
+        val bottomNav = requireActivity().findViewById<View>(R.id.bottomNavigationView)
+        bottomNav?.visibility = View.VISIBLE
         //init()
 
     }
@@ -225,10 +273,16 @@ class FavoriteFragment : BaseFragment() {
 
 
     private fun favoriteObserve() {
+
         lifecycleScope.launch {
             favoriteViewModel.state.collect {
                 when (it) {
-                    is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
+                    is FavoriteStatus.Idle -> {
+                        Log.d(Common.KeroDebug, "observeHome: Idle")
+                        //malak task
+                        binding.txtNoProducts.visibility = View.GONE
+                    }
+
                     is FavoriteStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
                         //showProgressDialog(binding.progressLoading)
@@ -245,7 +299,6 @@ class FavoriteFragment : BaseFragment() {
                         } else if (it.data.status == 401) {
                             hideProgressDialog(binding.progressLoading)
 //                            onTokenExpired(it.data.errors!![0])
-
                         } else {
                             hideProgressDialog(binding.progressLoading)
                             showToastSnack(it.data.message, true)
@@ -278,18 +331,38 @@ class FavoriteFragment : BaseFragment() {
                             }
 
                             adapter.setData(productList, false, flag)
+
+                            //malak task
+                            if (productList.isEmpty()) {
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                                binding.recycler.visibility = View.GONE
+                            } else {
+                                binding.txtNoProducts.visibility = View.GONE
+                                binding.recycler.visibility = View.VISIBLE
+                            }
+
                             if (productList.size == 0) {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                             }
 
                         } else if (it.data.status == 401) {
                             // onTokenExpired(it.data.errors!![0])
+                        } else if (productList.isEmpty()) {
+                            binding.txtNoProducts.visibility = View.VISIBLE
+                            showToastSnack(it.data.message ?: "", true)
+                            setupProductsRecycler(productList)
                         } else {
                             // showToastSnack(it.data.message, true)
+
+                            //malak task
+                            if (productList.isEmpty()) {
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                                binding.recycler.visibility = View.GONE
+                                showToastSnack(it.data.message ?: "", true)
+                                setupProductsRecycler(productList)
+                            }
                         }
                     }
-
-
                 }
             }
         }
@@ -352,6 +425,11 @@ class FavoriteFragment : BaseFragment() {
                     }
                 }
 
+                if (filteredList.isEmpty()) binding.txtNoProducts.visibility = View.VISIBLE
+                else {
+                    binding.txtNoProducts.visibility = View.GONE
+                }
+
                 if (::adapter.isInitialized) {
                     adapter.updateList(filteredList)
                 }
@@ -360,7 +438,6 @@ class FavoriteFragment : BaseFragment() {
             }
         })
     }
-
 
 
     //malak task
@@ -379,25 +456,48 @@ class FavoriteFragment : BaseFragment() {
                 when (state) {
                     is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        handleLoadingState(isLoading = true)
                     }
 
                     is CartStatus.GetMyCart -> {
-                        hideProgressDialog(binding.progressLoading)
-                        //malak task
-                        binding.tvCartCount.visibility = View.VISIBLE
-                        binding.tvCartCount.text = state.data.data.get(0).carts
-                            .sumOf { it.items.pagination.totalRows.toInt() }
-                            .toString()
+                        //malak task new:
+                        handleLoadingState(isLoading = false)
+                        if (state.data.status == 200) {
+
+                            cartItems.clear()
+
+                            state.data.data.orEmpty().forEach { cartData ->
+                                cartData.carts.orEmpty().forEach { cart ->
+                                    cart.items?.products.orEmpty().forEach { product ->
+                                        cartItems[product.id] = product.myQuantity
+                                    }
+                                }
+
+                                binding.tvCartCount.visibility = View.VISIBLE
+                                binding.tvCartCount.text = state.data.data.get(0).carts
+                                    .sumOf { it.items.pagination.totalRows.toInt() }
+                                    .toString()
+                            }
+
+                            Log.d("CART", "cartItems = $cartItems")
+
+                            if (::adapter.isInitialized) {
+                                adapter.updateCartItems(cartItems)
+                            }
+                        }
                     }
 
                     is CartStatus.Error -> {
+
+                        //malak task new:
+                        handleLoadingState(isLoading = false)
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
                         showToastSnack(state.error.toString(), true)
-                        binding.tvCartCount.visibility = View.GONE
                     }
                 }
             }
+
         }
+
     }
 }
