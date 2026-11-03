@@ -252,7 +252,7 @@ class BestSellerDetailsActivity : BaseActivity() {
                 addCartViewModel.addToCartIntent.send(AddToCartIntent.AddProductToCart(product.ID, quantity,"Cosmetics"))
             }
         }else {
-            showToastSnack("Product Out Of Stock", true)
+            showToastSnack(getString(R.string.out_of_stock), true)
         }
 
     }

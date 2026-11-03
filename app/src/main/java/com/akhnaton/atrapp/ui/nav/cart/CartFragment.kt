@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -218,6 +219,8 @@ class CartFragment : BaseFragment() {
         getMyCart()
     }
 
+
+    //malak function
     private fun setupClickListeners() {
         binding.btnCheckout.setOnClickListener {
             val totalTax = cartSummary.cartTotalTax
@@ -240,9 +243,43 @@ class CartFragment : BaseFragment() {
         }
 
         binding.btnClearAll.setOnClickListener {
-            parentAdapter.clearAll()
+            androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(R.string.clear_all)
+                .setMessage(R.string.clear_all_message)
+                .setPositiveButton(R.string.delete) { _, _ -> deleteAllFromCart() }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
         }
+    }
 
+
+
+    //malak
+    private fun deleteAllFromCart(){
+        val products = cartData.flatMap { it.items.products }
+        if (products.isEmpty()) return
+        cartData = emptyList()
+
+        cartSummary = _ExtraData(
+            cartTotalTax = 0,
+            cartTotalWithoutTax = 0.0,
+            cartTotalDiscount = 0,
+            cartTotalShippingFess = 0,
+            cartTotalWithTax = 0.0
+        )
+
+        if (::parentAdapter.isInitialized) parentAdapter.setData(emptyList())
+        (childFragmentManager.findFragmentByTag("CartBottomSheetActivity") as? DialogFragment)?.dismiss()
+        updateCartSummaryUI()
+        showEmptyState()
+
+        lifecycleScope.launch {
+            products.forEach { product ->
+                addToCartViewModel.addToCartIntent.send(
+                    AddToCartIntent.AddProductToCart(product.id, 0, product.title)
+                )
+            }
+        }
     }
 
     private fun observeCart() {

@@ -471,6 +471,11 @@ In addition to a wide range of other complementary services, that are offered th
 
 
     <string name="no_order_no_received">No order numbers received.</string>
-    <string name="clear_all">Clear All</string>
+
+    <string name="clear_all">Clear all</string>
+    <string name="clear_all_message">Are you sure you want to remove all products from your cart?</string>
+    <string name="delete">Delete</string>
+
+    <string name="unable_to_add_product_to_cart">Unable to add product to cart</string>
 
 </resources>

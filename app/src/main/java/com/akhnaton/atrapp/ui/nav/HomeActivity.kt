@@ -263,8 +263,8 @@ class HomeActivity : BaseActivity() {
         if (intent.getBooleanExtra("open_cart", false)) {
             val cartFragment = CartFragment()
             setCurrentFragment(cartFragment)
-            setItemSelected(R.id.layoutCart)
-            binding.bottomNavigationView.selectedItemId = R.id.layout_cart
+//            setItemSelected(R.id.layoutCart)
+//            binding.bottomNavigationView.selectedItemId = R.id.layout_cart
         }
     }
     private fun handleBackPress() {

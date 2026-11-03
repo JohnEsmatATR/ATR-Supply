@@ -1,10 +1,19 @@
 package com.akhnaton.atrapp.ui.nav.home.product.productDetails
 
 
+import coil.imageLoader
+import coil.request.ImageRequest
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import androidx.core.content.FileProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
 import android.R.attr.visible
 import java.util.Locale
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ClipData
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -18,6 +27,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,6 +37,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.Coil
 import coil.load
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.AddToCartResponse
@@ -77,7 +88,7 @@ class ProductDetailsActivity : BaseActivity() {
         setContentView(binding.root)
 
 
-        handleTopBottomKeyboard()
+//        handleTopBottomKeyboard()
         init()
         onClick()
     }
@@ -409,25 +420,51 @@ class ProductDetailsActivity : BaseActivity() {
         }
     }
 
+    private fun getImageUri(): Uri? {
+        return try {
+            val bitmap = binding.imProduce.drawable?.toBitmap() ?: return null
+            val dir = File(cacheDir, "shared_images").apply { mkdirs() }
+            val file = File(dir, "product_$productId.jpg")
+            file.outputStream().use { out ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG,90, out)
+            }
+            FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
+        } catch (e: Exception) {
+            Log.e("SHARE", "image share failed", e)
+            null
+        }
+    }
+
     private fun shareProduct() {
+        if (!::productData.isInitialized) return
+
         val currency = getString(R.string.currency)
         val shareText = """
         Check out this product!
 
-        Product: ${product.TITLE}
-        Price: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITH_TAX, currency)}
-        Price Without Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.PRICE_WITHOUT_TAX, currency)}
-        Tax: ${String.format(Locale.getDefault(), "%,.3f %s", product.TAX, currency)}
-        ${product.IMAGE_URL}
+        Product: ${productData.TITLE}
+        Price: ${String.format(Locale.getDefault(), "%,.3f %s", productData.PRICE_AFTER_DISCOUNT ?: 0.0, currency)}
+        Price Without Tax: ${String.format(Locale.getDefault(), "%,.3f %s", productData.PRICE_WITHOUT_TAX ?: 0.0, currency)}
+        Tax: ${String.format(Locale.getDefault(), "%,.3f %s", productData.TAX ?: 0.0, currency)}
     """.trimIndent()
 
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, shareText)
+        val imageUri = getImageUri()
+
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+
+        if (imageUri != null) {
+            shareIntent.type = "image/*"
+            shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri as android.os.Parcelable)
+            shareIntent.clipData = ClipData.newRawUri("", imageUri)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        } else {
+            shareIntent.type = "text/plain"
         }
 
         startActivity(Intent.createChooser(shareIntent, "Share product"))
     }
+
 
     private fun addToCartObserve() {
         lifecycleScope.launch {
@@ -508,7 +545,7 @@ class ProductDetailsActivity : BaseActivity() {
                 )
             }
         } else {
-            showToastSnack("Product Out Of Stock", true)
+            showToastSnack(getString(R.string.out_of_stock), true)
         }
     }
     private fun setupQuantityEditText() {
