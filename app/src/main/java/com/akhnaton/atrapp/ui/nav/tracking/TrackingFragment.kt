@@ -39,6 +39,8 @@ import java.util.Locale
 class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListener,
     View.OnClickListener {
     lateinit var binding: FragmentTrackingBinding
+
+    private val cartItems = mutableMapOf<Int, Int>()
     private val ordersViewModel: MyOrdersViewModel by viewModels()
     private var mAdapter = OrderHistoryAdapter()
     private val viewModel: AddressesViewModel by viewModels()
@@ -289,10 +291,20 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
                     is CartStatus.GetMyCart -> {
                         hideProgressDialog(binding.progressLoading)
                         //malak task
-                        binding.tvCartCount.visibility = View.VISIBLE
-                        binding.tvCartCount.text = state.data.data.get(0).carts
-                            .sumOf { it.items.pagination.totalRows.toInt() }
-                            .toString()
+
+                        state.data.data.orEmpty().forEach { cartData ->
+                            cartData.carts.orEmpty().forEach { cart ->
+                                cart.items?.products.orEmpty().forEach { product ->
+                                    cartItems[product.id] = product.myQuantity
+                                }
+                            }
+
+                            binding.tvCartCount.visibility = View.VISIBLE
+                            binding.tvCartCount.text = state.data.data.get(0).carts
+                                .sumOf { it.items.pagination.totalRows.toInt() }
+                                .toString()
+
+                        }
                     }
 
                     is CartStatus.Error -> {

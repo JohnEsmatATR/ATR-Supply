@@ -62,6 +62,7 @@ import com.akhnaton.atrapp.ui.nav.favorite.FavoriteViewModel
 import com.akhnaton.atrapp.ui.nav.home.reviews.ReviewActivity
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class ProductDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailsBinding
@@ -528,6 +529,10 @@ class ProductDetailsActivity : BaseActivity() {
             val intent = Intent(this, HomeActivity::class.java)
             intent.putExtra("open_cart", true)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+            intent.putExtra("from_product_details", true)
+
+            Log.d("fazloka", intent.getBooleanExtra("from_product_details", false).toString())
             startActivity(intent)
         }
 
