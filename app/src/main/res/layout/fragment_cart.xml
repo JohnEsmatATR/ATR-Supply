@@ -18,6 +18,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <TextView
+            android:id="@+id/btnClearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/_6sdp"
+            android:text="@string/clear_all"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textStyle="bold"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/btn_back"
             android:layout_width="@dimen/_16sdp"
@@ -46,23 +63,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnClearAll"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/red"
-        android:text="@string/clear_all"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:textStyle="bold"
-        app:cornerRadius="16dp"
-        app:iconGravity="textEnd"
-        app:iconPadding="8dp"
-        app:iconTint="@color/white"
-        tools:layout_editor_absoluteX="21dp"
-        tools:layout_editor_absoluteY="60dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

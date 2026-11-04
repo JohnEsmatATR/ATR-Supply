@@ -214,7 +214,7 @@ class FavoriteFragment : BaseFragment() {
 
     private fun handleAddToCart(product: ProductModel) {
         if (!product.IN_STOCK) {
-            showToastSnack("Product Out Of Stock", true)
+            showToastSnack(getString(R.string.out_of_stock), true)
             return
         }
 
@@ -225,7 +225,7 @@ class FavoriteFragment : BaseFragment() {
         }
 
         if (categoryForRequest == null) {
-            showToastSnack("Unable to add product to cart", true)
+            showToastSnack(getString(R.string.unable_to_add_product_to_cart), true)
             return
         }
 
