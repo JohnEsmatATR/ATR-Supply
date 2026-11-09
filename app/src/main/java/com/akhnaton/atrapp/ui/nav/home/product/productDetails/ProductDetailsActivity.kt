@@ -83,11 +83,19 @@ class ProductDetailsActivity : BaseActivity() {
     private lateinit var productData: ProductModel
     private val favoriteViewModel: FavoriteViewModel by viewModels()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        if (intent.hasExtra("product")) {
+            product = this.intent.getSerializableExtra("product") as ProductModel
+
+            Log.d("ProductDetails", "Loaded product: ${product.TITLE}")
+        }
 
 //        handleTopBottomKeyboard()
         init()
@@ -122,6 +130,7 @@ class ProductDetailsActivity : BaseActivity() {
 
         flag = intent.getStringExtra("flag") ?: ""
 
+        Log.d("myProduct", "ProductReceived: ${ProductModel().toString()}")
         product = intent.getSerializableExtra("product") as ProductModel
         val transitionName = intent.getStringExtra("transitionName")
 
@@ -185,7 +194,8 @@ class ProductDetailsActivity : BaseActivity() {
                                 if (productData != null) {
 
                                     //malak task inCart
-                                    val isProductInCart = (productData.MY_QUANTITY > 0) || intent.getBooleanExtra("isInCart", false)
+//                                    val isProductInCart = (productData.MY_QUANTITY > 0) || intent.getBooleanExtra("isInCart", false)
+                                    val isProductInCart = (productData.MY_QUANTITY > 0)
                                     updateAddToCartBTN(isProductInCart, productData.IN_STOCK)
 
                                     if (productData.IS_LIKED) {
@@ -342,7 +352,9 @@ class ProductDetailsActivity : BaseActivity() {
 
     private fun onClick() {
         binding.btnBack.setOnClickListener {
-            finish()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+
         }
         binding.btnShare.setOnClickListener {
             if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
@@ -478,9 +490,11 @@ class ProductDetailsActivity : BaseActivity() {
                     }
 
                     is AddToCartStatus.AddToCart -> {
-                        updateAddToCartBTN(true, true)
+
+                        updateAddToCartBTN(true, inStoke)
                         hideProgressDialog(binding.progressLoading)
                         if (status.data.status == 200) {
+//                            getProductDetails(productId, flag)
                             showAddToCartDialog(status.data)
                         } else {
                             showToastSnack(status.data.message, true)
@@ -522,16 +536,19 @@ class ProductDetailsActivity : BaseActivity() {
         btnContinue.setOnClickListener {
             dialog.dismiss()
             finish()
+
         }
 
         btnGoToCart.setOnClickListener {
             dialog.dismiss()
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.putExtra("open_cart", true)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-
-            intent.putExtra("from_product_details", true)
-
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                putExtra("open_cart", true)
+                putExtra("product_id", productId)
+                putExtra("flag", flag)
+                putExtra("from_product_details", true)
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             Log.d("fazloka", intent.getBooleanExtra("from_product_details", false).toString())
             startActivity(intent)
         }

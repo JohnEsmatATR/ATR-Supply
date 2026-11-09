@@ -1,5 +1,8 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsViewModel
 import android.R.attr.fragment
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.model.CartResponse
+import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model._ExtraData
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
@@ -45,6 +49,10 @@ import java.util.Locale
 
 class CartFragment : BaseFragment() {
 
+    private val productDetailsViewModel: ProductDetailsViewModel by viewModels()
+    private var receivedFlag: String = ""
+    private var backProduct: ProductModel? = null
+    private var receivedProductId: Int = 0
 
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by viewModels()
@@ -68,6 +76,16 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
+
+        val incomingId = requireActivity().intent.getIntExtra("product_id", 0)
+        if (incomingId > 0) receivedProductId = incomingId
+        receivedFlag = requireActivity().intent.getStringExtra("flag") ?: ""
+
+        Log.d("malak_back_product", "from product details: ${isFromProductDetails()} id: $receivedProductId")
+        if (isFromProductDetails() && receivedProductId > 0) {
+            observeBackProduct()
+            fetchBackProduct()
+        }
 
 
 //        requireActivity().onBackPressedDispatcher.addCallback(
@@ -114,12 +132,51 @@ class CartFragment : BaseFragment() {
     }
 
 
+    private fun fetchBackProduct() {
+        Log.d("malak_back_product", "my_fetched_api: id:$receivedProductId , flag:$receivedFlag")
+        lifecycleScope.launch {
+            productDetailsViewModel.homeIntent.send(
+                ProductDetailsIntent.GetProductDetails(receivedProductId, receivedFlag)
+            )
+        }
+    }
+
+    private fun observeBackProduct() {
+        lifecycleScope.launch {
+            productDetailsViewModel.state.collect { status ->
+                Log.d("malak_back_product", "my status: $status")
+                when (status) {
+                    is ProductDetailsStatus.GetProductDetails -> {
+                        if (status.data.status == 200) {
+                            backProduct = status.data.data?.firstOrNull()
+                            Log.d("back_product", "Loaded: ${backProduct?.TITLE}")
+                        }
+                    }
+                    is ProductDetailsStatus.Error -> {
+                        Log.d("back_product", "Error: ${status.error}")
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
+
     private fun isFromProductDetails() : Boolean {
         Log.d("fazloka", requireActivity().intent.getBooleanExtra("from_product_details", false).toString())
         return requireActivity().intent.getBooleanExtra("from_product_details", false) == true
     }
     private fun guestHandling() {
         if (SharedPreferenceHelper.isLogged == false) {
+
+            binding.btnBack.setOnClickListener {
+                //crash
+//               activity?.finish()
+                Log.d("back_button", "1")
+                navigateBack()
+
+
+            }
+
             binding.txtNoProducts.visibility = View.GONE
             binding.clGuest.visibility = View.VISIBLE
             binding.recycler.visibility = View.GONE
@@ -202,17 +259,23 @@ class CartFragment : BaseFragment() {
     }
 
     private fun navigateBack() {
-        Log.d("isFromProductDetails", isFromProductDetails().toString())
+        val product = backProduct
+        if (isFromProductDetails() && product != null) {
 
-        if(isFromProductDetails()){
-            // Inside your Fragment
-            val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
+            val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                putExtra("product", product)
+                putExtra("flag", receivedFlag)
+//                putExtra("isInCart", true)
+            }
+
             startActivity(intent)
-            requireActivity().finish() // Closes the current host Activity
+//            requireActivity().finish()
+            return
         }
 
-        if (parentFragmentManager.backStackEntryCount > 0)
+        if (parentFragmentManager.backStackEntryCount > 0) {
             parentFragmentManager.popBackStack()
+        }
     }
 
     private fun initCart() {
@@ -307,10 +370,7 @@ class CartFragment : BaseFragment() {
                             cartSummary = extra
                         }
 
-                        binding.tvTotal.text = formatNumber(
-                            cartSummary.cartTotalWithTax,
-                            appLocale
-                        ) + " " + resources.getString(R.string.currency)
+                        binding.tvTotal.text = formatNumber(cartSummary.cartTotalWithTax, appLocale) + " " + resources.getString(R.string.currency)
 
                         if (cartData.isNotEmpty()) {
                             val recyclerViewState =
