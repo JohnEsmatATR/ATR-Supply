@@ -104,6 +104,14 @@ class ProductsActivity : BaseActivity() {
         currentPage = intent.getIntExtra("saved_page", 1)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        if (!isGuest()) {
+            getCart()
+        }
+    }
+
     private fun guestHandling() {
         if (!isGuest()) {
             getCart()
@@ -665,7 +673,7 @@ class ProductsActivity : BaseActivity() {
                             putExtra("transitionName", transitionName)
 
                             //malak task new:
-                            putExtra("isInCart", (cartItems[product.ID] ?: 0) > 0)
+//                            putExtra("isInCart", (cartItems[product.ID] ?: 0) > 0)
                         }
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ProductsActivity,
@@ -797,7 +805,8 @@ class ProductsActivity : BaseActivity() {
                 when (state) {
                     is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        handleLoadingState(isLoading = true, isPagination = false)
+
+//                        handleLoadingState(isLoading = true, isPagination = false)
                     }
 
                     is CartStatus.GetMyCart -> {
@@ -823,7 +832,7 @@ class ProductsActivity : BaseActivity() {
 
                     is CartStatus.Error -> {
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
-                        showToastSnack(state.error.toString(), true)
+//                        showToastSnack(state.error.toString(), true)
                     }
                 }
             }

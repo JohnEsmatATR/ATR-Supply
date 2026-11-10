@@ -1,5 +1,8 @@
 package com.akhnaton.atrapp.ui.nav.cart
 
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.productDetails.ProductDetailsStatus
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsViewModel
 import android.R.attr.fragment
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +11,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.data.model.CartResponse
+import com.akhnaton.atrapp.data.model.ProductModel
 import com.akhnaton.atrapp.data.model._ExtraData
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.cart.addToCart.AddToCartStatus
@@ -32,17 +37,22 @@ import com.akhnaton.atrapp.shared.Common
 import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import com.akhnaton.atrapp.shared.ShimmerAdapterCart
 import com.akhnaton.atrapp.ui.auth.login.LoginActivity
+import com.akhnaton.atrapp.ui.nav.HomeActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesActivity
 import com.akhnaton.atrapp.ui.nav.cart.addresses.AddressesViewModel
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CartParentAdapter
 import com.akhnaton.atrapp.ui.nav.cart.checkout.CheckoutActivity
+import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Locale
 
 class CartFragment : BaseFragment() {
 
-
+    private val productDetailsViewModel: ProductDetailsViewModel by viewModels()
+    private var receivedFlag: String = ""
+    private var backProduct: ProductModel? = null
+    private var receivedProductId: Int = 0
 
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by viewModels()
@@ -61,16 +71,21 @@ class CartFragment : BaseFragment() {
         cartTotalWithTax = 0.0
     )
 
-    //malak task
-    private var shippingFeesValue: Double = 0.0
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
+        val incomingId = requireActivity().intent.getIntExtra("product_id", 0)
+        if (incomingId > 0) receivedProductId = incomingId
+        receivedFlag = requireActivity().intent.getStringExtra("flag") ?: ""
+
+        Log.d("malak_back_product", "from product details: ${isFromProductDetails()} id: $receivedProductId")
+        if (isFromProductDetails() && receivedProductId > 0) {
+            observeBackProduct()
+            fetchBackProduct()
+        }
 
 
 //        requireActivity().onBackPressedDispatcher.addCallback(
@@ -83,8 +98,6 @@ class CartFragment : BaseFragment() {
 //                }
 //            }
 //        )
-
-
         handleTopBottomKeyboard()
         guestHandling()
         if (SharedPreferenceHelper.isLogged!!) {
@@ -93,6 +106,15 @@ class CartFragment : BaseFragment() {
             observeAddress()
             observeCartQuantity()
             setupClickListeners()
+
+           binding.btnBack.setOnClickListener {
+               //crash
+//               activity?.finish()
+               Log.d("back_button", "1")
+               navigateBack()
+
+
+           }
 
             //deleted by me
 //            setupOnBackPressed()
@@ -109,15 +131,59 @@ class CartFragment : BaseFragment() {
         return binding.root
     }
 
+
+    private fun fetchBackProduct() {
+        Log.d("malak_back_product", "my_fetched_api: id:$receivedProductId , flag:$receivedFlag")
+        lifecycleScope.launch {
+            productDetailsViewModel.homeIntent.send(
+                ProductDetailsIntent.GetProductDetails(receivedProductId, receivedFlag)
+            )
+        }
+    }
+
+    private fun observeBackProduct() {
+        lifecycleScope.launch {
+            productDetailsViewModel.state.collect { status ->
+                Log.d("malak_back_product", "my status: $status")
+                when (status) {
+                    is ProductDetailsStatus.GetProductDetails -> {
+                        if (status.data.status == 200) {
+                            backProduct = status.data.data?.firstOrNull()
+                            Log.d("back_product", "Loaded: ${backProduct?.TITLE}")
+                        }
+                    }
+                    is ProductDetailsStatus.Error -> {
+                        Log.d("back_product", "Error: ${status.error}")
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun isFromProductDetails() : Boolean {
+        Log.d("fazloka", requireActivity().intent.getBooleanExtra("from_product_details", false).toString())
+        return requireActivity().intent.getBooleanExtra("from_product_details", false) == true
+    }
     private fun guestHandling() {
         if (SharedPreferenceHelper.isLogged == false) {
+
+            binding.btnBack.setOnClickListener {
+                //crash
+//               activity?.finish()
+                Log.d("back_button", "1")
+                navigateBack()
+
+
+            }
+
             binding.txtNoProducts.visibility = View.GONE
             binding.clGuest.visibility = View.VISIBLE
             binding.recycler.visibility = View.GONE
             binding.cardCheckout.visibility = View.GONE
 
 
-            if(SharedPreferenceHelper.isLogged == true){
+            if (SharedPreferenceHelper.isLogged == true) {
                 getMyCart()
             }
 
@@ -130,10 +196,10 @@ class CartFragment : BaseFragment() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
-        initCart()
+
+        getMyCart()
     }
 
     private fun observeAddress() {
@@ -177,9 +243,8 @@ class CartFragment : BaseFragment() {
                     is AddressStatus.MakeAddressPrime -> {}
 
                     is AddressStatus.Error -> {
-
+                        hideProgressDialog(binding.progressLoading)
                     }
-
                 }
             }
         }
@@ -194,20 +259,23 @@ class CartFragment : BaseFragment() {
     }
 
     private fun navigateBack() {
-        if (isAdded) {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+        val product = backProduct
+        if (isFromProductDetails() && product != null) {
+
+            val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                putExtra("product", product)
+                putExtra("flag", receivedFlag)
+//                putExtra("isInCart", true)
+            }
+
+            startActivity(intent)
+//            requireActivity().finish()
+            return
         }
 
-    }
-    private fun setupOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    navigateBack()
-                }
-            }
-        )
+        if (parentFragmentManager.backStackEntryCount > 0) {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     private fun initCart() {
@@ -238,49 +306,44 @@ class CartFragment : BaseFragment() {
             )
         }
 
-        binding.btnBack.setOnClickListener {
-            navigateBack()
-        }
-
-        binding.btnClearAll.setOnClickListener {
-            androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(R.string.clear_all)
-                .setMessage(R.string.clear_all_message)
-                .setPositiveButton(R.string.delete) { _, _ -> deleteAllFromCart() }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
-        }
+//        binding.btnClearAll.setOnClickListener {
+//            androidx.appcompat.app.AlertDialog.Builder(requireContext())
+//                .setTitle(R.string.clear_all)
+//                .setMessage(R.string.clear_all_message)
+//                .setPositiveButton(R.string.delete) { _, _ -> deleteAllFromCart() }
+//                .setNegativeButton(R.string.cancel, null)
+//                .show()
+//        }
     }
-
 
 
     //malak
-    private fun deleteAllFromCart(){
-        val products = cartData.flatMap { it.items.products }
-        if (products.isEmpty()) return
-        cartData = emptyList()
-
-        cartSummary = _ExtraData(
-            cartTotalTax = 0,
-            cartTotalWithoutTax = 0.0,
-            cartTotalDiscount = 0,
-            cartTotalShippingFess = 0,
-            cartTotalWithTax = 0.0
-        )
-
-        if (::parentAdapter.isInitialized) parentAdapter.setData(emptyList())
-        (childFragmentManager.findFragmentByTag("CartBottomSheetActivity") as? DialogFragment)?.dismiss()
-        updateCartSummaryUI()
-        showEmptyState()
-
-        lifecycleScope.launch {
-            products.forEach { product ->
-                addToCartViewModel.addToCartIntent.send(
-                    AddToCartIntent.AddProductToCart(product.id, 0, product.title)
-                )
-            }
-        }
-    }
+//    private fun deleteAllFromCart() {
+//        val products = cartData.flatMap { it.items.products }
+//        if (products.isEmpty()) return
+//        cartData = emptyList()
+//
+//        cartSummary = _ExtraData(
+//            cartTotalTax = 0,
+//            cartTotalWithoutTax = 0.0,
+//            cartTotalDiscount = 0,
+//            cartTotalShippingFess = 0,
+//            cartTotalWithTax = 0.0
+//        )
+//
+//        if (::parentAdapter.isInitialized) parentAdapter.setData(emptyList())
+//        (childFragmentManager.findFragmentByTag("CartBottomSheetActivity") as? DialogFragment)?.dismiss()
+//        updateCartSummaryUI()
+//        showEmptyState()
+//
+//        lifecycleScope.launch {
+//            products.forEach { product ->
+//                addToCartViewModel.addToCartIntent.send(
+//                    AddToCartIntent.AddProductToCart(product.id, 0, product.title)
+//                )
+//            }
+//        }
+//    }
 
     private fun observeCart() {
         lifecycleScope.launch {
@@ -310,7 +373,8 @@ class CartFragment : BaseFragment() {
                         binding.tvTotal.text = formatNumber(cartSummary.cartTotalWithTax, appLocale) + " " + resources.getString(R.string.currency)
 
                         if (cartData.isNotEmpty()) {
-                            val recyclerViewState = binding.recycler.layoutManager?.onSaveInstanceState()
+                            val recyclerViewState =
+                                binding.recycler.layoutManager?.onSaveInstanceState()
 
 
                             if (binding.recycler.adapter !is CartParentAdapter) {
@@ -327,6 +391,7 @@ class CartFragment : BaseFragment() {
                     }
 
                     is CartStatus.Error -> {
+                        hideProgressDialog(binding.progressLoading)
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
                         showToastSnack(state.error.toString(), true)
                         showEmptyState()
@@ -400,11 +465,18 @@ class CartFragment : BaseFragment() {
         val currentLocale = Locale.getDefault()
 
         if (cartData.isEmpty()) {
-            binding.tvTotal.text = formatNumber(0.0, currentLocale) + " " + resources.getString(R.string.currency)
+            binding.tvTotal.text =
+                formatNumber(0.0, currentLocale) + " " + resources.getString(R.string.currency)
             return
         }
 
-        binding.tvTotal.text = String.format(currentLocale, "%,.3f %s", cartSummary.cartTotalWithTax.toDouble(), resources.getString(R.string.currency))    }
+        binding.tvTotal.text = String.format(
+            currentLocale,
+            "%,.3f %s",
+            cartSummary.cartTotalWithTax.toDouble(),
+            resources.getString(R.string.currency)
+        )
+    }
 
 
     fun formatNumber(value: Double, locale: Locale): String {
@@ -456,9 +528,16 @@ class CartFragment : BaseFragment() {
         binding.txtNoProducts.visibility = View.VISIBLE
         binding.clGuest.visibility = View.GONE
         updateCartSummaryUI()
+        binding.cardCheckout.visibility = View.GONE
     }
 
-    private fun showCartBottomSheet(totalTax: Int, totalWithoutTax: Double, totalDiscount: Int, totalShippingFees: Int, totalWithTax: Double) {
+    private fun showCartBottomSheet(
+        totalTax: Int,
+        totalWithoutTax: Double,
+        totalDiscount: Int,
+        totalShippingFees: Int,
+        totalWithTax: Double
+    ) {
         val bottomSheet = CartBottomSheetActivity.newInstance(
             extraData = _ExtraData(
                 cartTotalTax = totalTax,
@@ -474,6 +553,7 @@ class CartFragment : BaseFragment() {
     companion object {
         private const val DEFAULT_LANGUAGE = "ar"
     }
+
     private fun handleTopBottomKeyboard() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
