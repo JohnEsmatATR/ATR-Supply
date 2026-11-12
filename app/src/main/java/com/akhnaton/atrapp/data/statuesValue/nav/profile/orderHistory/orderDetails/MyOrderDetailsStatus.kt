@@ -8,6 +8,6 @@ sealed class MyOrderDetailsStatus {
 
     data object Idle : MyOrderDetailsStatus()
     data object Loading : MyOrderDetailsStatus()
-    data class GetMyOrderDetails(val ahmed: MyOrderDetailsRes) : MyOrderDetailsStatus()
+    data class GetMyOrderDetails(val myOrderDetailsRes: MyOrderDetailsRes) : MyOrderDetailsStatus()
     data class Error(val error: String?) : MyOrderDetailsStatus()
 }

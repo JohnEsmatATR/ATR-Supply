@@ -1,6 +1,7 @@
 import com.akhnaton.atrapp.data.model.orderHistory.Item
 import com.akhnaton.atrapp.data.model.orderHistory.Pagination
 import com.akhnaton.atrapp.data.model.orderHistory.Params
+import com.akhnaton.atrapp.data.model.orderHistory.StatusGroup
 import com.google.gson.annotations.SerializedName
 
 data class MyOrderDetailsRes(
