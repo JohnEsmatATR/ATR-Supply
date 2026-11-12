@@ -14,6 +14,7 @@ import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.data.model.CartProduct
 import com.akhnaton.atrapp.databinding.LayoutCartArBinding
 import com.akhnaton.atrapp.databinding.LayoutCartBinding
+import com.akhnaton.atrapp.shared.SharedPreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -66,6 +67,15 @@ class CartAdapter(
             binding.cart = item
             binding.quantity = item.myQuantity
             setVisibility(binding.btnPlus, binding.btnMinus, binding.deleteItem)
+            if (SharedPreferenceHelper.language == "ar") {
+                val container = binding.layoutQuantity
+                if (container.getChildAt(0).id != R.id.btn_plus) {
+                    container.removeAllViews()
+                    container.addView(binding.btnPlus)
+                    container.addView(binding.txtQuantity)
+                    container.addView(binding.btnMinus)
+                }
+            }
             binding.imItem.load(item.imageUrl) {
                 crossfade(true)
                 placeholder(R.drawable.ic_logo)

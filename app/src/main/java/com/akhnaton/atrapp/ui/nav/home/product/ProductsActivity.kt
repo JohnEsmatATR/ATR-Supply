@@ -257,6 +257,8 @@ class ProductsActivity : BaseActivity() {
                                 binding.txtNoProducts.visibility = View.GONE
                                 binding.recycler.visibility = View.VISIBLE
                                 setupProductsRecycler(searchResults)
+                                isLastPage = true
+                                currentPage--
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                                 binding.recycler.visibility = View.GONE

@@ -76,6 +76,9 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
+        if (SharedPreferenceHelper.language == "ar") {
+            binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        }
 
         val incomingId = requireActivity().intent.getIntExtra("product_id", 0)
         if (incomingId > 0) receivedProductId = incomingId
@@ -364,7 +367,12 @@ class CartFragment : BaseFragment() {
                         val cartResponseItem = state.data.data.firstOrNull()
 
                         cartData = cartResponseItem?.carts ?: emptyList()
-
+                        cartData.forEach { section ->
+                            Log.d("CART_DEBUG", "Section: $section")
+                            section.items.products.forEach { p ->
+                                Log.d("CART_DEBUG", "   product: ${p.title} (id=${p.id})")
+                            }
+                        }
                         val extra = cartResponseItem?.extraData
                         if (extra != null) {
                             cartSummary = extra
