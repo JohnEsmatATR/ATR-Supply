@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.nav.cart.checkout
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -64,11 +65,11 @@ class CheckoutActivity : BaseActivity() {
                     is CheckoutStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is CheckoutStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is CheckoutStatus.Checkout -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (it.data.status == 200) {
 
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
@@ -96,7 +97,7 @@ class CheckoutActivity : BaseActivity() {
 
                     is CheckoutStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 
@@ -137,10 +138,10 @@ class CheckoutActivity : BaseActivity() {
                 when (state) {
                     is PaymentTypeStatus.Idle -> {}
                     is PaymentTypeStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                     is PaymentTypeStatus.Checkout -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         val list = state.data.data ?: emptyList()
                         paymentAdapter.setData(list)
                         Log.d("TAG", "observePaymentTypes: ${list}")
@@ -148,7 +149,7 @@ class CheckoutActivity : BaseActivity() {
 
                     }
                     is PaymentTypeStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack("Error: ${state.error}", true)
                     }
                 }

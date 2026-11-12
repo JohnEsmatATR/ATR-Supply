@@ -259,11 +259,11 @@ class HomeFragment : BaseFragment() {
                 when (state) {
                     is CategoryStatus.Idle -> Unit
                     is CategoryStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is CategoryStatus.GetCategory -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         binding.recyclerPharma.visibility = View.VISIBLE
 
                         orderTypeIndex = state.data.data!![0].order_type_index
@@ -274,7 +274,8 @@ class HomeFragment : BaseFragment() {
                     }
 
                     is CategoryStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
+
                         binding.recyclerPharma.visibility = View.VISIBLE
                         //   Toast.makeText(requireContext(), state.error ?: "Error", Toast.LENGTH_SHORT).show()
                     }
@@ -373,11 +374,11 @@ class HomeFragment : BaseFragment() {
             pannerViewModel.state.collect { state ->
                 when (state) {
                     is PannerState.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is PannerState.Success -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
 
                         if (state.data.status == 200) {
                             val response = state.data.data
@@ -410,7 +411,7 @@ class HomeFragment : BaseFragment() {
                     }
 
                     is PannerState.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         binding.slider.visibility = View.GONE
                         binding.tabLayout.visibility = View.GONE
                     }
@@ -678,12 +679,12 @@ class HomeFragment : BaseFragment() {
                     is BestSellerStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is BestSellerStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is BestSellerStatus.GetBestSeller -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             if (it.data.data!!.isNotEmpty()) {
 
@@ -693,14 +694,14 @@ class HomeFragment : BaseFragment() {
                                 setupBestsellers(bestSellers)
                             }
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
                     }
 
                     is BestSellerStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 
@@ -730,7 +731,7 @@ class HomeFragment : BaseFragment() {
                 when (state) {
                     is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
 
@@ -742,7 +743,7 @@ class HomeFragment : BaseFragment() {
                         //malak task new:
                         if(!cartData.data.isNullOrEmpty()){
 
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             //malak task
                             binding.tvCartCount.visibility = View.VISIBLE
                             binding.tvCartCount.text = state.data.data.get(0).carts

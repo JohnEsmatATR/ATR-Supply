@@ -137,11 +137,11 @@ class OTPActivity : BaseActivity() {
                     }
                     is CheckOtpStatus.Loading -> {
                         Log.d(Common.KeroDebug, "CheckOtpStatus: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                     is CheckOtpStatus.CheckOtp -> {
                         if (status.data.status == HTTP_STATUS_SUCCESS) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(status.data.message, false)
 
                             val intent = Intent(baseContext, NewPasswordActivity::class.java)
@@ -152,13 +152,13 @@ class OTPActivity : BaseActivity() {
                             intent.putExtra(NewPasswordActivity.EXTRA_OTP, otp)
                             startActivity(intent)
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(status.data.message, true)
                         }
                     }
                     is CheckOtpStatus.Error -> {
                         Log.d(Common.KeroDebug, "CheckOtpStatus Error: ${status.error}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(status.error.toString(), true)
                     }
                 }

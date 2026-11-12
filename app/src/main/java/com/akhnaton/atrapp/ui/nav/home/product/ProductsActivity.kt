@@ -121,15 +121,12 @@ class ProductsActivity : BaseActivity() {
     private fun handleLoadingState(isLoading: Boolean, isPagination: Boolean) {
         if (isLoading) {
             if (isPagination) {
-                binding.paginationLoadingLayout.visibility = View.VISIBLE
-                binding.progressLoading.visibility = View.GONE
+                binding.loadingOverlay.root.visibility = View.VISIBLE
             } else {
-                binding.progressLoading.visibility = View.VISIBLE
-                binding.paginationLoadingLayout.visibility = View.GONE
+                binding.loadingOverlay.root.visibility = View.VISIBLE
             }
         } else {
-            binding.progressLoading.visibility = View.GONE
-            binding.paginationLoadingLayout.visibility = View.GONE
+            binding.loadingOverlay.root.visibility = View.GONE
         }
     }
 

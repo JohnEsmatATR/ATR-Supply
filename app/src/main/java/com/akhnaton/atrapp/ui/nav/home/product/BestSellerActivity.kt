@@ -51,12 +51,12 @@ class BestSellerActivity : BaseActivity() {
                     is BestSellerStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is BestSellerStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is BestSellerStatus.GetBestSeller -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             if (it.data.data!!.isNotEmpty()) {
                                 binding.txtNoProducts.visibility = View.GONE
@@ -66,14 +66,14 @@ class BestSellerActivity : BaseActivity() {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                             }
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
                     }
 
                     is BestSellerStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 

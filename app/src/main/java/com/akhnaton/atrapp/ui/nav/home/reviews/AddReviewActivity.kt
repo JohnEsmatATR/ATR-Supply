@@ -2,6 +2,7 @@ package com.akhnaton.atrapp.ui.nav.home.reviews
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.data.model.ProductModel
@@ -50,26 +51,26 @@ class AddReviewActivity : BaseActivity() {
                     is ReviewsStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is ReviewsStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is ReviewsStatus.GetReviews -> {}
 
                     is ReviewsStatus.AddReview -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
 
                             showToastSnack(it.data.message, false)
                             finish()
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
                     }
 
                     is ReviewsStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 

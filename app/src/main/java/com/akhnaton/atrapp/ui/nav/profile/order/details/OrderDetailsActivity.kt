@@ -77,12 +77,12 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                     is MyOrderDetailsStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is MyOrderDetailsStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is MyOrderDetailsStatus.GetMyOrderDetails -> {
                         if (status.myOrderDetailsRes.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.VISIBLE
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
                             mList.clear()
@@ -124,14 +124,14 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                             statusTimelineHelper.bind(steps)
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(status.myOrderDetailsRes.message, true)
                         }
                     }
 
                     is MyOrderDetailsStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${status.error}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(status.error.toString(), true)
                     }
                 }

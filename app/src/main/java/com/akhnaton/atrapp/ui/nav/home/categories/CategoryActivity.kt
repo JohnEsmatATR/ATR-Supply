@@ -82,14 +82,14 @@ class CategoryActivity : BaseActivity(),
 
                     }
                     is CategoryState.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                     is CategoryState.Success -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         setAdapterData(state.response.data!!)
                     }
                     is CategoryState.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(state.message, true)
                     }
                 }

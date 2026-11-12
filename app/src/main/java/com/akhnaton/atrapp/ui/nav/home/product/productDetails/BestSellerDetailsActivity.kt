@@ -107,14 +107,14 @@ class BestSellerDetailsActivity : BaseActivity() {
             viewModel.state.collect {
                 when (it) {
                     is ProductDetailsStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         Toast.makeText(this@BestSellerDetailsActivity, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
                         Log.d("TAG", "observeProduct: ${it.error}")
                     }
 
                     is ProductDetailsStatus.GetProductDetails -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             val productData = it.data.data?.firstOrNull()
 
                             if (productData != null) {
@@ -165,7 +165,7 @@ class BestSellerDetailsActivity : BaseActivity() {
                     }
 
                     ProductDetailsStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                 }
             }
@@ -216,20 +216,20 @@ class BestSellerDetailsActivity : BaseActivity() {
                     is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is AddToCartStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
 
                     }
 
                     is AddToCartStatus.AddToCart -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             showToastSnack(it.data.message, false)
                             binding.btnGoToCart.visibility= View.VISIBLE
                             val animation = AnimationUtils.loadAnimation(this@BestSellerDetailsActivity, R.anim.slide_up)
                             binding.btnGoToCart.startAnimation(animation)
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
 
@@ -237,7 +237,7 @@ class BestSellerDetailsActivity : BaseActivity() {
 
                     is AddToCartStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
                 }

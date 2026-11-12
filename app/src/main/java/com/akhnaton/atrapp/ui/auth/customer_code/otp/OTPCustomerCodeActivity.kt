@@ -149,10 +149,10 @@ class OTPCustomerCodeActivity : BaseActivity() {
                 when (state) {
                     is ValidateOtpState.Idle -> Unit
                     is ValidateOtpState.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                     is ValidateOtpState.Success -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (state.state == HTTP_STATUS_SUCCESS) {
                             showToastSnack(state.message, false)
                             delay(DELAY_NAVIGATE_MS)
@@ -171,7 +171,7 @@ class OTPCustomerCodeActivity : BaseActivity() {
                         }
                     }
                     is ValidateOtpState.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(state.error, true)
                     }
                 }

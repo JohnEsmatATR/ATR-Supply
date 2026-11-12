@@ -90,11 +90,11 @@ class LoginActivity : BaseActivity() {
                 when (it) {
 
                     is LoginStatus.Idle -> {
-                        binding.progressLoading.visibility = View.GONE /////////newww malakkk
+                        binding.loadingOverlay.root.visibility = View.GONE
                     }
 
                     is LoginStatus.Loading -> {
-                        binding.progressLoading.visibility = View.VISIBLE /////////newww malakkk
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is LoginStatus.Login -> {
@@ -117,7 +117,7 @@ class LoginActivity : BaseActivity() {
                             finishAffinity()
 
                         } else {
-                            binding.progressLoading.visibility = View.GONE /////////newww malakkk
+                            binding.loadingOverlay.root.visibility = View.GONE
 
                             showToastSnack(
                                 it.data.message,
@@ -128,7 +128,7 @@ class LoginActivity : BaseActivity() {
 
                     is LoginStatus.Error -> {
 
-                        binding.progressLoading.visibility = View.GONE /////////newww malakkk
+                        binding.loadingOverlay.root.visibility = View.GONE
 
                         Log.d(
                             Common.KeroDebug,
@@ -164,12 +164,12 @@ class LoginActivity : BaseActivity() {
             return
         }
 
-        binding.progressLoading.visibility = View.VISIBLE /////////newww malakkk
+        binding.loadingOverlay.root.visibility = View.VISIBLE
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("FCM", "Fetching FCM registration token failed", task.exception)
-                binding.progressLoading.visibility = View.GONE /////////newww malakkk
+                binding.loadingOverlay.root.visibility = View.GONE
                 return@addOnCompleteListener
             }
 
