@@ -273,17 +273,18 @@ class HomeActivity : BaseActivity() {
 
             if (selectedItemId == R.id.home) {
                 // لو في Home → لازم ضغطتين
-                if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                    AlertDialog.Builder(this@HomeActivity)
-                        .setTitle(R.string.exit_title)
-                        .setMessage(R.string.exit_message)
-                        .setPositiveButton(R.string.yes) { _, _ -> finish() }
-                        .setNegativeButton(R.string.no, null)
-                        .show()
-                } else {
-                    Toast.makeText(this@HomeActivity, R.string.press_again_to_exit, Toast.LENGTH_SHORT).show()
-                }
-                backPressedTime = System.currentTimeMillis()
+//                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+//                    AlertDialog.Builder(this@HomeActivity)
+//                        .setTitle(R.string.exit_title)
+//                        .setMessage(R.string.exit_message)
+//                        .setPositiveButton(R.string.yes) { _, _ -> finish() }
+//                        .setNegativeButton(R.string.no, null)
+//                        .show()
+//                } else {
+//                    Toast.makeText(this@HomeActivity, R.string.press_again_to_exit, Toast.LENGTH_SHORT).show()
+//                }
+//                backPressedTime = System.currentTimeMillis()
+                finish()
             } else {
                 // لو مش في Home → يرجعه للـ Home
                 binding.bottomNavigationView.selectedItemId = R.id.home

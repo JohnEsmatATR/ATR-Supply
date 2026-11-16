@@ -1,10 +1,14 @@
 package com.akhnaton.atrapp.ui.nav.profile.order.details
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,6 +63,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
 
         binding.orderNumber.text = "#$ORDER_ID"
 
+        handleTopBottomKeyboard()
         observe()
         getOrderDetails(ORDER_ID)
         getOrderStates(ORDER_ID)
@@ -67,6 +72,91 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         if (v.id == binding.btnBack.id) {
             finish()
+        }
+    }
+
+    private fun bindStatusBadge(
+        steps: List<com.akhnaton.atrapp.data.model.orderHistory.StatusGroup>
+    ) {
+
+        val currentStep =
+            steps
+                .filter {
+                    it.isCompleted == true
+                }
+                .lastOrNull()
+                ?: steps.firstOrNull()
+
+        if (currentStep == null) {
+
+            binding.tvBadgeStatus.visibility =
+                View.GONE
+
+            return
+        }
+
+        binding.tvBadgeStatus.visibility =
+            View.VISIBLE
+
+        val color = parseColor(
+            currentStep.color,
+            Color.parseColor("#FF9500")
+        )
+
+        binding.tvBadgeStatus.text =
+            "• ${currentStep.name.orEmpty()}"
+
+        binding.tvBadgeStatus.setTextColor(
+            color
+        )
+
+        binding.tvBadgeStatus.background =
+            createRoundedBackground(
+                color = color,
+                cornerRadius = 30f,
+                alpha = 35
+            )
+    }
+
+    private fun parseColor(
+        color: String?,
+        defaultColor: Int
+    ): Int {
+
+        return try {
+
+            Color.parseColor(
+                color ?: ""
+            )
+
+        } catch (e: Exception) {
+
+            defaultColor
+        }
+    }
+
+    private fun createRoundedBackground(
+        color: Int,
+        cornerRadius: Float,
+        alpha: Int
+    ): GradientDrawable {
+
+        val backgroundColor = Color.argb(
+            alpha,
+            Color.red(color),
+            Color.green(color),
+            Color.blue(color)
+        )
+
+        return GradientDrawable().apply {
+
+            shape =
+                GradientDrawable.RECTANGLE
+
+            setColor(backgroundColor)
+
+            this.cornerRadius =
+                cornerRadius
         }
     }
 
@@ -81,8 +171,8 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     is MyOrderDetailsStatus.GetMyOrderDetails -> {
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (status.myOrderDetailsRes.status == 200) {
-                            binding.loadingOverlay.root.visibility = View.VISIBLE
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
                             mList.clear()
@@ -122,6 +212,7 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                             val steps = status.myOrderDetailsRes.statusGroup
 
                             statusTimelineHelper.bind(steps)
+                            bindStatusBadge(steps)
 
                         } else {
                             binding.loadingOverlay.root.visibility = View.GONE
@@ -136,6 +227,24 @@ class OrderDetailsActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
+        }
+    }
+
+    private fun handleTopBottomKeyboard() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val imeInsets = insets.getInsets(
+                WindowInsetsCompat.Type.ime()
+            )
+            binding.root.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                maxOf(imeInsets.bottom, systemBars.bottom)
+            )
+
+            insets
         }
     }
 

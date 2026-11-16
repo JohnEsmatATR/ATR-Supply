@@ -101,4 +101,27 @@
     <color name="order_item_quantity_background">#F2F4F7</color>
     <color name="product_details_background">#FFFFFF</color>
 
+    <color name="bg_credit">#F5F7FA</color>
+
+    <!-- Primary -->
+    <color name="primary_blue">#2563EB</color>
+
+    <!-- Text -->
+    <color name="text_primary">#172033</color>
+    <color name="text_secondary">#667085</color>
+
+    <!-- White -->
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_70">#B3FFFFFF</color>
+
+    <!-- Borders / Dividers -->
+    <color name="border_light">#E6EAF0</color>
+    <color name="divider_light">#EEF1F5</color>
+
+    <!-- Error / Used Credit -->
+    <color name="error_red">#DC4C4C</color>
+
+    <!-- Loading -->
+    <color name="overlay">#66000000</color>
+
 </resources>

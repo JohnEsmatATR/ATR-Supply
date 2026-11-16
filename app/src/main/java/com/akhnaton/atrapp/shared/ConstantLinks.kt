@@ -4,8 +4,8 @@ object ConstantLinks {
     //in site company use http
 
 //    const val BASE_URL = "http://10.42.151.27/customer/"          // test
-//    const val BASE_URL = "https://sales.atr-eg.com/customer/"     // Prod
-    const val BASE_URL = "https://preweb.atr-eg.com/customer/"     // OUTSIDE_COMPANY
+    const val BASE_URL = "https://sales.atr-eg.com/customer_v2/"     // Prod
+//    const val BASE_URL = "https://preweb.atr-eg.com/customer/"     // OUTSIDE_COMPANY
 
     fun isProd(): Boolean {
         return BASE_URL.contains("sales.atr-eg.com")
@@ -39,7 +39,7 @@ object ConstantLinks {
     const val ADD_REVIEW = "product/add_review"
 
     // fav
-    const val GET_FAV_PRODUCT = "product/add_fav?debug=1"
+    const val GET_FAV_PRODUCT = "product/add_fav"
     const val DELETE_FROM_FAV = "product/delete_fav"
 
     // get user address

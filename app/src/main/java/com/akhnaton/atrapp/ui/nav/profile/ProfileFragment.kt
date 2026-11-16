@@ -24,8 +24,6 @@ import androidx.core.view.WindowInsetsCompat
 class ProfileFragment : BaseFragment(), View.OnClickListener {
 
 
-
-
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -41,26 +39,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-
-        WindowCompat.setDecorFitsSystemWindows(
-            requireActivity().window,
-            false
-        )
-
-        requireActivity().window.statusBarColor = Color.TRANSPARENT
-
-        WindowCompat.setDecorFitsSystemWindows(
-            requireActivity().window,
-            false
-        )
-
-        requireActivity().window.statusBarColor = Color.TRANSPARENT
-
-        WindowCompat.getInsetsController(
-            requireActivity().window,
-            requireActivity().window.decorView
-        ).isAppearanceLightStatusBars = true
-
+//        handleTopBottomKeyboard()
         guestHandling()
 
         binding.accountLayout.setOnClickListener(this)
@@ -79,10 +58,28 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
         return binding.root
     }
 
+    private fun handleTopBottomKeyboard() {
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val imeInsets = insets.getInsets(
+                WindowInsetsCompat.Type.ime()
+            )
+            binding.root.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                maxOf(imeInsets.bottom, systemBars.bottom)
+            )
+
+            insets
+        }
+    }
 
 
     //new malak
-    private fun myPlayStore(){
+    private fun myPlayStore() {
         val appPackageName = requireContext().packageName
         try {
             startActivity(
@@ -91,7 +88,7 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
                     android.net.Uri.parse("market://details?id=$appPackageName")
                 ).setPackage("com.android.vending")
             )
-        } catch (e: android.content.ActivityNotFoundException){
+        } catch (e: android.content.ActivityNotFoundException) {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
@@ -146,7 +143,8 @@ class ProfileFragment : BaseFragment(), View.OnClickListener {
             ?: Locale.getDefault().language
 
         //no hardcoded
-        val chevronIcon = if (lang == LANG_AR) R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
+        val chevronIcon =
+            if (lang == LANG_AR) R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
 
         binding.imageView6.setImageResource(chevronIcon)
         binding.icProfile.setImageResource(R.drawable.ic_profile)

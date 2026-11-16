@@ -84,7 +84,6 @@ class ProductDetailsActivity : BaseActivity() {
     private val favoriteViewModel: FavoriteViewModel by viewModels()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
@@ -97,7 +96,7 @@ class ProductDetailsActivity : BaseActivity() {
             Log.d("ProductDetails", "Loaded product: ${product.TITLE}")
         }
 
-//        handleTopBottomKeyboard()
+        handleTopBottomKeyboard()
         init()
         onClick()
     }
@@ -201,7 +200,8 @@ class ProductDetailsActivity : BaseActivity() {
                                     if (productData.IS_LIKED) {
                                         binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
                                         val orangeColor = Color.parseColor("#EE7907")
-                                        binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
+                                        binding.btnFavIcon.imageTintList =
+                                            ColorStateList.valueOf(orangeColor)
                                     } else {
                                         binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)
                                         val grayColor = Color.parseColor("#C1C1C1")
@@ -212,10 +212,25 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.txtCategory.text = productData.category?.TITLE ?: ""
 
                                     // malak task new
-                                    binding.tvPriceWithoutTax.text = String.format("%s: %,.3f %s", getString(R.string.price_without_tax_product_det), productData.PRICE_WITHOUT_TAX ?: 0.0, getString(R.string.currency))
-                                    binding.txtPriceValue.text = String.format(Locale.getDefault(), "%,.3f %s", productData.PRICE_AFTER_DISCOUNT ?: 0.0, getString(R.string.currency))
+                                    binding.tvPriceWithoutTax.text = String.format(
+                                        "%s: %,.3f %s",
+                                        getString(R.string.price_without_tax_product_det),
+                                        productData.PRICE_WITHOUT_TAX ?: 0.0,
+                                        getString(R.string.currency)
+                                    )
+                                    binding.txtPriceValue.text = String.format(
+                                        Locale.getDefault(),
+                                        "%,.3f %s",
+                                        productData.PRICE_AFTER_DISCOUNT ?: 0.0,
+                                        getString(R.string.currency)
+                                    )
 
-                                    binding.tvTax.text = String.format("%s: %,.3f %s", getString(R.string.tax), productData.TAX ?: 0.0, getString(R.string.currency))
+                                    binding.tvTax.text = String.format(
+                                        "%s: %,.3f %s",
+                                        getString(R.string.tax),
+                                        productData.TAX ?: 0.0,
+                                        getString(R.string.currency)
+                                    )
 
                                     val dosageText = productData.WEIGHT
                                     if (!dosageText.isNullOrEmpty()) {
@@ -298,15 +313,18 @@ class ProductDetailsActivity : BaseActivity() {
 
 
     //malak task inCart
-    fun updateAddToCartBTN(isInCart: Boolean, inStock: Boolean){
+    fun updateAddToCartBTN(isInCart: Boolean, inStock: Boolean) {
         val btnCart = binding.btnBottomAddToCart ?: return
-
+        btnCart.visibility = View.VISIBLE
         when {
             !inStock -> {
+                binding.divider2.visibility = View.GONE
+                binding.layoutQuantity.visibility = View.GONE
+                binding.txtQtyText.visibility = View.GONE
                 btnCart.isEnabled = false
                 btnCart.text = getString(R.string.out_of_stock)
                 btnCart.visibility = View.VISIBLE
-                btnCart.setTextColor(getColorStateList(R.color.white))
+                btnCart.setTextColor(getColorStateList(R.color.snack_red))
                 btnCart.background = getDrawable(R.drawable.btn_out_of_stock)
                 btnCart.icon = ContextCompat.getDrawable(this, R.drawable.ic_circle_close)
                 btnCart.iconTint = getColorStateList(R.color.snack_red)
@@ -321,6 +339,7 @@ class ProductDetailsActivity : BaseActivity() {
                 btnCart.icon = ContextCompat.getDrawable(this, R.drawable.ic_check_circle)
                 btnCart.iconTint = getColorStateList(R.color.snack_green)
             }
+
             else -> {
                 btnCart.isEnabled = true
                 btnCart.visibility = View.VISIBLE
@@ -339,7 +358,8 @@ class ProductDetailsActivity : BaseActivity() {
         val currentQty = binding.txtQuantity.text.toString().toIntOrNull() ?: quantity //malaaaaaak
         val total = unitPrice * currentQty // malakkkkkkkk
 
-        binding.txtBottomTotalPrice.text = String.format("%,.3f %s", total, getString(R.string.currency))
+        binding.txtBottomTotalPrice.text =
+            String.format("%,.3f %s", total, getString(R.string.currency))
     }
 
     private fun getProductDetails(productId: Int, category: String) {
@@ -352,9 +372,7 @@ class ProductDetailsActivity : BaseActivity() {
 
     private fun onClick() {
         binding.btnBack.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-
+            finish()
         }
         binding.btnShare.setOnClickListener {
             if (SharedPreferenceHelper.isLogged == false) DialogUtils.showResultDialog(
@@ -439,7 +457,7 @@ class ProductDetailsActivity : BaseActivity() {
             val dir = File(cacheDir, "shared_images").apply { mkdirs() }
             val file = File(dir, "product_$productId.jpg")
             file.outputStream().use { out ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG,90, out)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
             }
             FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
         } catch (e: Exception) {
@@ -456,8 +474,22 @@ class ProductDetailsActivity : BaseActivity() {
         Check out this product!
 
         Product: ${productData.TITLE}
-        Price: ${String.format(Locale.getDefault(), "%,.3f %s", productData.PRICE_AFTER_DISCOUNT ?: 0.0, currency)}
-        Price Without Tax: ${String.format(Locale.getDefault(), "%,.3f %s", productData.PRICE_WITHOUT_TAX ?: 0.0, currency)}
+        Price: ${
+            String.format(
+                Locale.getDefault(),
+                "%,.3f %s",
+                productData.PRICE_AFTER_DISCOUNT ?: 0.0,
+                currency
+            )
+        }
+        Price Without Tax: ${
+            String.format(
+                Locale.getDefault(),
+                "%,.3f %s",
+                productData.PRICE_WITHOUT_TAX ?: 0.0,
+                currency
+            )
+        }
         Tax: ${String.format(Locale.getDefault(), "%,.3f %s", productData.TAX ?: 0.0, currency)}
     """.trimIndent()
 
@@ -570,10 +602,11 @@ class ProductDetailsActivity : BaseActivity() {
             showToastSnack(getString(R.string.out_of_stock), true)
         }
     }
+
     private fun setupQuantityEditText() {
 
         binding.txtQuantity.doAfterTextChanged { editable ->
-            if(isUpdatingQuantity) return@doAfterTextChanged
+            if (isUpdatingQuantity) return@doAfterTextChanged
             val value = editable?.toString()?.toIntOrNull()
             quantity = when {
                 value == null -> 0

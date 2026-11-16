@@ -106,14 +106,6 @@
                             android:layout_marginStart="14dp"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/orderStatusTxt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/order_number"
-                                android:textColor="@color/order_details_gray"
-                                android:textSize="13sp" />
-
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -121,15 +113,39 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/orderNumber"
+                                    android:id="@+id/orderStatusTxt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textColor="@color/black"
-                                    android:textSize="15sp"
+                                    android:text="@string/order_number"
+                                    android:textColor="@color/order_details_gray"
+                                    android:textSize="13sp" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/_1sdp"
+                                    android:layout_weight="1" />
+
+                                <TextView
+                                    android:id="@+id/tvBadgeStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="14dp"
+                                    android:paddingVertical="5dp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold"
-                                    tools:text="#177558180826-00716" />
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
                             </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/orderNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                tools:text="#177558180826-00716" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -159,8 +175,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="12dp"
                     android:text="@string/order_items"
                     android:textColor="@color/black"
                     android:textSize="16sp"

@@ -26,6 +26,7 @@ import com.akhnaton.atrapp.data.statuesValue.nav.cart.getMyCart.CartStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.category.CategoryStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteIntent
+import com.akhnaton.atrapp.data.statuesValue.nav.home.favorite.FavoriteStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsIntent
 import com.akhnaton.atrapp.data.statuesValue.nav.home.products.ProductsStatus
 import com.akhnaton.atrapp.data.statuesValue.nav.home.search.SearchIntent
@@ -81,6 +82,8 @@ class ProductsActivity : BaseActivity() {
     private val cartViewModel: CartViewModel by viewModels()
     private val cartItems = mutableMapOf<Int, Int>()
 
+    private var productList = mutableListOf<ProductModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
@@ -91,6 +94,7 @@ class ProductsActivity : BaseActivity() {
         onClick()
         observeAddToCart()
         observeCart()
+        favoriteObserve()
 
         val showCard = intent.getBooleanExtra("show_card", false)
         binding.cardSearchingPharma.visibility = if (showCard) {
@@ -104,6 +108,101 @@ class ProductsActivity : BaseActivity() {
         currentPage = intent.getIntExtra("saved_page", 1)
     }
 
+    private fun favoriteObserve() {
+        lifecycleScope.launch {
+            favoriteViewModel.state.collect {
+                when (it) {
+                    is FavoriteStatus.Idle -> {
+                        Log.d(Common.KeroDebug, "observeHome: Idle")
+                        //malak task
+                        binding.txtNoProducts.visibility = View.GONE
+                    }
+
+                    is FavoriteStatus.Loading -> {
+                        Log.d(Common.KeroDebug, "observeHome: Loading")
+                        val isPagination = currentPage > 1
+                        handleLoadingState(isLoading = true, isPagination = isPagination)
+                    }
+
+                    is FavoriteStatus.GetFavorite -> {
+                        handleLoadingState(isLoading = false, isPagination = false)
+                        if (it.data.status == 200) {
+                            binding.loadingOverlay.root.visibility = View.GONE
+                            Log.d(Common.KeroDebug, "observeHome: GetProducts")
+                            setupProductsRecycler(it.data.data!!)
+                            Log.d(Common.KeroDebug, "favoriteObserve: ${it.data.data!!.size}")
+
+                        } else if (it.data.status == 401) {
+                            binding.loadingOverlay.root.visibility = View.GONE
+//                            onTokenExpired(it.data.errors!![0])
+                        } else {
+                            binding.loadingOverlay.root.visibility = View.GONE
+                            showToastSnack(it.data.message, true)
+                        }
+
+                    }
+
+
+                    is FavoriteStatus.Error -> {
+                        Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
+                        binding.loadingOverlay.root.visibility = View.GONE
+                        showToastSnack(it.error.toString(), true)
+                    }
+
+                    is FavoriteStatus.AddProductToFavourites -> {
+                        binding.loadingOverlay.root.visibility = View.GONE
+                    }
+
+                    is FavoriteStatus.DeleteProductToFavourites -> {
+                        binding.loadingOverlay.root.visibility = View.GONE
+
+                        if (it.data.status == 200) {
+                            Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
+                            //showToastSnack(it.data.message, false)
+
+//                            productList.removeIf { product -> product.ID == it.productId }
+//
+//                            if (binding.recycler.adapter != adapter) {
+//                                binding.recycler.adapter = adapter
+//                            }
+//
+//                            adapter.setData(productList, false, flag)
+//
+//                            //malak task
+//                            if (productList.isEmpty()) {
+//                                binding.txtNoProducts.visibility = View.VISIBLE
+//                                binding.recycler.visibility = View.GONE
+//                            } else {
+//                                binding.txtNoProducts.visibility = View.GONE
+//                                binding.recycler.visibility = View.VISIBLE
+//                            }
+//
+//                            if (productList.size == 0) {
+//                                binding.txtNoProducts.visibility = View.VISIBLE
+//                            }
+
+                        } else if (it.data.status == 401) {
+                            // onTokenExpired(it.data.errors!![0])
+                        } else if (productList.isEmpty()) {
+                            binding.txtNoProducts.visibility = View.VISIBLE
+                            showToastSnack(it.data.message ?: "", true)
+                            setupProductsRecycler(productList)
+                        } else {
+                            // showToastSnack(it.data.message, true)
+
+                            //malak task
+                            if (productList.isEmpty()) {
+                                binding.txtNoProducts.visibility = View.VISIBLE
+                                binding.recycler.visibility = View.GONE
+                                showToastSnack(it.data.message ?: "", true)
+                                setupProductsRecycler(productList)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()

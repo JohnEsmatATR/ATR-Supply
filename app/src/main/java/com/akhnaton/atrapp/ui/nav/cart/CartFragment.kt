@@ -127,7 +127,7 @@ class CartFragment : BaseFragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    parentFragmentManager.popBackStack()
+                    navigateBack()
                 }
             }
         )
@@ -218,7 +218,7 @@ class CartFragment : BaseFragment() {
 
                     is AddressStatus.GetMyAddresses -> {
                         if (it.result.status == 200) {
-                            binding.loadingOverlay.root.visibility = View.GONE
+//                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "Received: GetProducts")
 
                             val addresses = it.result.data ?: emptyList()

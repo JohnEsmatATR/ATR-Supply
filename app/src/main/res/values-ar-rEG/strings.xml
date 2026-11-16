@@ -416,5 +416,15 @@
 
     <string name="unable_to_add_product_to_cart">لا يمكن اضافة منتج للسلة</string>
 
+    <string name="new_update_available_n_you_should_update_application_to_continue">يتوفر تحديث جديد. يجب عليك تحديث التطبيق للمتابعة.</string>
+    <string name="dosage">الجرعة</string>
+    <string name="availability">التوافر</string>
+    <string name="quantity_">الكمية</string>
+    <string name="total_price">السعر الإجمالي</string>
+
+    <string name="credit_summary">ملخص الائتمان</string>
+    <string name="available_for_use">متاح للاستخدام</string>
+    <string name="limit">حد</string>
+    <string name="used">مستخدم</string>
 
 </resources>

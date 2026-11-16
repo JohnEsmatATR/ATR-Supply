@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F1F2F4"
-        android:fillViewport="true"
         android:clipToPadding="false"
+        android:fillViewport="true"
         tools:context=".ui.nav.profile.AccountDetailsActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,9 +24,9 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_225sdp"
                 android:background="@drawable/bg_profile_header"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Back button -->
 
@@ -37,12 +37,12 @@
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_back_circle"
+                android:contentDescription="@string/back"
                 android:padding="14dp"
                 android:src="@drawable/ic_back"
-                android:contentDescription="@string/back"
-                app:tint="#333333"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#333333" />
 
             <!-- User name -->
 
@@ -85,11 +85,11 @@
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="28dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="0dp"
-                app:layout_constraintTop_toBottomOf="@id/email"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -119,8 +119,8 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_person"
                                 android:contentDescription="@null"
+                                android:src="@drawable/ic_person"
                                 app:tint="#1976D2" />
 
                         </FrameLayout>
@@ -135,7 +135,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Full name"
+                                android:text="@string/full_name"
                                 android:textColor="#777777"
                                 android:textSize="@dimen/_10ssp" />
 
@@ -145,6 +145,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text=""
+                                android:textAlignment="viewStart"
                                 android:textColor="#202020"
                                 android:textSize="@dimen/_12ssp" />
 
@@ -184,8 +185,8 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_email"
                                 android:contentDescription="@null"
+                                android:src="@drawable/ic_email"
                                 app:tint="#4CAF50" />
 
                         </FrameLayout>
@@ -200,7 +201,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Email"
+                                android:text="@string/email"
                                 android:textColor="#777777"
                                 android:textSize="@dimen/_10ssp" />
 
@@ -210,6 +211,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text=""
+                                android:textAlignment="viewStart"
                                 android:textColor="#202020"
                                 android:textSize="@dimen/_12ssp" />
 
@@ -249,8 +251,8 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_phone"
                                 android:contentDescription="@null"
+                                android:src="@drawable/ic_phone"
                                 app:tint="#E67E22" />
 
                         </FrameLayout>
@@ -265,7 +267,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Phone Number"
+                                android:text="@string/phone_number"
                                 android:textColor="#777777"
                                 android:textSize="@dimen/_10ssp" />
 
@@ -275,6 +277,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text=""
+                                android:textAlignment="viewStart"
                                 android:textColor="#202020"
                                 android:textSize="@dimen/_12ssp" />
 
@@ -316,8 +319,8 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_map"
                                 android:contentDescription="@null"
+                                android:src="@drawable/ic_map"
                                 app:tint="#D9273F" />
 
                         </FrameLayout>
@@ -332,7 +335,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Address"
+                                android:text="@string/address"
                                 android:textColor="#777777"
                                 android:textSize="@dimen/_10ssp" />
 
@@ -341,12 +344,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text=""
-                                android:textColor="#202020"
-                                android:textSize="@dimen/_12ssp"
+                                android:gravity="start"
                                 android:lineSpacingExtra="2dp"
+                                android:text=""
+                                android:textAlignment="viewStart"
+                                android:textColor="#202020"
                                 android:textDirection="rtl"
-                                android:gravity="start" />
+                                android:textSize="@dimen/_12ssp" />
 
                         </LinearLayout>
 

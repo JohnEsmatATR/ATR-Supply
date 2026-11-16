@@ -1,9 +1,9 @@
 package com.akhnaton.atrapp.ui.nav.home
 
 
+import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -49,6 +49,7 @@ import com.akhnaton.atrapp.ui.nav.home.panner.BannerAdapter
 import com.akhnaton.atrapp.ui.nav.home.panner.PannerViewModel
 import com.akhnaton.atrapp.ui.nav.home.product.ProductsActivity
 import com.akhnaton.atrapp.ui.nav.home.product.productDetails.ProductDetailsActivity
+import com.akhnaton.atrapp.ui.update.UpdateActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -205,7 +206,7 @@ class HomeFragment : BaseFragment() {
             binding.cardAddress.visibility = View.GONE
 //            binding.tvWelcome.text = "${getString(R.string.welcome_guest)}"
         } else {
-                getCart()
+            getCart()
 //            binding.tvWelcome.text =
 //                "${getString(R.string.welcome)} ${SharedPreferenceHelper.userObj?.first_name}"
         }
@@ -741,7 +742,7 @@ class HomeFragment : BaseFragment() {
                         val cartData = state.data
 
                         //malak task new:
-                        if(!cartData.data.isNullOrEmpty()){
+                        if (!cartData.data.isNullOrEmpty()) {
 
                             binding.loadingOverlay.root.visibility = View.GONE
                             //malak task
@@ -750,11 +751,17 @@ class HomeFragment : BaseFragment() {
                                 .sumOf { it.items.pagination.totalRows.toInt() }
                                 .toString()
                         }
+                        if (state.data.status == 400) {
+                            startActivity(Intent(requireContext(), UpdateActivity::class.java))
+                            requireActivity().finish()
+                        }
+
 
                     }
 
                     is CartStatus.Error -> {
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
+                        Log.d("TAG", "1")
                         showToastSnack(state.error.toString(), true)
                         binding.tvCartCount.visibility = View.GONE
                     }

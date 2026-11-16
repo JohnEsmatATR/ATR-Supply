@@ -26,9 +26,6 @@ class CreditInfoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-
-
-
         binding = ActivityCreditInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -38,6 +35,9 @@ class CreditInfoActivity : BaseActivity() {
             insets
         }
 
+        val isArabic = SharedPreferenceHelper.language == "ar"
+        if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        else binding.btnBack.setImageResource(R.drawable.ic_back)
 
         binding.btnBack.setOnClickListener {
             finish()
@@ -47,6 +47,7 @@ class CreditInfoActivity : BaseActivity() {
     }
 
     private fun fetchAndDisplayCreditData() {
+        binding.progressLoading.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {
                 val apiService = RetrofitClient.getInstance(IProfile::class.java)

@@ -478,4 +478,15 @@ In addition to a wide range of other complementary services, that are offered th
 
     <string name="unable_to_add_product_to_cart">Unable to add product to cart</string>
 
+    <string name="new_update_available_n_you_should_update_application_to_continue">New Update Available \n You Should Update Application To Continue</string>
+    <string name="dosage">Dosage</string>
+    <string name="availability">Availability</string>
+    <string name="quantity_">Quantity</string>
+    <string name="total_price">Total Price</string>
+
+    <string name="credit_summary">Credit Summary</string>
+    <string name="available_for_use">Available for use</string>
+    <string name="limit">LIMIT</string>
+    <string name="used">USED</string>
+
 </resources>

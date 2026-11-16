@@ -171,6 +171,9 @@
             android:name=".ui.nav.cart.addresses.AddNewAddressActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.update.UpdateActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

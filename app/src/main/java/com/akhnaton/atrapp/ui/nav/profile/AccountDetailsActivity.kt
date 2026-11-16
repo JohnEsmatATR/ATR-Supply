@@ -3,6 +3,9 @@ package com.akhnaton.atrapp.ui.nav.profile
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.akhnaton.atrapp.R
 import com.akhnaton.atrapp.databinding.ActivityAccountDetailsBinding
@@ -27,6 +30,8 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
         val isArabic = SharedPreferenceHelper.language == LANG_AR
         if (isArabic) binding.btnBack.setImageResource(R.drawable.ic_back_ar)
         else binding.btnBack.setImageResource(R.drawable.ic_back)
+
+        handleTopBottomKeyboard()
 
 //        binding.layoutPdf.visibility = View.GONE
 //        binding.passwordLayout.visibility = View.GONE
@@ -53,6 +58,24 @@ class AccountDetailsActivity : BaseActivity(), View.OnClickListener {
             binding.emailValue.setText(email.ifEmpty { "-" })
             binding.phoneValue.setText(phone.ifEmpty { "-" })
             binding.addressValue.setText(address.ifEmpty { "-" })
+        }
+    }
+
+    private fun handleTopBottomKeyboard() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val imeInsets = insets.getInsets(
+                WindowInsetsCompat.Type.ime()
+            )
+            binding.root.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                maxOf(imeInsets.bottom, systemBars.bottom)
+            )
+
+            insets
         }
     }
 

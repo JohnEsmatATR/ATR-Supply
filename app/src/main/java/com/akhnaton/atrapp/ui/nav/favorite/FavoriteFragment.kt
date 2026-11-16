@@ -177,7 +177,6 @@ class FavoriteFragment : BaseFragment() {
 
                         is AddToCartStatus.AddToCart -> {
                             binding.loadingOverlay.root.visibility = View.GONE
-                            binding.loadingOverlay.root.visibility = View.GONE
 
                             if (state.data.status == 200) {
                                 showToastSnack(state.data.message ?: "Added successfully", false)
@@ -320,26 +319,26 @@ class FavoriteFragment : BaseFragment() {
                             Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")
                             //showToastSnack(it.data.message, false)
 
-                            productList.removeIf { product -> product.ID == it.productId }
-
-                            if (binding.recycler.adapter != adapter) {
-                                binding.recycler.adapter = adapter
-                            }
-
-                            adapter.setData(productList, false, flag)
-
-                            //malak task
-                            if (productList.isEmpty()) {
-                                binding.txtNoProducts.visibility = View.VISIBLE
-                                binding.recycler.visibility = View.GONE
-                            } else {
-                                binding.txtNoProducts.visibility = View.GONE
-                                binding.recycler.visibility = View.VISIBLE
-                            }
-
-                            if (productList.size == 0) {
-                                binding.txtNoProducts.visibility = View.VISIBLE
-                            }
+//                            productList.removeIf { product -> product.ID == it.productId }
+//
+//                            if (binding.recycler.adapter != adapter) {
+//                                binding.recycler.adapter = adapter
+//                            }
+//
+//                            adapter.setData(productList, false, flag)
+//
+//                            //malak task
+//                            if (productList.isEmpty()) {
+//                                binding.txtNoProducts.visibility = View.VISIBLE
+//                                binding.recycler.visibility = View.GONE
+//                            } else {
+//                                binding.txtNoProducts.visibility = View.GONE
+//                                binding.recycler.visibility = View.VISIBLE
+//                            }
+//
+//                            if (productList.size == 0) {
+//                                binding.txtNoProducts.visibility = View.VISIBLE
+//                            }
 
                         } else if (it.data.status == 401) {
                             // onTokenExpired(it.data.errors!![0])
