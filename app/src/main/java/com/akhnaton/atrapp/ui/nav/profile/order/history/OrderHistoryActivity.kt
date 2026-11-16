@@ -57,12 +57,12 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
                     is AddressStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idleeeee")
                     is AddressStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is AddressStatus.GetMyAddresses -> {
                         if (it.result.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "Received: GetProducts")
 
                             val addresses = it.result.data ?: emptyList()
@@ -83,7 +83,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
                             }
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                         }
                     }
 
@@ -171,11 +171,11 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
                     is MyOrdersStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is MyOrdersStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is MyOrdersStatus.GetMyOrders -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (it.data.status == 200) {
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
@@ -183,7 +183,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
                             mAdapter.setData(mList, this@OrderHistoryActivity)
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
 
@@ -191,7 +191,7 @@ class OrderHistoryActivity : BaseActivity(), OrderHistoryAdapter.OnProductClickL
 
                     is MyOrdersStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
                 }

@@ -71,12 +71,12 @@ class ReviewActivity : BaseActivity() {
                     is ReviewsStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is ReviewsStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is ReviewsStatus.GetReviews -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             if (it.data.data!!.isNotEmpty()) {
                                 binding.txtNoReviews.visibility = View.GONE
@@ -89,7 +89,7 @@ class ReviewActivity : BaseActivity() {
                                 binding.txtNoReviews.visibility = View.VISIBLE
                             }
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
                     }
@@ -98,7 +98,7 @@ class ReviewActivity : BaseActivity() {
 
                     is ReviewsStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 

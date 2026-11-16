@@ -169,7 +169,7 @@ class ProductDetailsActivity : BaseActivity() {
             viewModel.state.collect { status ->
                 when (status) {
                     is ProductDetailsStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         Toast.makeText(
                             this@ProductDetailsActivity,
                             "Error: ${status.error}",
@@ -180,7 +180,7 @@ class ProductDetailsActivity : BaseActivity() {
 
                     is ProductDetailsStatus.GetProductDetails -> {
                         if (status.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
 
                             val fetchedList = status.data.data
                             if (!fetchedList.isNullOrEmpty()) {
@@ -273,7 +273,7 @@ class ProductDetailsActivity : BaseActivity() {
                                     binding.productNotFound.visibility = View.VISIBLE
                                 }
                             } else {
-                                hideProgressDialog(binding.progressLoading)
+                                binding.loadingOverlay.root.visibility = View.GONE
                                 binding.productNotFound.visibility = View.VISIBLE
                                 Toast.makeText(
                                     this@ProductDetailsActivity,
@@ -289,7 +289,7 @@ class ProductDetailsActivity : BaseActivity() {
                     }
 
                     ProductDetailsStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                 }
             }
@@ -486,13 +486,13 @@ class ProductDetailsActivity : BaseActivity() {
                     is AddToCartStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
 
                     is AddToCartStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is AddToCartStatus.AddToCart -> {
 
                         updateAddToCartBTN(true, inStoke)
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (status.data.status == 200) {
 //                            getProductDetails(productId, flag)
                             showAddToCartDialog(status.data)
@@ -502,7 +502,7 @@ class ProductDetailsActivity : BaseActivity() {
                     }
 
                     is AddToCartStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(status.error.toString(), true)
                     }
                 }
@@ -626,12 +626,12 @@ class ProductDetailsActivity : BaseActivity() {
                     is FavoriteStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is FavoriteStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is FavoriteStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 
@@ -639,13 +639,13 @@ class ProductDetailsActivity : BaseActivity() {
                         binding.btnFavIcon.setImageResource(R.drawable.ic_favorite_fill2)
                         val orangeColor = Color.parseColor("#EE7907")
                         binding.btnFavIcon.imageTintList = ColorStateList.valueOf(orangeColor)
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.data.message.toString(), false)
                         getProductDetails(productId, flag)
                     }
 
                     is FavoriteStatus.DeleteProductToFavourites -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
 
                         if (it.data.status == 200) {
                             binding.btnFavIcon.setImageResource(R.drawable.ic_favorite2)

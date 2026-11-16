@@ -107,12 +107,12 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                 when (state) {
                     is SentOtpState.Idle -> Unit
                     is SentOtpState.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                         binding.btnEnterInvoice.isEnabled = false
                     }
 
                     is SentOtpState.Success -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         binding.btnEnterInvoice.isEnabled = true
                         if (state.state == 200) {
                             showToastSnack(state.message, false)
@@ -138,7 +138,7 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                     }
 
                     is SentOtpState.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(state.error, true)
                         binding.btnEnterInvoice.isEnabled = true
                     }
@@ -153,11 +153,11 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                 when (state) {
                     is AppSettingState.Idle -> Unit
                     is AppSettingState.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is AppSettingState.Success -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (state.data.status == 200) {
                             val imageUrl = state.data.data?.customer_code_help_image
                             if (!imageUrl.isNullOrEmpty()) {
@@ -173,7 +173,7 @@ class CustomerInvoiceCodeActivity : BaseActivity() {
                     }
 
                     is AppSettingState.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(state.error, true)
                     }
                 }

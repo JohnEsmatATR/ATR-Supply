@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.auth.forgetPassword.sendOtp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
@@ -89,11 +90,11 @@ class ForgetPasswordActivity : BaseActivity() {
                     }
                     is SendOtpStatus.Loading -> {
                         Log.d(Common.KeroDebug, "SendOtpStatus: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                     is SendOtpStatus.SendOtp -> {
                         if (status.data.status == HTTP_STATUS_SUCCESS) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(status.data.message, false)
 
                             val email = binding.txtEmail.text.toString()
@@ -102,13 +103,13 @@ class ForgetPasswordActivity : BaseActivity() {
                             intent.putExtra(OTPActivity.EXTRA_EMAIL, email)
                             startActivity(intent)
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(status.data.message, true)
                         }
                     }
                     is SendOtpStatus.Error -> {
                         Log.d(Common.KeroDebug, "SendOtpStatus Error: ${status.error}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(status.error.toString(), true)
                     }
                 }

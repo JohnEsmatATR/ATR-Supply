@@ -121,15 +121,12 @@ class ProductsActivity : BaseActivity() {
     private fun handleLoadingState(isLoading: Boolean, isPagination: Boolean) {
         if (isLoading) {
             if (isPagination) {
-                binding.paginationLoadingLayout.visibility = View.VISIBLE
-                binding.progressLoading.visibility = View.GONE
+                binding.loadingOverlay.root.visibility = View.VISIBLE
             } else {
-                binding.progressLoading.visibility = View.VISIBLE
-                binding.paginationLoadingLayout.visibility = View.GONE
+                binding.loadingOverlay.root.visibility = View.VISIBLE
             }
         } else {
-            binding.progressLoading.visibility = View.GONE
-            binding.paginationLoadingLayout.visibility = View.GONE
+            binding.loadingOverlay.root.visibility = View.GONE
         }
     }
 
@@ -257,6 +254,8 @@ class ProductsActivity : BaseActivity() {
                                 binding.txtNoProducts.visibility = View.GONE
                                 binding.recycler.visibility = View.VISIBLE
                                 setupProductsRecycler(searchResults)
+                                isLastPage = true
+                                currentPage--
                             } else {
                                 binding.txtNoProducts.visibility = View.VISIBLE
                                 binding.recycler.visibility = View.GONE

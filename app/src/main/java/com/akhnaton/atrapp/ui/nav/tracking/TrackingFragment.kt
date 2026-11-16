@@ -121,7 +121,7 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
                     is AddressStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idleeeee")
                     is AddressStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is AddressStatus.GetMyAddresses -> {
@@ -146,7 +146,7 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
                             }
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                         }
                     }
 
@@ -214,11 +214,11 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
                     is MyOrdersStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is MyOrdersStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is MyOrdersStatus.GetMyOrders -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (it.data.status == 200) {
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
 
@@ -229,7 +229,7 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
                             }
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
 
@@ -285,11 +285,11 @@ class TrackingFragment : BaseFragment(), OrderHistoryAdapter.OnProductClickListe
                 when (state) {
                     is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is CartStatus.GetMyCart -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         //malak task
 
                         state.data.data.orEmpty().forEach { cartData ->

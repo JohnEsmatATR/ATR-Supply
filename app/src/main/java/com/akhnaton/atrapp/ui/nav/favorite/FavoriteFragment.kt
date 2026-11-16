@@ -162,11 +162,7 @@ class FavoriteFragment : BaseFragment() {
 
 
     private fun handleLoadingState(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressLoading.visibility = View.VISIBLE
-        } else {
-            binding.progressLoading.visibility = View.GONE
-        }
+        binding.loadingOverlay.root.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun observeAddToCart() {
@@ -176,12 +172,12 @@ class FavoriteFragment : BaseFragment() {
                     when (state) {
                         is AddToCartStatus.Idle -> Unit
                         is AddToCartStatus.Loading -> {
-                            showProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.VISIBLE
                         }
 
                         is AddToCartStatus.AddToCart -> {
-                            hideProgressDialog(binding.progressLoading)
-                            binding.progressLoading.visibility = View.GONE
+                            binding.loadingOverlay.root.visibility = View.GONE
+                            binding.loadingOverlay.root.visibility = View.GONE
 
                             if (state.data.status == 200) {
                                 showToastSnack(state.data.message ?: "Added successfully", false)
@@ -202,7 +198,7 @@ class FavoriteFragment : BaseFragment() {
                         }
 
                         is AddToCartStatus.Error -> {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(state.error ?: "", true)
                             addCartViewModel.resetState()
                         }
@@ -291,16 +287,16 @@ class FavoriteFragment : BaseFragment() {
 
                     is FavoriteStatus.GetFavorite -> {
                         if (it.data.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "observeHome: GetProducts")
                             setupProductsRecycler(it.data.data!!)
                             Log.d(Common.KeroDebug, "favoriteObserve: ${it.data.data!!.size}")
 
                         } else if (it.data.status == 401) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
 //                            onTokenExpired(it.data.errors!![0])
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
 
@@ -309,16 +305,16 @@ class FavoriteFragment : BaseFragment() {
 
                     is FavoriteStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 
                     is FavoriteStatus.AddProductToFavourites -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                     }
 
                     is FavoriteStatus.DeleteProductToFavourites -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
 
                         if (it.data.status == 200) {
                             Log.d(Common.KeroDebug, "observeHome: Product deleted from favorites")

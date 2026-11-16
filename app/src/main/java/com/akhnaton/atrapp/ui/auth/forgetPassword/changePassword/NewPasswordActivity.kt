@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.auth.forgetPassword.changePassword
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.akhnaton.atrapp.R
@@ -72,10 +73,10 @@ class NewPasswordActivity : BaseActivity() {
                     }
                     is ChangePasswordStatus.Loading -> {
                         Log.d(Common.KeroDebug, "ChangePasswordStatus: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
                     is ChangePasswordStatus.ChangePassword -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (status.data.status == HTTP_STATUS_SUCCESS) {
                             showToastSnack(status.data.message, false)
 
@@ -88,7 +89,7 @@ class NewPasswordActivity : BaseActivity() {
                     }
                     is ChangePasswordStatus.Error -> {
                         Log.d(Common.KeroDebug, "ChangePasswordStatus Error: ${status.error}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(status.error.toString(), true)
                     }
                 }

@@ -15,6 +15,7 @@
             android:id="@+id/action_First2Fragment_to_Second2Fragment"
             app:destination="@id/Second2Fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/Second2Fragment"
         android:name="com.akhnaton.atrapp.ui.nav.home.product.productDetails.Second2Fragment"

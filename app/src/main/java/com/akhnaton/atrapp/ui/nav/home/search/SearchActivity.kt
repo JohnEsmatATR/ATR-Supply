@@ -72,14 +72,14 @@ class SearchActivity : BaseActivity() {
                     is SearchStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idle")
                     is SearchStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                         binding.recycler.visibility = View.VISIBLE
                         binding.txtNoProducts.visibility=View.GONE
                     }
 
                     is SearchStatus.SearchProduct -> {
                         if (it.data.status == 200) {
-                            showProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.VISIBLE
                             binding.recycler.visibility = View.VISIBLE
                             binding.txtNoProducts.visibility = View.GONE
 
@@ -97,11 +97,11 @@ class SearchActivity : BaseActivity() {
                             binding.txtSearchWord.text = searchWord
 
                         } else if (it.data.status == 401) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
 //                            onTokenExpired(it.data.errors!![0])
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             showToastSnack(it.data.message, true)
                         }
 
@@ -110,7 +110,7 @@ class SearchActivity : BaseActivity() {
 
                     is SearchStatus.Error -> {
                         Log.d(Common.KeroDebug, "observeHome Error: ${it.error.toString()}")
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(it.error.toString(), true)
                     }
 

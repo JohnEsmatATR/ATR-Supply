@@ -3,6 +3,7 @@ package com.akhnaton.atrapp.ui.auth.customer_code.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -50,17 +51,17 @@ class LoginWithCodeActivity : BaseActivity() {
             viewModel.state.collectLatest { state ->
                 when (state) {
                     is RegisterFromLineState.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         showToastSnack(state.error, true)
                     }
 
                     RegisterFromLineState.Idle -> Unit
                     RegisterFromLineState.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is RegisterFromLineState.Success -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         if (state.state == 200) {
                             showToastSnack(state.message, false)
                             delay(500)

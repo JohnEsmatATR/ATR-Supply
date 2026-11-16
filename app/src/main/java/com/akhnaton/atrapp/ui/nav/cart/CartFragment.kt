@@ -76,6 +76,9 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
+        if (SharedPreferenceHelper.language == "ar") {
+            binding.btnBack.setImageResource(R.drawable.ic_back_ar)
+        }
 
         val incomingId = requireActivity().intent.getIntExtra("product_id", 0)
         if (incomingId > 0) receivedProductId = incomingId
@@ -210,12 +213,12 @@ class CartFragment : BaseFragment() {
                     is AddressStatus.Idle -> Log.d(Common.KeroDebug, "observeHome: Idleeeee")
                     is AddressStatus.Loading -> {
                         Log.d(Common.KeroDebug, "observeHome: Loading")
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
                     is AddressStatus.GetMyAddresses -> {
                         if (it.result.status == 200) {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                             Log.d(Common.KeroDebug, "Received: GetProducts")
 
                             val addresses = it.result.data ?: emptyList()
@@ -235,7 +238,7 @@ class CartFragment : BaseFragment() {
                             }
 
                         } else {
-                            hideProgressDialog(binding.progressLoading)
+                            binding.loadingOverlay.root.visibility = View.GONE
                         }
                     }
 
@@ -243,7 +246,7 @@ class CartFragment : BaseFragment() {
                     is AddressStatus.MakeAddressPrime -> {}
 
                     is AddressStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                     }
                 }
             }
@@ -351,7 +354,7 @@ class CartFragment : BaseFragment() {
                 when (state) {
                     is CartStatus.Idle -> {}
                     is CartStatus.Loading -> {
-                        showProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.VISIBLE
                     }
 
 
@@ -359,12 +362,17 @@ class CartFragment : BaseFragment() {
 
                         val appLocaleCode = SharedPreferenceHelper.language ?: DEFAULT_LANGUAGE
                         val appLocale = Locale(appLocaleCode)
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
 
                         val cartResponseItem = state.data.data.firstOrNull()
 
                         cartData = cartResponseItem?.carts ?: emptyList()
-
+                        cartData.forEach { section ->
+                            Log.d("CART_DEBUG", "Section: $section")
+                            section.items.products.forEach { p ->
+                                Log.d("CART_DEBUG", "   product: ${p.title} (id=${p.id})")
+                            }
+                        }
                         val extra = cartResponseItem?.extraData
                         if (extra != null) {
                             cartSummary = extra
@@ -391,7 +399,7 @@ class CartFragment : BaseFragment() {
                     }
 
                     is CartStatus.Error -> {
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                         Log.d("TAG", "observeCart: ${state.error.toString()}")
                         showToastSnack(state.error.toString(), true)
                         showEmptyState()
@@ -408,17 +416,17 @@ class CartFragment : BaseFragment() {
                 when (state) {
                     is AddToCartStatus.AddToCart -> {
                         getMyCart()
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                     }
 
                     is AddToCartStatus.Error -> {
                         Log.e(Common.KeroDebug, "Cart Error: ${state.error}")
                         showToastSnack(state.error.toString(), true)
-                        hideProgressDialog(binding.progressLoading)
+                        binding.loadingOverlay.root.visibility = View.GONE
                     }
 
-                    AddToCartStatus.Idle -> hideProgressDialog(binding.progressLoading)
-                    AddToCartStatus.Loading -> showProgressDialog(binding.progressLoading)
+                    AddToCartStatus.Idle ->binding.loadingOverlay.root.visibility = View.GONE
+                    AddToCartStatus.Loading ->binding.loadingOverlay.root.visibility = View.VISIBLE
                 }
             }
         }
